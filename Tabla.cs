@@ -50,6 +50,26 @@ namespace ProiectVolovici
             private set { _marimeTablaVerticala = value; }
         }
 
+        public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
+        {
+            _marimeTablaOrizontala = marimeTablaOrizontala;
+            _marimeTablaVerticala = marimeTablaVerticala;
+            _parentForm = parentForm;
+            _listaPiese = new List<Piesa>();
+
+            _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
+
+            _matriceTabla = new int[marimeTablaOrizontala, marimeTablaVerticala];
+
+            for (int linie = 0; linie < marimeTablaOrizontala; linie++)
+            {
+                for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
+                {
+                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, linie, coloana);
+                }
+            }
+        }
+
         public void AdaugaPiesa(Piesa piesa,int linie = -1,int coloana = -1)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
@@ -91,28 +111,8 @@ namespace ProiectVolovici
            
         }
 
-        public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
-        {
-            _marimeTablaOrizontala = marimeTablaOrizontala;
-            _marimeTablaVerticala = marimeTablaVerticala;
-            _parentForm = parentForm;
-            _listaPiese = new List<Piesa>();
 
-            _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
-
-            _matriceTabla = new int[marimeTablaOrizontala, marimeTablaVerticala];
-
-            for (int linie = 0; linie < marimeTablaOrizontala; linie++)
-            {
-                for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
-                {
-                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, linie, coloana);
-                }
-            }
-        }
-
-
-        public void mutaPiesa(Piesa piesa,int linie,int coloana)
+        public void MutaPiesa(Piesa piesa,int linie,int coloana)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
@@ -128,7 +128,7 @@ namespace ProiectVolovici
                 {
                     if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
                     {
-                        _listaPiese.Remove(piesaCuPozitia(linie, coloana));
+                        _listaPiese.Remove(PiesaCuPozitia(linie, coloana));
                         _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
                         ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
 
@@ -151,7 +151,7 @@ namespace ProiectVolovici
             }
         }
 
-        public Piesa piesaCuPozitia(int linie,int coloana)
+        public Piesa PiesaCuPozitia(int linie,int coloana)
         {
             foreach(Piesa piesa in _listaPiese)
             {
@@ -163,7 +163,7 @@ namespace ProiectVolovici
  
 
 
-        public void getPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
+        public void GetPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
         {
             for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
             {
@@ -174,12 +174,12 @@ namespace ProiectVolovici
             }
         }
 
-        public void setCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
+        public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
         {
             _arrayCadrane[linie, coloana].BackgroundImage = imagine;
         }
 
-        public void curataTabla()
+        public void CurataTabla()
         {
             for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
             {

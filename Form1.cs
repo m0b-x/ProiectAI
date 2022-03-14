@@ -24,7 +24,7 @@ namespace ProiectVolovici
             Tabla tabla = new Tabla(this, 9, 10);
             tabla.AdaugaPiesa(pion2, 1, 1);
             tabla.AdaugaPiesa(pion, 5, 5);
-            tabla.mutaPiesa(pion, 6, 6);
+            tabla.MutaPiesa(pion, 6, 6);
             
         }
     }
