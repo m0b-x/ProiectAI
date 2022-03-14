@@ -83,15 +83,22 @@ namespace ProiectVolovici
                     Console.Write("Eroare:Piesa selectata este deja pusa pe tabla!");
                 }
                 else
-                { 
-                    piesa.Linie = linie;
-                    piesa.Coloana = coloana;
-                    
-                    piesa.PusaPeTabla = true;
+                {
+                    if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    {
+                        Console.WriteLine("Eroare:Nu se poate adauga piesa una peste alta!");
+                    }
+                    else
+                    {
+                        piesa.Linie = linie;
+                        piesa.Coloana = coloana;
 
-                    this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
-                    this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
-                    this.ListaPiese.Add(piesa);
+                        piesa.PusaPeTabla = true;
+
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
+                        this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
+                        this.ListaPiese.Add(piesa);
+                    }
                 }
             }
            
