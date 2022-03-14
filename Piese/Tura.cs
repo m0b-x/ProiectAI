@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     class Tura : Piesa
     {
-        public Tura(Tabla tabla, Culoare culoare, int linie, int coloana)
+        public Tura(Culoare culoare, int linie = 0, int coloana = 0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -23,8 +23,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.wrook;
                 this.Cod = CodPiesa.TuraAlba;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

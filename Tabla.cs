@@ -50,11 +50,38 @@ namespace ProiectVolovici
             private set { _marimeTablaVerticala = value; }
         }
 
+        public void AdaugaPiesa(Piesa piesa,int linie = -1,int coloana = -1)
+        {
+            if(linie == -1)
+            {
+                linie = piesa.Linie;
+            }
+            else
+            {
+                piesa.Linie = linie;
+            }
+
+            if (coloana == -1)
+            {
+                coloana = piesa.Coloana;
+            }
+            else
+            {
+                piesa.Coloana = coloana;
+            }
+
+
+            this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
+            this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
+            this.ListaPiese.Add(piesa);
+        }
+
         public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
         {
             _marimeTablaOrizontala = marimeTablaOrizontala;
             _marimeTablaVerticala = marimeTablaVerticala;
             _parentForm = parentForm;
+            _listaPiese = new List<Piesa>();
 
             _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
 
@@ -69,20 +96,36 @@ namespace ProiectVolovici
             }
         }
 
+
         public void faMutarea(Piesa piesa,int linie,int coloana)
         {
-            if(_matriceTabla[linie,coloana] != (int)CodPiesa.Gol)
+            if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
-                _listaPiese.Remove(piesaCuPozitia(linie, coloana));
-                _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                piesa.mutaPiesa(this,linie, coloana);
+                Console.WriteLine("Linie sau coloana invalida! Linie:" + linie + ", Coloana:" + coloana);
             }
             else
             {
-                _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                piesa.mutaPiesa(this, linie, coloana);
+                if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                {
+                    _listaPiese.Remove(piesaCuPozitia(linie, coloana));
+                    _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                    ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+
+                    _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                    ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
+                    piesa.Linie = linie;
+                    piesa.Coloana = coloana;
+                }
+                else
+                {
+                    _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                    _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                    ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+
+                    ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
+                    piesa.Linie = linie;
+                    piesa.Coloana = coloana;
+                }
             }
         }
 

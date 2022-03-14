@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     class Elefant : Piesa
     {
-        public Elefant(Tabla tabla, Culoare culoare, int linie, int coloana)
+        public Elefant(Culoare culoare, int linie=0, int coloana=0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -23,8 +23,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.welephantrev2;
                 this.Cod = CodPiesa.ElefantAlb;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

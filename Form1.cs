@@ -19,13 +19,11 @@ namespace ProiectVolovici
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            int marimeTablaOrizontala = 9;
-            int marimeTablaVerticala = 10;
-            Tabla tabla = new Tabla(this, marimeTablaOrizontala, marimeTablaVerticala);
-            Piesa pion = new Pion(tabla, Culoare.ALBASTRU, 1, 1);
-            Piesa tura = new Tura(tabla, Culoare.ALBASTRU, 0, 0);
-            Piesa elefant = new Elefant(tabla, Culoare.ALBASTRU, 5, 0);
-            pion.mutaPiesa(tabla, 3, 3);
+            Piesa pion = new Pion(Culoare.ALB, 4, 4);
+            Piesa pion2 = new Pion(Culoare.ALBASTRU, 6, 6);
+            Tabla tabla = new Tabla(this, 9, 10);
+            tabla.AdaugaPiesa(pion2, 1, 1);
+            
         }
     }
 }

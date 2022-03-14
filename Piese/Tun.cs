@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     class Tun : Piesa
     {
-        public Tun(Tabla tabla, Culoare culoare, int linie, int coloana)
+        public Tun(Culoare culoare, int linie = 0, int coloana = 0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -23,8 +23,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.wcannon;
                 this.Cod = CodPiesa.TunAlb;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

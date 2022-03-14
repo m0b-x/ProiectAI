@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     class Gardian : Piesa
     {
-        public Gardian(Tabla tabla, Culoare culoare, int linie, int coloana)
+        public Gardian(Culoare culoare, int linie = 0, int coloana = 0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -23,8 +23,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.wenvoy;
                 this.Cod = CodPiesa.GardianAlb;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
 
     }

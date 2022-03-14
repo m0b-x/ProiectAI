@@ -9,7 +9,7 @@ namespace ProiectVolovici
     class Pion : Piesa
     {
         
-        public Pion(Tabla tabla,Culoare culoare,int linie,int coloana)
+        public Pion(Culoare culoare,int linie = 0, int coloana = 0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -24,8 +24,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.wpawn;
                 this.Cod = CodPiesa.PionAlb;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

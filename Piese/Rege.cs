@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     class Rege : Piesa
     {
-        public Rege(Tabla tabla, Culoare culoare, int linie, int coloana)
+        public Rege(Culoare culoare, int linie = 0, int coloana = 0)
         {
             this.Linie = linie;
             this.Coloana = coloana;
@@ -23,8 +23,6 @@ namespace ProiectVolovici
                 this.Imagine = Properties.Resources.wking;
                 this.Cod = CodPiesa.RegeAlb;
             }
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
-            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }
