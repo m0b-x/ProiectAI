@@ -13,6 +13,7 @@ namespace ProiectVolovici
             this.Linie = linie;
             this.Coloana = coloana;
             this.CuloarePiesa = culoare;
+            this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)
             {
                 this.Imagine = Properties.Resources.bking;

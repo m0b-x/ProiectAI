@@ -14,6 +14,7 @@ namespace ProiectVolovici
         protected int _coloanaPiesa;
         protected Image _imaginePiesa;
         protected CodPiesa _codPiesa;
+        protected bool _pusaPeTabla;
 
         public Culoare CuloarePiesa
         {
@@ -41,6 +42,12 @@ namespace ProiectVolovici
         {
             get { return _codPiesa; }
             set { _codPiesa = value; }
+        }
+
+        public bool PusaPeTabla
+        {
+            get { return _pusaPeTabla; }
+            set { _pusaPeTabla = value; }
         }
 
     }

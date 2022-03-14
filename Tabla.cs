@@ -52,28 +52,43 @@ namespace ProiectVolovici
 
         public void AdaugaPiesa(Piesa piesa,int linie = -1,int coloana = -1)
         {
-            if(linie == -1)
+            if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
-                linie = piesa.Linie;
+                Console.WriteLine("Linie sau coloana invalida! Linie:" + linie + ", Coloana:" + coloana);
             }
             else
             {
-                piesa.Linie = linie;
-            }
+                if (piesa.PusaPeTabla == true)
+                {
+                    Console.Write("Eroare:Piesa selectata este deja pusa pe tabla!");
+                }
+                else
+                { 
+                    if (linie == -1)
+                    {
+                        linie = piesa.Linie;
+                    }
+                    else
+                    {
+                        piesa.Linie = linie;
+                    }
 
-            if (coloana == -1)
-            {
-                coloana = piesa.Coloana;
-            }
-            else
-            {
-                piesa.Coloana = coloana;
-            }
+                    if (coloana == -1)
+                    {
+                        coloana = piesa.Coloana;
+                    }
+                    else
+                    {
+                        piesa.Coloana = coloana;
+                    }
+                    piesa.PusaPeTabla = true;
 
-
-            this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
-            this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
-            this.ListaPiese.Add(piesa);
+                    this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
+                    this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
+                    this.ListaPiese.Add(piesa);
+                }
+            }
+           
         }
 
         public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
@@ -97,7 +112,7 @@ namespace ProiectVolovici
         }
 
 
-        public void faMutarea(Piesa piesa,int linie,int coloana)
+        public void mutaPiesa(Piesa piesa,int linie,int coloana)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
@@ -105,26 +120,33 @@ namespace ProiectVolovici
             }
             else
             {
-                if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                if (piesa.PusaPeTabla == false)
                 {
-                    _listaPiese.Remove(piesaCuPozitia(linie, coloana));
-                    _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                    ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
-
-                    _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                    ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
-                    piesa.Linie = linie;
-                    piesa.Coloana = coloana;
+                    Console.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
                 }
                 else
                 {
-                    _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                    _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                    ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+                    if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    {
+                        _listaPiese.Remove(piesaCuPozitia(linie, coloana));
+                        _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                        ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
 
-                    ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
-                    piesa.Linie = linie;
-                    piesa.Coloana = coloana;
+                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                        ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
+                        piesa.Linie = linie;
+                        piesa.Coloana = coloana;
+                    }
+                    else
+                    {
+                        _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                        ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+
+                        ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
+                        piesa.Linie = linie;
+                        piesa.Coloana = coloana;
+                    }
                 }
             }
         }
