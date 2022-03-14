@@ -16,10 +16,12 @@ namespace ProiectVolovici
             if (culoare == Culoare.ALBASTRU)
             {
                 this.Imagine = Properties.Resources.belephantrev2;
+                this.Cod = CodPiesa.ElefantAlbastru;
             }
             else
             {
                 this.Imagine = Properties.Resources.welephantrev2;
+                this.Cod = CodPiesa.ElefantAlb;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
         }

@@ -16,10 +16,12 @@ namespace ProiectVolovici
             if (culoare == Culoare.ALBASTRU)
             {
                 this.Imagine = Properties.Resources.benvoy;
+                this.Cod = CodPiesa.GardianAlbastru;
             }
             else
             {
                 this.Imagine = Properties.Resources.wenvoy;
+                this.Cod = CodPiesa.GardianAlb;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
         }

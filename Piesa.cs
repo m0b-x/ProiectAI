@@ -13,6 +13,7 @@ namespace ProiectVolovici
         protected int _liniePiesa;
         protected int _coloanaPiesa;
         protected Image _imaginePiesa;
+        protected CodPiesa _codPiesa;
 
         public Culoare CuloarePiesa
         {
@@ -36,6 +37,12 @@ namespace ProiectVolovici
             set { _imaginePiesa = value; }
         }
 
+        public CodPiesa Cod
+        {
+            get { return _codPiesa; }
+            set { _codPiesa = value; }
+        }
+
         public void mutaPiesa(Tabla tabla,int linie,int coloana)
         {
             if (linie > tabla.MarimeTablaOrizontala ||
@@ -47,6 +54,10 @@ namespace ProiectVolovici
             }
             else
             {
+                if(tabla.ArrayCadrane[linie, coloana].BackgroundImage != null)
+                {
+
+                }
                 tabla.ArrayCadrane[this.Linie, this.Coloana].BackgroundImage = null;
                 tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
             }

@@ -16,10 +16,12 @@ namespace ProiectVolovici
             if (culoare == Culoare.ALBASTRU)
             {
                 this.Imagine = Properties.Resources.bhorse;
+                this.Cod = CodPiesa.CalAbastru;
             }
             else
             {
                 this.Imagine = Properties.Resources.whorse;
+                this.Cod = CodPiesa.CalAlb;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
         }

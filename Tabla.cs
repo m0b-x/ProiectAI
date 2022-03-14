@@ -61,6 +61,17 @@ namespace ProiectVolovici
             }
         }
 
+        public void getPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
+        {
+            for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
+            {
+                for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
+                {
+                    _arrayCadrane[linie, coloana].BackgroundImage = null;
+                }
+            }
+        }
+
         public void setCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
         {
             _arrayCadrane[linie, coloana].BackgroundImage = imagine;
