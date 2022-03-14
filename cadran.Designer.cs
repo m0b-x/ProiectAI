@@ -1,6 +1,6 @@
 ﻿namespace ProiectVolovici
 {
-    partial class cadran
+    partial class Cadran
     {
         /// <summary> 
         /// Required designer variable.

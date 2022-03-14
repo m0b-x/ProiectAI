@@ -7,45 +7,58 @@ namespace ProiectVolovici
     public class Tabla
     {
 
-        private cadran[,] arrayCadrane;
-        private int[,] matriceTabla;
+        private Cadran[,] _arrayCadrane;
+        private int[,] _matriceTabla;
 
-        private int marimeTablaOrizontala;
-        private int marimeTablaVerticala;
+        private int _marimeTablaOrizontala;
+        private int _marimeTablaVerticala;
+
+        public Cadran[,] ArrayCadrane   
+        {
+            get { return _arrayCadrane; }   
+            set { _arrayCadrane = value; }  
+        }
+
+        public int[,] MatriceTabla
+        {
+            get { return _matriceTabla; }   
+            set { _matriceTabla = value; }  
+        }
 
         public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
         {
-            this.marimeTablaOrizontala = marimeTablaOrizontala;
-            this.marimeTablaVerticala = marimeTablaVerticala;
+            this._marimeTablaOrizontala = marimeTablaOrizontala;
+            this._marimeTablaVerticala = marimeTablaVerticala;
 
-            arrayCadrane = new cadran[marimeTablaOrizontala, marimeTablaVerticala];
+            _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
 
-            matriceTabla = new int[marimeTablaOrizontala, marimeTablaVerticala];
+            _matriceTabla = new int[marimeTablaOrizontala, marimeTablaVerticala];
 
             for (int linie = 0; linie < marimeTablaOrizontala; linie++)
             {
                 for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
                 {
-                    arrayCadrane[linie, coloana] = new cadran(parentForm, linie, coloana);
+                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, linie, coloana);
                 }
             }
         }
 
         public void setCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
         {
-            arrayCadrane[linie, coloana].BackgroundImage = imagine;
+            _arrayCadrane[linie, coloana].BackgroundImage = imagine;
         }
 
         public void stergeTabla()
         {
-            for (int linie = 0; linie < marimeTablaOrizontala; linie++)
+            for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
             {
-                for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
+                for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
                 {
-                    arrayCadrane[linie, coloana].BackgroundImage = null;
+                    _arrayCadrane[linie, coloana].BackgroundImage = null;
                 }
             }
         }
+
 
     }
 }

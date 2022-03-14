@@ -4,61 +4,61 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public partial class cadran : UserControl
+    public partial class Cadran : UserControl
     {
-        private int linie { get; set; }
-        private int coloana { get; set; }
+        private int _linie;
+        private int _coloana;
 
-        private int pragRau { get; set; } = 4;
-        private int marimeCadran { get; set; } = 50;
-        private int offsetCadran { get; set; } = 50;
-        private int offsetRau { get; set; } = 25;
+        private int _pragRau = 4;
+        private int _marimeCadran = 50;
+        private int _offsetCadran = 50;
+        private int _offsetRau = 25;
 
 
-         private Color culoareCadranPar = Color.BlanchedAlmond;
-         private Color culoareCadranImpar = Color.DarkGreen;
-         private ImageLayout layoutCadran = ImageLayout.Center;
-         private BorderStyle borderCadran = BorderStyle.FixedSingle; 
+         public static Color _culoareCadranPar = Color.BlanchedAlmond;
+         public static Color _culoareCadranImpar = Color.DarkGreen;
+         public static ImageLayout _layoutCadran = ImageLayout.Center;
+         public static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
 
-        public cadran()
+        public Cadran()
         {
             InitializeComponent();
         }
 
-        public cadran(Form parentForm, int linie, int coloana)
+        public Cadran(Form parentForm, int linie, int coloana)
         {
             this.Parent = parentForm;
-            if (linie > pragRau)
-                this.Location = new Point(coloana * marimeCadran + offsetCadran, linie * marimeCadran + offsetCadran + offsetRau);
+            if (linie > _pragRau)
+                this.Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + _offsetRau);
             else
-                this.Location = new Point(coloana * marimeCadran + offsetCadran, linie * marimeCadran + offsetCadran);
+                this.Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran);
 
-            this.linie = coloana;
-            this.coloana = linie;
-            this.Size = new Size(marimeCadran, marimeCadran);
-            this.BorderStyle = borderCadran;
-            this.BackgroundImageLayout = layoutCadran;
+            this._linie = coloana;
+            this._coloana = linie;
+            this.Size = new Size(_marimeCadran, _marimeCadran);
+            this.BorderStyle = _borderCadran;
+            this.BackgroundImageLayout = _layoutCadran;
 
             if (linie % 2 == 0)
             {
                 if (coloana % 2 == 1)
                 {
-                    this.BackColor = culoareCadranImpar;
+                    this.BackColor = _culoareCadranImpar;
                 }
                 else
                 {
-                    this.BackColor = culoareCadranPar;
+                    this.BackColor = _culoareCadranPar;
                 }
             }
             else
             {
                 if (coloana % 2 == 1)
                 {
-                    this.BackColor = culoareCadranPar;
+                    this.BackColor = _culoareCadranPar;
                 }
                 else
                 {
-                    this.BackColor = culoareCadranImpar;
+                    this.BackColor = _culoareCadranImpar;
                 }
             }
         }
