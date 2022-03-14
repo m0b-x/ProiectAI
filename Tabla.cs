@@ -6,12 +6,18 @@ namespace ProiectVolovici
 {
     public class Tabla
     {
-
+        private Form _parentForm;
         private Cadran[,] _arrayCadrane;
         private int[,] _matriceTabla;
 
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
+
+        public Form ParentForm
+        {
+            get { return _parentForm; }
+            set { _parentForm = value; }
+        }
 
         public Cadran[,] ArrayCadrane   
         {
@@ -25,10 +31,22 @@ namespace ProiectVolovici
             set { _matriceTabla = value; }  
         }
 
+        public int MarimeTablaOrizontala
+        {
+            get { return _marimeTablaOrizontala; }
+            private set { _marimeTablaOrizontala = value; }
+        }
+        public int MarimeTablaVerticala
+        {
+            get { return _marimeTablaVerticala; }
+            private set { _marimeTablaVerticala = value; }
+        }
+
         public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
         {
-            this._marimeTablaOrizontala = marimeTablaOrizontala;
-            this._marimeTablaVerticala = marimeTablaVerticala;
+            _marimeTablaOrizontala = marimeTablaOrizontala;
+            _marimeTablaVerticala = marimeTablaVerticala;
+            _parentForm = parentForm;
 
             _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
 

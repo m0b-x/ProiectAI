@@ -27,38 +27,38 @@ namespace ProiectVolovici
 
         public Cadran(Form parentForm, int linie, int coloana)
         {
-            this.Parent = parentForm;
+            Parent = parentForm;
             if (linie > _pragRau)
-                this.Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + _offsetRau);
+                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + _offsetRau);
             else
-                this.Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran);
+                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran);
 
-            this._linie = coloana;
-            this._coloana = linie;
-            this.Size = new Size(_marimeCadran, _marimeCadran);
-            this.BorderStyle = _borderCadran;
-            this.BackgroundImageLayout = _layoutCadran;
+            _linie = coloana;
+            _coloana = linie;
+            Size = new Size(_marimeCadran, _marimeCadran);
+            BorderStyle = _borderCadran;
+            BackgroundImageLayout = _layoutCadran;
 
             if (linie % 2 == 0)
             {
                 if (coloana % 2 == 1)
                 {
-                    this.BackColor = _culoareCadranImpar;
+                    BackColor = _culoareCadranImpar;
                 }
                 else
                 {
-                    this.BackColor = _culoareCadranPar;
+                    BackColor = _culoareCadranPar;
                 }
             }
             else
             {
                 if (coloana % 2 == 1)
                 {
-                    this.BackColor = _culoareCadranPar;
+                    BackColor = _culoareCadranPar;
                 }
                 else
                 {
-                    this.BackColor = _culoareCadranImpar;
+                    BackColor = _culoareCadranImpar;
                 }
             }
         }

@@ -22,7 +22,8 @@ namespace ProiectVolovici
             int marimeTablaOrizontala = 9;
             int marimeTablaVerticala = 10;
             Tabla tabla = new Tabla(this, marimeTablaOrizontala, marimeTablaVerticala);
-
+            Piesa pion = new Pion(tabla, Culoare.ALBASTRU, 1, 1);
+            pion.mutaPiesa(tabla, 3, 3);
         }
     }
 }
