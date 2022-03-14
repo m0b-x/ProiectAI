@@ -12,6 +12,9 @@ namespace ProiectVolovici
         private int[,] _matriceTabla;
         private List<Piesa> _listaPiese;
 
+        private int _pragRau = 4;
+        private int _offsetRau = 25;
+
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
 
@@ -49,6 +52,16 @@ namespace ProiectVolovici
             get { return _marimeTablaVerticala; }
             private set { _marimeTablaVerticala = value; }
         }
+        public int PragRau
+        {
+            get { return _pragRau; }
+            private set { _pragRau = value; }
+        }
+        public int OffsetRau
+        {
+            get { return _pragRau; }
+            private set { _pragRau = value; }
+        }
 
         public Tabla(Form parentForm, int marimeTablaOrizontala, int marimeTablaVerticala)
         {
@@ -65,7 +78,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, linie, coloana);
+                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, this, linie, coloana);
                     _arrayCadrane[linie, coloana].AddEventHandler(OnCadranClick);
                 }
             }
@@ -183,6 +196,15 @@ namespace ProiectVolovici
             int linie, coloana;
             linie = (sender as Cadran).Linie;
             coloana = (sender as Cadran).Coloana;
+            if(_arrayCadrane[linie, coloana].BackgroundImage != null)
+            {
+                Piesa piesa = GetPiesaCuPozitia(linie, coloana);
+                Console.WriteLine("Piesa:" + piesa.Cod);
+            }
+            else
+            {
+                Console.WriteLine("Piesa:Gol");
+            }
         }
 
     }

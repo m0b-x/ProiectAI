@@ -50,5 +50,7 @@ namespace ProiectVolovici
             set { _pusaPeTabla = value; }
         }
 
+        //public abstract void ArataMutariPosibile(Tabla tabla);
+
     }
 }

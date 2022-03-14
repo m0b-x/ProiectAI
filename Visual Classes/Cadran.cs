@@ -9,10 +9,8 @@ namespace ProiectVolovici
         private int _linie;
         private int _coloana;
 
-        private int _pragRau = 4;
         private int _marimeCadran = 50;
         private int _offsetCadran = 50;
-        private int _offsetRau = 25;
 
          public static Color _culoareCadranPar = Color.BlanchedAlmond;
          public static Color _culoareCadranImpar = Color.DarkGreen;
@@ -35,11 +33,11 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        public Cadran(Form parentForm, int linie, int coloana)
+        public Cadran(Form parentForm,Tabla tabla, int linie, int coloana)
         {
             Parent = parentForm;
-            if (linie > _pragRau)
-                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + _offsetRau);
+            if (linie > tabla.PragRau)
+                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + tabla.OffsetRau);
             else
                 Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran);
 

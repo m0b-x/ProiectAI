@@ -24,5 +24,12 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.PionAlb;
             }
         }
+
+        public void ArataMutarilePosibile(Tabla tabla)
+        {
+            int linie = this.Linie;
+            int coloana = this.Coloana;
+
+        }
     }
 }
