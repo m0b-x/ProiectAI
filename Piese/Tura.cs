@@ -24,6 +24,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.TuraAlba;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

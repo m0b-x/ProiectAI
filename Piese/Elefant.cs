@@ -24,6 +24,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.ElefantAlb;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

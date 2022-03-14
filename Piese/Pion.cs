@@ -25,6 +25,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.PionAlb;
             }
             tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+            tabla.MatriceTabla[linie, coloana] = (int)this.Cod;
         }
     }
 }

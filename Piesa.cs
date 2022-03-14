@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    abstract class Piesa
+    public abstract class Piesa
     {
         protected Culoare _culoarePiesa;
         protected int _liniePiesa;
@@ -54,12 +54,10 @@ namespace ProiectVolovici
             }
             else
             {
-                if(tabla.ArrayCadrane[linie, coloana].BackgroundImage != null)
-                {
-
-                }
                 tabla.ArrayCadrane[this.Linie, this.Coloana].BackgroundImage = null;
                 tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+                this.Linie = linie;
+                this.Coloana = coloana;
             }
         }
 

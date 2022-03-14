@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    enum CodPiesa
+    public enum CodPiesa : int
     {
         Gol = 0,
         PionAlb = 1,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    enum Culoare
+    public enum Culoare
     {
         ALB,
         ALBASTRU

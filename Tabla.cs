@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,9 +10,16 @@ namespace ProiectVolovici
         private Form _parentForm;
         private Cadran[,] _arrayCadrane;
         private int[,] _matriceTabla;
+        private List<Piesa> _listaPiese;
 
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
+
+        public List<Piesa> ListaPiese
+        {
+            get { return _listaPiese; }
+            set { _listaPiese = value; }
+        }
 
         public Form ParentForm
         {
@@ -61,6 +69,35 @@ namespace ProiectVolovici
             }
         }
 
+        public void faMutarea(Piesa piesa,int linie,int coloana)
+        {
+            if(_matriceTabla[linie,coloana] != (int)CodPiesa.Gol)
+            {
+                _listaPiese.Remove(piesaCuPozitia(linie, coloana));
+                _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                piesa.mutaPiesa(this,linie, coloana);
+            }
+            else
+            {
+                _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
+                _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                piesa.mutaPiesa(this, linie, coloana);
+            }
+        }
+
+        public Piesa piesaCuPozitia(int linie,int coloana)
+        {
+            foreach(Piesa piesa in _listaPiese)
+            {
+                if (piesa.Coloana == coloana && piesa.Linie == linie)
+                    return piesa;
+            }
+            return null;
+        }
+ 
+
+
         public void getPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
         {
             for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
@@ -77,7 +114,7 @@ namespace ProiectVolovici
             _arrayCadrane[linie, coloana].BackgroundImage = imagine;
         }
 
-        public void stergeTabla()
+        public void curataTabla()
         {
             for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
             {
