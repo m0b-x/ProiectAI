@@ -64,6 +64,10 @@ namespace ProiectVolovici
         }
 
 
+        public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
+        {
+           this.BackgroundImage = imagine;
+        }
 
         private void cadran_Load(object sender, EventArgs e)
         {
