@@ -23,6 +23,8 @@ namespace ProiectVolovici
             Piesa pion2 = new Pion(Culoare.ALBASTRU, 6, 6);
             Tabla tabla = new Tabla(this, 9, 10);
             tabla.AdaugaPiesa(pion2, 1, 1);
+            tabla.AdaugaPiesa(pion, 5, 5);
+            tabla.mutaPiesa(pion, 6, 6);
             
         }
     }
