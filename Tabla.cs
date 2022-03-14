@@ -128,7 +128,7 @@ namespace ProiectVolovici
                 {
                     if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
                     {
-                        _listaPiese.Remove(PiesaCuPozitia(linie, coloana));
+                        _listaPiese.Remove(GetPiesaCuPozitia(linie, coloana));
                         _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
                         ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
 
@@ -151,7 +151,7 @@ namespace ProiectVolovici
             }
         }
 
-        public Piesa PiesaCuPozitia(int linie,int coloana)
+        public Piesa GetPiesaCuPozitia(int linie,int coloana)
         {
             foreach(Piesa piesa in _listaPiese)
             {
@@ -160,7 +160,7 @@ namespace ProiectVolovici
             }
             return null;
         }
- 
+
 
 
         public void GetPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
@@ -172,11 +172,6 @@ namespace ProiectVolovici
                     _arrayCadrane[linie, coloana].BackgroundImage = null;
                 }
             }
-        }
-
-        public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
-        {
-            _arrayCadrane[linie, coloana].BackgroundImage = imagine;
         }
 
         public void CurataTabla()
