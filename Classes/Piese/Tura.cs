@@ -6,24 +6,21 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    class Cal : Piesa
+    class Tura : Piesa
     {
-
-        public Cal(Culoare culoare, int linie=0, int coloana=0)
+        public Tura(Culoare culoare)
         {
-            this.Linie = linie;
-            this.Coloana = coloana;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)
             {
-                this.Imagine = Properties.Resources.bhorse;
-                this.Cod = CodPiesa.CalAbastru;
+                this.Imagine = Properties.Resources.brook;
+                this.Cod = CodPiesa.TuraAlbastra;
             }
             else
             {
-                this.Imagine = Properties.Resources.whorse;
-                this.Cod = CodPiesa.CalAlb;
+                this.Imagine = Properties.Resources.wrook;
+                this.Cod = CodPiesa.TuraAlba;
             }
         }
     }

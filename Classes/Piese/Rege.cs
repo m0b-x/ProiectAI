@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    class Tura : Piesa
+    class Rege : Piesa
     {
-        public Tura(Culoare culoare, int linie = 0, int coloana = 0)
+        public Rege(Culoare culoare)
         {
-            this.Linie = linie;
-            this.Coloana = coloana;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)
             {
-                this.Imagine = Properties.Resources.brook;
-                this.Cod = CodPiesa.TuraAlbastra;
+                this.Imagine = Properties.Resources.bking;
+                this.Cod = CodPiesa.RegeAlbastru;
             }
             else
             {
-                this.Imagine = Properties.Resources.wrook;
-                this.Cod = CodPiesa.TuraAlba;
+                this.Imagine = Properties.Resources.wking;
+                this.Cod = CodPiesa.RegeAlb;
             }
         }
     }

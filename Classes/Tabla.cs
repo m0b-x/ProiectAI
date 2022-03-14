@@ -70,7 +70,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void AdaugaPiesa(Piesa piesa,int linie = -1,int coloana = -1)
+        public void AdaugaPiesa(Piesa piesa,int linie,int coloana)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
@@ -84,23 +84,9 @@ namespace ProiectVolovici
                 }
                 else
                 { 
-                    if (linie == -1)
-                    {
-                        linie = piesa.Linie;
-                    }
-                    else
-                    {
-                        piesa.Linie = linie;
-                    }
-
-                    if (coloana == -1)
-                    {
-                        coloana = piesa.Coloana;
-                    }
-                    else
-                    {
-                        piesa.Coloana = coloana;
-                    }
+                    piesa.Linie = linie;
+                    piesa.Coloana = coloana;
+                    
                     piesa.PusaPeTabla = true;
 
                     this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;

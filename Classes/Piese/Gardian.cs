@@ -6,24 +6,23 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    class Tun : Piesa
+    class Gardian : Piesa
     {
-        public Tun(Culoare culoare, int linie = 0, int coloana = 0)
+        public Gardian(Culoare culoare)
         {
-            this.Linie = linie;
-            this.Coloana = coloana;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)
             {
-                this.Imagine = Properties.Resources.bcannon;
-                this.Cod = CodPiesa.TunAlbastru;
+                this.Imagine = Properties.Resources.benvoy;
+                this.Cod = CodPiesa.GardianAlbastru;
             }
             else
             {
-                this.Imagine = Properties.Resources.wcannon;
-                this.Cod = CodPiesa.TunAlb;
+                this.Imagine = Properties.Resources.wenvoy;
+                this.Cod = CodPiesa.GardianAlb;
             }
         }
+
     }
 }

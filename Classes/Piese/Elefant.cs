@@ -8,10 +8,8 @@ namespace ProiectVolovici
 {
     class Elefant : Piesa
     {
-        public Elefant(Culoare culoare, int linie=0, int coloana=0)
+        public Elefant(Culoare culoare)
         {
-            this.Linie = linie;
-            this.Coloana = coloana;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)

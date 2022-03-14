@@ -9,10 +9,8 @@ namespace ProiectVolovici
     class Pion : Piesa
     {
         
-        public Pion(Culoare culoare,int linie = 0, int coloana = 0)
+        public Pion(Culoare culoare)
         {
-            this.Linie = linie;
-            this.Coloana = coloana;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             if (culoare == Culoare.ALBASTRU)
