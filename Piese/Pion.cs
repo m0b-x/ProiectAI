@@ -14,7 +14,7 @@ namespace ProiectVolovici
             this.Linie = linie;
             this.Coloana = coloana;
             this.CuloarePiesa = culoare;
-            if (culoare == Culoare.ALB)
+            if (culoare == Culoare.ALBASTRU)
             {
                 this.Imagine = Properties.Resources.bpawn;
             }

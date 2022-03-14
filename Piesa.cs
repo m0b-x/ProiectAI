@@ -38,10 +38,18 @@ namespace ProiectVolovici
 
         public void mutaPiesa(Tabla tabla,int linie,int coloana)
         {
-            if(linie > tabla.)
-
-            tabla.ArrayCadrane[this.Linie, this.Coloana].BackgroundImage = null;
-            tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+            if (linie > tabla.MarimeTablaOrizontala ||
+               coloana > tabla.MarimeTablaVerticala ||
+               linie < 0 ||
+               coloana < 0)
+            {
+                Console.WriteLine("Linie sau coloana invalida! Linie:" + linie + ", Coloana:" + coloana);
+            }
+            else
+            {
+                tabla.ArrayCadrane[this.Linie, this.Coloana].BackgroundImage = null;
+                tabla.ArrayCadrane[linie, coloana].BackgroundImage = this.Imagine;
+            }
         }
 
     }
