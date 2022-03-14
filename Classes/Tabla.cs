@@ -27,16 +27,16 @@ namespace ProiectVolovici
             set { _parentForm = value; }
         }
 
-        public Cadran[,] ArrayCadrane   
+        public Cadran[,] ArrayCadrane
         {
-            get { return _arrayCadrane; }   
-            set { _arrayCadrane = value; }  
+            get { return _arrayCadrane; }
+            set { _arrayCadrane = value; }
         }
 
         public int[,] MatriceTabla
         {
-            get { return _matriceTabla; }   
-            set { _matriceTabla = value; }  
+            get { return _matriceTabla; }
+            set { _matriceTabla = value; }
         }
 
         public int MarimeTablaOrizontala
@@ -50,7 +50,7 @@ namespace ProiectVolovici
             private set { _marimeTablaVerticala = value; }
         }
 
-        public Tabla(Form parentForm, int marimeTablaOrizontala,int marimeTablaVerticala)
+        public Tabla(Form parentForm, int marimeTablaOrizontala, int marimeTablaVerticala)
         {
             _marimeTablaOrizontala = marimeTablaOrizontala;
             _marimeTablaVerticala = marimeTablaVerticala;
@@ -66,11 +66,12 @@ namespace ProiectVolovici
                 for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
                 {
                     _arrayCadrane[linie, coloana] = new Cadran(parentForm, linie, coloana);
+                    _arrayCadrane[linie, coloana].AddEventHandler(OnCadranClick);
                 }
             }
         }
 
-        public void AdaugaPiesa(Piesa piesa,int linie,int coloana)
+        public void AdaugaPiesa(Piesa piesa, int linie, int coloana)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
@@ -101,11 +102,11 @@ namespace ProiectVolovici
                     }
                 }
             }
-           
+
         }
 
 
-        public void MutaPiesa(Piesa piesa,int linie,int coloana)
+        public void MutaPiesa(Piesa piesa, int linie, int coloana)
         {
             if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
             {
@@ -144,9 +145,9 @@ namespace ProiectVolovici
             }
         }
 
-        public Piesa GetPiesaCuPozitia(int linie,int coloana)
+        public Piesa GetPiesaCuPozitia(int linie, int coloana)
         {
-            foreach(Piesa piesa in _listaPiese)
+            foreach (Piesa piesa in _listaPiese)
             {
                 if (piesa.Coloana == coloana && piesa.Linie == linie)
                     return piesa;
@@ -177,7 +178,12 @@ namespace ProiectVolovici
                 }
             }
         }
-
+        public void OnCadranClick(object sender, EventArgs e)
+        {
+            int linie, coloana;
+            linie = (sender as Cadran).Linie;
+            coloana = (sender as Cadran).Coloana;
+        }
 
     }
 }

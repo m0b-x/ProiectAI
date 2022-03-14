@@ -14,11 +14,21 @@ namespace ProiectVolovici
         private int _offsetCadran = 50;
         private int _offsetRau = 25;
 
-
          public static Color _culoareCadranPar = Color.BlanchedAlmond;
          public static Color _culoareCadranImpar = Color.DarkGreen;
          public static ImageLayout _layoutCadran = ImageLayout.Center;
          public static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
+
+        public int Linie
+        {
+            get { return _linie; }
+            set { _linie = value; }
+        }
+        public int Coloana
+        {
+            get { return _coloana; }
+            set { _coloana = value; }
+        }
 
         public Cadran()
         {
@@ -67,6 +77,11 @@ namespace ProiectVolovici
         public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
         {
            this.BackgroundImage = imagine;
+        }
+
+        public void AddEventHandler(EventHandler eventHandler)
+        {
+            this.Click += eventHandler;
         }
 
         private void cadran_Load(object sender, EventArgs e)
