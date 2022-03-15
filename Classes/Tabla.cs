@@ -109,7 +109,7 @@ namespace ProiectVolovici
 
                         piesa.PusaPeTabla = true;
 
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = piesa.Imagine;
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
                         this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
                         this.ListaPiese.Add(piesa);
                     }
@@ -137,22 +137,22 @@ namespace ProiectVolovici
                     {
                         _listaPiese.Remove(GetPiesaCuPozitia(linie, coloana));
                         _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                        ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(null);
 
-                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                        ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
                         piesa.Linie = linie;
                         piesa.Coloana = coloana;
+                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
                     }
                     else
                     {
                         _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
                         _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                        ArrayCadrane[piesa.Linie, piesa.Coloana].BackgroundImage = null;
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(null);
 
-                        ArrayCadrane[linie, coloana].BackgroundImage = piesa.Imagine;
                         piesa.Linie = linie;
                         piesa.Coloana = coloana;
+                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
                     }
                 }
             }
@@ -168,26 +168,13 @@ namespace ProiectVolovici
             return null;
         }
 
-
-
-        public void GetPiesaDinCoordonate(Tabla tabla, int liniePiesa, int coloanaPiesa)
-        {
-            for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
-            {
-                for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
-                {
-                    _arrayCadrane[linie, coloana].BackgroundImage = null;
-                }
-            }
-        }
-
         public void CurataTabla()
         {
             for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
             {
                 for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana].BackgroundImage = null;
+                    _arrayCadrane[linie, coloana].setPiesa(null);
                 }
             }
         }

@@ -9,6 +9,8 @@ namespace ProiectVolovici
         private int _linie;
         private int _coloana;
 
+        private Piesa _piesaCadran;
+
         private int _marimeCadran = 50;
         private int _offsetCadran = 50;
 
@@ -20,6 +22,12 @@ namespace ProiectVolovici
         private static ImageLayout _layoutCadran = ImageLayout.Center;
         private static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
          
+
+        public Piesa PiesaCadran
+        {
+            get { return _piesaCadran; }
+            set { _piesaCadran = value; }
+        }
         public static Color CuloareCadranPar
         {
            get { return _culoareCadranPar; }
@@ -96,7 +104,19 @@ namespace ProiectVolovici
                 }
             }
         }
-
+        public void setPiesa(Piesa piesa)
+        {
+            if (piesa != null)
+            {
+                _piesaCadran = piesa;
+                BackgroundImage = piesa.Imagine;
+            }
+            else
+            {
+                _piesaCadran = null;
+                BackgroundImage = null;
+            }
+        }
 
         public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
         {
