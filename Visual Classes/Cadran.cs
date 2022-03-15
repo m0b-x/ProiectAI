@@ -12,39 +12,36 @@ namespace ProiectVolovici
         private int _marimeCadran = 50;
         private int _offsetCadran = 50;
 
-        public static Color _culoareCadranPar = Color.BlanchedAlmond;
-        public static Color _culoareCadranImpar = Color.DarkGreen;
-        public static Color _culoareCadranSelectat = Color.DeepSkyBlue;
-        public static Color _culoareCadranMutari = Color.DodgerBlue;
-        public static ImageLayout _layoutCadran = ImageLayout.Center;
-        public static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
+        private static Color _culoareCadranPar = Color.BlanchedAlmond;
+        private static Color _culoareCadranImpar = Color.DarkGreen;
+        private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
+        private static Color _culoareCadranMutari = Color.DodgerBlue;
+        private static ImageLayout _layoutCadran = ImageLayout.Center;
+        private static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
          
-         /*
-        public Color CuloareCadranPar
+        public static Color CuloareCadranPar
         {
            get { return _culoareCadranPar; }
            set { _culoareCadranPar = value; }
         }
         
-        public Color CuloareCadranImpar
+        public static Color CuloareCadranImpar
         {
             get { return _culoareCadranImpar; }
             set { _culoareCadranImpar = value; }
          }
         
-        public Color CuloareCadranSelectat
+        public static Color CuloareCadranSelectat
         {
             get { return _culoareCadranSelectat; }
             set { _culoareCadranSelectat = value; }
         }
         
-        public Color CuloareCadranMutari
+        public static static Color CuloareCadranMutari
         {
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
         }
-        */
-
         public int Linie
         {
             get { return _linie; }
