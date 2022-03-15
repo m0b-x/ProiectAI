@@ -23,6 +23,17 @@ namespace ProiectVolovici
         private static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
          
 
+        public int Linie
+        {
+            get { return _linie; }
+            set { _linie = value; }
+        }
+        public int Coloana
+        {
+            get { return _coloana; }
+            set { _coloana = value; }
+        }
+
         public Piesa PiesaCadran
         {
             get { return _piesaCadran; }
@@ -51,17 +62,6 @@ namespace ProiectVolovici
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
         }
-        public int Linie
-        {
-            get { return _linie; }
-            set { _linie = value; }
-        }
-        public int Coloana
-        {
-            get { return _coloana; }
-            set { _coloana = value; }
-        }
-
         public Cadran()
         {
             InitializeComponent();
@@ -80,6 +80,7 @@ namespace ProiectVolovici
             Size = new Size(_marimeCadran, _marimeCadran);
             BorderStyle = _borderCadran;
             BackgroundImageLayout = _layoutCadran;
+            _piesaCadran = null;
 
             if (linie % 2 == 0)
             {
