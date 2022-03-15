@@ -29,7 +29,6 @@ namespace ProiectVolovici
         {
             int linie = this.Linie;
             int coloana = this.Coloana;
-
         }
     }
 }

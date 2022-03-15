@@ -16,6 +16,7 @@ namespace ProiectVolovici
         private static Color _culoareCadranImpar = Color.DarkGreen;
         private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
         private static Color _culoareCadranMutari = Color.DodgerBlue;
+
         private static ImageLayout _layoutCadran = ImageLayout.Center;
         private static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
          
@@ -37,7 +38,7 @@ namespace ProiectVolovici
             set { _culoareCadranSelectat = value; }
         }
         
-        public static static Color CuloareCadranMutari
+        public static Color CuloareCadranMutari
         {
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
