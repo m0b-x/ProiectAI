@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,11 @@ namespace ProiectVolovici
             tabla.AdaugaPiesa(pion2, new Pozitie(5,6));
             tabla.AdaugaPiesa(pion, new Pozitie(5, 5));
             tabla.MutaPiesa(pion, new Pozitie(6, 6));
+
+            Pozitie pozitie1 = new Pozitie(6, 9);
+            Pozitie pozitie2 = new Pozitie(6, 6);
+            pozitie2 = pozitie1;
+            Debug.WriteLine(pozitie2.Linie+pozitie2.Coloana);
         }
     }
 }

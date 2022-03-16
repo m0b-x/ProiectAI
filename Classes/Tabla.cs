@@ -148,8 +148,7 @@ namespace ProiectVolovici
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
 
-                        piesa.Pozitie.Linie = pozitie.Linie;
-                        piesa.Pozitie.Coloana = pozitie.Coloana;
+                        piesa.Pozitie = pozitie;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
                 }
@@ -160,7 +159,7 @@ namespace ProiectVolovici
         {
             foreach (Piesa piesa in _listaPiese)
             {
-                if (piesa.Pozitie.Coloana == pozitie.Coloana && piesa.Pozitie.Linie == pozitie.Linie)
+                if (piesa.Pozitie == pozitie)
                     return piesa;
             }
             return null;
