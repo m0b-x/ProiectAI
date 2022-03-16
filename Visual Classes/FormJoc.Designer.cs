@@ -1,7 +1,7 @@
 ﻿
 namespace ProiectVolovici
 {
-    partial class Form1
+    partial class FormJoc
     {
         /// <summary>
         ///  Required designer variable.

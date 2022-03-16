@@ -14,7 +14,7 @@ namespace ProiectVolovici
         private List<Piesa> _listaPiese;
 
         private int _pragRau = 4;
-        private int _offsetRau = 25;
+        private int _offsetRau = 10;
 
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
@@ -23,6 +23,8 @@ namespace ProiectVolovici
         private static Color _culoareCadranImpar = Color.DarkGreen;
         private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
         private static Color _culoareCadranMutari = Color.DodgerBlue;
+
+        private Piesa _piesaSelectata;
 
         public List<Piesa> ListaPiese
         {
@@ -65,8 +67,8 @@ namespace ProiectVolovici
         }
         public int OffsetRau
         {
-            get { return _pragRau; }
-            private set { _pragRau = value; }
+            get { return _offsetRau; }
+            private set { _offsetRau = value; }
         }
         public static Color CuloareCadranPar
         {
@@ -91,6 +93,11 @@ namespace ProiectVolovici
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
         }
+        public Piesa PiesaSelectata
+        {
+            get { return _piesaSelectata; }
+            set { _piesaSelectata = value; }
+        }
 
         public Tabla(Form parentForm, int marimeTablaOrizontala, int marimeTablaVerticala)
         {
@@ -109,7 +116,7 @@ namespace ProiectVolovici
                 {
                    
                     _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
-                    _arrayCadrane[linie, coloana].AddEventHandler(OnCadranClick);
+                    _arrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                 }
             }
         }
@@ -173,6 +180,20 @@ namespace ProiectVolovici
 
         }
 
+        public void arataMutariPosibile(List<Pozitie> pozitii)
+        {
+            foreach(Pozitie pozitie in pozitii)
+            {
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
+            }
+        }
+        public bool esteMutareaPosibila(Pozitie pozitie)
+        {
+            if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor == CuloareCadranMutari)
+                return true;
+            else
+                return false;
+        }
 
         public void MutaPiesa(Piesa piesa, Pozitie pozitie)
         {
@@ -233,18 +254,32 @@ namespace ProiectVolovici
         }
         public void OnCadranClick(object sender, EventArgs e)
         {
-            Pozitie pozitie = new Pozitie(0,0);
-            pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-            pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-            if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
+            if (_piesaSelectata == null)
             {
-
-                Piesa piesa = GetPiesaCuPozitia(pozitie);
-                Debug.WriteLine("Piesa:"+piesa.Cod+"->[linie:"+piesa.Pozitie.Linie+",coloana:"+piesa.Pozitie.Coloana+"]" );
+                Pozitie pozitie = new Pozitie(0, 0);
+                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
+                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+                if (_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
+                {
+                    Piesa piesa = GetPiesaCuPozitia(pozitie);
+                    Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
+                    _piesaSelectata = piesa;
+                    //aratamutariposibila,de facut toti 3
+                }
+                else
+                {
+                    Debug.WriteLine("Click Piesa:Gol->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
+                }
             }
             else
             {
-                Debug.WriteLine("Piesa:Gol->[linie:"+pozitie.Linie+",coloana:"+pozitie.Coloana+"]");
+                Pozitie pozitie = new Pozitie(0, 0);
+                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
+                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+
+                Debug.WriteLine("Dublu Click->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
+                MutaPiesa(_piesaSelectata, pozitie);
+                _piesaSelectata = null;
             }
         }
 

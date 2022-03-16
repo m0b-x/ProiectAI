@@ -10,7 +10,6 @@ namespace ProiectVolovici.Classes
     {
         private String _nume;
 
-
         public String Nume
         {
             get { return _nume; }

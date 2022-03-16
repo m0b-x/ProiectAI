@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public partial class Form1 : Form
+    public partial class FormJoc : Form
     {
-        public Form1()
+        public FormJoc()
         {
             InitializeComponent();
         }
