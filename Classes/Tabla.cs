@@ -24,8 +24,6 @@ namespace ProiectVolovici
         private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
         private static Color _culoareCadranMutari = Color.DodgerBlue;
 
-        
-
         public List<Piesa> ListaPiese
         {
             get { return _listaPiese; }
@@ -240,7 +238,7 @@ namespace ProiectVolovici
             pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
             if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
             {
-                if()
+
                 Piesa piesa = GetPiesaCuPozitia(pozitie);
                 Debug.WriteLine("Piesa:"+piesa.Cod+"->[linie:"+piesa.Pozitie.Linie+",coloana:"+piesa.Pozitie.Coloana+"]" );
             }
