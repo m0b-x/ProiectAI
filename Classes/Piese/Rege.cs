@@ -13,7 +13,7 @@ namespace ProiectVolovici
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.ALBASTRU)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bking;
                 this.Cod = CodPiesa.RegeAlbastru;

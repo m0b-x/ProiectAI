@@ -270,6 +270,8 @@ namespace ProiectVolovici
                 Pozitie pozitie = new Pozitie(0, 0);
                 pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                 pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+
+
                 if (_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
                 {
                     Piesa piesa = GetPiesaCuPozitia(pozitie);
@@ -288,6 +290,11 @@ namespace ProiectVolovici
                 Pozitie pozitie = new Pozitie(0, 0);
                 pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                 pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+
+                if (_piesaSelectata.Pozitie == pozitie)
+                {
+                    return;
+                }
 
                 Debug.WriteLine("Dublu Click->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
                 AscundePiesaSelectata(_piesaSelectata);

@@ -8,7 +8,7 @@ namespace ProiectVolovici
 {
     public enum Culoare
     {
-        ALB,
-        ALBASTRU
+        Alb,
+        Albastru
     }
 }

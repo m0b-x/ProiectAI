@@ -14,7 +14,7 @@ namespace ProiectVolovici
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.ALBASTRU)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bpawn;
                 this.Cod = CodPiesa.PionAlbastru;
@@ -28,6 +28,27 @@ namespace ProiectVolovici
 
         public void ArataMutarilePosibile(Tabla tabla)
         {
+            List<Pozitie> pozitii = new List<Pozitie>();
+            if(CuloarePiesa == Culoare.Albastru)
+            {
+                if (this.Pozitie.Coloana < tabla.PragRau)
+                {
+                    if(tabla.MatriceTabla[this.Pozitie.Linie,this.Pozitie.Coloana+1] != (int)CodPiesa.Gol )
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                        tabla.ArataMutarilePosibile(pozitii);
+
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+            }
         }
     }
 }
