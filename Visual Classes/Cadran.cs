@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,8 +7,7 @@ namespace ProiectVolovici
 {
     public partial class Cadran : UserControl
     {
-        private int _linie;
-        private int _coloana;
+        Pozitie _pozitieCadran;
 
         private Piesa _piesaCadran;
 
@@ -21,18 +21,7 @@ namespace ProiectVolovici
 
         private static ImageLayout _layoutCadran = ImageLayout.Center;
         private static BorderStyle _borderCadran = BorderStyle.FixedSingle; 
-         
-
-        public int Linie
-        {
-            get { return _linie; }
-            set { _linie = value; }
-        }
-        public int Coloana
-        {
-            get { return _coloana; }
-            set { _coloana = value; }
-        }
+        
 
         public Piesa PiesaCadran
         {
@@ -62,29 +51,34 @@ namespace ProiectVolovici
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
         }
+
+        public Pozitie PozitieCadran
+        {
+            get { return _pozitieCadran; }
+            set { _pozitieCadran = value; }
+        }
         public Cadran()
         {
             InitializeComponent();
         }
 
-        public Cadran(Form parentForm,Tabla tabla, int linie, int coloana)
+        public Cadran(Form parentForm,Tabla tabla, Pozitie pozitie,)
         {
             Parent = parentForm;
-            if (linie > tabla.PragRau)
-                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran + tabla.OffsetRau);
+            if (pozitie.Linie > tabla.PragRau)
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + tabla.OffsetRau);
             else
-                Location = new Point(coloana * _marimeCadran + _offsetCadran, linie * _marimeCadran + _offsetCadran);
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran);
 
-            _linie = coloana;
-            _coloana = linie;
+            this._pozitieCadran = pozitie;
             Size = new Size(_marimeCadran, _marimeCadran);
             BorderStyle = _borderCadran;
             BackgroundImageLayout = _layoutCadran;
             _piesaCadran = null;
 
-            if (linie % 2 == 0)
+            if (pozitie.Linie % 2 == 0)
             {
-                if (coloana % 2 == 1)
+                if (pozitie.Coloana % 2 == 1)
                 {
                     BackColor = _culoareCadranImpar;
                 }
@@ -95,7 +89,7 @@ namespace ProiectVolovici
             }
             else
             {
-                if (coloana % 2 == 1)
+                if (pozitie.Coloana % 2 == 1)
                 {
                     BackColor = _culoareCadranPar;
                 }
@@ -119,7 +113,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void SetCadranBackground(int linie, int coloana, System.Drawing.Image imagine)
+        public void SetCadranBackground(System.Drawing.Image imagine)
         {
            this.BackgroundImage = imagine;
         }
@@ -131,7 +125,6 @@ namespace ProiectVolovici
 
         private void cadran_Load(object sender, EventArgs e)
         {
-
         }
 
     }

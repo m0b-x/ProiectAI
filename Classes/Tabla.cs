@@ -79,7 +79,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, this, linie, coloana);
+                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, this, new Pozitie(linie, coloana));
                     _arrayCadrane[linie, coloana].AddEventHandler(OnCadranClick);
                 }
             }
@@ -179,8 +179,8 @@ namespace ProiectVolovici
         public void OnCadranClick(object sender, EventArgs e)
         {
             Pozitie pozitie = new Pozitie(0,0);
-            pozitie.Linie = (sender as Cadran).Linie;
-            pozitie.Coloana = (sender as Cadran).Coloana;
+            pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
+            pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
             if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage != null)
             {
                 Piesa piesa = GetPiesaCuPozitia(pozitie);
