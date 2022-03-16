@@ -27,8 +27,6 @@ namespace ProiectVolovici
 
         public void ArataMutarilePosibile(Tabla tabla)
         {
-            int linie = this.Linie;
-            int coloana = this.Coloana;
         }
     }
 }

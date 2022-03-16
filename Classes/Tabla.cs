@@ -84,11 +84,11 @@ namespace ProiectVolovici
             }
         }
 
-        public void AdaugaPiesa(Piesa piesa, int linie, int coloana)
+        public void AdaugaPiesa(Piesa piesa, Pozitie pozitie)
         {
-            if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
+            if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
-                Console.WriteLine("Linie sau coloana invalida! Linie:" + linie + ", Coloana:" + coloana);
+                Console.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
             else
             {
@@ -98,19 +98,18 @@ namespace ProiectVolovici
                 }
                 else
                 {
-                    if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    if (_matriceTabla[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                     {
                         Console.WriteLine("Eroare:Nu se poate adauga piesa una peste alta!");
                     }
                     else
                     {
-                        piesa.Linie = linie;
-                        piesa.Coloana = coloana;
+                        piesa.Pozitie = pozitie;
 
                         piesa.PusaPeTabla = true;
 
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
-                        this.MatriceTabla[piesa.Linie, piesa.Coloana] = (int)piesa.Cod;
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+                        this.MatriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
                         this.ListaPiese.Add(piesa);
                     }
                 }
@@ -119,11 +118,11 @@ namespace ProiectVolovici
         }
 
 
-        public void MutaPiesa(Piesa piesa, int linie, int coloana)
+        public void MutaPiesa(Piesa piesa, Pozitie pozitie)
         {
-            if (linie > MarimeTablaOrizontala || coloana > MarimeTablaVerticala || linie < 0 || coloana < 0)
+            if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
-                Console.WriteLine("Linie sau coloana invalida! Linie:" + linie + ", Coloana:" + coloana);
+                Console.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
             else
             {
@@ -133,36 +132,35 @@ namespace ProiectVolovici
                 }
                 else
                 {
-                    if (_matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    if (_matriceTabla[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                     {
-                        _listaPiese.Remove(GetPiesaCuPozitia(linie, coloana));
-                        _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(null);
+                        _listaPiese.Remove(GetPiesaCuPozitia(pozitie));
+                        _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
 
-                        piesa.Linie = linie;
-                        piesa.Coloana = coloana;
-                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
+                        piesa.Pozitie = pozitie;
+                        _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
                     else
                     {
-                        _matriceTabla[piesa.Linie, piesa.Coloana] = (int)CodPiesa.Gol;
-                        _matriceTabla[linie, coloana] = (int)piesa.Cod;
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(null);
+                        _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                        _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
 
-                        piesa.Linie = linie;
-                        piesa.Coloana = coloana;
-                        this.ArrayCadrane[piesa.Linie, piesa.Coloana].setPiesa(piesa);
+                        piesa.Pozitie.Linie = pozitie.Linie;
+                        piesa.Pozitie.Coloana = pozitie.Coloana;
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
                 }
             }
         }
 
-        public Piesa GetPiesaCuPozitia(int linie, int coloana)
+        public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
             foreach (Piesa piesa in _listaPiese)
             {
-                if (piesa.Coloana == coloana && piesa.Linie == linie)
+                if (piesa.Pozitie.Coloana == pozitie.Coloana && piesa.Pozitie.Linie == pozitie.Linie)
                     return piesa;
             }
             return null;
@@ -180,12 +178,12 @@ namespace ProiectVolovici
         }
         public void OnCadranClick(object sender, EventArgs e)
         {
-            int linie, coloana;
-            linie = (sender as Cadran).Linie;
-            coloana = (sender as Cadran).Coloana;
-            if(_arrayCadrane[linie, coloana].BackgroundImage != null)
+            Pozitie pozitie = new Pozitie(0,0);
+            pozitie.Linie = (sender as Cadran).Linie;
+            pozitie.Coloana = (sender as Cadran).Coloana;
+            if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage != null)
             {
-                Piesa piesa = GetPiesaCuPozitia(linie, coloana);
+                Piesa piesa = GetPiesaCuPozitia(pozitie);
                 Console.WriteLine("Piesa:" + piesa.Cod);
             }
             else

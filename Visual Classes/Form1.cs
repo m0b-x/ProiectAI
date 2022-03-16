@@ -26,9 +26,9 @@ namespace ProiectVolovici
             const int latimeTabla = 9;
             Tabla tabla = new Tabla(this, latimeTabla, lungimeOrizontala);
 
-            tabla.AdaugaPiesa(pion2, 1, 1);
-            tabla.AdaugaPiesa(pion, 5, 5);
-            tabla.MutaPiesa(pion, 6, 6);
+            tabla.AdaugaPiesa(pion2, new Pozitie(5,6));
+            tabla.AdaugaPiesa(pion, new Pozitie(5, 5));
+            tabla.MutaPiesa(pion, new Pozitie(6, 6));
         }
     }
 }
