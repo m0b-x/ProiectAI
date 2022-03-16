@@ -238,8 +238,9 @@ namespace ProiectVolovici
             Pozitie pozitie = new Pozitie(0,0);
             pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
             pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-            if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage != null)
+            if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
             {
+                if()
                 Piesa piesa = GetPiesaCuPozitia(pozitie);
                 Debug.WriteLine("Piesa:"+piesa.Cod+"->[linie:"+piesa.Pozitie.Linie+",coloana:"+piesa.Pozitie.Coloana+"]" );
             }

@@ -14,6 +14,7 @@ namespace ProiectVolovici
         protected Image _imaginePiesa;
         protected CodPiesa _codPiesa;
         protected bool _pusaPeTabla;
+        protected bool _selectata;
 
         public Culoare CuloarePiesa
         {
@@ -43,6 +44,12 @@ namespace ProiectVolovici
         {
             get { return _pusaPeTabla; }
             set { _pusaPeTabla = value; }
+        }
+
+        public bool Selectata
+        {
+            get { return _selectata; }
+            set { _selectata = value; }
         }
 
         //public abstract void ArataMutariPosibile(Tabla tabla);
