@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -88,19 +89,19 @@ namespace ProiectVolovici
         {
             if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
-                Console.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
+                Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
             else
             {
                 if (piesa.PusaPeTabla == true)
                 {
-                    Console.Write("Eroare:Piesa selectata este deja pusa pe tabla!");
+                    Debug.Write("Eroare:Piesa selectata este deja pusa pe tabla!");
                 }
                 else
                 {
                     if (_matriceTabla[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                     {
-                        Console.WriteLine("Eroare:Nu se poate adauga piesa una peste alta!");
+                        Debug.WriteLine("Eroare:Nu se poate adauga piesa una peste alta!");
                     }
                     else
                     {
@@ -122,13 +123,13 @@ namespace ProiectVolovici
         {
             if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
-                Console.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
+                Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
             else
             {
                 if (piesa.PusaPeTabla == false)
                 {
-                    Console.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
+                    Debug.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
                 }
                 else
                 {
@@ -183,11 +184,11 @@ namespace ProiectVolovici
             if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage != null)
             {
                 Piesa piesa = GetPiesaCuPozitia(pozitie);
-                Console.WriteLine("Piesa:" + piesa.Cod);
+                Debug.WriteLine("Piesa:" + piesa.Cod);
             }
             else
             {
-                Console.WriteLine("Piesa:Gol");
+                Debug.WriteLine("Piesa:Gol");
             }
         }
 
