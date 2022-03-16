@@ -180,14 +180,25 @@ namespace ProiectVolovici
 
         }
 
-        public void arataMutariPosibile(List<Pozitie> pozitii)
+        public void ArataPiesaSelectata(Piesa piesa)
+        {
+            ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
+        }
+
+        public void AscundePiesaSelectata(Piesa piesa)
+        {
+            ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = DecideCuloareaCadranului(piesa.Pozitie.Linie,piesa.Pozitie.Coloana);
+        }
+
+
+        public void ArataMutarilePosibile(List<Pozitie> pozitii)
         {
             foreach(Pozitie pozitie in pozitii)
             {
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
             }
         }
-        public bool esteMutareaPosibila(Pozitie pozitie)
+        public bool EsteMutareaPosibila(Pozitie pozitie)
         {
             if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor == CuloareCadranMutari)
                 return true;
@@ -264,6 +275,7 @@ namespace ProiectVolovici
                     Piesa piesa = GetPiesaCuPozitia(pozitie);
                     Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
                     _piesaSelectata = piesa;
+                    ArataPiesaSelectata(piesa);
                     //aratamutariposibila,de facut toti 3
                 }
                 else
@@ -278,6 +290,7 @@ namespace ProiectVolovici
                 pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
 
                 Debug.WriteLine("Dublu Click->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
+                AscundePiesaSelectata(_piesaSelectata);
                 MutaPiesa(_piesaSelectata, pozitie);
                 _piesaSelectata = null;
             }
