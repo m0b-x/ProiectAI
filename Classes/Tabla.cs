@@ -19,6 +19,13 @@ namespace ProiectVolovici
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
 
+        private static Color _culoareCadranPar = Color.BlanchedAlmond;
+        private static Color _culoareCadranImpar = Color.DarkGreen;
+        private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
+        private static Color _culoareCadranMutari = Color.DodgerBlue;
+
+        
+
         public List<Piesa> ListaPiese
         {
             get { return _listaPiese; }
@@ -63,6 +70,29 @@ namespace ProiectVolovici
             get { return _pragRau; }
             private set { _pragRau = value; }
         }
+        public static Color CuloareCadranPar
+        {
+            get { return _culoareCadranPar; }
+            set { _culoareCadranPar = value; }
+        }
+
+        public static Color CuloareCadranImpar
+        {
+            get { return _culoareCadranImpar; }
+            set { _culoareCadranImpar = value; }
+        }
+
+        public static Color CuloareCadranSelectat
+        {
+            get { return _culoareCadranSelectat; }
+            set { _culoareCadranSelectat = value; }
+        }
+
+        public static Color CuloareCadranMutari
+        {
+            get { return _culoareCadranMutari; }
+            set { _culoareCadranMutari = value; }
+        }
 
         public Tabla(Form parentForm, int marimeTablaOrizontala, int marimeTablaVerticala)
         {
@@ -79,8 +109,35 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana] = new Cadran(parentForm, this, new Pozitie(linie, coloana));
+                   
+                    _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
                     _arrayCadrane[linie, coloana].AddEventHandler(OnCadranClick);
+                }
+            }
+        }
+
+        public Color DecideCuloareaCadranului(int linie,int coloana)
+        {
+            if (linie % 2 == 0)
+            {
+                if (coloana % 2 == 1)
+                {
+                    return _culoareCadranImpar;
+                }
+                else
+                {
+                    return _culoareCadranPar;
+                }
+            }
+            else
+            {
+                if (coloana % 2 == 1)
+                {
+                    return _culoareCadranPar;
+                }
+                else
+                {
+                    return _culoareCadranImpar;
                 }
             }
         }
@@ -184,11 +241,11 @@ namespace ProiectVolovici
             if(_arrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage != null)
             {
                 Piesa piesa = GetPiesaCuPozitia(pozitie);
-                Debug.WriteLine("Piesa:" + piesa.Cod);
+                Debug.WriteLine("Piesa:"+piesa.Cod+"->[linie:"+piesa.Pozitie.Linie+",coloana:"+piesa.Pozitie.Coloana+"]" );
             }
             else
             {
-                Debug.WriteLine("Piesa:Gol");
+                Debug.WriteLine("Piesa:Gol->[linie:"+pozitie.Linie+",coloana:"+pozitie.Coloana+"]");
             }
         }
 
