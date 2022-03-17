@@ -13,16 +13,17 @@ namespace ProiectVolovici
         private int[,] _matriceTabla;
         private List<Piesa> _listaPiese;
 
+
         private int _pragRau = 4;
         private int _offsetRau = 10;
 
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
 
-        private static Color _culoareCadranPar = Color.BlanchedAlmond;
-        private static Color _culoareCadranImpar = Color.DarkGreen;
-        private static Color _culoareCadranSelectat = Color.DeepSkyBlue;
-        private static Color _culoareCadranMutari = Color.DodgerBlue;
+        private Color _culoareCadranPar = Color.BlanchedAlmond;
+        private Color _culoareCadranImpar = Color.DarkGreen;
+        private Color _culoareCadranSelectat = Color.DeepSkyBlue;
+        private Color _culoareCadranMutari = Color.DodgerBlue;
 
         private Piesa _piesaSelectata;
 
@@ -70,25 +71,25 @@ namespace ProiectVolovici
             get { return _offsetRau; }
             private set { _offsetRau = value; }
         }
-        public static Color CuloareCadranPar
+        public Color CuloareCadranPar
         {
             get { return _culoareCadranPar; }
             set { _culoareCadranPar = value; }
         }
 
-        public static Color CuloareCadranImpar
+        public Color CuloareCadranImpar
         {
             get { return _culoareCadranImpar; }
             set { _culoareCadranImpar = value; }
         }
 
-        public static Color CuloareCadranSelectat
+        public Color CuloareCadranSelectat
         {
             get { return _culoareCadranSelectat; }
             set { _culoareCadranSelectat = value; }
         }
 
-        public static Color CuloareCadranMutari
+        public Color CuloareCadranMutari
         {
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
