@@ -33,9 +33,9 @@ namespace ProiectVolovici
 
             Pozitie pozitie1 = new Pozitie(6, 9);
             Pozitie pozitie2 = new Pozitie(6, 6);
-            
-            pozitie2 = pozitie1;
-            Debug.WriteLine(pozitie2.Linie+pozitie2.Coloana);
+
+            pion2.ArataMutariPosibile(tabla);
+            pion.ArataMutariPosibile(tabla);
         }
     }
 }

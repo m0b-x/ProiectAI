@@ -25,5 +25,6 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.CalAlb;
             }
         }
+       public override void ArataMutariPosibile(Tabla tabla) { Console.WriteLine("Fa corpul metodei");  }
     }
 }
