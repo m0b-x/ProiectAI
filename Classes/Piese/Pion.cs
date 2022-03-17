@@ -26,7 +26,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void ArataMutariLegale(Tabla tabla)
+        public void ArataMutariPosibile(Tabla tabla)
         {
             List<Pozitie> pozitii = new List<Pozitie>();
             if(CuloarePiesa == Culoare.Albastru)
@@ -34,7 +34,6 @@ namespace ProiectVolovici
                 if (this.Pozitie.Coloana < tabla.PragRau)
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
                 else if(this.Pozitie.Coloana >= tabla.PragRau)
                 {
@@ -54,7 +53,6 @@ namespace ProiectVolovici
                     {
                         pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
                     }
-                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
             }
             else
@@ -62,7 +60,6 @@ namespace ProiectVolovici
                 if (this.Pozitie.Coloana >= tabla.PragRau)
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
                 else if (this.Pozitie.Coloana >= tabla.PragRau)
                 {
@@ -82,10 +79,10 @@ namespace ProiectVolovici
                     {
                         pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
                     }
-                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
 
             }
+            tabla.ColoreazaMutariPosibile(pozitii);
         }
     }
 }
