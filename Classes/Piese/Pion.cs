@@ -26,27 +26,64 @@ namespace ProiectVolovici
             }
         }
 
-        public void ArataMutarilePosibile(Tabla tabla)
+        public void ArataMutariLegale(Tabla tabla)
         {
             List<Pozitie> pozitii = new List<Pozitie>();
             if(CuloarePiesa == Culoare.Albastru)
             {
                 if (this.Pozitie.Coloana < tabla.PragRau)
                 {
-                    if(tabla.MatriceTabla[this.Pozitie.Linie,this.Pozitie.Coloana+1] != (int)CodPiesa.Gol )
-                    {
-                        pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                        tabla.ArataMutarilePosibile(pozitii);
-
-                    }
+                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
-                else
+                else if(this.Pozitie.Coloana >= tabla.PragRau)
                 {
+                    int sfarsitColoana = tabla.MarimeTablaVerticala - 1;
+                    int sfarsitLinie = tabla.MarimeTablaOrizontala - 1;
+                    const int inceputLinie = 0;
 
+                    if (this.Pozitie.Coloana != sfarsitColoana)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie , this.Pozitie.Coloana + 1));
+                    }
+                    if (this.Pozitie.Linie != inceputLinie)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
+                    }
+                    if (this.Pozitie.Linie != sfarsitLinie)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
+                    }
+                    tabla.ColoreazaMutariPosibile(pozitii);
                 }
             }
             else
             {
+                if (this.Pozitie.Coloana >= tabla.PragRau)
+                {
+                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
+                    tabla.ColoreazaMutariPosibile(pozitii);
+                }
+                else if (this.Pozitie.Coloana >= tabla.PragRau)
+                {
+                    int sfarsitLinie = tabla.MarimeTablaOrizontala - 1;
+                    const int inceputLinie = 0;
+                    const int inceputColoana = 0;
+
+                    if (this.Pozitie.Coloana != inceputColoana)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
+                    }
+                    if (this.Pozitie.Linie != inceputLinie)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
+                    }
+                    if (this.Pozitie.Linie != sfarsitLinie)
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
+                    }
+                    tabla.ColoreazaMutariPosibile(pozitii);
+                }
 
             }
         }

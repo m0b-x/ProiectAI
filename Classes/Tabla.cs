@@ -190,8 +190,8 @@ namespace ProiectVolovici
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = DecideCuloareaCadranului(piesa.Pozitie.Linie,piesa.Pozitie.Coloana);
         }
 
-
-        public void ArataMutarilePosibile(List<Pozitie> pozitii)
+        
+        public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
             foreach(Pozitie pozitie in pozitii)
             {
