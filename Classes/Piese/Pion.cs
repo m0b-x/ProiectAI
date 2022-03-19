@@ -72,7 +72,6 @@ namespace ProiectVolovici
                         pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                     }
                 }
-
             }
             tabla.ColoreazaMutariPosibile(pozitii);
         }

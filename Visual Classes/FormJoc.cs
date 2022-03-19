@@ -20,19 +20,20 @@ namespace ProiectVolovici
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             Piesa pion = new Pion(Culoare.Alb);
             Piesa pion2 = new Pion(Culoare.Albastru);
 
+            Piesa rege = new Rege(Culoare.Alb);
+
             const int lungimeOrizontala = 10;
             const int lungimeVerticala = 9;
-            Tabla tabla = new Tabla(this, lungimeOrizontala, lungimeVerticala);
+            Tabla tabla = new Tabla(this);
 
             tabla.AdaugaPiesa(pion2, new Pozitie(1,1));
             tabla.AdaugaPiesa(pion, new Pozitie(7, 7));
             tabla.MutaPiesa(pion, new Pozitie(6, 6));
-
-            Pozitie pozitie1 = new Pozitie(6, 9);
-            Pozitie pozitie2 = new Pozitie(6, 6);
+            tabla.AdaugaPiesa(rege, new Pozitie(3, 3));
 
         }
     }

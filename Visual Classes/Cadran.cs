@@ -38,7 +38,7 @@ namespace ProiectVolovici
         {
             Parent = tabla.ParentForm;
             if (pozitie.Linie > tabla.PragRau)
-                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + tabla.OffsetRau);
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + tabla.MarimeRau);
             else
                 Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran);
 

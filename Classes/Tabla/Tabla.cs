@@ -14,17 +14,16 @@ namespace ProiectVolovici
         private List<Piesa> _listaPiese;
         private List<Pozitie> _pozitiiMutariPosibile;
 
-
-        private int _pragRau = 4+1;
-        private int _offsetRau = 10;
+        private int _pragRau;
+        private int _marimeRau;
 
         private int _marimeTablaOrizontala;
         private int _marimeTablaVerticala;
 
-        private Color _culoareCadranPar = Color.BlanchedAlmond;
-        private Color _culoareCadranImpar = Color.DarkGreen;
-        private Color _culoareCadranSelectat = Color.DeepSkyBlue;
-        private Color _culoareCadranMutari = Color.DodgerBlue;
+        private Color _culoareCadranPar;
+        private Color _culoareCadranImpar;
+        private Color _culoareCadranSelectat;
+        private Color _culoareCadranMutari;
 
         private Piesa _piesaSelectata;
 
@@ -67,10 +66,10 @@ namespace ProiectVolovici
             get { return _pragRau; }
             private set { _pragRau = value; }
         }
-        public int OffsetRau
+        public int MarimeRau
         {
-            get { return _offsetRau; }
-            private set { _offsetRau = value; }
+            get { return _marimeRau; }
+            private set { _marimeRau = value; }
         }
         public Color CuloareCadranPar
         {
@@ -101,21 +100,30 @@ namespace ProiectVolovici
             set { _piesaSelectata = value; }
         }
 
-        public Tabla(Form parentForm, int marimeTablaOrizontala, int marimeTablaVerticala)
+        public Tabla(Form parentForm)
         {
-            _marimeTablaOrizontala = marimeTablaOrizontala;
-            _marimeTablaVerticala = marimeTablaVerticala;
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
             _pozitiiMutariPosibile = new List<Pozitie>();
 
-            _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
+            _marimeTablaOrizontala = ConstantaTabla.MarimeTablaOrizontala;
+            _marimeTablaVerticala = ConstantaTabla.MarimeTablaVerticala;
 
-            _matriceTabla = new int[marimeTablaOrizontala, marimeTablaVerticala];
+            _pragRau = ConstantaTabla.PragRau;
+            _marimeRau = ConstantaTabla.MarimeRau;
 
-            for (int linie = 0; linie < marimeTablaOrizontala; linie++)
+            _culoareCadranImpar = ConstantaTabla.CuloareCadranImpar;
+            _culoareCadranPar = ConstantaTabla.CuloareCadranPar;
+            _culoareCadranMutari = ConstantaTabla.CuloareCadranMutari;
+            _culoareCadranSelectat = ConstantaTabla.CuloareCadranSelectat;
+
+            _arrayCadrane = new Cadran[ConstantaTabla.MarimeTablaOrizontala, ConstantaTabla.MarimeTablaVerticala];
+
+            _matriceTabla = new int[ConstantaTabla.MarimeTablaOrizontala, ConstantaTabla.MarimeTablaVerticala];
+
+            for (int linie = 0; linie < ConstantaTabla.MarimeTablaOrizontala; linie++)
             {
-                for (int coloana = 0; coloana < marimeTablaVerticala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeTablaVerticala; coloana++)
                 {
                    
                     _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
@@ -180,7 +188,6 @@ namespace ProiectVolovici
                     }
                 }
             }
-
         }
 
         public void ArataPiesaSelectata(Piesa piesa)
@@ -206,7 +213,12 @@ namespace ProiectVolovici
 
         }
 
-
+        public bool ArePiesaMutariPosibile()
+        {
+            if (_pozitiiMutariPosibile.Count == 0 || _pozitiiMutariPosibile == null)
+                return true;
+            return false;
+        }
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
             if (pozitii != null)
@@ -289,20 +301,27 @@ namespace ProiectVolovici
         }
         public void OnCadranClick(object sender, EventArgs e)
         {
-            if (_piesaSelectata == null)
+            if (_piesaSelectata == ConstantaTabla.PiesaNula)
             {
                 Pozitie pozitie = new Pozitie(0, 0);
                 pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                 pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
 
 
-                if (_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != null)
+                if (_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                 {
-                    Piesa piesa = GetPiesaCuPozitia(pozitie);
-                    Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
-                    _piesaSelectata = piesa;
-                    ArataPiesaSelectata(piesa);
-                    piesa.ArataMutariPosibile(this);
+                    if (ArePiesaMutariPosibile() == true)
+                    {
+                        Piesa piesa = GetPiesaCuPozitia(pozitie);
+                        Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
+                        _piesaSelectata = piesa;
+                        ArataPiesaSelectata(piesa);
+                        piesa.ArataMutariPosibile(this);
+                    }
+                    else 
+                    {
+                        return;
+                    }
                 }
                 else
                 {
@@ -323,7 +342,7 @@ namespace ProiectVolovici
                 {
                     AscundePiesaSelectata(_piesaSelectata);
                     MutaPiesa(_piesaSelectata, pozitie);
-                    _piesaSelectata = null;
+                    _piesaSelectata = ConstantaTabla.PiesaNula;
                     _pozitiiMutariPosibile = new List<Pozitie>();
                 }
                 else
