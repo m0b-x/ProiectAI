@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Media;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -307,6 +308,8 @@ namespace ProiectVolovici
                         piesa.Pozitie = pozitie;
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+
+                        ConstantaSunet.SunetPiesaLuata.Play();
                     }
                     else
                     {
@@ -316,6 +319,8 @@ namespace ProiectVolovici
 
                         piesa.Pozitie = pozitie;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+
+                        ConstantaSunet.SunetPiesaMutata.Play();
                     }
                     DecoloreazaMutariPosibile(_pozitiiMutariPosibile);
                     _piesaSelectata = ConstantaTabla.PiesaNula;
