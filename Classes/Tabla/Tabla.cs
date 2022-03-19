@@ -229,12 +229,12 @@ namespace ProiectVolovici
         }
         public void ArataPiesaBlocata(Pozitie pozitie)
         {
-            ConstantaSunet.SunetMutareGresita.Play();
             ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePiesaBlocata;
             System.Timers.Timer timerPiesaBlocata = new System.Timers.Timer();
             timerPiesaBlocata.Elapsed += new ElapsedEventHandler((sender, e) => DecoloreazaPiesaBlocata(sender, e, pozitie, timerPiesaBlocata));
             timerPiesaBlocata.Interval = 400;
             timerPiesaBlocata.Enabled = true;
+            ConstantaSunet.SunetMutareGresita.Play();
         }
         private void DecoloreazaPiesaBlocata(object source, ElapsedEventArgs e,Pozitie pozitie, System.Timers.Timer timer)
         {
