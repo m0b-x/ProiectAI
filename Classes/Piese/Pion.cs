@@ -31,7 +31,11 @@ namespace ProiectVolovici
             List<Pozitie> pozitii = new List<Pozitie>();
             if(CuloarePiesa == Culoare.Albastru)
             {
-                if (this.Pozitie.Coloana < tabla.PragRau)
+                if(this.Pozitie.Linie == tabla.MarimeTablaOrizontala-1)
+                {
+                    return;
+                }
+                if (this.Pozitie.Coloana < tabla.PragRau )
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie+1, this.Pozitie.Coloana ));
                 }
@@ -57,11 +61,16 @@ namespace ProiectVolovici
             }
             else
             {
+
+                if (this.Pozitie.Linie == 0)
+                {
+                    return;
+                }
                 if (this.Pozitie.Coloana >= tabla.PragRau)
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                 }
-                else if (this.Pozitie.Coloana >= tabla.PragRau)
+                else if (this.Pozitie.Coloana < tabla.PragRau)
                 {
                     int sfarsitLinie = tabla.MarimeTablaOrizontala - 1;
                     const int inceputLinie = 0;

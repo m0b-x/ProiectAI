@@ -238,6 +238,7 @@ namespace ProiectVolovici
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
 
                         piesa.Pozitie = pozitie;
+                        Debug.WriteLine(pozitie.Linie + " " + pozitie.Coloana);
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
                 }
@@ -279,7 +280,7 @@ namespace ProiectVolovici
                     Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
                     _piesaSelectata = piesa;
                     ArataPiesaSelectata(piesa);
-                    //aratamutariposibila,de facut toti 3
+                    piesa.ArataMutariPosibile(this);
                 }
                 else
                 {
