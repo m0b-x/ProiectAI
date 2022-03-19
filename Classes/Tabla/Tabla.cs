@@ -17,8 +17,8 @@ namespace ProiectVolovici
         private int _pragRau;
         private int _marimeRau;
 
-        private int _marimeTablaOrizontala;
-        private int _marimeTablaVerticala;
+        private int _marimeVerticala;
+        private int _marimeOrizontala;
 
         private Color _culoareCadranPar;
         private Color _culoareCadranImpar;
@@ -51,15 +51,15 @@ namespace ProiectVolovici
             set { _matriceTabla = value; }
         }
 
-        public int MarimeTablaOrizontala
+        public int MarimeVerticala
         {
-            get { return _marimeTablaOrizontala; }
-            private set { _marimeTablaOrizontala = value; }
+            get { return _marimeVerticala; }
+            private set { _marimeVerticala = value; }
         }
-        public int MarimeTablaVerticala
+        public int MarimeOrizontala
         {
-            get { return _marimeTablaVerticala; }
-            private set { _marimeTablaVerticala = value; }
+            get { return _marimeOrizontala; }
+            private set { _marimeOrizontala = value; }
         }
         public int PragRau
         {
@@ -106,8 +106,8 @@ namespace ProiectVolovici
             _listaPiese = new List<Piesa>();
             _pozitiiMutariPosibile = new List<Pozitie>();
 
-            _marimeTablaOrizontala = ConstantaTabla.MarimeTablaOrizontala;
-            _marimeTablaVerticala = ConstantaTabla.MarimeTablaVerticala;
+            _marimeVerticala = ConstantaTabla.MarimeVerticala;
+            _marimeOrizontala = ConstantaTabla.MarimeOrizontala;
 
             _pragRau = ConstantaTabla.PragRau;
             _marimeRau = ConstantaTabla.MarimeRau;
@@ -117,13 +117,13 @@ namespace ProiectVolovici
             _culoareCadranMutari = ConstantaTabla.CuloareCadranMutari;
             _culoareCadranSelectat = ConstantaTabla.CuloareCadranSelectat;
 
-            _arrayCadrane = new Cadran[ConstantaTabla.MarimeTablaOrizontala, ConstantaTabla.MarimeTablaVerticala];
+            _arrayCadrane = new Cadran[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
-            _matriceTabla = new int[ConstantaTabla.MarimeTablaOrizontala, ConstantaTabla.MarimeTablaVerticala];
+            _matriceTabla = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
-            for (int linie = 0; linie < ConstantaTabla.MarimeTablaOrizontala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeTablaVerticala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
                    
                     _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
@@ -160,7 +160,7 @@ namespace ProiectVolovici
 
         public void AdaugaPiesa(Piesa piesa, Pozitie pozitie)
         {
-            if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
+            if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
                 Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
@@ -240,7 +240,7 @@ namespace ProiectVolovici
 
         public void MutaPiesa(Piesa piesa, Pozitie pozitie)
         {
-            if (pozitie.Linie > MarimeTablaOrizontala || pozitie.Coloana > MarimeTablaVerticala || pozitie.Linie < 0 || pozitie.Coloana < 0)
+            if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
                 Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
@@ -291,9 +291,9 @@ namespace ProiectVolovici
 
         public void CurataTabla()
         {
-            for (int linie = 0; linie < _marimeTablaVerticala; linie++)
+            for (int linie = 0; linie < _marimeOrizontala; linie++)
             {
-                for (int coloana = 0; coloana < _marimeTablaOrizontala; coloana++)
+                for (int coloana = 0; coloana < _marimeVerticala; coloana++)
                 {
                     _arrayCadrane[linie, coloana].setPiesa(ConstantaTabla.PiesaNula);
                 }

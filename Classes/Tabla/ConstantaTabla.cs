@@ -6,8 +6,8 @@ namespace ProiectVolovici
 {
     public static class ConstantaTabla
     {
-        public static readonly int MarimeTablaOrizontala = 9;
-        public static readonly int MarimeTablaVerticala = 10;
+        public static readonly int MarimeVerticala = 10;
+        public static readonly int MarimeOrizontala = 9;
         public static readonly int PragRau = 4;
         public static readonly int MarimeRau = 10;
 
