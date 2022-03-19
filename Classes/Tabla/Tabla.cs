@@ -169,22 +169,22 @@ namespace ProiectVolovici
                 {
                     if (coloana % 2 == 1)
                     {
-                        return _culoareCadranImpar;
+                        return ConstantaTabla.CuloareCadranImpar;
                     }
                     else
                     {
-                        return _culoareCadranPar;
+                        return ConstantaTabla.CuloareCadranPar;
                     }
                 }
                 else
                 {
                     if (coloana % 2 == 1)
                     {
-                        return _culoareCadranPar;
+                        return ConstantaTabla.CuloareCadranPar;
                     }
                     else
                     {
-                        return _culoareCadranImpar;
+                        return ConstantaTabla.CuloareCadranImpar;
                     }
                 }
             }
