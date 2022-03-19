@@ -23,7 +23,8 @@ namespace ProiectVolovici
 
             Piesa pion = new Pion(Culoare.Alb);
             Piesa pion2 = new Pion(Culoare.Albastru);
-
+            Piesa turaAlbastra = new Tura(Culoare.Albastru);
+            Piesa turaAlba = new Tura(Culoare.Alb);
             Piesa rege = new Rege(Culoare.Alb);
 
             Tabla tabla = new Tabla(this);
@@ -32,7 +33,8 @@ namespace ProiectVolovici
             tabla.AdaugaPiesa(pion, new Pozitie(7, 7));
             tabla.MutaPiesa(pion, new Pozitie(6, 6));
             tabla.AdaugaPiesa(rege, new Pozitie(3, 3));
-
+            tabla.AdaugaPiesa(turaAlbastra, new Pozitie(0, 0));
+            tabla.AdaugaPiesa(turaAlba, new Pozitie(8, 8));
         }
     }
 }

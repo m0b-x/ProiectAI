@@ -68,6 +68,28 @@ namespace ProiectVolovici
             }
         }
 
+        public bool CadranEsteGol()
+        {
+            if (_piesaCadran == null)
+                return true;
+            else
+                return false;
+        }
+
+        public bool EsteAdversar(Culoare culoare)
+        {
+            if (this.CadranEsteGol())
+            {
+                return true;
+            }
+            if(this._piesaCadran.CuloarePiesa == culoare)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         public void SetCadranBackground(System.Drawing.Image imagine)
         {
            this.BackgroundImage = imagine;
