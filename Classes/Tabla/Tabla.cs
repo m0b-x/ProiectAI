@@ -231,6 +231,7 @@ namespace ProiectVolovici
         public void AscundePiesaSelectata(Piesa piesa)
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = DecideCuloareaCadranului(piesa.Pozitie.Linie,piesa.Pozitie.Coloana);
+            ColoreazaPalatul();
         }
 
 
@@ -241,16 +242,18 @@ namespace ProiectVolovici
                 foreach (Pozitie pozitie in _pozitiiMutariPosibile)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
+                    ColoreazaPalatul();
                 }
             }
-
         }
 
-        public bool ArePiesaMutariPosibile()
+        public bool ExistaMutariPosibile()
         {
-            if (_pozitiiMutariPosibile.Count == 0 || _pozitiiMutariPosibile == null)
-                return true;
-            return false;
+            foreach(Pozitie pozitie in _pozitiiMutariPosibile)
+            Debug.WriteLine(pozitie.Linie +" "+ pozitie.Coloana + "CHUNGA");
+            if (_pozitiiMutariPosibile == null || _pozitiiMutariPosibile.Count == 0)
+                return false;
+            return true;
         }
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
@@ -305,6 +308,8 @@ namespace ProiectVolovici
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
                     DecoloreazaMutariPosibile(_pozitiiMutariPosibile);
+                    _piesaSelectata = ConstantaTabla.PiesaNula;
+                    _pozitiiMutariPosibile.Clear();
                 }
             }
         }
@@ -343,13 +348,13 @@ namespace ProiectVolovici
 
                 if (_arrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                 {
-                    if (ArePiesaMutariPosibile() == true)
+                    Piesa piesa = GetPiesaCuPozitia(pozitie);
+                    piesa.ArataMutariPosibile(this);
+                    if (ExistaMutariPosibile() == true)
                     {
-                        Piesa piesa = GetPiesaCuPozitia(pozitie);
+                        ArataPiesaSelectata(piesa);
                         Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
                         _piesaSelectata = piesa;
-                        ArataPiesaSelectata(piesa);
-                        piesa.ArataMutariPosibile(this);
                     }
                     else 
                     {
@@ -375,8 +380,6 @@ namespace ProiectVolovici
                 {
                     AscundePiesaSelectata(_piesaSelectata);
                     MutaPiesa(_piesaSelectata, pozitie);
-                    _piesaSelectata = ConstantaTabla.PiesaNula;
-                    _pozitiiMutariPosibile = new List<Pozitie>();
                 }
                 else
                 {

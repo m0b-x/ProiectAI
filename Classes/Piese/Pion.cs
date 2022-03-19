@@ -34,7 +34,7 @@ namespace ProiectVolovici
                 int sfarsitLinie = tabla.MarimeVerticala - 1;
                 if (this.Pozitie.Linie != sfarsitLinie)
                 {
-                    if (tabla.ArrayCadrane[this.Pozitie.Linie + 1, this.Pozitie.Coloana].PiesaCadran != null)
+                    if (tabla.ArrayCadrane[this.Pozitie.Linie + 1, this.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
                         if (tabla.ArrayCadrane[this.Pozitie.Linie + 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
                         {
@@ -53,7 +53,7 @@ namespace ProiectVolovici
 
                     if (this.Pozitie.Coloana != sfarsitColoana)
                     {
-                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran != null)
+                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran != ConstantaTabla.PiesaNula)
                         {
                             if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
                             {
@@ -68,7 +68,14 @@ namespace ProiectVolovici
                     }
                     if (this.Pozitie.Coloana != inceputColoana)
                     {
-                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran != ConstantaTabla.PiesaNula)
+                        {
+                            if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                            {
+                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
+                            }
+                        }
+                        else
                         {
                             pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                         }
@@ -80,9 +87,17 @@ namespace ProiectVolovici
                 int inceputLinie = 0;
                 if (this.Pozitie.Linie != inceputLinie)
                 {
-                    if (tabla.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                        pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
+                    if (tabla.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                    {
+                        if (tabla.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                        {
+                            pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
+                        }
+                    }
+                    else
+                    {
+                        pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
+                    }
                 }
                 if (this.Pozitie.Linie <= tabla.PragRau)
                 {
@@ -91,13 +106,31 @@ namespace ProiectVolovici
                     
                     if (this.Pozitie.Coloana != sfarsitColoana)
                     {
-                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran != ConstantaTabla.PiesaNula)
+                        {
+                            if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                            {
+                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                            }
+                        }
+                        else
+                        {
                             pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                        }
                     }
                     if (this.Pozitie.Coloana != inceputColoana)
                     {
-                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                        if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran != ConstantaTabla.PiesaNula)
+                        {
+                            if (tabla.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                            {
+                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
+                            }
+                        }
+                        else
+                        {
                             pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
+                        }
                     }
                 }
             }

@@ -21,7 +21,7 @@ namespace ProiectVolovici
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            Piesa pion = new Pion(Culoare.Alb);
+            Piesa pion = new Pion(Culoare.Albastru);
             Piesa pion2 = new Pion(Culoare.Albastru);
             Piesa turaAlbastra = new Tura(Culoare.Albastru);
             Piesa turaAlba = new Tura(Culoare.Alb);
@@ -29,10 +29,9 @@ namespace ProiectVolovici
 
             Tabla tabla = new Tabla(this);
 
-            tabla.AdaugaPiesa(pion2, new Pozitie(1,1));
-            tabla.AdaugaPiesa(pion, new Pozitie(7, 7));
-            tabla.MutaPiesa(pion, new Pozitie(6, 6));
-            tabla.AdaugaPiesa(rege, new Pozitie(3, 3));
+            tabla.AdaugaPiesa(pion2, new Pozitie(2,1));
+            tabla.AdaugaPiesa(pion, new Pozitie(1, 1));
+            tabla.AdaugaPiesa(rege, new Pozitie(8, 7));
             tabla.AdaugaPiesa(turaAlbastra, new Pozitie(0, 0));
             tabla.AdaugaPiesa(turaAlba, new Pozitie(8, 8));
         }
