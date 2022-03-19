@@ -12,7 +12,7 @@ namespace ProiectVolovici
         private Cadran[,] _arrayCadrane;
         private int[,] _matriceTabla;
         private List<Piesa> _listaPiese;
-        private List<Pozitie> pozitiiMutariPosibile;
+        private List<Pozitie> _pozitiiMutariPosibile;
 
 
         private int _pragRau = 4+1;
@@ -107,7 +107,7 @@ namespace ProiectVolovici
             _marimeTablaVerticala = marimeTablaVerticala;
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
-            pozitiiMutariPosibile = new List<Pozitie>();
+            _pozitiiMutariPosibile = new List<Pozitie>();
 
             _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
 
@@ -196,9 +196,9 @@ namespace ProiectVolovici
 
         public void DecoloreazaMutariPosibile(List<Pozitie> pozitii)
         {
-            if (pozitiiMutariPosibile != null)
+            if (_pozitiiMutariPosibile != null)
             {
-                foreach (Pozitie pozitie in pozitiiMutariPosibile)
+                foreach (Pozitie pozitie in _pozitiiMutariPosibile)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
                 }
@@ -214,7 +214,7 @@ namespace ProiectVolovici
                 foreach (Pozitie pozitie in pozitii)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
-                    pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
+                    _pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace ProiectVolovici
                         piesa.Pozitie = pozitie;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
-                    DecoloreazaMutariPosibile(pozitiiMutariPosibile);
+                    DecoloreazaMutariPosibile(_pozitiiMutariPosibile);
                 }
             }
         }
@@ -319,11 +319,17 @@ namespace ProiectVolovici
                 {
                     return;
                 }
-
-                Debug.WriteLine("Dublu Click->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
-                AscundePiesaSelectata(_piesaSelectata);
-                MutaPiesa(_piesaSelectata, pozitie);
-                _piesaSelectata = null;
+                if (EsteMutareaPosibila(pozitie))
+                {
+                    AscundePiesaSelectata(_piesaSelectata);
+                    MutaPiesa(_piesaSelectata, pozitie);
+                    _piesaSelectata = null;
+                    _pozitiiMutariPosibile = new List<Pozitie>();
+                }
+                else
+                {
+                    return;
+                }
             }
         }
 
