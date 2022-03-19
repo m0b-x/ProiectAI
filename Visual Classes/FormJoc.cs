@@ -20,7 +20,7 @@ namespace ProiectVolovici
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Piesa pion = new Pion(Culoare.Albastru);
+            Piesa pion = new Pion(Culoare.Alb);
             Piesa pion2 = new Pion(Culoare.Albastru);
 
             const int lungimeOrizontala = 10;
