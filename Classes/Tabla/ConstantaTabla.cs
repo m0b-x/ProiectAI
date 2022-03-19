@@ -16,7 +16,38 @@ namespace ProiectVolovici
         public static Color CuloareCadranSelectat = Color.DeepSkyBlue;
         public static Color CuloareCadranMutari = Color.DodgerBlue;
 
+        public static Color CuloarePalatPar = Color.OldLace;
+        public static Color CuloarePalatImpar = Color.Olive;
+
         public static readonly Piesa PiesaNula = null;
+
+
+        public static void InitializeazaPalat(ref List<Pozitie> _pozitiiPalat)
+        {
+            _pozitiiPalat.Add(new Pozitie(0, 3));
+            _pozitiiPalat.Add(new Pozitie(0, 4));
+            _pozitiiPalat.Add(new Pozitie(0, 5));
+
+            _pozitiiPalat.Add(new Pozitie(1, 3));
+            _pozitiiPalat.Add(new Pozitie(1, 4));
+            _pozitiiPalat.Add(new Pozitie(1, 5));
+
+            _pozitiiPalat.Add(new Pozitie(2, 3));
+            _pozitiiPalat.Add(new Pozitie(2, 4));
+            _pozitiiPalat.Add(new Pozitie(2, 5));
+
+            _pozitiiPalat.Add(new Pozitie(7, 3));
+            _pozitiiPalat.Add(new Pozitie(7, 4));
+            _pozitiiPalat.Add(new Pozitie(7, 5));
+
+            _pozitiiPalat.Add(new Pozitie(8, 3));
+            _pozitiiPalat.Add(new Pozitie(8, 4));
+            _pozitiiPalat.Add(new Pozitie(8, 5));
+
+            _pozitiiPalat.Add(new Pozitie(9, 3));
+            _pozitiiPalat.Add(new Pozitie(9, 4));
+            _pozitiiPalat.Add(new Pozitie(9, 5));
+        }
 
     }
 }

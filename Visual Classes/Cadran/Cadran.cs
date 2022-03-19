@@ -48,6 +48,10 @@ namespace ProiectVolovici
             BackColor = culoare;
             BackgroundImageLayout = _layoutCadran;
             _piesaCadran = null;
+        }
+        
+        public void ArataPalatul()
+        {
 
         }
         public void setPiesa(Piesa piesa)

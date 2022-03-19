@@ -8,6 +8,8 @@ namespace ProiectVolovici
 {
     public class Tabla
     {
+        private static List<Pozitie> _pozitiiPalat=new List<Pozitie>();
+
         private Form _parentForm;
         private Cadran[,] _arrayCadrane;
         private int[,] _matriceTabla;
@@ -121,14 +123,45 @@ namespace ProiectVolovici
 
             _matriceTabla = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
+            ConstantaTabla.InitializeazaPalat(ref _pozitiiPalat);
+
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
-                   
                     _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
                     _arrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                 }
+            }
+            ColoreazaPalatul();
+        }
+
+        public void ColoreazaPalatul()
+        {
+            foreach(Pozitie pozitie in _pozitiiPalat)
+            {
+                    if (pozitie.Linie % 2 == 0)
+                    {
+                        if (pozitie.Coloana % 2 == 1)
+                        {
+                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatImpar;
+                        }
+                        else
+                        {
+                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatPar;
+                        }
+                    }
+                    else
+                    {
+                        if (pozitie.Coloana % 2 == 1)
+                        {
+                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatPar;
+                        }
+                        else
+                        {
+                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatImpar;
+                        }
+                    }
             }
         }
 

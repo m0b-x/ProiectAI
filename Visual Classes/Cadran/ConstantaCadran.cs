@@ -14,5 +14,6 @@ namespace ProiectVolovici
 
         public static readonly ImageLayout LayoutCadran = ImageLayout.Center;
         public static readonly BorderStyle BorderCadran = BorderStyle.FixedSingle;
+        public static readonly BorderStyle BorderCadranPalat = BorderStyle.Fixed3D;
     }
 }
