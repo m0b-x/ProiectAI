@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -133,60 +134,58 @@ namespace ProiectVolovici
                     _arrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                 }
             }
-            ColoreazaPalatul();
-        }
-
-        public void ColoreazaPalatul()
-        {
-            foreach(Pozitie pozitie in _pozitiiPalat)
-            {
-                    if (pozitie.Linie % 2 == 0)
-                    {
-                        if (pozitie.Coloana % 2 == 1)
-                        {
-                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatImpar;
-                        }
-                        else
-                        {
-                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatPar;
-                        }
-                    }
-                    else
-                    {
-                        if (pozitie.Coloana % 2 == 1)
-                        {
-                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatPar;
-                        }
-                        else
-                        {
-                            _arrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePalatImpar;
-                        }
-                    }
-            }
         }
 
         public Color DecideCuloareaCadranului(int linie,int coloana)
         {
-            if (linie % 2 == 0)
+            if (_pozitiiPalat.Contains(new Pozitie(linie, coloana)))
             {
-                if (coloana % 2 == 1)
+                if (linie % 2 == 0)
                 {
-                    return _culoareCadranImpar;
+                    if (coloana % 2 == 1)
+                    {
+                        return ConstantaTabla.CuloarePalatImpar;
+                    }
+                    else
+                    {
+                       return ConstantaTabla.CuloarePalatPar;
+                    }
                 }
                 else
                 {
-                    return _culoareCadranPar;
+                    if (coloana % 2 == 1)
+                    {
+                        return ConstantaTabla.CuloarePalatPar;
+                    }
+                    else
+                    {
+                        return ConstantaTabla.CuloarePalatImpar;
+                    }
                 }
             }
             else
             {
-                if (coloana % 2 == 1)
+                if (linie % 2 == 0)
                 {
-                    return _culoareCadranPar;
+                    if (coloana % 2 == 1)
+                    {
+                        return _culoareCadranImpar;
+                    }
+                    else
+                    {
+                        return _culoareCadranPar;
+                    }
                 }
                 else
                 {
-                    return _culoareCadranImpar;
+                    if (coloana % 2 == 1)
+                    {
+                        return _culoareCadranPar;
+                    }
+                    else
+                    {
+                        return _culoareCadranImpar;
+                    }
                 }
             }
         }
@@ -227,11 +226,23 @@ namespace ProiectVolovici
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
         }
+        public void ArataPiesaBlocata(Pozitie pozitie)
+        {
+            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePiesaBlocata;
+            System.Timers.Timer timerPiesaBlocata = new System.Timers.Timer();
+            timerPiesaBlocata.Elapsed += new ElapsedEventHandler((sender, e) => DecoloreazaPiesaBlocata(sender, e, pozitie, timerPiesaBlocata));
+            timerPiesaBlocata.Interval = 400;
+            timerPiesaBlocata.Enabled = true;
+        }
+        private void DecoloreazaPiesaBlocata(object source, ElapsedEventArgs e,Pozitie pozitie, System.Timers.Timer timer)
+        {
+            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
+            timer.Stop();
+        }
 
         public void AscundePiesaSelectata(Piesa piesa)
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = DecideCuloareaCadranului(piesa.Pozitie.Linie,piesa.Pozitie.Coloana);
-            ColoreazaPalatul();
         }
 
 
@@ -242,7 +253,6 @@ namespace ProiectVolovici
                 foreach (Pozitie pozitie in _pozitiiMutariPosibile)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
-                    ColoreazaPalatul();
                 }
             }
         }
@@ -358,6 +368,7 @@ namespace ProiectVolovici
                     }
                     else 
                     {
+                        ArataPiesaBlocata(pozitie);
                         return;
                     }
                 }

@@ -28,6 +28,19 @@ namespace ProiectVolovici
             _linie = linie;
             _coloana = coloana;
         }
+        public override bool Equals(Object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Pozitie cealaltaPozitie = (Pozitie)obj;
+                return (Linie == cealaltaPozitie.Linie) && (Coloana == cealaltaPozitie.Coloana);
+            }
+        }
+
 
         public static bool operator ==(Pozitie pozitieStanga, Pozitie pozitieDreapta)
         {

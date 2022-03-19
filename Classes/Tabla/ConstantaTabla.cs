@@ -19,6 +19,8 @@ namespace ProiectVolovici
         public static Color CuloarePalatPar = Color.OldLace;
         public static Color CuloarePalatImpar = Color.Olive;
 
+        public static Color CuloarePiesaBlocata = Color.DarkRed;
+
         public static readonly Piesa PiesaNula = null;
 
 
