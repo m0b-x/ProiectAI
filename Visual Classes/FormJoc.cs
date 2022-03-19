@@ -26,8 +26,6 @@ namespace ProiectVolovici
 
             Piesa rege = new Rege(Culoare.Alb);
 
-            const int lungimeOrizontala = 10;
-            const int lungimeVerticala = 9;
             Tabla tabla = new Tabla(this);
 
             tabla.AdaugaPiesa(pion2, new Pozitie(1,1));

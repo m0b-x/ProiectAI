@@ -291,9 +291,9 @@ namespace ProiectVolovici
 
         public void CurataTabla()
         {
-            for (int linie = 0; linie < _marimeTablaOrizontala; linie++)
+            for (int linie = 0; linie < _marimeTablaVerticala; linie++)
             {
-                for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
+                for (int coloana = 0; coloana < _marimeTablaOrizontala; coloana++)
                 {
                     _arrayCadrane[linie, coloana].setPiesa(ConstantaTabla.PiesaNula);
                 }
