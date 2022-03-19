@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace ProiectVolovici
 {
@@ -15,5 +17,6 @@ namespace ProiectVolovici
         public static Color CuloareCadranMutari = Color.DodgerBlue;
 
         public static readonly Piesa PiesaNula = null;
+
     }
 }

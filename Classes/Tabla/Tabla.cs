@@ -256,7 +256,7 @@ namespace ProiectVolovici
                     {
                         _listaPiese.Remove(GetPiesaCuPozitia(pozitie));
                         _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
                         piesa.Pozitie = pozitie;
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
@@ -266,7 +266,7 @@ namespace ProiectVolovici
                     {
                         _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
+                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
                         piesa.Pozitie = pozitie;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
@@ -295,7 +295,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < _marimeTablaVerticala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana].setPiesa(null);
+                    _arrayCadrane[linie, coloana].setPiesa(ConstantaTabla.PiesaNula);
                 }
             }
         }
