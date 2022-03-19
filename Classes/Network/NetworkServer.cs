@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace ProiectVolovici
 {
-    class Server
+    public class NetworkServer
     {
         private TcpListener _server;
         public Socket _socketServer;
@@ -22,22 +22,22 @@ namespace ProiectVolovici
         private String _mesajInchidereServer;
         private bool _threadDeschis;
 
-        public Server(System.Net.IPAddress adresaIP, uint port)
+        public NetworkServer(System.Net.IPAddress adresaIP, uint port)
         {
             _server = new TcpListener(adresaIP, 3000);
         }
 
-        public void Start()
+        public void StartServer()
         {
+            DeschideThread();
             _thread = new Thread(new ThreadStart(CitireServer));
             _server.Start();
             _thread.Start();
-            DeschideThread();
         }
 
         public void ScriereServer(String mesaj)
         {
-            _streamServerScriere.Write(mesaj);
+            _scriereServer.WriteLine(mesaj);
         }
 
         public void InchidereStreamuri()
@@ -67,13 +67,14 @@ namespace ProiectVolovici
 
         public void PrelucreazaDatelePrimite()
         {
+            Debug.WriteLine("GAY");
             string dateServer = _citireServer.ReadLine();
             if (dateServer == null)
                 return;
 
             if (dateServer == _mesajInchidereServer)
             {
-                InchideThread()
+                InchideThread();
             }
             else
             {
@@ -83,7 +84,6 @@ namespace ProiectVolovici
 
         public void CitireServer()
         {
-
             while (_threadDeschis)
             {
                 try
@@ -96,6 +96,7 @@ namespace ProiectVolovici
                 }
                 try
                 {
+                    Debug.Write("DA");
                     InitializareStreamuri();
                     while (_threadDeschis)
                     {

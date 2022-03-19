@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProiectVolovici.Classes.Tabla
+namespace ProiectVolovici
 {
-    class ParserTabla
+    public class ParserTabla
     {
-        uint _liniiDecodificate;
-        uint _coloaneDecodificate;
-        uint _lungimeMesajInitial;
+        int _liniiDecodificate;
+        int _coloaneDecodificate;
+        int _lungimeMesajInitial;
         
-        public ParserTabla(uint liniiDecodificate,uint coloaneDecodificate, uint lungimeMesajInitial)
+        public ParserTabla(int liniiDecodificate,int coloaneDecodificate, int lungimeMesajInitial)
         {
             _liniiDecodificate = liniiDecodificate;
             _coloaneDecodificate = coloaneDecodificate;

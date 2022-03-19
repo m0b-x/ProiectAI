@@ -20,6 +20,11 @@ namespace ProiectVolovici
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            NetworkServer network = new NetworkServer(System.Net.IPAddress.Any,3000);
+            ParserTabla parser = new ParserTabla(ConstantaTabla.MarimeOrizontala,ConstantaTabla.MarimeVerticala,1);
+            network.StartServer();
+
+
 
             Piesa pion = new Pion(Culoare.Albastru);
             Piesa pion2 = new Pion(Culoare.Albastru);
