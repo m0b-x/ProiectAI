@@ -11,11 +11,11 @@ namespace ProiectVolovici
 
         private Piesa _piesaCadran;
 
-        private int _marimeCadran = 50;
-        private int _offsetCadran = 50;
+        private int _marimeCadran = ConstantaCadran.MarimeCadran;
+        private int _offsetCadran = ConstantaCadran.OffsetCadran;
 
-        private static ImageLayout _layoutCadran = ImageLayout.Center;
-        private static BorderStyle _borderCadran = BorderStyle.FixedSingle;
+        private static ImageLayout _layoutCadran = ConstantaCadran.LayoutCadran;
+        private static BorderStyle _borderCadran = ConstantaCadran.BorderCadran;
 
         public Piesa PiesaCadran
         {

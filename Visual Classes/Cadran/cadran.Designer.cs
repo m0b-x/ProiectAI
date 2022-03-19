@@ -30,14 +30,16 @@
         {
             this.SuspendLayout();
             // 
-            // uC
+            // Cadran
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Name = "cadran_Load";
-            this.Size = new System.Drawing.Size(48, 48);
+            this.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Name = "Cadran";
+            this.Size = new System.Drawing.Size(50, 50);
             this.Load += new System.EventHandler(this.cadran_Load);
             this.ResumeLayout(false);
 
