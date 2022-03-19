@@ -31,12 +31,12 @@ namespace ProiectVolovici
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // FormJoc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(876, 561);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(793, 590);
+            this.Name = "FormJoc";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

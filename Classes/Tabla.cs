@@ -12,9 +12,10 @@ namespace ProiectVolovici
         private Cadran[,] _arrayCadrane;
         private int[,] _matriceTabla;
         private List<Piesa> _listaPiese;
+        private List<Pozitie> pozitiiMutariPosibile;
 
 
-        private int _pragRau = 4;
+        private int _pragRau = 4+1;
         private int _offsetRau = 10;
 
         private int _marimeTablaOrizontala;
@@ -106,6 +107,7 @@ namespace ProiectVolovici
             _marimeTablaVerticala = marimeTablaVerticala;
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
+            pozitiiMutariPosibile = new List<Pozitie>();
 
             _arrayCadrane = new Cadran[marimeTablaOrizontala, marimeTablaVerticala];
 
@@ -191,12 +193,29 @@ namespace ProiectVolovici
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = DecideCuloareaCadranului(piesa.Pozitie.Linie,piesa.Pozitie.Coloana);
         }
 
-        
+
+        public void DecoloreazaMutariPosibile(List<Pozitie> pozitii)
+        {
+            if (pozitiiMutariPosibile != null)
+            {
+                foreach (Pozitie pozitie in pozitiiMutariPosibile)
+                {
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
+                }
+            }
+
+        }
+
+
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
-            foreach(Pozitie pozitie in pozitii)
+            if (pozitii != null)
             {
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
+                foreach (Pozitie pozitie in pozitii)
+                {
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
+                    pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
+                }
             }
         }
         public bool EsteMutareaPosibila(Pozitie pozitie)
@@ -238,19 +257,22 @@ namespace ProiectVolovici
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(null);
 
                         piesa.Pozitie = pozitie;
-                        Debug.WriteLine(pozitie.Linie + " " + pozitie.Coloana);
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
                     }
+                    DecoloreazaMutariPosibile(pozitiiMutariPosibile);
                 }
             }
         }
 
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
-            foreach (Piesa piesa in _listaPiese)
+            if (_listaPiese != null)
             {
-                if (piesa.Pozitie == pozitie)
-                    return piesa;
+                foreach (Piesa piesa in _listaPiese)
+                {
+                    if (piesa.Pozitie == pozitie)
+                        return piesa;
+                }
             }
             return null;
         }

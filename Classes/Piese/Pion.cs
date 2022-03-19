@@ -35,11 +35,11 @@ namespace ProiectVolovici
                 {
                     return;
                 }
-                if (this.Pozitie.Coloana < tabla.PragRau )
+                if (this.Pozitie.Linie <= tabla.PragRau )
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie+1, this.Pozitie.Coloana ));
                 }
-                else if(this.Pozitie.Coloana >= tabla.PragRau)
+                else if(this.Pozitie.Linie >= tabla.PragRau + 1)
                 {
                     int sfarsitColoana = tabla.MarimeTablaVerticala - 1;
                     int sfarsitLinie = tabla.MarimeTablaOrizontala - 1;
@@ -66,11 +66,11 @@ namespace ProiectVolovici
                 {
                     return;
                 }
-                if (this.Pozitie.Coloana >= tabla.PragRau)
+                if (this.Pozitie.Linie > tabla.PragRau)
                 {
                     pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                 }
-                else if (this.Pozitie.Coloana < tabla.PragRau)
+                else if (this.Pozitie.Linie <= tabla.PragRau)
                 {
                     int sfarsitLinie = tabla.MarimeTablaOrizontala - 1;
                     const int inceputLinie = 0;

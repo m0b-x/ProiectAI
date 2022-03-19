@@ -24,8 +24,8 @@ namespace ProiectVolovici
             Piesa pion2 = new Pion(Culoare.Albastru);
 
             const int lungimeOrizontala = 10;
-            const int latimeTabla = 9;
-            Tabla tabla = new Tabla(this, latimeTabla, lungimeOrizontala);
+            const int lungimeVerticala = 9;
+            Tabla tabla = new Tabla(this, lungimeOrizontala, lungimeVerticala);
 
             tabla.AdaugaPiesa(pion2, new Pozitie(1,1));
             tabla.AdaugaPiesa(pion, new Pozitie(7, 7));
