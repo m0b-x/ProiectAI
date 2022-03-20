@@ -107,6 +107,7 @@ namespace ProiectVolovici
             _pozitiiMutariPosibile = new List<Pozitie>();
 
             _tabla = new Tabla();
+            _ultimaMutare = new Pozitie[2];
 
             _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
@@ -127,10 +128,9 @@ namespace ProiectVolovici
 
 
             _tabla = new Tabla();
+            _ultimaMutare = new Pozitie[2];
 
             _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
-
-            ArrayCadrane = new Cadran[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
             _ultimaMutare = new Pozitie[2];
 
@@ -295,8 +295,6 @@ namespace ProiectVolovici
                         _matriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
-                        ActualizeazaUltimaMutare(new Pozitie(piesa.Pozitie.Linie, piesa.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana));
-
                         piesa.Pozitie = pozitie;
                         _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
@@ -387,6 +385,7 @@ namespace ProiectVolovici
                 if (EsteMutareaPosibila(pozitie))
                 {
                     AscundePiesaSelectata(_piesaSelectata);
+                    ActualizeazaUltimaMutare(new Pozitie(_piesaSelectata.Pozitie.Linie, _piesaSelectata.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana));
                     MutaPiesa(_piesaSelectata, pozitie);
                 }
                 else
