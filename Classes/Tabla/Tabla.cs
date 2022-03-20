@@ -131,10 +131,70 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
-                    _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
+                    _arrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie, coloana));
                     _arrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                 }
             }
+        }
+        public Tabla(Form parentForm,int[,] matriceTabla)
+        {
+            _parentForm = parentForm;
+            _listaPiese = new List<Piesa>();
+            _pozitiiMutariPosibile = new List<Pozitie>();
+
+            _marimeVerticala = ConstantaTabla.MarimeVerticala;
+            _marimeOrizontala = ConstantaTabla.MarimeOrizontala;
+
+            _pragRau = ConstantaTabla.PragRau;
+            _marimeRau = ConstantaTabla.MarimeRau;
+
+            _culoareCadranImpar = ConstantaTabla.CuloareCadranImpar;
+            _culoareCadranPar = ConstantaTabla.CuloareCadranPar;
+            _culoareCadranMutari = ConstantaTabla.CuloareCadranMutari;
+            _culoareCadranSelectat = ConstantaTabla.CuloareCadranSelectat;
+
+            _arrayCadrane = new Cadran[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+
+            _matriceTabla = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+
+            ConstantaTabla.InitializeazaPalat(ref _pozitiiPalat);
+
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    _arrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), DecideCuloareaCadranului(linie,coloana));
+                    _arrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
+                    if(matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    {
+                        Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
+                        AdaugaPiesa(ref piesa, new Pozitie(linie, coloana));
+                    }
+                }
+            }
+        }
+
+        private Piesa ConvertesteCodPiesaInObiect(CodPiesa codPiesa)
+        {
+            switch (codPiesa)
+            {
+                case CodPiesa.PionAlb: return new Pion(Culoare.Alb);
+                case CodPiesa.PionAlbastru: return new Pion(Culoare.Albastru);
+                case CodPiesa.TuraAlba: return new Tura(Culoare.Alb);
+                case CodPiesa.TuraAlbastra: return new Tura(Culoare.Albastru);
+                case CodPiesa.TunAlb: return new Tun(Culoare.Alb);
+                case CodPiesa.TunAlbastru: return new Tun(Culoare.Albastru);
+                case CodPiesa.GardianAlb: return new Gardian(Culoare.Alb);
+                case CodPiesa.GardianAlbastru: return new Gardian(Culoare.Albastru);
+                case CodPiesa.ElefantAlb: return new Elefant(Culoare.Alb);
+                case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.Albastru); ;
+                case CodPiesa.CalAlb: return new Cal(Culoare.Alb);
+                case CodPiesa.CalAbastru: return new Cal(Culoare.Albastru);
+                case CodPiesa.RegeAlb: return new Rege(Culoare.Alb);
+                case CodPiesa.RegeAlbastru: return new Rege(Culoare.Albastru);
+                default: return null;
+            }
+
         }
 
         public Color DecideCuloareaCadranului(int linie,int coloana)
@@ -191,11 +251,15 @@ namespace ProiectVolovici
             }
         }
 
-        public void AdaugaPiesa(Piesa piesa, Pozitie pozitie)
+        public void AdaugaPiesa(ref Piesa piesa, Pozitie pozitie)
         {
             if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
                 Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
+            }
+            else if(piesa == ConstantaTabla.PiesaNula)
+            {
+                Debug.WriteLine("Piesa invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
             }
             else
             {
@@ -207,7 +271,7 @@ namespace ProiectVolovici
                 {
                     if (_matriceTabla[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                     {
-                        Debug.WriteLine("Eroare:Nu se poate adauga piesa una peste alta!");
+                        Debug.WriteLine("Eroare:adugare piesa peste alta! Linie:{0},Coloana:{1},PiesaAdaugata:{2}",pozitie.Linie,pozitie.Coloana,piesa.Cod);
                     }
                     else
                     {

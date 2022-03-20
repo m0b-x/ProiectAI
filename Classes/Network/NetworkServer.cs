@@ -22,6 +22,8 @@ namespace ProiectVolovici
 
         private int _port;
 
+        private String _mesajInitial = "_mesajInitial";
+
         public NetworkServer(IPAddress adresaIP,int port)
         {
             _adresaIP = adresaIP;

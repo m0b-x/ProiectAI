@@ -13,7 +13,7 @@ namespace ProiectVolovici
         protected Pozitie _pozitiePiesa;
         protected Image _imaginePiesa;
         protected CodPiesa _codPiesa;
-        protected bool _pusaPeTabla;
+        protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
         public Culoare CuloarePiesa

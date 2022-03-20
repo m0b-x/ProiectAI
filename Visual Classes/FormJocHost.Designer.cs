@@ -1,7 +1,7 @@
 ﻿
 namespace ProiectVolovici
 {
-    partial class FormJoc
+    partial class FormJocHost
     {
         /// <summary>
         ///  Required designer variable.
@@ -38,8 +38,8 @@ namespace ProiectVolovici
             this.ClientSize = new System.Drawing.Size(793, 590);
             this.Name = "FormJoc";
             this.Text = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormJoc_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormJocHost_FormClosing);
+            this.Load += new System.EventHandler(this.FormJocHost_Load);
             this.ResumeLayout(false);
 
         }
