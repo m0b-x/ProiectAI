@@ -15,6 +15,7 @@ namespace ProiectVolovici
         private TcpClient _client;
         private IPAddress _adresaIP;
         private int _port;
+        private int _timeout;
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
@@ -24,16 +25,39 @@ namespace ProiectVolovici
         {
             _adresaIP = adresaIP;
             _port = port;
+            _client = new TcpClient();
+            _timeout = 1000;
         }
 
-        public void PornesteCerereaDeConectare()
+        public async void PornesteCerereaDeConectare()
         {
             String adresaIPString = _adresaIP.ToString();
             try
             {
-                _client = new TcpClient(adresaIPString, _port);
-                InitializareStreamuri();
-                Debug.WriteLine("Client Conectat(ClientSide): " + _client.Connected);
+                var connectionTask = _client.
+                    ConnectAsync(_adresaIP, _port).ContinueWith(task => 
+                    {
+                        return task.IsFaulted ? null : _client;
+                    },
+                    TaskContinuationOptions.ExecuteSynchronously);
+
+                var taskTimeout = Task.Delay(_timeout).
+                    ContinueWith<TcpClient>(task => null, TaskContinuationOptions.ExecuteSynchronously);
+
+                var resultTask = Task.WhenAny(connectionTask, taskTimeout).Unwrap();
+
+                resultTask.Wait();
+                var resultTcpClient = resultTask.Result;
+
+                if (resultTcpClient != null)
+                {
+                    InitializareStreamuri();
+                    Debug.WriteLine("Client Conectat(ClientSide): " + _client.Connected);
+                }
+                else
+                {
+                    Debug.WriteLine("Client Conectat(ClientSide): " + _client.Connected);
+                }
             }
             catch (Exception exceptie)
             {

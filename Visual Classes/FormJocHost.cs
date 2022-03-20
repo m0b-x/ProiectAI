@@ -58,6 +58,8 @@ namespace ProiectVolovici
             server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
 
             JocDeSah tablaClient = new JocDeSah(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
+            /*
+            */
 
         }
 

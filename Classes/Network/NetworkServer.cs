@@ -44,24 +44,27 @@ namespace ProiectVolovici
         {
             try
             {
-                _socketClient = _server.AcceptSocket();
-                _streamClient = new NetworkStream(_socketClient,true);
-                Debug.WriteLine("Client conectat(ServerSide): " + _socketClient.Connected);
-                if (_socketClient != null)
-                {
-                    InitializeazaStreamuri();
-                }
-                else
-                {
-                    Debug.Write("Nimeni nu este conectat la server!");
-                }
+                _server.BeginAcceptSocket( new AsyncCallback(AcceptaConexiuneSocket), _server);
             }
             catch(Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie AcceptaConexiune: " + exceptie);
             }
         }
-
+        private void AcceptaConexiuneSocket(IAsyncResult rezultatAsincron)
+        {
+            _socketClient = _server.EndAcceptSocket(rezultatAsincron);
+            _streamClient = new NetworkStream(_socketClient,true);
+            Debug.WriteLine("Client conectat(ServerSide): " + _socketClient.Connected);
+            if (_socketClient != null)
+            {
+                InitializeazaStreamuri();
+            }
+            else
+            {
+                Debug.Write("Nimeni nu este conectat la server!");
+            }
+        }
         public void InitializeazaStreamuri()
         {
             if (_streamClient != null)
@@ -128,7 +131,7 @@ namespace ProiectVolovici
         {
             if (_socketClient == null)
             {
-                Debug.WriteLine("Streamurile nu sunt initializate! ");
+                Debug.WriteLine("Streamurile serverului nu sunt initializate! ");
             }
             else
             try
