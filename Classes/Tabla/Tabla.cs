@@ -108,7 +108,7 @@ namespace ProiectVolovici
 
         public Pozitie[] UltimaMutare
         {
-            get { return _ultimaMutare };
+            get { return _ultimaMutare; }
         }
 
         public Tabla(Form parentForm)
