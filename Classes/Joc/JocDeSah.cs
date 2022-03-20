@@ -217,7 +217,7 @@ namespace ProiectVolovici
             ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePiesaBlocata;
             System.Timers.Timer timerPiesaBlocata = new System.Timers.Timer();
             timerPiesaBlocata.Elapsed += new ElapsedEventHandler((sender, e) => DecoloreazaPiesaBlocata(sender, e, pozitie, timerPiesaBlocata));
-            timerPiesaBlocata.Interval = 400;
+            timerPiesaBlocata.Interval = ConstantaTabla.IntervalPiesaBlocata;
             timerPiesaBlocata.Enabled = true;
             ConstantaSunet.SunetMutareGresita.Play();
         }
