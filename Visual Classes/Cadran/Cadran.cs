@@ -34,7 +34,7 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        public Cadran(Tabla tabla, Pozitie pozitie,Color culoare)
+        public Cadran(JocDeSah tabla, Pozitie pozitie,Color culoare)
         {
             Parent = tabla.ParentForm;
             if (pozitie.Linie > tabla.PragRau)

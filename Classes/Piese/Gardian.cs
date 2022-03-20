@@ -24,7 +24,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.GardianAlb;
             }
         }
-        public override void ArataMutariPosibile(Tabla tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
 
     }
 }

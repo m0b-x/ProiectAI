@@ -32,8 +32,8 @@
         /// <summary>
         /// The ArataMutariPosibile.
         /// </summary>
-        /// <param name="tabla">The tabla<see cref="Tabla"/>.</param>
-        public override void ArataMutariPosibile(Tabla tabla)
+        /// <param name="tabla">The tabla<see cref="JocDeSah"/>.</param>
+        public override void ArataMutariPosibile(JocDeSah tabla)
         {
             Debug.WriteLine("ArataMutariPosibileTura " + this._codPiesa);
             List<Pozitie> pozitii = new List<Pozitie>();

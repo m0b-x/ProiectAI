@@ -24,6 +24,6 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.ElefantAlb;
             }
         }
-        public override void ArataMutariPosibile(Tabla tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
     }
 }

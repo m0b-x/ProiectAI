@@ -52,7 +52,7 @@ namespace ProiectVolovici
             set { _selectata = value; }
         }
 
-        public abstract void ArataMutariPosibile(Tabla tabla);
+        public abstract void ArataMutariPosibile(JocDeSah tabla);
 
     }
 }

@@ -26,7 +26,7 @@ namespace ProiectVolovici
             }
         }
 
-        public override void ArataMutariPosibile(Tabla tabla)
+        public override void ArataMutariPosibile(JocDeSah tabla)
         {
             List<Pozitie> pozitii = new List<Pozitie>();
             if(CuloarePiesa == Culoare.Albastru)

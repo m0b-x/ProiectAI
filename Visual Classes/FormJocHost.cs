@@ -33,7 +33,7 @@ namespace ProiectVolovici
             Piesa turaAlba = new Tura(Culoare.Alb);
             Piesa rege = new Rege(Culoare.Alb);
 
-            Tabla tablaServer = new Tabla(this);
+            JocDeSah tablaServer = new JocDeSah(this);
 
             tablaServer.AdaugaPiesa(ref pion2, new Pozitie(2,1));
             tablaServer.AdaugaPiesa(ref pion, new Pozitie(1, 1));
@@ -55,9 +55,9 @@ namespace ProiectVolovici
 
             ParserTabla parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
 
-            server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceTabla));
+            server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
 
-            Tabla tablaClient = new Tabla(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
+            JocDeSah tablaClient = new JocDeSah(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
 
         }
 
