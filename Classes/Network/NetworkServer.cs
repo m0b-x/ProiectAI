@@ -1,121 +1,146 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Diagnostics;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    public class NetworkServer
+    public class NetworkServer : IDisposable
     {
         private TcpListener _server;
-        public Socket _socketServer;
-        private String _dateServer;
-        private Thread _thread;
-        private StreamWriter _scriereServer;
-        private StreamReader _citireServer;
-        NetworkStream _streamServerScriere;
-        NetworkStream _streamServerCitire;
+        private IPAddress _adresaIP;
+        private Socket _socketClient;
 
-        private String _mesajInchidereServer;
-        private bool _threadDeschis;
+        private NetworkStream _streamClient;
+        private StreamReader _streamCitire;
+        private StreamWriter _streamScriere;
 
-        public NetworkServer(System.Net.IPAddress adresaIP, uint port)
+        private int _port;
+
+        public NetworkServer(IPAddress adresaIP,int port)
         {
-            _server = new TcpListener(adresaIP, 3000);
-        }
+            _adresaIP = adresaIP;
+            _port = port;
 
-        public void StartServer()
-        {
-            DeschideThread();
-            _thread = new Thread(new ThreadStart(CitireServer));
-            _server.Start();
-            _thread.Start();
-        }
-
-        public void ScriereServer(String mesaj)
-        {
-            _scriereServer.WriteLine(mesaj);
-        }
-
-        public void InchidereStreamuri()
-        {
-            _streamServerScriere.Close();
-            _streamServerCitire.Close();
-        }
-
-        public void DeschideThread()
-        {
-            _threadDeschis = true;
-        }
-
-        public void InchideThread()
-        {
-            _threadDeschis = false;
-        }
-
-        public void InitializareStreamuri()
-        {
-            _streamServerCitire = new NetworkStream(_socketServer);
-            _citireServer = new StreamReader(_streamServerCitire);
-            _streamServerScriere = new NetworkStream(_socketServer);
-            _scriereServer = new StreamWriter(_streamServerCitire);
-            _scriereServer.AutoFlush = true;
-        }
-
-        public void PrelucreazaDatelePrimite()
-        {
-            Debug.WriteLine("GAY");
-            string dateServer = _citireServer.ReadLine();
-            if (dateServer == null)
-                return;
-
-            if (dateServer == _mesajInchidereServer)
+            try
             {
-                InchideThread();
+                _server = new TcpListener(adresaIP, port);
+                _server.Start();
             }
-            else
+            catch (Exception exceptie)
             {
-                //fa ceva cu dateServer
+                Debug.WriteLine("Exceptie Constructor: " + exceptie);
             }
         }
 
-        public void CitireServer()
+        public void AcceptaConexiuni()
         {
-            while (_threadDeschis)
+            try
             {
-                try
-                {
-                    _socketServer = _server.AcceptSocket();
-                }
-                catch(System.Exception eroare)
-                {
-                    Debug.WriteLine("Eroare socket: "+eroare);
-                }
-                try
-                {
-                    Debug.Write("DA");
-                    InitializareStreamuri();
-                    while (_threadDeschis)
-                    {
-                        PrelucreazaDatelePrimite();
-                    }
-                    InchidereStreamuri();
-                }
-                catch (Exception eroare)
-                {
-                    Debug.WriteLine("Eroare thread: " + eroare);
-                }
-                finally
-                {
-                    _threadDeschis = false;
-                }
+                _socketClient = _server.AcceptSocket();
+                _streamClient = new NetworkStream(_socketClient,true);
+                Debug.WriteLine("Client conectat(ServerSide): "+_socketClient.Connected);
+                InitializeazaStreamuri();
             }
-
+            catch(Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie AcceptaConexiune: " + exceptie);
+            }
         }
 
+        public void InitializeazaStreamuri()
+        {
+            if (_streamClient != null)
+            {
+                _streamCitire = new StreamReader(_streamClient);
+                _streamScriere = new StreamWriter(_streamClient);
+                _streamScriere.AutoFlush = true;
+            }
+        }
 
+        public void InchideStreamuri()
+        {
+            if (_streamClient != null)
+            {
+                _streamClient.Close();
+                _streamCitire.Close();
+                _streamScriere.Close();
+            }
+        }
+
+        public void InchideSocket()
+        {
+            if (_socketClient != null)
+            {
+                _socketClient.Close();
+            }
+        }
+
+        public void InchideServer()
+        {
+            try
+            {
+                if (_server.Server.IsBound == true && _server != null)
+                {
+                    _server.Stop();
+                    InchideSocket();
+                    InchideStreamuri();
+                }
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie InchideServer: " + exceptie);
+            }
+        }
+
+        public void Dispose()
+        {
+            InchideServer();
+            _server = null;
+            _adresaIP = null;
+            _socketClient = null;
+
+            _streamClient = null;
+            _streamCitire = null;
+            _streamScriere = null;
+
+            _port = 0;
+
+
+            Debug.WriteLine("NetworkServer Disposed!");
+        }
+
+        public void TrimiteDate(String date)
+        {
+            try
+            {
+                _streamScriere.WriteLine(date);
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+            }
+        }
+
+        public String PrimesteDate()
+        {
+            try
+            {
+                String date;
+                date =_streamCitire.ReadLine();
+                Debug.WriteLine("Date Primite Server: " + date);
+                return date;
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+            }
+            return null;
+        }
     }
 }

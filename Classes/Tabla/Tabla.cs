@@ -201,7 +201,7 @@ namespace ProiectVolovici
             {
                 if (piesa.PusaPeTabla == true)
                 {
-                    Debug.Write("Eroare:Piesa selectata este deja pusa pe tabla!");
+                    Debug.WriteLine("Eroare:Piesa selectata este deja pusa pe tabla!");
                 }
                 else
                 {
@@ -261,8 +261,6 @@ namespace ProiectVolovici
 
         public bool ExistaMutariPosibile()
         {
-            foreach(Pozitie pozitie in _pozitiiMutariPosibile)
-            Debug.WriteLine(pozitie.Linie +" "+ pozitie.Coloana + "CHUNGA");
             if (_pozitiiMutariPosibile == null || _pozitiiMutariPosibile.Count == 0)
                 return false;
             return true;

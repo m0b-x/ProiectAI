@@ -41,6 +41,10 @@ namespace ProiectVolovici
             }
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_linie, _coloana);
+        }
 
         public static bool operator ==(Pozitie pozitieStanga, Pozitie pozitieDreapta)
         {
