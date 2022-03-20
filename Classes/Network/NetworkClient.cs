@@ -26,7 +26,7 @@ namespace ProiectVolovici
             _port = port;
         }
 
-        public void ConecteazaClientLaServer()
+        public void PornesteCerereaDeConectare()
         {
             String adresaIPString = _adresaIP.ToString();
             try

@@ -45,11 +45,11 @@ namespace ProiectVolovici
             server = new NetworkServer(IPAddress.Any,3000);
             client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
 
-            client.ConecteazaClientLaServer();
-            server.AcceptaConexiuni();
+            client.PornesteCerereaDeConectare();
+            server.AcceptaConexiuniExistente();
 
-            server.TrimiteDate("GAY");
-            Debug.WriteLine("DatePrimite de la client:" + client.PrimesteDate());
+            server.TrimiteDate("CHUNGAAAAA");
+            Debug.WriteLine("DatePrimite de la client: " + client.PrimesteDate());
 
 
         }

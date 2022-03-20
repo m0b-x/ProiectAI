@@ -38,7 +38,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void AcceptaConexiuni()
+        public void AcceptaConexiuniExistente()
         {
             try
             {
