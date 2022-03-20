@@ -24,7 +24,7 @@ namespace ProiectVolovici
         public static readonly Piesa PiesaNula = null;
 
 
-        public static void InitializeazaPalat(ref List<Pozitie> _pozitiiPalat)
+        public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
             _pozitiiPalat.Add(new Pozitie(0, 3));
             _pozitiiPalat.Add(new Pozitie(0, 4));

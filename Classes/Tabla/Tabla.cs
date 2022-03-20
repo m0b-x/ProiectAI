@@ -31,6 +31,8 @@ namespace ProiectVolovici
 
         private Piesa _piesaSelectata;
 
+        private Pozitie[] _ultimaMutare;
+
         public List<Piesa> ListaPiese
         {
             get { return _listaPiese; }
@@ -104,6 +106,11 @@ namespace ProiectVolovici
             set { _piesaSelectata = value; }
         }
 
+        public Pozitie[] UltimaMutare
+        {
+            get { return _ultimaMutare };
+        }
+
         public Tabla(Form parentForm)
         {
             _parentForm = parentForm;
@@ -125,7 +132,6 @@ namespace ProiectVolovici
 
             _matriceTabla = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
-            ConstantaTabla.InitializeazaPalat(ref _pozitiiPalat);
 
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
@@ -157,7 +163,9 @@ namespace ProiectVolovici
 
             _matriceTabla = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
-            ConstantaTabla.InitializeazaPalat(ref _pozitiiPalat);
+            _ultimaMutare = new Pozitie[2];
+
+            ConstantaTabla.InitializeazaPolitiiPalat(ref _pozitiiPalat);
 
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
@@ -348,6 +356,12 @@ namespace ProiectVolovici
                 return false;
         }
 
+        public void ActualizeazaUltimaMutare(Pozitie pozitieInitiala,Pozitie pozitiFinala)
+        {
+            _ultimaMutare[0] = pozitieInitiala;
+            _ultimaMutare[1] = pozitiFinala;
+        }
+
         public void MutaPiesa(Piesa piesa, Pozitie pozitie)
         {
             if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
@@ -367,6 +381,8 @@ namespace ProiectVolovici
                         _listaPiese.Remove(GetPiesaCuPozitia(pozitie));
                         _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
+
+                        ActualizeazaUltimaMutare(new Pozitie(piesa.Pozitie.Linie, piesa.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana);
 
                         piesa.Pozitie = pozitie;
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
