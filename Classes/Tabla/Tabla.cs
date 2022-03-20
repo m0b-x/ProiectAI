@@ -382,7 +382,7 @@ namespace ProiectVolovici
                         _matriceTabla[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
-                        ActualizeazaUltimaMutare(new Pozitie(piesa.Pozitie.Linie, piesa.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana);
+                        ActualizeazaUltimaMutare(new Pozitie(piesa.Pozitie.Linie, piesa.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana));
 
                         piesa.Pozitie = pozitie;
                         _matriceTabla[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
