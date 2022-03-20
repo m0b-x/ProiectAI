@@ -46,8 +46,15 @@ namespace ProiectVolovici
             {
                 _socketClient = _server.AcceptSocket();
                 _streamClient = new NetworkStream(_socketClient,true);
-                Debug.WriteLine("Client conectat(ServerSide): "+_socketClient.Connected);
-                InitializeazaStreamuri();
+                Debug.WriteLine("Client conectat(ServerSide): " + _socketClient.Connected);
+                if (_socketClient != null)
+                {
+                    InitializeazaStreamuri();
+                }
+                else
+                {
+                    Debug.Write("Nimeni nu este conectat la server!");
+                }
             }
             catch(Exception exceptie)
             {
@@ -119,6 +126,11 @@ namespace ProiectVolovici
 
         public void TrimiteDate(String date)
         {
+            if (_socketClient == null)
+            {
+                Debug.WriteLine("Streamurile nu sunt initializate! ");
+            }
+            else
             try
             {
                 _streamScriere.WriteLine(date);
