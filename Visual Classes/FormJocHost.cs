@@ -22,8 +22,11 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        NetworkServer server;
-        NetworkClient client;
+        JocMultiplayer jocSah;
+        JocMultiplayer jocSahForm2;
+
+        IPAddress adresa = IPAddress.Parse("127.0.0.1");
+        int port = 3000;
 
         private void FormJocHost_Load(object sender, EventArgs e)
         {
@@ -33,43 +36,41 @@ namespace ProiectVolovici
             Piesa turaAlba = new Tura(CuloareJoc.Alb);
             Piesa rege = new Rege(CuloareJoc.Alb);
 
-            EngineJoc tablaServer = new JocMultiplayer(this);
+            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(), new Om());
 
-            tablaServer.AdaugaPiesa(ref pion2, new Pozitie(2,1));
-            tablaServer.AdaugaPiesa(ref pion, new Pozitie(1, 1));
-            tablaServer.AdaugaPiesa(ref rege, new Pozitie(8, 7));
-            tablaServer.AdaugaPiesa(ref turaAlbastra, new Pozitie(0, 0));
-            tablaServer.AdaugaPiesa(ref turaAlba, new Pozitie(8, 8));
+            jocSah = new JocMultiplayer(this, ref jucatori);
 
-            FormJocClient formJocClient = new FormJocClient();
-            formJocClient.Show();
+            FormJocClient form = new FormJocClient();
+            form.Show();
 
-            server = new NetworkServer(IPAddress.Any, 3000);
-            client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
+            jocSahForm2 = new JocMultiplayer(form, ref jucatori);
 
-            server.AcceptaConexiuneaUrmatoare();
-            client.PornesteCerereaDeConectare();
+            jocSah.HosteazaJoc(3000);
+            jocSahForm2.ConecteazateLaJoc(IPAddress.Parse("127.0.0.1"), 3000);
 
-            server.TrimiteDate("CHUNGAAAAA");
-            Debug.WriteLine("DatePrimite de la server: " + client.PrimesteDate());
+            jocSah.AdaugaPiesa(ref pion2, new Pozitie(2, 1));
+            jocSah.AdaugaPiesa(ref pion, new Pozitie(1, 1));
+            jocSah.AdaugaPiesa(ref rege, new Pozitie(8, 7));
+            jocSah.AdaugaPiesa(ref turaAlbastra, new Pozitie(0, 0));
+            jocSah.AdaugaPiesa(ref turaAlba, new Pozitie(8, 8));
 
-            ParserTabla parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
-
-            server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
-
-            EngineJoc tablaClient = new EngineJoc(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
 
         }
 
         private void FormJocHost_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            server.Dispose();
-            client.Dispose();
+        {;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            client.TrimiteDate("CHUNGA");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
         }
     }
 }

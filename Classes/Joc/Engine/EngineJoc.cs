@@ -147,6 +147,23 @@ namespace ProiectVolovici
             }
         }
 
+        public void ActualizeazaIntreagaTabla(int[,] matriceTabla)
+        {
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
+                    ArrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
+                    if (matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
+                    {
+                        Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
+                        AdaugaPiesa(ref piesa, new Pozitie(linie, coloana));
+                    }
+                }
+            }
+        }
+
         private Piesa ConvertesteCodPiesaInObiect(CodPiesa codPiesa)
         {
             switch (codPiesa)
@@ -272,7 +289,7 @@ namespace ProiectVolovici
             Tuple<Pozitie, Pozitie> _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
-        public void MutaPiesa(Piesa piesa, Pozitie pozitie)
+        public void RealizeazaMutarea(Piesa piesa, Pozitie pozitie)
         {
             if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
@@ -383,7 +400,7 @@ namespace ProiectVolovici
                 {
                     AscundePiesaSelectata(_piesaSelectata);
                     ActualizeazaUltimaMutare(new Pozitie(_piesaSelectata.Pozitie.Linie, _piesaSelectata.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana));
-                    MutaPiesa(_piesaSelectata, pozitie);
+                    RealizeazaMutarea(_piesaSelectata, pozitie);
                 }
                 else
                 {

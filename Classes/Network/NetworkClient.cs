@@ -22,11 +22,15 @@ namespace ProiectVolovici
         private int _timpTimeoutConexiune;
         private bool _disposed;
         private string _mesajDeconectare;
+        private bool _conectat; 
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
-
+        public bool Conectat
+        {
+            get { return _conectat; }
+        }
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
@@ -39,6 +43,7 @@ namespace ProiectVolovici
             _client = new TcpClient();
             _timpTimeoutConexiune = 5000;
             _disposed = false;
+            _conectat = false;
             _mesajDeconectare = "0";
         }
 
@@ -70,6 +75,7 @@ namespace ProiectVolovici
                     InitializareStreamuri();
                     AscultaPentruDate();
                     Debug.WriteLine("Clientul a fost conectat la server cu success!");
+                    _conectat = true;
                 }
                 else
                 {
@@ -116,6 +122,8 @@ namespace ProiectVolovici
                 _streamServer.Dispose();
                 _streamCitire.Dispose();
                 _streamScriere.Dispose();
+                _timerCitireDate.Stop();
+                _timerCitireDate.Dispose();
                 Debug.WriteLine("NetworkClient sters!");
             }
             else

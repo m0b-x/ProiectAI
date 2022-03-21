@@ -34,11 +34,11 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        public Cadran(EngineJoc tabla, Pozitie pozitie,Color culoare)
+        public Cadran(EngineJoc joc, Pozitie pozitie,Color culoare)
         {
-            Parent = tabla.ParentForm;
-            if (pozitie.Linie > tabla.PragRau)
-                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + tabla.MarimeRau);
+            Parent = joc.ParentForm;
+            if (pozitie.Linie > joc.PragRau)
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + joc.MarimeRau);
             else
                 Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran);
 

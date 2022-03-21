@@ -22,10 +22,16 @@ namespace ProiectVolovici
         private string _mesajDeconectare;
         private bool _disposed;
         private int _port;
+        private bool _conectat;
 
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+
+        public bool Conectat
+        {
+            get { return _conectat; }
+        }
 
         public String MesajDeconectare
         {
@@ -37,6 +43,7 @@ namespace ProiectVolovici
             _adresaIP = adresaIP;
             _port = port;
             _disposed = false;
+            _conectat = false;
             _mesajDeconectare = "0";
             try
             {
@@ -76,6 +83,8 @@ namespace ProiectVolovici
                 _streamClient.Dispose();
                 _streamCitire.Dispose();
                 _streamScriere.Dispose();
+                _timerCitireDate.Stop();
+                _timerCitireDate.Dispose();
                 Debug.WriteLine("NetworkServer sters!");
             }
             else
@@ -127,6 +136,7 @@ namespace ProiectVolovici
         {
             _socketListening = _server.EndAcceptSocket(rezultatAsincron);
             Debug.WriteLine("Serverul a primit conexiunea clientului");
+            _conectat = true;
             InitializeazaStreamuri();
             AscultaPentruDate();
         }
