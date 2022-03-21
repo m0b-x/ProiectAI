@@ -19,19 +19,25 @@ namespace ProiectVolovici
         private Socket _socketListening;
         private System.Timers.Timer _timerCitireDate;
 
+        private string _mesajDeconectare;
+        private bool _disposed;
+        private int _port;
+
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
 
-        private int _port;
-
-        private String _mesajInchidere = "_mesajInitial";
+        public String MesajDeconectare
+        {
+            get { return _mesajDeconectare; }
+        }
 
         public NetworkServer(IPAddress adresaIP,int port)
         {
             _adresaIP = adresaIP;
             _port = port;
-
+            _disposed = false;
+            _mesajDeconectare = "0";
             try
             {
                 _server = new TcpListener(adresaIP, port);
@@ -42,6 +48,7 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie Constructor: " + exceptie);
             }
         }
+        ~NetworkServer() => Dispose();
 
         public void AcceptaConexiuneaUrmatoare()
         {
@@ -57,19 +64,26 @@ namespace ProiectVolovici
 
         public void Dispose()
         {
-            InchideServer();
-            _server = null;
-            _adresaIP = null;
-            _socketListening.Dispose();
+            if (_disposed == false)
+            {
+                _disposed = true;
+                InchideServer();
+                _server = null;
+                _adresaIP = null;
+                _socketListening.Dispose();
+                  _port = 0;
 
-            _streamClient.Dispose();
-            _streamCitire.Dispose();
-            _streamScriere.Dispose();
+                _streamClient.Dispose();
+                _streamCitire.Dispose();
+                _streamScriere.Dispose();
+                Debug.WriteLine("NetworkServer sters!");
+            }
+            else
+            {
+                Debug.WriteLine("NetworkServer a fost deja sters!");
+            }
 
-            _port = 0;
 
-
-            Debug.WriteLine("NetworkServer Disposed!");
         }
 
         public void TrimiteDate(String date)
@@ -95,6 +109,10 @@ namespace ProiectVolovici
             {
                 String date;
                 date = _streamCitire.ReadLine();
+                if(date == _mesajDeconectare)
+                {
+                    Debug.WriteLine("Clientul s-a deconectat de la server");
+                }
                 Debug.WriteLine("Date Primite Server: " + date);
                 return date;
             }
@@ -174,6 +192,7 @@ namespace ProiectVolovici
             {
                 if (_server.Server.IsBound == true && _server != null)
                 {
+                    _streamScriere.WriteLine(_mesajDeconectare);
                     _server.Stop();
                     InchideSocket();
                     InchideStreamuri();

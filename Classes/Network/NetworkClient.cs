@@ -16,13 +16,21 @@ namespace ProiectVolovici
     {
         private TcpClient _client;
         private IPAddress _adresaIP;
+        private System.Timers.Timer _timerCitireDate;
+
         private int _port;
         private int _timpTimeoutConexiune;
-        private System.Timers.Timer _timerCitireDate;
+        private bool _disposed;
+        private string _mesajDeconectare;
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+
+        public String MesajDeconectare
+        {
+            get { return _mesajDeconectare; }
+        }
 
         public NetworkClient(IPAddress adresaIP, int port)
         {
@@ -30,7 +38,12 @@ namespace ProiectVolovici
             _port = port;
             _client = new TcpClient();
             _timpTimeoutConexiune = 5000;
+            _disposed = false;
+            _mesajDeconectare = "0";
         }
+
+        ~NetworkClient() => Dispose();
+
         //sursa : https://stackoverflow.com/questions/18486585/tcpclient-connectasync-get-status
         public void PornesteCerereaDeConectare()
         {
@@ -92,16 +105,23 @@ namespace ProiectVolovici
 
         public void Dispose()
         {
-            InchidereClient();
-            _client.Dispose();
-            _adresaIP = null;
-            _port = 0;
+            if (_disposed == false)
+            {
+                _disposed = true;
+                InchidereClient();
+                _client.Dispose();
+                _adresaIP = null;
+                _port = 0;
 
-            _streamServer.Dispose();
-            _streamCitire.Dispose();
-            _streamScriere.Dispose();
-
-            Debug.WriteLine("NetworkClient Disposed!");
+                _streamServer.Dispose();
+                _streamCitire.Dispose();
+                _streamScriere.Dispose();
+                Debug.WriteLine("NetworkClient sters!");
+            }
+            else
+            {
+                Debug.WriteLine("NetworkClient a fost deja sters!");
+            }
         }
 
         public void TrimiteDate(String date)
@@ -122,6 +142,10 @@ namespace ProiectVolovici
             {
                 String date;
                 date = _streamCitire.ReadLine();
+                if (date == _mesajDeconectare)
+                {
+                    Debug.WriteLine("Serverul s-a deconectat de la client`");
+                }
                 Debug.WriteLine("Date Primite Client: " + date);
                 return date;
             }
@@ -144,6 +168,7 @@ namespace ProiectVolovici
             { 
                 if (_client != null)
                 {
+                    _streamScriere.WriteLine(_mesajDeconectare);
                     _client.Close();
                     InchideStreamuri();
                 }

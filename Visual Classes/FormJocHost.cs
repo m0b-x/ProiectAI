@@ -44,7 +44,7 @@ namespace ProiectVolovici
             FormJocClient formJocClient = new FormJocClient();
             formJocClient.Show();
 
-            server = new NetworkServer(IPAddress.Any,3000);
+            server = new NetworkServer(IPAddress.Any, 3000);
             client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
 
             server.AcceptaConexiuneaUrmatoare();
