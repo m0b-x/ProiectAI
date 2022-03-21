@@ -89,22 +89,6 @@ namespace ProiectVolovici
             return true;
         }
 
-
-        public void SetCadranBackground(System.Drawing.Image imagine)
-        {
-           this.BackgroundImage = imagine;
-        }
-
-        public void AddClickEventHandler(EventHandler eventHandler)
-        {
-            this.Click += eventHandler;
-        }
-
-        public void AddDoubleClickEventHandler(EventHandler eventHandler)
-        {
-            this.DoubleClick += eventHandler;
-        }
-
         private void cadran_Load(object sender, EventArgs e)
         {
         }

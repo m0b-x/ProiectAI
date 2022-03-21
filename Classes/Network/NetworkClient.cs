@@ -40,6 +40,7 @@ namespace ProiectVolovici
         public String Buffer
         {
             get { return _buffer; }
+            set { _buffer = value; }
         }
 
         public NetworkClient(IPAddress adresaIP, int port)
@@ -151,6 +152,8 @@ namespace ProiectVolovici
             try
             {
                 _streamScriere.WriteLine(date);
+                _streamServer.Flush();
+                Debug.WriteLine("Date trimise de catre client:" + date);
             }
             catch (Exception exceptie)
             {

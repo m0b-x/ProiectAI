@@ -23,6 +23,11 @@ namespace ProiectVolovici
 
         private Tuple<Pozitie,Pozitie> _ultimaMutare;
 
+        public List<Pozitie> PozitiiMutariPosibile
+        {
+            get { return _pozitiiMutariPosibile; }
+            set { _pozitiiMutariPosibile = value; }
+        }
         public List<Piesa> ListaPiese
         {
             get { return _listaPiese; }
@@ -34,7 +39,6 @@ namespace ProiectVolovici
             get { return _parentForm; }
             set { _parentForm = value; }
         }
-
         public Tabla TablaJoc
         {
             get { return _tabla; }
@@ -89,7 +93,7 @@ namespace ProiectVolovici
             get { return _tabla.CuloareCadranMutari; }
             set { _tabla.CuloareCadranMutari = value; }
         }
-        public Piesa PiesaSelectata
+        protected Piesa PiesaSelectata
         {
             get { return _piesaSelectata; }
             set { _piesaSelectata = value; }
@@ -116,7 +120,6 @@ namespace ProiectVolovici
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
-                    ArrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                 }
             }
         }
@@ -137,11 +140,10 @@ namespace ProiectVolovici
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
                     ArrayCadrane[linie, coloana] = new Cadran( this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie,coloana));
-                    ArrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                     if(matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
                     {
                         Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
-                        AdaugaPiesa(ref piesa, new Pozitie(linie, coloana));
+                        AdaugaPiesa(piesa, new Pozitie(linie, coloana));
                     }
                 }
             }
@@ -156,7 +158,7 @@ namespace ProiectVolovici
                     if (matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
                     {
                         Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
-                        AdaugaPiesa(ref piesa, new Pozitie(linie, coloana));
+                        AdaugaPiesa( piesa, new Pozitie(linie, coloana));
                     }
                 }
             }
@@ -185,7 +187,7 @@ namespace ProiectVolovici
 
         }
 
-        public void AdaugaPiesa(ref Piesa piesa, Pozitie pozitie)
+        public void AdaugaPiesa(Piesa piesa, Pozitie pozitie)
         {
             if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
@@ -284,55 +286,13 @@ namespace ProiectVolovici
 
         public void ActualizeazaUltimaMutare(Pozitie pozitieInitiala,Pozitie pozitieFinala)
         {
+            Debug.WriteLine("ActualizareUltimaMutare: " + pozitieInitiala.Linie + " " + pozitieInitiala.Coloana + "->" + pozitieFinala.Linie + " " + pozitieFinala.Coloana);
             Tuple<Pozitie, Pozitie> _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
-        }
-
-        public void RealizeazaMutarea(Piesa piesa, Pozitie pozitie)
-        {
-            if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
-            {
-                Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
-            }
-            else
-            {
-                if (piesa.PusaPeTabla == false)
-                {
-                    Debug.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
-                }
-                else
-                {
-                    if (_matriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
-                    {
-                        _listaPiese.Remove(GetPiesaCuPozitia(pozitie));
-                        _matriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
-
-                        piesa.Pozitie = pozitie;
-                        _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
-
-                        ConstantaSunet.SunetPiesaLuata.Play();
-                    }
-                    else
-                    {
-                        _matriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                        _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
-
-                        piesa.Pozitie = pozitie;
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
-
-                        ConstantaSunet.SunetPiesaMutata.Play();
-                    }
-                    DecoloreazaMutariPosibile(_pozitiiMutariPosibile);
-                    _piesaSelectata = ConstantaTabla.PiesaNula;
-                    _pozitiiMutariPosibile.Clear();
-                }
-            }
         }
 
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
+            Debug.WriteLine("GetPiesa Cu pozitia" +pozitie.Linie+" "+pozitie.Coloana);
             if (_listaPiese != null)
             {
                 foreach (Piesa piesa in _listaPiese)
@@ -351,58 +311,6 @@ namespace ProiectVolovici
                 for (int coloana = 0; coloana < _tabla.MarimeVerticala; coloana++)
                 {
                     ArrayCadrane[linie, coloana].setPiesa(ConstantaTabla.PiesaNula);
-                }
-            }
-        }
-        public void OnCadranClick(object sender, EventArgs e)
-        {
-            if (_piesaSelectata == ConstantaTabla.PiesaNula)
-            {
-                Pozitie pozitie = new Pozitie(0, 0);
-                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-
-
-                if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-                {
-                    Piesa piesa = GetPiesaCuPozitia(pozitie);
-                    piesa.ArataMutariPosibile(this);
-                    if (ExistaMutariPosibile() == true)
-                    {
-                        ArataPiesaSelectata(piesa);
-                        Debug.WriteLine("Click Piesa:" + piesa.Cod + "->[linie:" + piesa.Pozitie.Linie + ",coloana:" + piesa.Pozitie.Coloana + "]");
-                        _piesaSelectata = piesa;
-                    }
-                    else 
-                    {
-                        ArataPiesaBlocata(pozitie);
-                        return;
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Click Piesa:Gol->[linie:" + pozitie.Linie + ",coloana:" + pozitie.Coloana + "]");
-                }
-            }
-            else
-            {
-                Pozitie pozitie = new Pozitie(0, 0);
-                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-
-                if (_piesaSelectata.Pozitie == pozitie)
-                {
-                    return;
-                }
-                if (EsteMutareaPosibila(pozitie))
-                {
-                    AscundePiesaSelectata(_piesaSelectata);
-                    ActualizeazaUltimaMutare(new Pozitie(_piesaSelectata.Pozitie.Linie, _piesaSelectata.Pozitie.Coloana), new Pozitie(pozitie.Linie, pozitie.Coloana));
-                    RealizeazaMutarea(_piesaSelectata, pozitie);
-                }
-                else
-                {
-                    return;
                 }
             }
         }

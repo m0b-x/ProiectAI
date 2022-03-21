@@ -12,37 +12,41 @@ namespace ProiectVolovici
     {
         int _liniiDecodificate;
         int _coloaneDecodificate;
-        int _lungimeMesajInitial;
+        int _lungimeDiferentiala;
 
-        public ParserTabla(int liniiDecodificate, int coloaneDecodificate, int lungimeMesajInitial)
+        public ParserTabla(int liniiDecodificate, int coloaneDecodificate, int lungimeDiferentiala)
         {
             _liniiDecodificate = liniiDecodificate;
             _coloaneDecodificate = coloaneDecodificate;
-            _lungimeMesajInitial = lungimeMesajInitial;
+            _lungimeDiferentiala = lungimeDiferentiala;
         }
 
 
         public String CodificareMutare(Pozitie pozitieInitiala,Pozitie pozitieFinala)
         {
+            Debug.WriteLine("CallBack CodificareMutare");
             string mutareString =  "{" +
                                     pozitieInitiala.Linie + "," +
                                     pozitieInitiala.Coloana + "," +
                                     pozitieFinala.Linie + "," +
                                     pozitieFinala.Coloana +
                                    "}";
+            Debug.WriteLine(mutareString);
             return mutareString;
         }
-        public Pozitie[] DecodificareMutare(String mutare)
+        public Tuple<Pozitie,Pozitie> DecodificareMutare(String mutare)
         {
-            mutare = mutare.Remove(0, 1);
-            mutare = mutare.Remove(mutare.Length);
+            Debug.WriteLine(mutare);
+            mutare = mutare.Replace("{", " ");
+            mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
-            Pozitie[] vectorPozitii = new Pozitie[2];
 
-            vectorPozitii[0] = new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]);
-            vectorPozitii[1] = new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]);
+            Pozitie pozitieInitiala = new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]);
+            Pozitie pozitieFinala = new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]);
 
-            return vectorPozitii;
+            Tuple<Pozitie, Pozitie> pozitii = new Tuple<Pozitie, Pozitie>( pozitieInitiala,pozitieFinala);
+
+            return pozitii;
         }
         public String CodificareTabla(int[,] matriceTabla)
         {

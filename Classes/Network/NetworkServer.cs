@@ -29,6 +29,11 @@ namespace ProiectVolovici
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
 
+        public TcpListener Server
+        {
+            get { return _server; }
+        }
+
         public bool Conectat
         {
             get { return _conectat; }
@@ -42,6 +47,7 @@ namespace ProiectVolovici
         public String Buffer
         {
             get { return _buffer; }
+            set { _buffer = value; }
         }
 
         public NetworkServer(IPAddress adresaIP,int port)
@@ -110,6 +116,7 @@ namespace ProiectVolovici
             else
                 try
                 {
+                    Debug.WriteLine("Date trimise de catre server:" + date); 
                     _streamScriere.WriteLine(date);
                 }
                 catch (Exception exceptie)
@@ -148,7 +155,7 @@ namespace ProiectVolovici
             AscultaPentruDate();
         }
 
-        private void AscultaPentruDate()
+        public void AscultaPentruDate()
         {
             if (_timerCitireDate == null)
             {
@@ -162,8 +169,10 @@ namespace ProiectVolovici
         }
         private void AscultaDate_Tick(object source, ElapsedEventArgs e)
         {
-            if(_streamClient != null)
+            if (_streamClient != null)
+            {
                 PrimesteDate();
+            }
         }
 
         private void InitializeazaStreamuri()
