@@ -25,7 +25,7 @@ namespace ProiectVolovici
         NetworkServer server;
         NetworkClient client;
 
-        private async void FormJocHost_Load(object sender, EventArgs e)
+        private void FormJocHost_Load(object sender, EventArgs e)
         {
             Piesa pion = new Pion(Culoare.Albastru);
             Piesa pion2 = new Pion(Culoare.Albastru);
@@ -53,9 +53,6 @@ namespace ProiectVolovici
             server.TrimiteDate("CHUNGAAAAA");
             Debug.WriteLine("DatePrimite de la server: " + client.PrimesteDate());
 
-            client.TrimiteDate("COPENHAGA");
-            Debug.WriteLine("DatePrimite de la client: " + server.PrimesteDate());
-
             ParserTabla parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
 
             server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
@@ -70,5 +67,9 @@ namespace ProiectVolovici
             client.Dispose();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            client.TrimiteDate("CHUNGA");
+        }
     }
 }

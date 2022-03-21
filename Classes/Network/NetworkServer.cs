@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ProiectVolovici
 {
@@ -16,6 +17,7 @@ namespace ProiectVolovici
         private TcpListener _server;
         private IPAddress _adresaIP;
         private Socket _socketListening;
+        private System.Timers.Timer _timerCitireDate;
 
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
@@ -23,7 +25,7 @@ namespace ProiectVolovici
 
         private int _port;
 
-        private String _mesajInitial = "_mesajInitial";
+        private String _mesajInchidere = "_mesajInitial";
 
         public NetworkServer(IPAddress adresaIP,int port)
         {
@@ -52,26 +54,84 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie functie AcceptaConexiune: " + exceptie);
             }
         }
+
+        public void Dispose()
+        {
+            InchideServer();
+            _server = null;
+            _adresaIP = null;
+            _socketListening.Dispose();
+
+            _streamClient.Dispose();
+            _streamCitire.Dispose();
+            _streamScriere.Dispose();
+
+            _port = 0;
+
+
+            Debug.WriteLine("NetworkServer Disposed!");
+        }
+
+        public void TrimiteDate(String date)
+        {
+            if (_socketListening == null)
+            {
+                Debug.WriteLine("Streamurile serverului nu sunt initializate! ");
+            }
+            else
+                try
+                {
+                    _streamScriere.WriteLine(date);
+                }
+                catch (Exception exceptie)
+                {
+                    Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+                }
+        }
+
+        public String PrimesteDate()
+        {
+            try
+            {
+                String date;
+                date = _streamCitire.ReadLine();
+                Debug.WriteLine("Date Primite Server: " + date);
+                return date;
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+            }
+            return null;
+        }
+
         private void AcceptaConexiuneSocket(IAsyncResult rezultatAsincron)
         {
             _socketListening = _server.EndAcceptSocket(rezultatAsincron);
             Debug.WriteLine("Serverul a primit conexiunea clientului");
             InitializeazaStreamuri();
+            AscultaPentruDate();
         }
 
-        public void AscultaPentruDate()
+        private void AscultaPentruDate()
         {
-            while(true)
+            if (_timerCitireDate == null)
             {
-                if(_streamCitire != null)
-                {
-                    string date = _streamCitire.ReadLine();
-                    Debug.WriteLine(date);
-                }
+                _timerCitireDate = new();
+                _timerCitireDate.Interval = 100;
+                _timerCitireDate.AutoReset = true;
+                _timerCitireDate.Enabled = true;
+                _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);
+                _timerCitireDate.Start();
             }
         }
+        private void AscultaDate_Tick(object source, ElapsedEventArgs e)
+        {
+            if(_streamClient != null)
+                PrimesteDate();
+        }
 
-        public void InitializeazaStreamuri()
+        private void InitializeazaStreamuri()
         {
             try
             {
@@ -90,7 +150,7 @@ namespace ProiectVolovici
 
         }
 
-        public void InchideStreamuri()
+        private void InchideStreamuri()
         {
             if (_streamClient != null)
             {
@@ -100,7 +160,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void InchideSocket()
+        private void InchideSocket()
         {
             if (_socketListening != null)
             {
@@ -108,7 +168,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void InchideServer()
+        private void InchideServer()
         {
             try
             {
@@ -123,56 +183,6 @@ namespace ProiectVolovici
             {
                 Debug.WriteLine("Exceptie functie InchideServer: " + exceptie);
             }
-        }
-
-        public void Dispose()
-        {
-            InchideServer();
-            _server = null;
-            _adresaIP = null;
-            _socketListening = null;
-
-            _streamClient = null;
-            _streamCitire = null;
-            _streamScriere = null;
-
-            _port = 0;
-
-
-            Debug.WriteLine("NetworkServer Disposed!");
-        }
-
-        public void TrimiteDate(String date)
-        {
-            if (_socketListening == null)
-            {
-                Debug.WriteLine("Streamurile serverului nu sunt initializate! ");
-            }
-            else
-            try
-            {
-                _streamScriere.WriteLine(date);
-            }
-            catch (Exception exceptie)
-            {
-                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
-            }
-        }
-
-        public String PrimesteDate()
-        {
-            try
-            {
-                String date;
-                date =_streamCitire.ReadLine();
-                Debug.WriteLine("Date Primite Server: " + date);
-                return date;
-            }
-            catch (Exception exceptie)
-            {
-                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
-            }
-            return null;
         }
     }
 }

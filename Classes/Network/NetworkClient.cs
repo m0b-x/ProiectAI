@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ProiectVolovici
 {
@@ -17,6 +18,7 @@ namespace ProiectVolovici
         private IPAddress _adresaIP;
         private int _port;
         private int _timpTimeoutConexiune;
+        private System.Timers.Timer _timerCitireDate;
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
@@ -53,6 +55,7 @@ namespace ProiectVolovici
                 if (resultTcpClient != null)
                 {
                     InitializareStreamuri();
+                    AscultaPentruDate();
                     Debug.WriteLine("Clientul a fost conectat la server cu success!");
                 }
                 else
@@ -65,32 +68,19 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie ConecteazaClientLaServer: " + exceptie);
             }
         }
-
-        public void InchidereClient ()
+        public void AscultaPentruDate()
         {
-            try
-            { 
-                if (_client != null)
-                {
-                    _client.Close();
-                    InchideStreamuri();
-                }
-            }
-            catch (Exception exceptie)
+            if (_timerCitireDate == null)
             {
-                Debug.WriteLine("Exceptie functie InchidereClient: " + exceptie);
+                _timerCitireDate = new();
+                _timerCitireDate.Interval = 100;
+                _timerCitireDate.AutoReset = true;
+                _timerCitireDate.Enabled = true;
+                _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);
+                _timerCitireDate.Start();
             }
         }
-
-        public void InitializareStreamuri()
-        {
-            _streamServer = _client.GetStream();
-            _streamCitire = new StreamReader(_streamServer);
-            _streamScriere = new StreamWriter(_streamServer);
-            _streamScriere.AutoFlush = true;
-        }
-
-        public void InchideStreamuri()
+        private void InchideStreamuri()
         {
             if (_streamServer != null)
             {
@@ -103,13 +93,13 @@ namespace ProiectVolovici
         public void Dispose()
         {
             InchidereClient();
-            _client = null;
+            _client.Dispose();
             _adresaIP = null;
             _port = 0;
 
-            _streamServer = null;
-            _streamCitire = null;
-            _streamScriere = null;
+            _streamServer.Dispose();
+            _streamCitire.Dispose();
+            _streamScriere.Dispose();
 
             Debug.WriteLine("NetworkClient Disposed!");
         }
@@ -140,6 +130,36 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
             }
             return null;
+        }
+
+        private void AscultaDate_Tick(object source, ElapsedEventArgs e)
+        {
+            if (_streamServer != null)
+                PrimesteDate();
+        }
+
+        private void InchidereClient ()
+        {
+            try
+            { 
+                if (_client != null)
+                {
+                    _client.Close();
+                    InchideStreamuri();
+                }
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie InchidereClient: " + exceptie);
+            }
+        }
+
+        private void InitializareStreamuri()
+        {
+            _streamServer = _client.GetStream();
+            _streamCitire = new StreamReader(_streamServer);
+            _streamScriere = new StreamWriter(_streamServer);
+            _streamScriere.AutoFlush = true;
         }
     }
 }

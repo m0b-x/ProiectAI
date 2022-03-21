@@ -29,14 +29,26 @@ namespace ProiectVolovici
         /// </summary>
         private void InitializeComponent()
         {
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // FormJoc
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(666, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(71, 42);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Trimite \"Chunga\"";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // FormJocHost
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(793, 590);
-            this.Name = "FormJoc";
+            this.Controls.Add(this.button1);
+            this.Name = "FormJocHost";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormJocHost_FormClosing);
             this.Load += new System.EventHandler(this.FormJocHost_Load);
@@ -45,6 +57,8 @@ namespace ProiectVolovici
         }
 
         #endregion
+
+        private System.Windows.Forms.Button button1;
     }
 }
 
