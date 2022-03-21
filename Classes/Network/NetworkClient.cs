@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProiectVolovici
@@ -15,7 +16,7 @@ namespace ProiectVolovici
         private TcpClient _client;
         private IPAddress _adresaIP;
         private int _port;
-        private int _timeout;
+        private int _timpTimeoutConexiune;
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
@@ -26,7 +27,7 @@ namespace ProiectVolovici
             _adresaIP = adresaIP;
             _port = port;
             _client = new TcpClient();
-            _timeout = 1000;
+            _timpTimeoutConexiune = 5000;
         }
         //sursa : https://stackoverflow.com/questions/18486585/tcpclient-connectasync-get-status
         public void PornesteCerereaDeConectare()
@@ -41,7 +42,7 @@ namespace ProiectVolovici
                     },
                     TaskContinuationOptions.ExecuteSynchronously);
 
-                var taskTimeout = Task.Delay(_timeout).
+                var taskTimeout = Task.Delay(_timpTimeoutConexiune).
                     ContinueWith<TcpClient>(task => null, TaskContinuationOptions.ExecuteSynchronously);
 
                 var rezultatConexiune = Task.WhenAny(taskConexiune, taskTimeout).Unwrap();
@@ -52,18 +53,17 @@ namespace ProiectVolovici
                 if (resultTcpClient != null)
                 {
                     InitializareStreamuri();
-                    Debug.WriteLine("Client Conectat(ClientSide): " + _client.Connected);
+                    Debug.WriteLine("Clientul a fost conectat la server cu success!");
                 }
                 else
                 {
-                    Debug.WriteLine("Client Conectat(ClientSide): " + _client.Connected);
+                    Debug.WriteLine("Client nu a fost conectat! Motiv:Timeout ");
                 }
             }
             catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie ConecteazaClientLaServer: " + exceptie);
             }
-
         }
 
         public void InchidereClient ()

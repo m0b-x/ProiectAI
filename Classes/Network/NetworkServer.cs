@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProiectVolovici
@@ -40,7 +41,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void AcceptaConexiuniExistente()
+        public void AcceptaViitoareleConexiuni()
         {
             try
             {
@@ -54,25 +55,26 @@ namespace ProiectVolovici
         private void AcceptaConexiuneSocket(IAsyncResult rezultatAsincron)
         {
             _socketClient = _server.EndAcceptSocket(rezultatAsincron);
-            _streamClient = new NetworkStream(_socketClient,true);
             Debug.WriteLine("Client conectat(ServerSide): " + _socketClient.Connected);
-            if (_socketClient != null)
-            {
-                InitializeazaStreamuri();
-            }
-            else
-            {
-                Debug.Write("Nimeni nu este conectat la server!");
-            }
+            InitializeazaStreamuri();
         }
         public void InitializeazaStreamuri()
         {
-            if (_streamClient != null)
+            try
             {
-                _streamCitire = new StreamReader(_streamClient);
-                _streamScriere = new StreamWriter(_streamClient);
-                _streamScriere.AutoFlush = true;
+                _streamClient = new NetworkStream(_socketClient, true);
+                if (_streamClient != null)
+                {
+                    _streamCitire = new StreamReader(_streamClient);
+                    _streamScriere = new StreamWriter(_streamClient);
+                    _streamScriere.AutoFlush = true;
+                }
             }
+            catch(Exception exceptie)
+            {
+                Debug.Write("Exceptie la InitializeazaStreamuri: " + exceptie);
+            }
+
         }
 
         public void InchideStreamuri()

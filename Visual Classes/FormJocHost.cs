@@ -25,7 +25,7 @@ namespace ProiectVolovici
         NetworkServer server;
         NetworkClient client;
 
-        private void FormJocHost_Load(object sender, EventArgs e)
+        private async void FormJocHost_Load(object sender, EventArgs e)
         {
             Piesa pion = new Pion(Culoare.Albastru);
             Piesa pion2 = new Pion(Culoare.Albastru);
@@ -44,12 +44,12 @@ namespace ProiectVolovici
             FormJocClient formJocClient = new FormJocClient();
             formJocClient.Show();
 
-            server = new NetworkServer(IPAddress.Any,3000);
+            //server = new NetworkServer(IPAddress.Any,3000);
             client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
 
-            server.AcceptaConexiuniExistente();
+            //server.AcceptaViitoareleConexiuni();
             client.PornesteCerereaDeConectare();
-
+            /*
             server.TrimiteDate("CHUNGAAAAA");
             Debug.WriteLine("DatePrimite de la client: " + client.PrimesteDate());
 
@@ -58,9 +58,7 @@ namespace ProiectVolovici
             server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
 
             JocDeSah tablaClient = new JocDeSah(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
-            /*
             */
-
         }
 
         private void FormJocHost_FormClosing(object sender, FormClosingEventArgs e)
