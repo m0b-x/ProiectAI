@@ -28,13 +28,13 @@ namespace ProiectVolovici
             _client = new TcpClient();
             _timeout = 1000;
         }
-
-        public async void PornesteCerereaDeConectare()
+        //sursa : https://stackoverflow.com/questions/18486585/tcpclient-connectasync-get-status
+        public void PornesteCerereaDeConectare()
         {
             String adresaIPString = _adresaIP.ToString();
             try
             {
-                var connectionTask = _client.
+                var taskConexiune = _client.
                     ConnectAsync(_adresaIP, _port).ContinueWith(task => 
                     {
                         return task.IsFaulted ? null : _client;
@@ -44,10 +44,10 @@ namespace ProiectVolovici
                 var taskTimeout = Task.Delay(_timeout).
                     ContinueWith<TcpClient>(task => null, TaskContinuationOptions.ExecuteSynchronously);
 
-                var resultTask = Task.WhenAny(connectionTask, taskTimeout).Unwrap();
+                var rezultatConexiune = Task.WhenAny(taskConexiune, taskTimeout).Unwrap();
 
-                resultTask.Wait();
-                var resultTcpClient = resultTask.Result;
+                rezultatConexiune.Wait();
+                var resultTcpClient = rezultatConexiune.Result;
 
                 if (resultTcpClient != null)
                 {

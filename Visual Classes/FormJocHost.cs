@@ -47,8 +47,8 @@ namespace ProiectVolovici
             server = new NetworkServer(IPAddress.Any,3000);
             client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
 
-            client.PornesteCerereaDeConectare();
             server.AcceptaConexiuniExistente();
+            client.PornesteCerereaDeConectare();
 
             server.TrimiteDate("CHUNGAAAAA");
             Debug.WriteLine("DatePrimite de la client: " + client.PrimesteDate());
