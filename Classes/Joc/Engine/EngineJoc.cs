@@ -153,8 +153,6 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
-                    ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
-                    ArrayCadrane[linie, coloana].AddClickEventHandler(OnCadranClick);
                     if (matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
                     {
                         Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));

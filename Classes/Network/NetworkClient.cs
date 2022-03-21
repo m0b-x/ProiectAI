@@ -22,7 +22,8 @@ namespace ProiectVolovici
         private int _timpTimeoutConexiune;
         private bool _disposed;
         private string _mesajDeconectare;
-        private bool _conectat; 
+        private bool _conectat;
+        private String _buffer;
 
         private NetworkStream _streamServer;
         private StreamReader _streamCitire;
@@ -34,6 +35,11 @@ namespace ProiectVolovici
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
+        }
+
+        public String Buffer
+        {
+            get { return _buffer; }
         }
 
         public NetworkClient(IPAddress adresaIP, int port)
@@ -99,6 +105,15 @@ namespace ProiectVolovici
                 _timerCitireDate.Start();
             }
         }
+
+        private void AscultaDate_Tick(object source, ElapsedEventArgs e)
+        {
+            if (_streamServer != null)
+            {
+                PrimesteDate();
+            }
+        }
+
         private void InchideStreamuri()
         {
             if (_streamServer != null)
@@ -122,7 +137,6 @@ namespace ProiectVolovici
                 _streamServer.Dispose();
                 _streamCitire.Dispose();
                 _streamScriere.Dispose();
-                _timerCitireDate.Stop();
                 _timerCitireDate.Dispose();
                 Debug.WriteLine("NetworkClient sters!");
             }
@@ -154,7 +168,8 @@ namespace ProiectVolovici
                 {
                     Debug.WriteLine("Serverul s-a deconectat de la client`");
                 }
-                Debug.WriteLine("Date Primite Client: " + date);
+                Debug.WriteLine("Date Primite de Client: " + date);
+                _buffer = date;
                 return date;
             }
             catch (Exception exceptie)
@@ -162,12 +177,6 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
             }
             return null;
-        }
-
-        private void AscultaDate_Tick(object source, ElapsedEventArgs e)
-        {
-            if (_streamServer != null)
-                PrimesteDate();
         }
 
         private void InchidereClient ()

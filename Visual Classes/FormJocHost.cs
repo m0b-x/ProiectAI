@@ -45,16 +45,14 @@ namespace ProiectVolovici
 
             jocSahForm2 = new JocMultiplayer(form, ref jucatori);
 
-            jocSah.HosteazaJoc(3000);
-            jocSahForm2.ConecteazateLaJoc(IPAddress.Parse("127.0.0.1"), 3000);
-
             jocSah.AdaugaPiesa(ref pion2, new Pozitie(2, 1));
             jocSah.AdaugaPiesa(ref pion, new Pozitie(1, 1));
             jocSah.AdaugaPiesa(ref rege, new Pozitie(8, 7));
             jocSah.AdaugaPiesa(ref turaAlbastra, new Pozitie(0, 0));
             jocSah.AdaugaPiesa(ref turaAlba, new Pozitie(8, 8));
 
-
+            jocSah.HosteazaJoc(3000);
+            jocSahForm2.ConecteazateLaJoc(IPAddress.Parse("127.0.0.1"), 3000);
         }
 
         private void FormJocHost_FormClosing(object sender, FormClosingEventArgs e)

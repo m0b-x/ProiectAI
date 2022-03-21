@@ -23,6 +23,7 @@ namespace ProiectVolovici
         private bool _disposed;
         private int _port;
         private bool _conectat;
+        private string _buffer;
 
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
@@ -36,6 +37,11 @@ namespace ProiectVolovici
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
+        }
+
+        public String Buffer
+        {
+            get { return _buffer; }
         }
 
         public NetworkServer(IPAddress adresaIP,int port)
@@ -123,6 +129,7 @@ namespace ProiectVolovici
                     Debug.WriteLine("Clientul s-a deconectat de la server");
                 }
                 Debug.WriteLine("Date Primite Server: " + date);
+                _buffer = date;
                 return date;
             }
             catch (Exception exceptie)

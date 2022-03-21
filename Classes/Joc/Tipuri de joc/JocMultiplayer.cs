@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
+using System.Diagnostics;
 
 namespace ProiectVolovici
 {
-    public class JocMultiplayer : EngineJoc
+    public class JocMultiplayer : EngineJoc, IDisposable
     {
         private Om _jucatorServer;
         private Om _jucatorClient;
@@ -17,6 +18,8 @@ namespace ProiectVolovici
         private NetworkServer _server;
         private NetworkClient _client;
         private ParserTabla _parserTabla;
+
+        private int _timpTimeout;
 
         private System.Timers.Timer _timerClientAcceptat;
         private System.Timers.Timer _timerClientConectat;
@@ -35,14 +38,33 @@ namespace ProiectVolovici
         {
             _jucatorServer = jucatori.Item1;
             _jucatorClient = jucatori.Item2;
+            _timpTimeout = 200;
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
         }
         public JocMultiplayer(Form parentForm, int[,] matriceTabla, ref Tuple<Om, Om> jucatori) : base(parentForm, matriceTabla)
         {
             _jucatorServer = jucatori.Item1;
             _jucatorClient = jucatori.Item2;
+            _timpTimeout = 200;
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
         }
+
+        public void Dispose()
+        {
+                _jucatorServer = null;
+                _jucatorClient = null;
+
+            _server.Dispose();
+            _client.Dispose();
+            _parserTabla = null;
+
+            _timpTimeout = 0;
+
+            _timerClientAcceptat.Dispose();
+            _timerClientConectat.Dispose();
+        }
+
+         ~JocMultiplayer() => Dispose();
 
         public void trimiteDate(String date)
         {
@@ -69,17 +91,13 @@ namespace ProiectVolovici
             _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
         }
 
-        public void primesteTablaDeLaServer()
-        {
-            ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.PrimesteDate()));
-        }
 
         private void AsteaptaComunicareaCuClientul()
         {
             if (_timerClientAcceptat == null)
             {
                 _timerClientAcceptat = new();
-                _timerClientAcceptat.Interval = 100;
+                _timerClientAcceptat.Interval = _timpTimeout;
                 _timerClientAcceptat.AutoReset = true;
                 _timerClientAcceptat.Enabled = true;
                 _timerClientAcceptat.Elapsed += new ElapsedEventHandler(PregatesteTrimitereaTablei);
@@ -90,8 +108,8 @@ namespace ProiectVolovici
         {
             if (_server.Conectat == true)
             {
-                trimiteTablaCatreClient();
                 _timerClientAcceptat.Stop();
+                trimiteTablaCatreClient();
             }
         }
 
@@ -100,7 +118,7 @@ namespace ProiectVolovici
             if (_timerClientConectat == null)
             {
                 _timerClientConectat = new();
-                _timerClientConectat.Interval = 100;
+                _timerClientConectat.Interval = _timpTimeout;
                 _timerClientConectat.AutoReset = true;
                 _timerClientConectat.Enabled = true;
                 _timerClientConectat.Elapsed += new ElapsedEventHandler(PregatestePrimireaTablei);
@@ -111,11 +129,10 @@ namespace ProiectVolovici
         {
             if (_client.Conectat == true)
             {
-                primesteTablaDeLaServer();
                 _timerClientConectat.Stop();
+                ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
             }
         }
-
 
         public void InchideServerul()
         {
