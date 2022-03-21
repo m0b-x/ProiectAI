@@ -87,6 +87,7 @@ namespace ProiectVolovici
             _streamServer = _client.GetStream();
             _streamCitire = new StreamReader(_streamServer);
             _streamScriere = new StreamWriter(_streamServer);
+            _streamScriere.AutoFlush = true;
         }
 
         public void InchideStreamuri()

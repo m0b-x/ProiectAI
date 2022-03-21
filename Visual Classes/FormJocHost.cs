@@ -44,21 +44,24 @@ namespace ProiectVolovici
             FormJocClient formJocClient = new FormJocClient();
             formJocClient.Show();
 
-            //server = new NetworkServer(IPAddress.Any,3000);
+            server = new NetworkServer(IPAddress.Any,3000);
             client = new NetworkClient(IPAddress.Parse("127.0.0.1"), 3000);
 
-            //server.AcceptaViitoareleConexiuni();
+            server.AcceptaConexiuneaUrmatoare();
             client.PornesteCerereaDeConectare();
-            /*
+
             server.TrimiteDate("CHUNGAAAAA");
-            Debug.WriteLine("DatePrimite de la client: " + client.PrimesteDate());
+            Debug.WriteLine("DatePrimite de la server: " + client.PrimesteDate());
+
+            client.TrimiteDate("COPENHAGA");
+            Debug.WriteLine("DatePrimite de la client: " + server.PrimesteDate());
 
             ParserTabla parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, 5);
 
             server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
 
             JocDeSah tablaClient = new JocDeSah(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
-            */
+
         }
 
         private void FormJocHost_FormClosing(object sender, FormClosingEventArgs e)

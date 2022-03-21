@@ -15,7 +15,7 @@ namespace ProiectVolovici
     {
         private TcpListener _server;
         private IPAddress _adresaIP;
-        private Socket _socketClient;
+        private Socket _socketListening;
 
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
@@ -41,7 +41,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void AcceptaViitoareleConexiuni()
+        public void AcceptaConexiuneaUrmatoare()
         {
             try
             {
@@ -54,15 +54,28 @@ namespace ProiectVolovici
         }
         private void AcceptaConexiuneSocket(IAsyncResult rezultatAsincron)
         {
-            _socketClient = _server.EndAcceptSocket(rezultatAsincron);
-            Debug.WriteLine("Client conectat(ServerSide): " + _socketClient.Connected);
+            _socketListening = _server.EndAcceptSocket(rezultatAsincron);
+            Debug.WriteLine("Serverul a primit conexiunea clientului");
             InitializeazaStreamuri();
         }
+
+        public void AscultaPentruDate()
+        {
+            while(true)
+            {
+                if(_streamCitire != null)
+                {
+                    string date = _streamCitire.ReadLine();
+                    Debug.WriteLine(date);
+                }
+            }
+        }
+
         public void InitializeazaStreamuri()
         {
             try
             {
-                _streamClient = new NetworkStream(_socketClient, true);
+                _streamClient = new NetworkStream(_socketListening, true);
                 if (_streamClient != null)
                 {
                     _streamCitire = new StreamReader(_streamClient);
@@ -89,9 +102,9 @@ namespace ProiectVolovici
 
         public void InchideSocket()
         {
-            if (_socketClient != null)
+            if (_socketListening != null)
             {
-                _socketClient.Close();
+                _socketListening.Close();
             }
         }
 
@@ -117,7 +130,7 @@ namespace ProiectVolovici
             InchideServer();
             _server = null;
             _adresaIP = null;
-            _socketClient = null;
+            _socketListening = null;
 
             _streamClient = null;
             _streamCitire = null;
@@ -131,7 +144,7 @@ namespace ProiectVolovici
 
         public void TrimiteDate(String date)
         {
-            if (_socketClient == null)
+            if (_socketListening == null)
             {
                 Debug.WriteLine("Streamurile serverului nu sunt initializate! ");
             }
