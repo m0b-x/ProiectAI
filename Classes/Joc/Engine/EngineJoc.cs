@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ProiectVolovici
 {
 
-    public class JocDeSah
+    public class EngineJoc
     {
         private Form _parentForm;
         private Tabla _tabla;
@@ -21,7 +21,7 @@ namespace ProiectVolovici
      
         private Piesa _piesaSelectata;
 
-        private Pozitie[] _ultimaMutare;
+        private Tuple<Pozitie,Pozitie> _ultimaMutare;
 
         public List<Piesa> ListaPiese
         {
@@ -95,19 +95,19 @@ namespace ProiectVolovici
             set { _piesaSelectata = value; }
         }
 
-        public Pozitie[] UltimaMutare
+        public Tuple<Pozitie,Pozitie> UltimaMutare
         {
             get { return _ultimaMutare; }
         }
 
-        public JocDeSah(Form parentForm)
+        public EngineJoc(Form parentForm)
         {
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
             _pozitiiMutariPosibile = new List<Pozitie>();
 
             _tabla = new Tabla();
-            _ultimaMutare = new Pozitie[2];
+            _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0,0),new Pozitie(0,0));
 
             _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
 
@@ -120,7 +120,7 @@ namespace ProiectVolovici
                 }
             }
         }
-        public JocDeSah(Form parentForm,int[,] matriceTabla)
+        public EngineJoc(Form parentForm,int[,] matriceTabla)
         {
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
@@ -128,11 +128,9 @@ namespace ProiectVolovici
 
 
             _tabla = new Tabla();
-            _ultimaMutare = new Pozitie[2];
+            _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
             _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
-
-            _ultimaMutare = new Pozitie[2];
 
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
@@ -153,20 +151,20 @@ namespace ProiectVolovici
         {
             switch (codPiesa)
             {
-                case CodPiesa.PionAlb: return new Pion(Culoare.Alb);
-                case CodPiesa.PionAlbastru: return new Pion(Culoare.Albastru);
-                case CodPiesa.TuraAlba: return new Tura(Culoare.Alb);
-                case CodPiesa.TuraAlbastra: return new Tura(Culoare.Albastru);
-                case CodPiesa.TunAlb: return new Tun(Culoare.Alb);
-                case CodPiesa.TunAlbastru: return new Tun(Culoare.Albastru);
-                case CodPiesa.GardianAlb: return new Gardian(Culoare.Alb);
-                case CodPiesa.GardianAlbastru: return new Gardian(Culoare.Albastru);
-                case CodPiesa.ElefantAlb: return new Elefant(Culoare.Alb);
-                case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.Albastru); ;
-                case CodPiesa.CalAlb: return new Cal(Culoare.Alb);
-                case CodPiesa.CalAbastru: return new Cal(Culoare.Albastru);
-                case CodPiesa.RegeAlb: return new Rege(Culoare.Alb);
-                case CodPiesa.RegeAlbastru: return new Rege(Culoare.Albastru);
+                case CodPiesa.PionAlb: return new Pion(CuloareJoc.Alb);
+                case CodPiesa.PionAlbastru: return new Pion(CuloareJoc.Albastru);
+                case CodPiesa.TuraAlba: return new Tura(CuloareJoc.Alb);
+                case CodPiesa.TuraAlbastra: return new Tura(CuloareJoc.Albastru);
+                case CodPiesa.TunAlb: return new Tun(CuloareJoc.Alb);
+                case CodPiesa.TunAlbastru: return new Tun(CuloareJoc.Albastru);
+                case CodPiesa.GardianAlb: return new Gardian(CuloareJoc.Alb);
+                case CodPiesa.GardianAlbastru: return new Gardian(CuloareJoc.Albastru);
+                case CodPiesa.ElefantAlb: return new Elefant(CuloareJoc.Alb);
+                case CodPiesa.ElefantAlbastru: return new Elefant(CuloareJoc.Albastru); ;
+                case CodPiesa.CalAlb: return new Cal(CuloareJoc.Alb);
+                case CodPiesa.CalAbastru: return new Cal(CuloareJoc.Albastru);
+                case CodPiesa.RegeAlb: return new Rege(CuloareJoc.Alb);
+                case CodPiesa.RegeAlbastru: return new Rege(CuloareJoc.Albastru);
                 default: return null;
             }
 
@@ -269,10 +267,9 @@ namespace ProiectVolovici
                 return false;
         }
 
-        public void ActualizeazaUltimaMutare(Pozitie pozitieInitiala,Pozitie pozitiFinala)
+        public void ActualizeazaUltimaMutare(Pozitie pozitieInitiala,Pozitie pozitieFinala)
         {
-            _ultimaMutare[0] = pozitieInitiala;
-            _ultimaMutare[1] = pozitiFinala;
+            Tuple<Pozitie, Pozitie> _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
         public void MutaPiesa(Piesa piesa, Pozitie pozitie)

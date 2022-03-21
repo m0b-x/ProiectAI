@@ -8,12 +8,12 @@ namespace ProiectVolovici
 {
     class Gardian : Piesa
     {
-        public Gardian(Culoare culoare)
+        public Gardian(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.benvoy;
                 this.Cod = CodPiesa.GardianAlbastru;
@@ -24,7 +24,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.GardianAlb;
             }
         }
-        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
 
     }
 }

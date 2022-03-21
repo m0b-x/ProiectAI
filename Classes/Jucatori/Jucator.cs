@@ -4,9 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProiectVolovici
+namespace ProiectVolovici.Classes
 {
-    class Jucator
+    abstract class Jucator
     {
+        private String _nume;
+        private List<Piesa> _istoricMutari;
+
+        public String Nume
+        {
+            get { return _nume; }
+            set { _nume = value; }
+        }
+
     }
 }

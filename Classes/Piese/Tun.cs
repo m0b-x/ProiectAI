@@ -8,12 +8,12 @@ namespace ProiectVolovici
 {
     class Tun : Piesa
     {
-        public Tun(Culoare culoare)
+        public Tun(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.bcannon;
                 this.Cod = CodPiesa.TunAlbastru;
@@ -24,6 +24,6 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.TunAlb;
             }
         }
-        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
     }
 }

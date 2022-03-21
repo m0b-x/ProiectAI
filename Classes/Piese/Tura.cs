@@ -11,13 +11,13 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Tura"/> class.
         /// </summary>
-        /// <param name="culoare">The culoare<see cref="Culoare"/>.</param>
-        public Tura(Culoare culoare)
+        /// <param name="culoare">The culoare<see cref="CuloareJoc"/>.</param>
+        public Tura(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.brook;
                 this.Cod = CodPiesa.TuraAlbastra;
@@ -32,8 +32,8 @@
         /// <summary>
         /// The ArataMutariPosibile.
         /// </summary>
-        /// <param name="tabla">The tabla<see cref="JocDeSah"/>.</param>
-        public override void ArataMutariPosibile(JocDeSah tabla)
+        /// <param name="tabla">The tabla<see cref="EngineJoc"/>.</param>
+        public override void ArataMutariPosibile(EngineJoc tabla)
         {
             Debug.WriteLine("ArataMutariPosibileTura " + this._codPiesa);
             List<Pozitie> pozitii = new List<Pozitie>();

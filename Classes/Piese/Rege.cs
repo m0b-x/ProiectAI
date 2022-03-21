@@ -8,12 +8,12 @@ namespace ProiectVolovici
 {
     class Rege : Piesa
     {
-        public Rege(Culoare culoare)
+        public Rege(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.bking;
                 this.Cod = CodPiesa.RegeAlbastru;
@@ -24,6 +24,6 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.RegeAlb;
             }
         }
-        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
     }
 }

@@ -7,7 +7,7 @@ namespace ProiectVolovici
 {
     public partial class Cadran : UserControl
     {
-        Pozitie _pozitieCadran;
+        private Pozitie _pozitieCadran;
 
         private Piesa _piesaCadran;
 
@@ -34,7 +34,7 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        public Cadran(JocDeSah tabla, Pozitie pozitie,Color culoare)
+        public Cadran(EngineJoc tabla, Pozitie pozitie,Color culoare)
         {
             Parent = tabla.ParentForm;
             if (pozitie.Linie > tabla.PragRau)
@@ -76,7 +76,7 @@ namespace ProiectVolovici
                 return false;
         }
 
-        public bool EsteAdversar(Culoare culoare)
+        public bool EsteAdversar(CuloareJoc culoare)
         {
             if (this.CadranEsteGol())
             {

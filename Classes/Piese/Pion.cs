@@ -9,12 +9,12 @@ namespace ProiectVolovici
     class Pion : Piesa
     {
         
-        public Pion(Culoare culoare)
+        public Pion(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.bpawn;
                 this.Cod = CodPiesa.PionAlbastru;
@@ -26,10 +26,10 @@ namespace ProiectVolovici
             }
         }
 
-        public override void ArataMutariPosibile(JocDeSah tabla)
+        public override void ArataMutariPosibile(EngineJoc tabla)
         {
             List<Pozitie> pozitii = new List<Pozitie>();
-            if(CuloarePiesa == Culoare.Albastru)
+            if(CuloarePiesa == CuloareJoc.Albastru)
             {
                 int sfarsitLinie = tabla.MarimeVerticala - 1;
                 if (this.Pozitie.Linie != sfarsitLinie)
@@ -82,7 +82,7 @@ namespace ProiectVolovici
                     }
                 }
             }
-            else if (CuloarePiesa == Culoare.Alb)
+            else if (CuloarePiesa == CuloareJoc.Alb)
             {
                 int inceputLinie = 0;
                 if (this.Pozitie.Linie != inceputLinie)

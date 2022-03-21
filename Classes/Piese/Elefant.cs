@@ -8,12 +8,12 @@ namespace ProiectVolovici
 {
     class Elefant : Piesa
     {
-        public Elefant(Culoare culoare)
+        public Elefant(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (culoare == CuloareJoc.Albastru)
             {
                 this.Imagine = Properties.Resources.belephantrev2;
                 this.Cod = CodPiesa.ElefantAlbastru;
@@ -24,6 +24,6 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.ElefantAlb;
             }
         }
-        public override void ArataMutariPosibile(JocDeSah tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
     }
 }

@@ -27,13 +27,13 @@ namespace ProiectVolovici
 
         private void FormJocHost_Load(object sender, EventArgs e)
         {
-            Piesa pion = new Pion(Culoare.Albastru);
-            Piesa pion2 = new Pion(Culoare.Albastru);
-            Piesa turaAlbastra = new Tura(Culoare.Albastru);
-            Piesa turaAlba = new Tura(Culoare.Alb);
-            Piesa rege = new Rege(Culoare.Alb);
+            Piesa pion = new Pion(CuloareJoc.Albastru);
+            Piesa pion2 = new Pion(CuloareJoc.Albastru);
+            Piesa turaAlbastra = new Tura(CuloareJoc.Albastru);
+            Piesa turaAlba = new Tura(CuloareJoc.Alb);
+            Piesa rege = new Rege(CuloareJoc.Alb);
 
-            JocDeSah tablaServer = new JocDeSah(this);
+            EngineJoc tablaServer = new JocMultiplayer(this);
 
             tablaServer.AdaugaPiesa(ref pion2, new Pozitie(2,1));
             tablaServer.AdaugaPiesa(ref pion, new Pozitie(1, 1));
@@ -57,7 +57,7 @@ namespace ProiectVolovici
 
             server.TrimiteDate   (parserTabla.CodificareTabla(tablaServer.MatriceCodPiese));
 
-            JocDeSah tablaClient = new JocDeSah(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
+            EngineJoc tablaClient = new EngineJoc(formJocClient, parserTabla.DecodificareTabla(client.PrimesteDate()));
 
         }
 
