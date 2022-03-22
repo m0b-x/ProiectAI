@@ -149,6 +149,58 @@ namespace ProiectVolovici
             }
         }
 
+        public void AdaugaPieselePrestabilite()
+        {
+            //piese albastre
+
+            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 0));
+            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 2));
+            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 4));
+            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 6));
+            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 8));
+
+            AdaugaPiesa(new Tun(CuloareJoc.Albastru), new Pozitie(2, 1));
+            AdaugaPiesa(new Tun(CuloareJoc.Albastru), new Pozitie(2, 7));
+
+            AdaugaPiesa(new Tura(CuloareJoc.Albastru), new Pozitie(0, 0));
+            AdaugaPiesa(new Tura(CuloareJoc.Albastru), new Pozitie(0, 8));
+
+            AdaugaPiesa(new Cal(CuloareJoc.Albastru), new Pozitie(0, 1));
+            AdaugaPiesa(new Cal(CuloareJoc.Albastru), new Pozitie(0, 7));
+
+            AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 2));
+            AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 6));
+
+            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 3));
+            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 5));
+
+            AdaugaPiesa(new Rege(CuloareJoc.Albastru), new Pozitie(0, 4));
+
+            //piese albe
+
+            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 0));
+            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 2));
+            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 4));
+            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 6));
+            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 8));
+
+            AdaugaPiesa(new Tun(CuloareJoc.Alb), new Pozitie(7, 1));
+            AdaugaPiesa(new Tun(CuloareJoc.Alb), new Pozitie(7, 7));
+
+            AdaugaPiesa(new Tura(CuloareJoc.Alb), new Pozitie(9, 0));
+            AdaugaPiesa(new Tura(CuloareJoc.Alb), new Pozitie(9, 8));
+
+            AdaugaPiesa(new Cal(CuloareJoc.Alb), new Pozitie(9, 1));
+            AdaugaPiesa(new Cal(CuloareJoc.Alb), new Pozitie(9, 7));
+
+            AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 2));
+            AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 6));
+
+            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 3));
+            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 5));
+
+            AdaugaPiesa(new Rege(CuloareJoc.Alb), new Pozitie(9, 4));
+        }
         public void ActualizeazaIntreagaTabla(int[,] matriceTabla)
         {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
