@@ -24,7 +24,7 @@ namespace ProiectVolovici
 
         public static readonly Piesa PiesaNula = null;
 
-        public static readonly int IntervalPiesaBlocata = 400;
+        public static readonly int IntervalPiesaBlocata = 25;
 
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)

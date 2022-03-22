@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Media;
-using System.Timers;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -227,19 +227,12 @@ namespace ProiectVolovici
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
         }
-        public void ArataPiesaBlocata(Pozitie pozitie)
+        public async Task ArataPozitieBlocata(Pozitie pozitie)
         {
             ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePiesaBlocata;
-            System.Timers.Timer timerPiesaBlocata = new System.Timers.Timer();
-            timerPiesaBlocata.Elapsed += new ElapsedEventHandler((sender, e) => DecoloreazaPiesaBlocata(sender, e, pozitie, timerPiesaBlocata));
-            timerPiesaBlocata.Interval = ConstantaTabla.IntervalPiesaBlocata;
-            timerPiesaBlocata.Enabled = true;
-            ConstantaSunet.SunetMutareGresita.Play();
-        }
-        private void DecoloreazaPiesaBlocata(object source, ElapsedEventArgs e,Pozitie pozitie, System.Timers.Timer timer)
-        {
-            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
-            timer.Stop();
+            Color culoareCadran = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
+            await Task.Delay(ConstantaTabla.IntervalPiesaBlocata);
+            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadran;
         }
 
         public void AscundePiesaSelectata(Piesa piesa)

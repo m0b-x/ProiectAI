@@ -14,6 +14,9 @@ namespace ProiectVolovici
 {
     class NetworkClient : IDisposable
     {
+        public static String BufferGol = "";
+        public static int TimeoutConexiune = 5000;
+
         private TcpClient _client;
         private IPAddress _adresaIP;
         private System.Timers.Timer _timerCitireDate;
@@ -45,19 +48,23 @@ namespace ProiectVolovici
 
         public NetworkClient(IPAddress adresaIP, int port)
         {
+
+            _client = new TcpClient();
             _adresaIP = adresaIP;
             _port = port;
-            _client = new TcpClient();
-            _timpTimeoutConexiune = 5000;
+
             _disposed = false;
             _conectat = false;
+
             _mesajDeconectare = "0";
+            _timpTimeoutConexiune = TimeoutConexiune;
+            _buffer = BufferGol;
         }
 
         ~NetworkClient() => Dispose();
 
         //sursa : https://stackoverflow.com/questions/18486585/tcpclient-connectasync-get-status
-        public void PornesteCerereaDeConectare()
+        public async Task PornesteCerereaDeConectare()
         {
             String adresaIPString = _adresaIP.ToString();
             try
@@ -74,7 +81,7 @@ namespace ProiectVolovici
 
                 var rezultatConexiune = Task.WhenAny(taskConexiune, taskTimeout).Unwrap();
 
-                rezultatConexiune.Wait();
+                await rezultatConexiune;
                 var resultTcpClient = rezultatConexiune.Result;
 
                 if (resultTcpClient != null)
@@ -134,6 +141,7 @@ namespace ProiectVolovici
                 _client.Dispose();
                 _adresaIP = null;
                 _port = 0;
+                _buffer = null;
 
                 _streamServer.Dispose();
                 _streamCitire.Dispose();
@@ -152,7 +160,6 @@ namespace ProiectVolovici
             try
             {
                 _streamScriere.WriteLine(date);
-                _streamServer.Flush();
                 Debug.WriteLine("Date trimise de catre client:" + date);
             }
             catch (Exception exceptie)
@@ -167,13 +174,16 @@ namespace ProiectVolovici
             {
                 String date;
                 date = _streamCitire.ReadLine();
-                if (date == _mesajDeconectare)
+                if (_buffer != date)
                 {
-                    Debug.WriteLine("Serverul s-a deconectat de la client`");
+                    if (date == _mesajDeconectare)
+                    {
+                        Debug.WriteLine("Serverul s-a deconectat de la client`");
+                    }
+                    Debug.WriteLine("Date Primite de Client: " + date);
+                    _buffer = date;
+                    return date;
                 }
-                Debug.WriteLine("Date Primite de Client: " + date);
-                _buffer = date;
-                return date;
             }
             catch (Exception exceptie)
             {
