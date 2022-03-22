@@ -91,7 +91,7 @@ namespace ProiectVolovici
                     {
                         if (tabla.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
                         {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
+                            pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
                         }
                     }
                     else

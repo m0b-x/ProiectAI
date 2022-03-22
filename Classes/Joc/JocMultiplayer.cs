@@ -10,7 +10,7 @@ namespace ProiectVolovici
 {
     public class JocMultiplayer : EngineJoc, IDisposable
     {
-        private static int _intervalTimere = 75;
+        private static int _intervalTimere = 50;
 
         private Om _jucatorServer;
         private Om _jucatorClient;
@@ -289,11 +289,11 @@ namespace ProiectVolovici
 
         public void PrimesteDateClient(object source, ElapsedEventArgs e)
         {
-            if (!_client.Buffer.Equals(_client.MesajDeconectare))
+            if (_piesaPrimitaClient == false) 
             {  
                 if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
-                    if (_piesaPrimitaClient == false)
+                    if (!_client.Buffer.Equals(_client.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient) && !_penultimaMutareClient.Equals(_ultimaMutarePrimitaClient))
@@ -319,16 +319,12 @@ namespace ProiectVolovici
 
         public void PrimesteDateleHost(object source, ElapsedEventArgs e)
         {
-            Debug.WriteLine("1");
-            if (!_server.Buffer.Equals(_server.MesajDeconectare))
+            if (_piesaPrimitaHost == false) 
             {
-                Debug.WriteLine("2");
                 if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
-                    Debug.WriteLine("3");
-                    if (_piesaPrimitaHost == false)
+                    if (!_server.Buffer.Equals(_server.MesajDeconectare))
                     {
-                        Debug.WriteLine("4");
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost) && !_penultimaMutareHost.Equals(_ultimaMutarePrimitaHost))
                         {
@@ -362,7 +358,7 @@ namespace ProiectVolovici
             if (_client != null && _client.Conectat == true)
                 _client.Dispose();
         }
-        public async void OnCadranClick(object sender, EventArgs e)
+        public void OnCadranClick(object sender, EventArgs e)
         {
             if (_esteClient && _esteRandulClientului || _esteHost && _esteRandulHostului)
             {
@@ -384,7 +380,7 @@ namespace ProiectVolovici
                         }
                         else
                         {
-                            await ArataPozitieBlocata(pozitie);
+                            ArataPozitieBlocata(pozitie);
                         }
                     }
                 }

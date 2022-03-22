@@ -279,12 +279,15 @@ namespace ProiectVolovici
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
         }
-        public async Task ArataPozitieBlocata(Pozitie pozitie)
+        public async void ArataPozitieBlocata(Pozitie pozitie)
         {
-            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePiesaBlocata;
-            Color culoareCadran = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
-            await Task.Delay(ConstantaTabla.IntervalPiesaBlocata);
-            ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadran;
+            if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor != ConstantaTabla.CuloarePozitieBlocata)
+            {
+                Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
+                await Task.Delay(1);
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
+            }
         }
 
         public void AscundePiesaSelectata(Piesa piesa)

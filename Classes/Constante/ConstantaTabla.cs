@@ -20,11 +20,11 @@ namespace ProiectVolovici
         public static Color CuloarePalatPar = Color.OldLace;
         public static Color CuloarePalatImpar = Color.Olive;
 
-        public static Color CuloarePiesaBlocata = Color.DarkRed;
+        public static Color CuloarePozitieBlocata = Color.DarkRed;
 
         public static readonly Piesa PiesaNula = null;
 
-        public static readonly int IntervalPiesaBlocata = 25;
+        public static readonly int IntervalPiesaBlocata = 125;
 
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
