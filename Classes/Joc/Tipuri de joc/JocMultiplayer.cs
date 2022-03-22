@@ -17,7 +17,7 @@ namespace ProiectVolovici
 
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaClient;
-
+         
         private int _timpTimere;
         private bool _esteHost;
         private bool _esteClient;
@@ -129,14 +129,14 @@ namespace ProiectVolovici
 
         public void EsteRandulClientului()
         {
-            _esteRandulHostului = false;
             _esteRandulClientului = true;
+            _esteRandulHostului = false;
         }
 
         public void EsteRandulHostului()
         {
-            _esteRandulClientului = false;
             _esteRandulHostului = true;
+            _esteRandulClientului = false;
         }
         public void RealizeazaMutarea(Piesa piesa, Pozitie pozitie)
         {
@@ -205,8 +205,7 @@ namespace ProiectVolovici
             _server.AcceptaUrmatorulClient();
             AsteaptaComunicareaCuClientul();
             _esteHost = true;
-            _esteRandulHostului = true;
-            _esteRandulClientului = false;
+            EsteRandulHostului();
         }
 
         public async void ConecteazateLaJoc(IPAddress adresaIP, int port)
@@ -215,8 +214,7 @@ namespace ProiectVolovici
             await _client.PornesteCerereaDeConectare();
             AsteaptaComunicareaCuServerul();
             _esteClient = true;
-            _esteRandulHostului = true;
-            _esteRandulClientului = false;
+            EsteRandulHostului();
         }
 
 
@@ -246,9 +244,9 @@ namespace ProiectVolovici
             if (_client.Conectat == true && (!_client.Buffer.Equals(NetworkClient.BufferGol)))
             {
                 _timerClientConectat.Dispose();
-                EsteRandulClientului();
                 ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
                 PornesteTimerJocClientSide();
+                EsteRandulHostului();
             }
         }
 
@@ -299,21 +297,26 @@ namespace ProiectVolovici
                 if (!(_ultimulMesajPrimitClient.Equals(_client.Buffer)))
                 {
                     if (!_client.Buffer.Equals(_client.MesajDeconectare))
-                    {
-                        if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
+                    {                                    
+                        if (_esteRandulHostului == true)
                         {
-                            if (!_ultimaMutarePrimitaClient.Equals(UltimaMutare))
+                            if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                             {
-                                _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                                if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient))
+                                if (!_ultimaMutarePrimitaClient.Equals(UltimaMutare))
                                 {
-                                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                                    if (ultimaPiesa != ConstantaTabla.PiesaNula)
+                                    _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
+                                    if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient))
                                     {
-                                        Debug.WriteLine("Sincronizeaza jocul Client: " + _client.Buffer);
-                                        _ultimulMesajPrimitClient = _client.Buffer;
-                                        RealizeazaMutareaOnline(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                                        EsteRandulClientului();
+                                        Debug.WriteLine("Randul Hostului");
+
+                                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                                        if (ultimaPiesa != ConstantaTabla.PiesaNula)
+                                        {
+                                            Debug.WriteLine("Sincronizeaza jocul Client: " + _client.Buffer);
+                                            _ultimulMesajPrimitClient = _client.Buffer;
+                                            RealizeazaMutareaOnline(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                                            EsteRandulClientului();
+                                        }
                                     }
                                 }
                             }
@@ -335,20 +338,24 @@ namespace ProiectVolovici
                 {
                     if (!_server.Buffer.Equals(_server.MesajDeconectare))
                     {
-                        if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
+                        if (_esteRandulClientului == true)
                         {
                             if (!_ultimaMutarePrimitaHost.Item2.Equals(UltimaMutare.Item2))
                             {
-                                _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
-                                if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost))
-                                {
-                                    Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer);
-                                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                                    if (ultimaPiesa != ConstantaTabla.PiesaNula)
+                                    if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                                     {
-                                        _ultimulMesajPrimitServer = _server.Buffer;
-                                        RealizeazaMutareaOnline(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                                        EsteRandulHostului();
+                                    _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
+                                    if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost))
+                                    {
+                                        Debug.WriteLine("randul clientului");
+                                        Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer);
+                                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
+                                        if (ultimaPiesa != ConstantaTabla.PiesaNula)
+                                        {
+                                            _ultimulMesajPrimitServer = _server.Buffer;
+                                            RealizeazaMutareaOnline(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+                                            EsteRandulHostului();
+                                        }
                                     }
                                 }
                             }
