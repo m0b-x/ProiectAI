@@ -84,7 +84,7 @@ namespace ProiectVolovici
         {
             try
             {
-                _server.BeginAcceptTcpClient( new AsyncCallback(AcceptaConexiuneSocket), _server);
+                _server.BeginAcceptTcpClient( new AsyncCallback(AcceptaConexiuneClient), _server);
             }
             catch(Exception exceptie)
             {
@@ -103,6 +103,7 @@ namespace ProiectVolovici
                 _client.Dispose();
                  _port = 0;
                 _buffer = null;
+                _mesajDeconectare = null;
 
                 _streamClient.Dispose();
                 _streamCitire.Dispose();
@@ -161,7 +162,7 @@ namespace ProiectVolovici
             return null;
         }
 
-        private void AcceptaConexiuneSocket(IAsyncResult rezultatAsincron)
+        private void AcceptaConexiuneClient(IAsyncResult rezultatAsincron)
         {
             TcpListener _server = (TcpListener)rezultatAsincron.AsyncState;
             _client = _server.EndAcceptTcpClient(rezultatAsincron);

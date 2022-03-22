@@ -25,6 +25,8 @@ namespace ProiectVolovici
         private int _timpTimeoutConexiune;
         private bool _disposed;
         private string _mesajDeconectare;
+        private string _mesajConectare;
+
         private bool _conectat;
         private String _buffer;
 
@@ -38,6 +40,11 @@ namespace ProiectVolovici
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
+        }
+
+        public String MesajConectare
+        {
+            get { return _mesajConectare; }
         }
 
         public String Buffer
@@ -57,6 +64,7 @@ namespace ProiectVolovici
             _conectat = false;
 
             _mesajDeconectare = "0";
+            _mesajConectare = "1";
             _timpTimeoutConexiune = TimeoutConexiune;
             _buffer = BufferGol;
         }
@@ -142,6 +150,8 @@ namespace ProiectVolovici
                 _adresaIP = null;
                 _port = 0;
                 _buffer = null;
+                _mesajConectare = null;
+                _mesajDeconectare = null;
 
                 _streamServer.Dispose();
                 _streamCitire.Dispose();

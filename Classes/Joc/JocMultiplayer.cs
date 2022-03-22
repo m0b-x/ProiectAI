@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -226,14 +227,15 @@ namespace ProiectVolovici
                 _timerClientAcceptat.Interval = _timpTimere;
                 _timerClientAcceptat.AutoReset = true;
                 _timerClientAcceptat.Enabled = true;
-                _timerClientAcceptat.Elapsed += new ElapsedEventHandler(TrimiteTabla);
+                _timerClientAcceptat.Elapsed += new ElapsedEventHandler(PrimesteClient);
                 _timerClientAcceptat.Start();
             }
         }
-        private void TrimiteTabla(object source, ElapsedEventArgs e)
+        private void PrimesteClient(object source, ElapsedEventArgs e)
         {
             if (_server.ClientPrimit == true)
             {
+                Debug.WriteLine("DA");
                 _timerClientAcceptat.Dispose();
                 _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
                 PornesteTimerJocServerSide();
