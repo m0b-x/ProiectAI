@@ -36,7 +36,7 @@ namespace ProiectVolovici
         }
         public Tuple<Pozitie,Pozitie> DecodificareMutare(String mutare)
         {
-            Debug.WriteLine(mutare);
+            Debug.WriteLine("Decodificare" + mutare);
             mutare = mutare.Replace("{", " ");
             mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
