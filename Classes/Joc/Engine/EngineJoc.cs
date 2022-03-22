@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ProiectVolovici
 {
 
-    public class EngineJoc
+    public class EngineJoc : IDisposable
     {
         private Form _parentForm;
         private Tabla _tabla;
@@ -147,6 +147,11 @@ namespace ProiectVolovici
                     }
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _tabla.Dispose();
         }
 
         public void AdaugaPieselePrestabilite()

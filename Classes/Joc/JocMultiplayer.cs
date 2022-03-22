@@ -183,25 +183,13 @@ namespace ProiectVolovici
             PozitiiMutariPosibile.Clear();
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
-            _jucatorServer = null;
-            _jucatorClient = null;
-
             _server.Dispose();
             _client.Dispose();
-            _parserTabla = null;
-
-            _timpTimere = 0;
-
             _timerJocClient.Dispose();
             _timerJocServer.Dispose();
-
-            _esteClient = false;
-            _esteHost = false;
-
-            _piesaPrimitaClient = false;
-            _piesaPrimitaHost = false;
+            base.Dispose();
         }
 
         ~JocMultiplayer() => Dispose();

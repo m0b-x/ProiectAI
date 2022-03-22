@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    public class Tabla
+    public class Tabla : IDisposable
     {
         private Cadran[,] _arrayCadrane;
         private List<Pozitie> _pozitiiPalat;
@@ -88,6 +88,20 @@ namespace ProiectVolovici
 
             _arrayCadrane = new Cadran[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
         }
+
+        public void Dispose()
+        {
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    ArrayCadrane[linie, coloana].Dispose();
+                }
+            }
+        }
+
+        ~Tabla() => Dispose();
+
         public Color DecideCuloareaCadranului(int linie, int coloana)
         {
             if (_pozitiiPalat.Contains(new Pozitie(linie, coloana)))

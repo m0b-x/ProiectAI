@@ -30,12 +30,6 @@ namespace ProiectVolovici
 
         private void FormJocHost_Load(object sender, EventArgs e)
         {
-            Piesa pion = new Pion(CuloareJoc.Albastru);
-            Piesa pion2 = new Pion(CuloareJoc.Albastru);
-            Piesa turaAlbastra = new Tura(CuloareJoc.Albastru);
-            Piesa turaAlba = new Tura(CuloareJoc.Alb);
-            Piesa rege = new Rege(CuloareJoc.Alb);
-
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(), new Om());
 
             jocSah = new JocMultiplayer(this, ref jucatori);

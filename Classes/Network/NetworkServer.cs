@@ -98,12 +98,7 @@ namespace ProiectVolovici
             {
                 _disposed = true;
                 InchideServer();
-                _server = null;
-                _adresaIP = null;
                 _client.Dispose();
-                 _port = 0;
-                _buffer = null;
-                _mesajDeconectare = null;
 
                 _streamClient.Dispose();
                 _streamCitire.Dispose();
