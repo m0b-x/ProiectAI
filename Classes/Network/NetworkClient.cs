@@ -125,7 +125,7 @@ namespace ProiectVolovici
             if (_timerCitireDate == null)
             {
                 _timerCitireDate = new();
-                _timerCitireDate.Interval = 50;
+                _timerCitireDate.Interval = 25;
                 _timerCitireDate.AutoReset = true;
                 _timerCitireDate.Enabled = true;
                 _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);

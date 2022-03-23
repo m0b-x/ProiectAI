@@ -153,31 +153,20 @@ namespace ProiectVolovici
         }
         public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
+            Pozitie pozitieInitiala = piesa.Pozitie;
+            DecoloreazaMutariPosibile(PozitiiMutariPosibile);
+            ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
+
+            SeteazaPiesaCadranului(pozitie, piesa);
+            piesa.Pozitie = pozitie;
+            SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
+
             if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
             {
-                Pozitie pozitieInitiala = piesa.Pozitie;
-                DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-                ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-
-                SeteazaPiesaCadranului(pozitie, piesa);
-                piesa.Pozitie = pozitie;
-
-                MatriceCodPiese[pozitieInitiala.Linie, pozitieInitiala.Coloana] = (int)CodPiesa.Gol;
-                SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
-
                 ConstantaSunet.SunetPiesaLuata.Play();
             }
             else
             {
-                Pozitie pozitieInitiala = piesa.Pozitie;
-                DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-                ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-
-                SeteazaPiesaCadranului(pozitie, piesa);
-                piesa.Pozitie = pozitie;
-
-                MatriceCodPiese[pozitieInitiala.Linie, pozitieInitiala.Coloana] = (int)CodPiesa.Gol;
-                SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
                 ConstantaSunet.SunetPiesaMutata.Play();
             }
             PiesaSelectata = ConstantaTabla.PiesaNula;
@@ -214,6 +203,8 @@ namespace ProiectVolovici
             _client = new NetworkClient(adresaIP, port);
             await _client.PornesteCerereaDeConectare();
             await PrimesteTablaAsync();
+            _client.TimerCitireDate.Stop();
+            PornesteTimerJocClientSide();
             _esteClient = true;
             EsteRandulHostului();
         }
@@ -226,8 +217,8 @@ namespace ProiectVolovici
                 await Task.Delay(100);
             }
             _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
-            PornesteTimerJocServerSide();
             _server.TimerCitireDate.Stop();
+            PornesteTimerJocServerSide();
         }
         private async Task PrimesteTablaAsync()
         {
@@ -236,9 +227,6 @@ namespace ProiectVolovici
                 await Task.Delay(100);
             }
             ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
-            PornesteTimerJocClientSide();
-            EsteRandulHostului();
-            _client.TimerCitireDate.Stop();
         }
 
         private void PornesteTimerJocServerSide()
@@ -271,9 +259,9 @@ namespace ProiectVolovici
         {
             if (_piesaPrimitaClient == false) 
             {
-                _client.TimerCitireDate.Stop();  
                 if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
+                    _client.TimerCitireDate.Stop();  
                     if (!_client.Buffer.Equals(_client.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
@@ -304,9 +292,9 @@ namespace ProiectVolovici
         {
             if (_piesaPrimitaHost == false) 
             {
-                _server.TimerCitireDate.Stop();
                 if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
+                    _server.TimerCitireDate.Stop();
                     if (!_server.Buffer.Equals(_server.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);

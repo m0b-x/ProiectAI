@@ -266,13 +266,9 @@ namespace ProiectVolovici
                     {
                         Debug.WriteLine("Eroare:adugare piesa peste alta! Linie:{0},Coloana:{1},PiesaAdaugata:{2}",pozitie.Linie,pozitie.Coloana,piesa.Cod);
                     }
-                        piesa.Pozitie = pozitie;
-
-                        piesa.PusaPeTabla = true;
-
-                        SeteazaPiesaCadranului(piesa.Pozitie, piesa);
-                        this.MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
-                        this.ListaPiese.Add(piesa);
+                    piesa.Pozitie = pozitie;
+                    piesa.PusaPeTabla = true;
+                    SeteazaPiesaCadranului(piesa.Pozitie, piesa);
                 }
             }
         }
@@ -341,18 +337,30 @@ namespace ProiectVolovici
         }
         public void SeteazaPiesaCadranului(Pozitie pozitie,Piesa piesa)
         {
-            if(ArrayCadrane[pozitie.Linie,pozitie.Coloana].PiesaCadran != null)
+            if(ArrayCadrane[pozitie.Linie,pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
             {
-                if (piesa != null)
+                if (piesa != ConstantaTabla.PiesaNula)
                 {
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
                     ListaPiese.Add(piesa);
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Pozitie = pozitie;
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa = piesa.CuloarePiesa;
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Cod = piesa.Cod;
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.PusaPeTabla = true;
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Selectata = false;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
+                    _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                }
+                else
+                {
+                    ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = null;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
+                    _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
+                }
+            }
+            else
+            {
+                if (piesa != ConstantaTabla.PiesaNula)
+                {
+                    ListaPiese.Add(piesa);
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                 }
@@ -362,19 +370,6 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
                 }
-
-            }
-            else
-            {
-                ListaPiese.Add(piesa);
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Pozitie = pozitie;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa = piesa.CuloarePiesa;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Cod = piesa.Cod;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.PusaPeTabla = true;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Selectata = false;
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
-                _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
             }
         }
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
@@ -385,7 +380,10 @@ namespace ProiectVolovici
                 foreach (Piesa piesa in _listaPiese)
                 {
                     if (piesa.Pozitie == pozitie)
+                    {
+                        Debug.WriteLine("Gasit Piesa: " + piesa.Cod);
                         return piesa;
+                    }
                 }
             }
             return null;
