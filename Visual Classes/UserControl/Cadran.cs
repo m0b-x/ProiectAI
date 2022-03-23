@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -34,7 +33,7 @@ namespace ProiectVolovici
             InitializeComponent();
         }
 
-        public Cadran(EngineJoc joc, Pozitie pozitie,Color culoare)
+        public Cadran(EngineJoc joc, Pozitie pozitie, Color culoare)
         {
             Parent = joc.ParentForm;
             if (pozitie.Linie > joc.PragRau)
@@ -49,7 +48,7 @@ namespace ProiectVolovici
             BackgroundImageLayout = _layoutCadran;
             _piesaCadran = ConstantaTabla.PiesaNula;
         }
-        
+
         public void ArataPalatul()
         {
 
@@ -73,7 +72,7 @@ namespace ProiectVolovici
             {
                 return true;
             }
-            if(this._piesaCadran.CuloarePiesa == culoare)
+            if (this._piesaCadran.CuloarePiesa == culoare)
             {
                 return false;
             }
