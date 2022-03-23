@@ -30,9 +30,20 @@ namespace ProiectVolovici
         private bool _conectat;
         private String _buffer;
 
-        private NetworkStream _streamServer;
+        private NetworkStream _streamPrimireClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+
+        public TcpClient Client
+        {
+            get { return _client; }
+        }
+        public System.Timers.Timer TimerCitireDate
+        {
+            get { return _timerCitireDate; }
+            set { _timerCitireDate = value; }
+        }
+
         public bool Conectat
         {
             get { return _conectat; }
@@ -114,7 +125,7 @@ namespace ProiectVolovici
             if (_timerCitireDate == null)
             {
                 _timerCitireDate = new();
-                _timerCitireDate.Interval = 100;
+                _timerCitireDate.Interval = 50;
                 _timerCitireDate.AutoReset = true;
                 _timerCitireDate.Enabled = true;
                 _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);
@@ -124,7 +135,7 @@ namespace ProiectVolovici
 
         private void AscultaDate_Tick(object source, ElapsedEventArgs e)
         {
-            if (_streamServer != null)
+            if (_streamPrimireClient != null)
             {
                 PrimesteDate();
             }
@@ -132,9 +143,9 @@ namespace ProiectVolovici
 
         private void InchideStreamuri()
         {
-            if (_streamServer != null)
+            if (_streamPrimireClient != null)
             {
-                _streamServer.Close();
+                _streamPrimireClient.Close();
                 _streamCitire.Close();
                 _streamScriere.Close();
             }
@@ -148,7 +159,7 @@ namespace ProiectVolovici
                 InchidereClient();
                 _client.Dispose();
 
-                _streamServer.Dispose();
+                _streamPrimireClient.Dispose();
                 _streamCitire.Dispose();
                 _streamScriere.Dispose();
                 _timerCitireDate.Dispose();
@@ -216,9 +227,9 @@ namespace ProiectVolovici
 
         private void InitializareStreamuri()
         {
-            _streamServer = _client.GetStream();
-            _streamCitire = new StreamReader(_streamServer);
-            _streamScriere = new StreamWriter(_streamServer);
+            _streamPrimireClient = _client.GetStream();
+            _streamCitire = new StreamReader(_streamPrimireClient);
+            _streamScriere = new StreamWriter(_streamPrimireClient);
             _streamScriere.AutoFlush = true;
         }
     }

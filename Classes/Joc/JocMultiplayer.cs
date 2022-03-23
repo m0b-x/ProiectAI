@@ -189,7 +189,6 @@ namespace ProiectVolovici
             _client.Dispose();
             _timerJocClient.Dispose();
             _timerJocServer.Dispose();
-            base.Dispose();
         }
 
         ~JocMultiplayer() => Dispose();
@@ -227,15 +226,6 @@ namespace ProiectVolovici
             }
             _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
             PornesteTimerJocServerSide();
-        }
-
-        private void PrimesteClient(object source, ElapsedEventArgs e)
-        {
-            if (_server.ClientPrimit == true)
-            {
-                _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
-                PornesteTimerJocServerSide();
-            }
         }
         private async Task PrimesteTablaAsync()
         {

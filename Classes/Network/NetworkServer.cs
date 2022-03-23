@@ -30,6 +30,11 @@ namespace ProiectVolovici
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+        public System.Timers.Timer TimerCitireDate
+        {
+            get { return _timerCitireDate; }
+            set { _timerCitireDate = value; }
+        }
 
         public TcpListener Server
         {
@@ -174,7 +179,7 @@ namespace ProiectVolovici
             if (_timerCitireDate == null)
             {
                 _timerCitireDate = new();
-                _timerCitireDate.Interval = 100;
+                _timerCitireDate.Interval = 50;
                 _timerCitireDate.AutoReset = true;
                 _timerCitireDate.Enabled = true;
                 _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);
