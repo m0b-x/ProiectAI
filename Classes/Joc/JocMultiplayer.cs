@@ -249,6 +249,12 @@ namespace ProiectVolovici
                     //_client.TimerCitireDate.Stop();
                     if (!_client.Buffer.Equals(_client.MesajDeconectare))
                     {
+                        String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
+                        while (ultimulMesajPrimitClient.Equals(_client.Buffer))
+                        {
+                            _client.PrimesteDate();
+                            Task.Delay(25);
+                        }
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient) && !_penultimaMutareClient.Equals(_ultimaMutarePrimitaClient))
                         {
@@ -282,6 +288,12 @@ namespace ProiectVolovici
                     //_server.TimerCitireDate.Stop();
                     if (!_server.Buffer.Equals(_server.MesajDeconectare))
                     {
+                        String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
+                        while (ultimulMesajPrimitHost.Equals(_server.Buffer))
+                        {
+                            _server.PrimesteDate();
+                            Task.Delay(25);
+                        }
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost) && !_penultimaMutareHost.Equals(_ultimaMutarePrimitaHost))
                         {

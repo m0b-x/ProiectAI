@@ -47,7 +47,7 @@ namespace ProiectVolovici
             BorderStyle = _borderCadran;
             BackColor = culoare;
             BackgroundImageLayout = _layoutCadran;
-            _piesaCadran = null;
+            _piesaCadran = ConstantaTabla.PiesaNula;
         }
         
         public void ArataPalatul()
@@ -58,9 +58,13 @@ namespace ProiectVolovici
         public bool CadranEsteGol()
         {
             if (_piesaCadran == null)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         public bool EsteAdversar(CuloareJoc culoare)
