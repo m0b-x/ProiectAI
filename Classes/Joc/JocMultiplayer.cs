@@ -11,7 +11,7 @@ namespace ProiectVolovici
 {
     public class JocMultiplayer : EngineJoc, IDisposable
     {
-        private static int _intervalTimere = 75;
+        private static int _intervalTimere = 100;
 
         private Om _jucatorServer;
         private Om _jucatorClient;
@@ -22,8 +22,6 @@ namespace ProiectVolovici
 
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaClient;
-        Tuple<Pozitie, Pozitie> _penultimaMutareHost;
-        Tuple<Pozitie, Pozitie> _penultimaMutareClient;
 
         private bool _piesaPrimitaClient;
         private bool _piesaPrimitaHost; 
@@ -66,9 +64,6 @@ namespace ProiectVolovici
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1),new Pozitie(1, 1));
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
-            _penultimaMutareHost = new Tuple<Pozitie, Pozitie>(new Pozitie(2, 2), new Pozitie(2, 2));
-            _penultimaMutareClient = new Tuple<Pozitie, Pozitie>(new Pozitie(2, 2), new Pozitie(2, 2));
-
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, ConstantaTabla.LungimeMesajDiferential);
         }
         public JocMultiplayer(Form parentForm, int[,] matriceTabla, ref Tuple<Om, Om> jucatori) : base(parentForm, matriceTabla)
@@ -87,9 +82,6 @@ namespace ProiectVolovici
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
-
-            _penultimaMutareHost = new Tuple<Pozitie, Pozitie>(new Pozitie(2, 2), new Pozitie(2, 2));
-            _penultimaMutareClient = new Tuple<Pozitie, Pozitie>(new Pozitie(2, 2), new Pozitie(2, 2));
 
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, ConstantaTabla.LungimeMesajDiferential);
         }
@@ -246,7 +238,6 @@ namespace ProiectVolovici
             {
                 if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 { 
-                    //_client.TimerCitireDate.Stop();
                     if (!_client.Buffer.Equals(_client.MesajDeconectare))
                     {
                         String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
@@ -255,26 +246,22 @@ namespace ProiectVolovici
                             _client.PrimesteDate();
                         }
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient) && !_penultimaMutareClient.Equals(_ultimaMutarePrimitaClient))
+                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient))
                         {
                             Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
                             Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
                             RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
                             EsteRandulClientului();
 
-                            _penultimaMutareClient = _ultimaMutarePrimitaClient;
-                            Debug.WriteLine("Ultima mutare client:" + ultimaPiesa.CuloarePiesa);
-
                             _piesaPrimitaClient = true;
                             _piesaPrimitaHost = false;
-                            //_client.TimerCitireDate.Start();
                         }
                     }
+                    else
+                    {
+                        //todo:deconecteaza-te
+                    }
                 }
-            }
-            else
-            {
-                //todo:deconecteaza-te
             }
         }
 
@@ -284,7 +271,6 @@ namespace ProiectVolovici
             {
                 if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
-                    //_server.TimerCitireDate.Stop();
                     if (!_server.Buffer.Equals(_server.MesajDeconectare))
                     {
                         String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
@@ -293,27 +279,22 @@ namespace ProiectVolovici
                             _server.PrimesteDate();
                         }
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
-                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost) && !_penultimaMutareHost.Equals(_ultimaMutarePrimitaHost))
+                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost))
                         {
                             Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer );
                             Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
                             RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-
                             EsteRandulHostului();
-
-                            _penultimaMutareHost = _ultimaMutarePrimitaHost;
-                            Debug.WriteLine("Ultima mutare host:" + ultimaPiesa.CuloarePiesa);
 
                             _piesaPrimitaHost = true;
                             _piesaPrimitaClient = false;
-                            //_server.TimerCitireDate.Start();
                         }
                     }
+                    else
+                    {
+                        //todo:deconecteaza-te
+                    }
                 }
-            }
-            else
-            {
-                //todo:deconecteaza-te
             }
         }
 
