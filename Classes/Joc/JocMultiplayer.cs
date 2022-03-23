@@ -246,16 +246,13 @@ namespace ProiectVolovici
                             _client.PrimesteDate();
                         }
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient))
-                        {
-                            Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                            Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
-                            RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                            EsteRandulClientului();
+                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                        Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
+                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                        EsteRandulClientului();
 
-                            _piesaPrimitaClient = true;
-                            _piesaPrimitaHost = false;
-                        }
+                        _piesaPrimitaClient = true;
+                        _piesaPrimitaHost = false;
                     }
                     else
                     {
@@ -279,16 +276,13 @@ namespace ProiectVolovici
                             _server.PrimesteDate();
                         }
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
-                        if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost))
-                        {
-                            Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer );
-                            Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                            RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                            EsteRandulHostului();
+                        Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer );
+                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
+                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+                        EsteRandulHostului();
 
-                            _piesaPrimitaHost = true;
-                            _piesaPrimitaClient = false;
-                        }
+                        _piesaPrimitaHost = true;
+                        _piesaPrimitaClient = false;
                     }
                     else
                     {
