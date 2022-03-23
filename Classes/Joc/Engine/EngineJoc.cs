@@ -221,7 +221,7 @@ namespace ProiectVolovici
             }
         }
 
-        private Piesa ConvertesteCodPiesaInObiect(CodPiesa codPiesa)
+        public static Piesa ConvertesteCodPiesaInObiect(CodPiesa codPiesa)
         {
             switch (codPiesa)
             {

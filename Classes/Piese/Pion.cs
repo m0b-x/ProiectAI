@@ -46,7 +46,7 @@ namespace ProiectVolovici
                         pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
                     }
                 }
-                if(this.Pozitie.Linie >= tabla.PragRau + 1)
+                if(this.Pozitie.Linie > tabla.PragRau )
                 {
                     int sfarsitColoana = tabla.MarimeOrizontala - 1;
                     const int inceputColoana = 0;

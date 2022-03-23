@@ -59,6 +59,7 @@ namespace ProiectVolovici
             if (piesa != null)
             {
                 _piesaCadran = piesa;
+                Debug.WriteLine("SetPiesa "+piesa.CuloarePiesa);
                 BackgroundImage = piesa.Imagine;
             }
             else

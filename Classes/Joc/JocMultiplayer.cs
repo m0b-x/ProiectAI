@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -156,27 +157,29 @@ namespace ProiectVolovici
             {
                 DecoloreazaMutariPosibile(PozitiiMutariPosibile);
                 ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
+
+                MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                this.ArrayCadrane[pozitie.Linie, pozitie.Coloana].setPiesa(piesa);
+                
                 MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
                 piesa.Pozitie = pozitie;
-                MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
 
-                ListaPiese.Remove(GetPiesaCuPozitia(pozitie));
                 ConstantaSunet.SunetPiesaLuata.Play();
             }
             else
             {
                 DecoloreazaMutariPosibile(PozitiiMutariPosibile);
                 ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
-                MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+
                 MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                this.ArrayCadrane[pozitie.Linie, pozitie.Coloana].setPiesa(piesa);
+
+                MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
 
                 piesa.Pozitie = pozitie;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
-
                 ConstantaSunet.SunetPiesaMutata.Play();
             }
             PiesaSelectata = ConstantaTabla.PiesaNula;
@@ -226,6 +229,7 @@ namespace ProiectVolovici
             }
             _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
             PornesteTimerJocServerSide();
+            _server.TimerCitireDate.Stop();
         }
         private async Task PrimesteTablaAsync()
         {
@@ -236,6 +240,7 @@ namespace ProiectVolovici
             ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
             PornesteTimerJocClientSide();
             EsteRandulHostului();
+            _client.TimerCitireDate.Stop();
         }
 
         private void PornesteTimerJocServerSide()
@@ -248,7 +253,6 @@ namespace ProiectVolovici
                 _timerJocServer.Enabled = true;
                 _timerJocServer.Elapsed += new ElapsedEventHandler(PrimesteDateleHost);
                 _timerJocServer.Start();
-
             }
         }
 
@@ -268,7 +272,8 @@ namespace ProiectVolovici
         public void PrimesteDateClient(object source, ElapsedEventArgs e)
         {
             if (_piesaPrimitaClient == false) 
-            {  
+            {
+                _client.TimerCitireDate.Stop();  
                 if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
                     if (!_client.Buffer.Equals(_client.MesajDeconectare))
@@ -282,9 +287,11 @@ namespace ProiectVolovici
                             EsteRandulClientului();
 
                             _penultimaMutareClient = _ultimaMutarePrimitaClient;
+                            Debug.WriteLine("Ultima mutare client:" + ultimaPiesa.CuloarePiesa);
 
                             _piesaPrimitaClient = true;
                             _piesaPrimitaHost = false;
+                            _client.TimerCitireDate.Start();
                         }
                     }
                 }
@@ -299,6 +306,7 @@ namespace ProiectVolovici
         {
             if (_piesaPrimitaHost == false) 
             {
+                _server.TimerCitireDate.Stop();
                 if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                 {
                     if (!_server.Buffer.Equals(_server.MesajDeconectare))
@@ -309,12 +317,15 @@ namespace ProiectVolovici
                             Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer );
                             Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
                             RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+
                             EsteRandulHostului();
 
                             _penultimaMutareHost = _ultimaMutarePrimitaHost;
+                            Debug.WriteLine("Ultima mutare host:" + ultimaPiesa.CuloarePiesa);
 
                             _piesaPrimitaHost = true;
                             _piesaPrimitaClient = false;
+                            _server.TimerCitireDate.Start();
                         }
                     }
                 }
