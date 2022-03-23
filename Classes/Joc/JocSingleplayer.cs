@@ -96,11 +96,11 @@ namespace ProiectVolovici
                 DecoloreazaMutariPosibile(PozitiiMutariPosibile);
                 ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
                 MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
+                SeteazaPiesaCadranului(piesa.Pozitie, ConstantaTabla.PiesaNula);
 
                 piesa.Pozitie = pozitie;
                 MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+                SeteazaPiesaCadranului(piesa.Pozitie, piesa);
 
                 ListaPiese.Remove(GetPiesaCuPozitia(pozitie));
                 ConstantaSunet.SunetPiesaLuata.Play();
@@ -111,10 +111,10 @@ namespace ProiectVolovici
                 ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
                 MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(ConstantaTabla.PiesaNula);
+                SeteazaPiesaCadranului(piesa.Pozitie, ConstantaTabla.PiesaNula);
 
                 piesa.Pozitie = pozitie;
-                this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+                SeteazaPiesaCadranului(piesa.Pozitie, piesa);
 
                 ConstantaSunet.SunetPiesaMutata.Play();
             }

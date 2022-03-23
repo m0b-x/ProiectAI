@@ -54,20 +54,6 @@ namespace ProiectVolovici
         {
 
         }
-        public void setPiesa(Piesa piesa)
-        {
-            if (piesa != null)
-            {
-                _piesaCadran = piesa;
-                Debug.WriteLine("SetPiesa "+piesa.CuloarePiesa);
-                BackgroundImage = piesa.Imagine;
-            }
-            else
-            {
-                _piesaCadran = null;
-                BackgroundImage = null;
-            }
-        }
 
         public bool CadranEsteGol()
         {

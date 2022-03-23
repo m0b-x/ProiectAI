@@ -266,16 +266,13 @@ namespace ProiectVolovici
                     {
                         Debug.WriteLine("Eroare:adugare piesa peste alta! Linie:{0},Coloana:{1},PiesaAdaugata:{2}",pozitie.Linie,pozitie.Coloana,piesa.Cod);
                     }
-                    else
-                    {
                         piesa.Pozitie = pozitie;
 
                         piesa.PusaPeTabla = true;
 
-                        this.ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].setPiesa(piesa);
+                        SeteazaPiesaCadranului(piesa.Pozitie, piesa);
                         this.MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
                         this.ListaPiese.Add(piesa);
-                    }
                 }
             }
         }
@@ -342,7 +339,44 @@ namespace ProiectVolovici
             Debug.WriteLine("ActualizareUltimaMutare: " + pozitieInitiala.Linie + " " + pozitieInitiala.Coloana + "->" + pozitieFinala.Linie + " " + pozitieFinala.Coloana);
             Tuple<Pozitie, Pozitie> _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
+        public void SeteazaPiesaCadranului(Pozitie pozitie,Piesa piesa)
+        {
+            if(ArrayCadrane[pozitie.Linie,pozitie.Coloana].PiesaCadran != null)
+            {
+                if (piesa != null)
+                {
+                    ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                    ListaPiese.Add(piesa);
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Pozitie = pozitie;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa = piesa.CuloarePiesa;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Cod = piesa.Cod;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.PusaPeTabla = true;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Selectata = false;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
+                    _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                }
+                else
+                {
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = null;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
+                    _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
+                }
 
+            }
+            else
+            {
+                ListaPiese.Add(piesa);
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Pozitie = pozitie;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa = piesa.CuloarePiesa;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Cod = piesa.Cod;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.PusaPeTabla = true;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Selectata = false;
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
+                _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+            }
+        }
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
             Debug.WriteLine("GetPiesa Cu pozitia" +pozitie.Linie+" "+pozitie.Coloana);
@@ -363,7 +397,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < _tabla.MarimeVerticala; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].setPiesa(ConstantaTabla.PiesaNula);
+                    SeteazaPiesaCadranului(new Pozitie(linie,coloana), ConstantaTabla.PiesaNula);
                 }
             }
         }
