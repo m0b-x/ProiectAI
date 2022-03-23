@@ -277,13 +277,13 @@ namespace ProiectVolovici
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
         }
-        public async void ArataPozitieBlocata(Pozitie pozitie)
+        public async Task ArataPozitieBlocata(Pozitie pozitie)
         {
             if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor != ConstantaTabla.CuloarePozitieBlocata)
             {
                 Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
-                await Task.Delay(1);
+                await Task.Delay(250);
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
             }
         }

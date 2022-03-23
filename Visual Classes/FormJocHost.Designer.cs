@@ -35,7 +35,7 @@ namespace ProiectVolovici
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(793, 590);
+            this.ClientSize = new System.Drawing.Size(549, 590);
             this.Name = "FormJocHost";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormJocHost_FormClosing);

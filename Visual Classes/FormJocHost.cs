@@ -28,21 +28,19 @@ namespace ProiectVolovici
         IPAddress adresa = IPAddress.Parse("127.0.0.1");
         int port = 3000;
 
-        private void FormJocHost_Load(object sender, EventArgs e)
+        private async void FormJocHost_Load(object sender, EventArgs e)
         {
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(), new Om());
 
-            jocSah = new JocMultiplayer(this, ref jucatori);
-
-            FormJocClient form = new FormJocClient();
-            form.Show();
-
-            jocSahForm2 = new JocMultiplayer(form, ref jucatori);
-
+            Form formJoc = this;
+            jocSah = new JocMultiplayer(formJoc, ref jucatori);
             jocSah.AdaugaPieselePrestabilite();
-
             jocSah.HosteazaJoc(port);
+
+            FormJocClient formClient = new FormJocClient();
+            jocSahForm2 = new JocMultiplayer(formClient, ref jucatori);
             jocSahForm2.ConecteazateLaJoc(IPAddress.Parse("127.0.0.1"), port);
+            formClient.Show();
         }
 
         private void FormJocHost_FormClosing(object sender, FormClosingEventArgs e)
