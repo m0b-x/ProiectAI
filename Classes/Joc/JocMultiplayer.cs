@@ -199,7 +199,7 @@ namespace ProiectVolovici
         { 
             while(_server.ClientPrimit == false)
             {
-                await Task.Delay(100);
+                await Task.Delay(50);
             }
             _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
             _server.TimerCitireDate.Stop();
@@ -209,7 +209,7 @@ namespace ProiectVolovici
         {
             while (_client.Buffer.Equals(NetworkClient.BufferGol))
             {
-                await Task.Delay(75);
+                await Task.Delay(50);
             }
             ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
         }
@@ -253,7 +253,7 @@ namespace ProiectVolovici
                         while (ultimulMesajPrimitClient.Equals(_client.Buffer))
                         {
                             _client.PrimesteDate();
-                            Task.Delay(25);
+                            Task.Delay(50);
                         }
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaClient) && !_penultimaMutareClient.Equals(_ultimaMutarePrimitaClient))
@@ -292,7 +292,7 @@ namespace ProiectVolovici
                         while (ultimulMesajPrimitHost.Equals(_server.Buffer))
                         {
                             _server.PrimesteDate();
-                            Task.Delay(25);
+                            Task.Delay(50);
                         }
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
                         if (!UltimaMutare.Equals(_ultimaMutarePrimitaHost) && !_penultimaMutareHost.Equals(_ultimaMutarePrimitaHost))
