@@ -12,7 +12,7 @@ using System.Timers;
 
 namespace ProiectVolovici
 {
-    class NetworkClient : IDisposable
+    public class NetworkClient : IDisposable
     {
         public static String BufferGol = "";
         public static int TimeoutConexiune = 5000;
@@ -34,6 +34,10 @@ namespace ProiectVolovici
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
 
+        public bool Disposed
+        {
+            get{ return _disposed; }
+        }
         public TcpClient Client
         {
             get { return _client; }
@@ -181,7 +185,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie client TrimiteDate: " + exceptie);
             }
         }
 
@@ -209,7 +213,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie networkclient TrimiteDate: " + exceptie);
             }
             return null;
         }

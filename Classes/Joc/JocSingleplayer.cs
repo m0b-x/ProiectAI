@@ -66,6 +66,12 @@ namespace ProiectVolovici
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, ConstantaTabla.LungimeMesajDiferential);
         }
 
+        public override void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            base.Dispose();
+        }
+
         public void AdaugaEvenimentCadrane()
         {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)

@@ -149,7 +149,7 @@ namespace ProiectVolovici
             }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _tabla.Dispose();
             GC.SuppressFinalize(this);

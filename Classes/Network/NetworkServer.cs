@@ -30,6 +30,10 @@ namespace ProiectVolovici
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+        public bool Disposed
+        {
+            get { return _disposed; }
+        }
         public System.Timers.Timer TimerCitireDate
         {
             get { return _timerCitireDate; }
@@ -135,7 +139,7 @@ namespace ProiectVolovici
                 }
                 catch (Exception exceptie)
                 {
-                    Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+                    Debug.WriteLine("Exceptie functie server TrimiteDate: " + exceptie);
                 }
         }
 
@@ -163,7 +167,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie networkserver TrimiteDate: " + exceptie);
             }
             return null;
         }
