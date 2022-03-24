@@ -74,7 +74,7 @@ namespace ProiectVolovici
             _disposed = false;
             _conectat = false;
 
-            _mesajDeconectare = "0";
+            _mesajDeconectare = "{8,8,8,8}";
             _mesajConectare = "1";
             _timpTimeoutConexiune = TimeoutConexiune;
             _buffer = BufferGol;

@@ -72,7 +72,7 @@ namespace ProiectVolovici
 
             _buffer = BufferGol;
 
-            _mesajDeconectare = "0";
+            _mesajDeconectare = "{8,8,8,8}";
             try
             {
                 _server = new TcpListener(adresaIP, port);

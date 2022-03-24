@@ -38,6 +38,7 @@ namespace ProiectVolovici
             this.ClientSize = new System.Drawing.Size(536, 621);
             this.Name = "FormJocClient";
             this.Text = "FormJocClient";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormJocClient_FormClosing);
             this.Load += new System.EventHandler(this.FormJocClient_Load);
             this.ResumeLayout(false);
 

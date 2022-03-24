@@ -16,15 +16,12 @@ namespace ProiectVolovici
         private Om _jucatorServer;
         private Om _jucatorClient;
 
-        private NetworkServer _server;
+        private NetworkServer _host;
         private NetworkClient _client;
         private ParserTabla _parserTabla;
 
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaClient;
-
-        private bool _piesaPrimitaClient;
-        private bool _piesaPrimitaHost; 
 
         private int _timpTimere;
         private bool _esteHost;
@@ -54,8 +51,6 @@ namespace ProiectVolovici
 
             _esteRandulClientului = false;
             _esteRandulHostului = false;
-            _piesaPrimitaClient = false;
-            _piesaPrimitaHost = false;
 
             _esteClient = false;
             _esteHost = false;
@@ -73,8 +68,6 @@ namespace ProiectVolovici
 
             _esteRandulClientului = false;
             _esteRandulHostului = false;
-            _piesaPrimitaClient = false;
-            _piesaPrimitaHost = false;
 
             _esteClient = false;
             _esteHost = false;
@@ -115,17 +108,13 @@ namespace ProiectVolovici
                 {
                     if (_esteHost)
                     {
-                        _server.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
+                        _host.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
                         EsteRandulClientului();
-                        _piesaPrimitaClient = true;
-                        _piesaPrimitaHost = false;
                     }
                     if (_esteClient)
                     {
                         _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
                         EsteRandulHostului();
-                        _piesaPrimitaHost = true;
-                        _piesaPrimitaClient = false;
                     }
                     RealizeazaMutareaLocal(piesa, pozitie);
                 }
@@ -158,18 +147,26 @@ namespace ProiectVolovici
 
         public new void Dispose()
         {
-            _server.Dispose();
-            _client.Dispose();
-            _timerJocClient.Dispose();
-            _timerJocServer.Dispose();
+            if (_esteHost)
+            {
+                _host.TrimiteDate(_host.MesajDeconectare);
+                _host.Dispose();
+                _timerJocServer.Dispose();
+            }
+            else if (_esteClient)
+            {
+                _client.TrimiteDate(_client.MesajDeconectare);
+                _client.Dispose();
+                _timerJocClient.Dispose();
+            }
         }
 
         ~JocMultiplayer() => Dispose();
 
         public async void HosteazaJoc(int port)
         {
-            _server = new NetworkServer(IPAddress.Any, port);
-            _server.AcceptaUrmatorulClient();
+            _host = new NetworkServer(IPAddress.Any, port);
+            _host.AcceptaUrmatorulClient();
             await AsteaptaComunicareaCuClientul();
             _esteHost = true;
             EsteRandulHostului();
@@ -189,12 +186,12 @@ namespace ProiectVolovici
 
         private async Task AsteaptaComunicareaCuClientul()
         { 
-            while(_server.ClientPrimit == false)
+            while(_host.ClientPrimit == false)
             {
                 await Task.Delay(50);
             }
-            _server.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
-            _server.TimerCitireDate.Stop();
+            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
+            _host.TimerCitireDate.Stop();
             PornesteTimerJocServerSide();
         }
         private async Task PrimesteTablaAsync()
@@ -234,65 +231,59 @@ namespace ProiectVolovici
 
         public void PrimesteDateClient(object source, ElapsedEventArgs e)
         {
-            if (_piesaPrimitaClient == false) 
-            {
-                if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
-                { 
-                    if (!_client.Buffer.Equals(_client.MesajDeconectare))
+            if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
+            { 
+                if (!_client.Buffer.Equals(_client.MesajDeconectare))
+                {
+                    String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
+                    while (ultimulMesajPrimitClient.Equals(_client.Buffer))
                     {
-                        String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
-                        while (ultimulMesajPrimitClient.Equals(_client.Buffer))
-                        {
-                            _client.PrimesteDate();
-                        }
-                        _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                        Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
-                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                        EsteRandulClientului();
-
-                        _piesaPrimitaClient = true;
-                        _piesaPrimitaHost = false;
+                        _client.PrimesteDate();
                     }
-                    else
-                    {
-                        //todo:deconecteaza-te
-                    }
+                    _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
+                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                    Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
+                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                    EsteRandulClientului();
+                }
+                else
+                {
+                    //todo:deconecteaza-te
+                    MessageBox.Show("Mesaj Server", "Serverul s-a deconectat");
+                    _timerJocClient.Stop();
+                    this.Dispose();
                 }
             }
         }
 
         public void PrimesteDateleHost(object source, ElapsedEventArgs e)
         {
-            if (_piesaPrimitaHost == false)
+            if (_host.Buffer != NetworkServer.BufferGol && _host.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
             {
-                if (_server.Buffer != NetworkServer.BufferGol && _server.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
+                if (!_host.Buffer.Equals(_host.MesajDeconectare))
                 {
-                    if (!_server.Buffer.Equals(_server.MesajDeconectare))
+                    String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
+                    while (ultimulMesajPrimitHost.Equals(_host.Buffer))
                     {
-                        String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
-                        while (ultimulMesajPrimitHost.Equals(_server.Buffer))
-                        {
-                            _server.PrimesteDate();
-                        }
-                        _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_server.Buffer);
-                        Debug.WriteLine("Sincronizeaza jocul Host: " + _server.Buffer );
-                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                        EsteRandulHostului();
-
-                        _piesaPrimitaHost = true;
-                        _piesaPrimitaClient = false;
+                        _host.PrimesteDate();
                     }
-                    else
-                    {
-                        //todo:deconecteaza-te
-                    }
+                    _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_host.Buffer);
+                    Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer );
+                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
+                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+                    EsteRandulHostului();
+                }
+                else
+                {
+                    //todo:deconecteaza-te
+                    MessageBox.Show("Mesaj Server", "Serverul s-a deconectat");
+                    _timerJocServer.Stop();
+                    this.Dispose();
                 }
             }
         }
 
-        public async void OnCadranClick(object sender, EventArgs e)
+        public void OnCadranClick(object sender, EventArgs e)
         {
             if (_esteClient && _esteRandulClientului || _esteHost && _esteRandulHostului)
             {
@@ -313,7 +304,7 @@ namespace ProiectVolovici
                         }
                         else
                         {
-                            await ArataPozitieBlocata(pozitie);
+                            ArataPozitieBlocata(pozitie);
                         }
                     }
                 }

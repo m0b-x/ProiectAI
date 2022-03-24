@@ -21,5 +21,10 @@ namespace ProiectVolovici
         private void FormJocClient_Load(object sender, EventArgs e)
         {
         }
+
+        private void FormJocClient_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
     }
 }
