@@ -158,6 +158,7 @@ namespace ProiectVolovici
                         ConstantaSunet.SunetPiesaMutata.Play();
                     }
                     RealizeazaMutareaLocal(PiesaSelectata, pozitie);
+                    
                 }
                 else
                 {

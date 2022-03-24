@@ -332,7 +332,10 @@ namespace ProiectVolovici
                     if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
                         Piesa piesa = GetPiesaCuPozitia(pozitie);
-                        piesa.ArataMutariPosibile(this);
+                        if (piesa != null)
+                        {
+                            piesa.ArataMutariPosibile(this);
+                        }
                         if (ExistaMutariPosibile() == true)
                         {
                             ArataPiesaSelectata(piesa);
