@@ -283,7 +283,7 @@ namespace ProiectVolovici
             {
                 Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
-                await Task .Delay(150);
+                await Task.Delay(250);
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
             }
         }
