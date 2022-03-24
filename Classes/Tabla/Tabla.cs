@@ -99,6 +99,7 @@ namespace ProiectVolovici
                 }
             }
             _pozitiiPalat.Clear();
+            GC.SuppressFinalize(this);
         }
 
         ~Tabla() => Dispose();

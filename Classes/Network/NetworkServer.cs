@@ -99,6 +99,7 @@ namespace ProiectVolovici
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             if (_disposed == false)
             {
                 _disposed = true;

@@ -151,6 +151,7 @@ namespace ProiectVolovici
 
         public new void Dispose()
         {
+            GC.SuppressFinalize(this);
             if (_esteHost)
             {
                 _host.TrimiteDate(_host.MesajDeconectare);

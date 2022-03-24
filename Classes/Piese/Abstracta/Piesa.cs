@@ -55,6 +55,7 @@ namespace ProiectVolovici
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             _imaginePiesa.Dispose();
         }
         public abstract void ArataMutariPosibile(EngineJoc tabla);
