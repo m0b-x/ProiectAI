@@ -201,6 +201,11 @@ namespace ProiectVolovici
                     return date;
                 }
             }
+            catch(System.ObjectDisposedException)
+            {
+                _timerCitireDate.Stop();
+                return _mesajDeconectare;
+            }
             catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie TrimiteDate: " + exceptie);

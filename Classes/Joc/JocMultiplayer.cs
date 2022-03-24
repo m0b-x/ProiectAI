@@ -259,7 +259,7 @@ namespace ProiectVolovici
                             }
                             else
                             {
-                                MessageBox.Show("Mesaj Server", "Serverul s-a deconectat");
+                                MessageBox.Show("Mesaj Server S", "Serverul s-a deconectat");
                                 _timerJocClient.Stop();
                             }
                         }
@@ -303,7 +303,7 @@ namespace ProiectVolovici
                             }
                             else
                             {
-                                MessageBox.Show("Client Deconectat", "Clientul s-a deconectat");
+                                MessageBox.Show("Client Deconectat S", "Clientul s-a deconectat");
                                 _timerJocHost.Stop();
                             }
                         }
