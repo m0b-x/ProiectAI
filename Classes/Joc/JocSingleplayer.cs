@@ -9,7 +9,6 @@ namespace ProiectVolovici
 {
     public class JocSingleplayer : EngineJoc, IDisposable
     {
-        private static int _intervalTimere = 50;
 
         private Om _jucatorServer;
         private Om _jucatorClient;
@@ -91,33 +90,17 @@ namespace ProiectVolovici
         }
         public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
-            if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+            if (piesa == null || pozitie == null)
             {
-                DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-                ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
-                MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                SeteazaPiesaCadranului(piesa.Pozitie, ConstantaTabla.PiesaNula);
-
-                piesa.Pozitie = pozitie;
-                MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                SeteazaPiesaCadranului(piesa.Pozitie, piesa);
-
-                ListaPiese.Remove(GetPiesaCuPozitia(pozitie));
-                ConstantaSunet.SunetPiesaLuata.Play();
+                return;
             }
-            else
-            {
-                DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-                ActualizeazaUltimaMutare(piesa.Pozitie, pozitie);
-                MatriceCodPiese[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                MatriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                SeteazaPiesaCadranului(piesa.Pozitie, ConstantaTabla.PiesaNula);
+            Pozitie pozitieInitiala = piesa.Pozitie;
+            DecoloreazaMutariPosibile(PozitiiMutariPosibile);
+            ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
+            SeteazaPiesaCadranului(pozitie, piesa);
+            piesa.Pozitie = pozitie;
+            SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
 
-                piesa.Pozitie = pozitie;
-                SeteazaPiesaCadranului(piesa.Pozitie, piesa);
-
-                ConstantaSunet.SunetPiesaMutata.Play();
-            }
             PiesaSelectata = ConstantaTabla.PiesaNula;
             PozitiiMutariPosibile.Clear();
         }
@@ -131,7 +114,6 @@ namespace ProiectVolovici
                 Pozitie pozitie = new Pozitie(0, 0);
                 pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                 pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-
 
                 if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                 {
@@ -161,6 +143,14 @@ namespace ProiectVolovici
                 if (EsteMutareaPosibila(pozitie))
                 {
                     AscundePiesaSelectata(PiesaSelectata);
+                    if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                    {
+                        ConstantaSunet.SunetPiesaLuata.Play();
+                    }
+                    else
+                    {
+                        ConstantaSunet.SunetPiesaMutata.Play();
+                    }
                     RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                 }
                 else

@@ -342,6 +342,7 @@ namespace ProiectVolovici
                 if (piesa != ConstantaTabla.PiesaNula)
                 {
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Dispose();
                     ListaPiese.Add(piesa);
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
@@ -350,7 +351,8 @@ namespace ProiectVolovici
                 else
                 {
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = null;
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Dispose();
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Dispose();
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
                 }

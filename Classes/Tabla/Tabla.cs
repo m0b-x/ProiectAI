@@ -98,6 +98,7 @@ namespace ProiectVolovici
                     ArrayCadrane[linie, coloana].Dispose();
                 }
             }
+            _pozitiiPalat.Clear();
         }
 
         ~Tabla() => Dispose();
