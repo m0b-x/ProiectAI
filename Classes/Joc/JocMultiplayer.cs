@@ -134,6 +134,10 @@ namespace ProiectVolovici
         }
         public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
+            if(piesa == null && pozitie == null)
+            {
+                return;
+            }
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
             ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
@@ -241,10 +245,13 @@ namespace ProiectVolovici
                         _client.PrimesteDate();
                     }
                     _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                    Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
-                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                    EsteRandulClientului();
+                    if (_ultimaMutarePrimitaClient != null)
+                    {
+                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                        Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
+                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                        EsteRandulClientului();
+                    }
                 }
                 else
                 {
@@ -268,17 +275,17 @@ namespace ProiectVolovici
                         _host.PrimesteDate();
                     }
                     _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_host.Buffer);
-                    Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer );
-                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                    EsteRandulHostului();
+                    if (_ultimaMutarePrimitaHost != null)
+                    {
+                        Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer);
+                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
+                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+                        EsteRandulHostului();
+                    }
                 }
                 else
                 {
-                    //todo:deconecteaza-te
-                    MessageBox.Show("Mesaj Server", "Serverul s-a deconectat");
                     _timerJocServer.Stop();
-                    this.Dispose();
                 }
             }
         }

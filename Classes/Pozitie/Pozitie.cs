@@ -56,6 +56,14 @@ namespace ProiectVolovici
                 }
                 return false;
             }
+            if (pozitieDreapta is null)
+            {
+                if (pozitieStanga is null)
+                {
+                    return true;
+                }
+                return false;
+            }
             return (pozitieStanga.Linie == pozitieDreapta.Linie && pozitieStanga.Coloana == pozitieDreapta.Coloana);
         }
         public static bool operator !=(Pozitie pozitieStanga, Pozitie pozitieDreapta) => !(pozitieStanga == pozitieDreapta);

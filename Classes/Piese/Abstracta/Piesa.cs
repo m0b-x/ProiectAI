@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
-    public abstract class Piesa
+    public abstract class Piesa : IDisposable
     {
         protected CuloareJoc _culoarePiesa;
         protected Pozitie _pozitiePiesa;
@@ -53,7 +53,10 @@ namespace ProiectVolovici
         }
 
 
-
+        public void Dispose()
+        {
+            _imaginePiesa.Dispose();
+        }
         public abstract void ArataMutariPosibile(EngineJoc tabla);
 
     }
