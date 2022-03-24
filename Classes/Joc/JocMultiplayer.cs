@@ -134,7 +134,7 @@ namespace ProiectVolovici
         }
         public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
-            if(piesa == null && pozitie == null)
+            if(piesa == null || pozitie == null)
             {
                 return;
             }
