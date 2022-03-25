@@ -108,13 +108,13 @@ namespace ProiectVolovici
             {
                 _disposed = true;
                 InchideServer();
-                _client.Dispose();
 
+                _timerCitireDate.Stop();
                 _streamClient.Dispose();
                 _streamCitire.Dispose();
                 _streamScriere.Dispose();
-                _timerCitireDate.Stop();
                 _timerCitireDate.Dispose();
+                _client.Dispose();
                 Debug.WriteLine("NetworkServer sters!");
             }
             else
@@ -160,14 +160,10 @@ namespace ProiectVolovici
                     return date;
                 }
             }
-            catch (System.ObjectDisposedException)
-            {
-                _timerCitireDate.Stop();
-                return _mesajDeconectare;
-            }
             catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie networkserver TrimiteDate: " + exceptie);
+                return BufferGol;
             }
             return null;
         }
