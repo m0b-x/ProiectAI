@@ -161,7 +161,6 @@ namespace ProiectVolovici
                 _timerJocHost.Stop();
                 _host.TrimiteDate(_host.MesajDeconectare);
                 _timerJocHost.Dispose();
-                //_host.Dispose();
             }
             if (_esteClient)
             {
@@ -169,7 +168,6 @@ namespace ProiectVolovici
                 _timerJocClient.Stop();
                 _client.TrimiteDate(_client.MesajDeconectare);
                 _timerJocClient.Dispose();
-                _client.Dispose();
             }
         }
 
