@@ -16,12 +16,14 @@ namespace ProiectVolovici
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Form _parentForm;
+        private Label _labelMutare;
 
-        private System.Timers.Timer timerClient;
+        private System.Timers.Timer _timerClient;
+        private System.Timers.Timer _timerMutare;
 
-        private delegate void DelegatProprietateCrossThread( Control control,
-                                                             string propertyName,
-                                                             object propertyValue);
+        private delegate void _DelegatCrossThread( Control control,
+                                                    string propertyName,
+                                                    object propertyValue);
 
         public ClientSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
@@ -47,6 +49,7 @@ namespace ProiectVolovici
             {
                 _labelConexiuneLocala.Dispose();
             }
+            _timerMutare.Dispose();
             base.Dispose();
         }
 
@@ -58,19 +61,52 @@ namespace ProiectVolovici
         public override void ConecteazateLaJoc(IPAddress adresaIP, int port)
         {
             InitializeazaLabeleClient();
-            base.ConecteazateLaJoc(adresaIP, port);
-            timerClient = new System.Timers.Timer();
-            timerClient.Enabled = true;
-            timerClient.Interval = 100;
-            timerClient.Elapsed += new System.Timers.ElapsedEventHandler(VerificaPrimireClient);
-            timerClient.AutoReset = true;
-        }
+            _timerClient = new System.Timers.Timer();
+            _timerClient.Enabled = true;
+            _timerClient.Interval = 100;
+            _timerClient.Elapsed += new System.Timers.ElapsedEventHandler(VerificareConexiuneCuHostul);
+            _timerClient.AutoReset = true;
 
-        public void VerificaPrimireClient(object source, System.Timers.ElapsedEventArgs e)
+            _timerMutare = new System.Timers.Timer();
+            _timerMutare.Enabled = true;
+            _timerMutare.Interval = 200;
+            _timerMutare.Elapsed += new System.Timers.ElapsedEventHandler(VerificaMutare);
+            _timerMutare.AutoReset = true;
+            base.ConecteazateLaJoc(adresaIP, port);
+        }
+        public void VerificaMutare(object source, System.Timers.ElapsedEventArgs e)
+        {
+            if (_esteRandulClientului)
+            {
+                if (_labelMutare.Text == "Mutarea Lui")
+                {
+                    SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.Green);
+                    SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Ta");
+                    _labelMutare.Text = "Mutarea Ta";
+                }
+            }
+            else
+            {
+                if (_labelMutare.Text == "Mutarea Ta")
+                {
+                    SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.DarkRed);
+                    SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Lui");
+                    _labelMutare.Text = "Mutarea Lui";
+                }
+                if (_timerJocClientDisposed == true)
+                {
+                    SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
+                    SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server Deconectat");
+                    SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
+                    _timerMutare.Dispose();
+                }
+            }
+        }
+        public void VerificareConexiuneCuHostul(object source, System.Timers.ElapsedEventArgs e)
         {
             SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
             SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server primit");
-            timerClient.Dispose();
+            _timerClient.Dispose();
         }
         public void InitializeazaLabeleClient()
         {
@@ -79,7 +115,7 @@ namespace ProiectVolovici
             _labelConexiuneLocala.Parent = this._parentForm;
             _labelConexiuneLocala.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             _labelConexiuneLocala.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneLocala.Location = new System.Drawing.Point(225, 675);
+            _labelConexiuneLocala.Location = new System.Drawing.Point(200, 675);
             _labelConexiuneLocala.Name = "labelJocConectat";
             _labelConexiuneLocala.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneLocala.TabIndex = 0;
@@ -92,13 +128,26 @@ namespace ProiectVolovici
             _labelConexiuneSocket.Parent = this._parentForm;
             _labelConexiuneSocket.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             _labelConexiuneSocket.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneSocket.Location = new System.Drawing.Point(225, 602);
+            _labelConexiuneSocket.Location = new System.Drawing.Point(200, 602);
             _labelConexiuneSocket.Name = "labelClientConectat";
             _labelConexiuneSocket.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneSocket.TabIndex = 1;
             _labelConexiuneSocket.BackColor = Color.DarkRed;
             _labelConexiuneSocket.Text = "Se Conecteaza";
             _labelConexiuneSocket.Refresh();
+
+            _labelMutare = new System.Windows.Forms.Label();
+            _parentForm.Controls.Add(_labelMutare);
+            _labelMutare.Parent = this._parentForm;
+            _labelMutare.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            _labelMutare.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelMutare.Location = new System.Drawing.Point(200, 10);
+            _labelMutare.Name = "labelMutare";
+            _labelMutare.Size = new System.Drawing.Size(140, 35);
+            _labelMutare.TabIndex = 1;
+            _labelMutare.Text = "Mutarea Ta";
+            _labelMutare.BackColor = Color.Green;
+            _labelMutare.Refresh();
         }
 
         public static void SeteazaProprietateaDinAltThread(Control control,
@@ -109,7 +158,7 @@ namespace ProiectVolovici
             {
                 if (control.InvokeRequired)
                 {
-                    control.Invoke(new DelegatProprietateCrossThread(SeteazaProprietateaDinAltThread),
+                    control.Invoke(new _DelegatCrossThread(SeteazaProprietateaDinAltThread),
                                                 new object[] { control, propertyName, propertyValue });
                 }
                 else
