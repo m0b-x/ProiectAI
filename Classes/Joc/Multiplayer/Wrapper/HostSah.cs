@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,30 +10,29 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public class SahMultiplayer : JocMultiplayer,IDisposable
-    {        
+    public class HostSah : HostJoc
+    {
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Form _parentForm;
 
         private System.Timers.Timer timerHost;
-        private System.Timers.Timer timerClient;
 
-        private delegate void DelegatProprietateCrossThread( Control control,
+        private delegate void DelegatProprietateCrossThread(Control control,
                                                              string propertyName,
                                                              object propertyValue);
 
-        public SahMultiplayer(Form parentForm, ref Tuple<Om, Om> jucatori) : base(parentForm, ref jucatori)
+        public HostSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
-        public SahMultiplayer(Form parentForm, int[,] matriceTabla, ref Tuple<Om, Om> jucatori) : base(parentForm, matriceTabla, ref jucatori)
+        public HostSah(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla, jucator)
         {
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
-        ~SahMultiplayer() => Dispose();
+        ~HostSah() => Dispose();
 
         public override void Dispose()
         {
@@ -63,37 +61,15 @@ namespace ProiectVolovici
             timerHost = new System.Timers.Timer();
             timerHost.Enabled = true;
             timerHost.Interval = 100;
-            timerHost.Elapsed += new System.Timers.ElapsedEventHandler(VerificaPrimireServer);
+            timerHost.Elapsed += new System.Timers.ElapsedEventHandler(VerificaPrimireHost);
             timerHost.AutoReset = true;
         }
 
-        public override void ConecteazateLaJoc(IPAddress adresaIP, int port)
+        public void VerificaPrimireHost(object source, System.Timers.ElapsedEventArgs e)
         {
-            InitializeazaLabeleClient();
-            base.ConecteazateLaJoc(adresaIP, port);
-            timerClient = new System.Timers.Timer();
-            timerClient.Enabled = true;
-            timerClient.Interval = 100;
-            timerClient.Elapsed += new System.Timers.ElapsedEventHandler(VerificaPrimireClient);
-            timerClient.AutoReset = true;
-        }
-        public void VerificaPrimireServer(object source, System.Timers.ElapsedEventArgs e)
-        { 
-            if(_esteHost == true)
-            {
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
-                timerHost.Dispose();
-            }
-        }
-        public void VerificaPrimireClient(object source, System.Timers.ElapsedEventArgs e)
-        {
-            if (_esteClient == true)
-            {
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server primit");
-                timerClient.Dispose();
-            }
+            SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
+            SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
+            timerHost.Dispose();
         }
 
 
@@ -123,35 +99,6 @@ namespace ProiectVolovici
             _labelConexiuneSocket.TabIndex = 1;
             _labelConexiuneSocket.Text = "Client Oprit";
             _labelConexiuneSocket.BackColor = Color.DarkRed;
-            _labelConexiuneSocket.Refresh();
-        }
-
-        public void InitializeazaLabeleClient()
-        {
-            _labelConexiuneLocala = new System.Windows.Forms.Label();
-            _parentForm.Controls.Add(_labelConexiuneLocala);
-            _labelConexiuneLocala.Parent = this._parentForm;
-            _labelConexiuneLocala.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            _labelConexiuneLocala.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneLocala.Location = new System.Drawing.Point(225, 675);
-            _labelConexiuneLocala.Name = "labelJocConectat";
-            _labelConexiuneLocala.Size = new System.Drawing.Size(147, 40);
-            _labelConexiuneLocala.TabIndex = 0;
-            _labelConexiuneLocala.Text = "Client Pornit";
-            _labelConexiuneLocala.BackColor = Color.Green;
-            _labelConexiuneLocala.Refresh();
-
-            _labelConexiuneSocket = new System.Windows.Forms.Label();
-            _parentForm.Controls.Add(_labelConexiuneSocket);
-            _labelConexiuneSocket.Parent = this._parentForm;
-            _labelConexiuneSocket.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            _labelConexiuneSocket.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneSocket.Location = new System.Drawing.Point(225, 602);
-            _labelConexiuneSocket.Name = "labelClientConectat";
-            _labelConexiuneSocket.Size = new System.Drawing.Size(147, 40);
-            _labelConexiuneSocket.TabIndex = 1;
-            _labelConexiuneSocket.BackColor = Color.DarkRed;
-            _labelConexiuneSocket.Text = "Se Conecteaza";
             _labelConexiuneSocket.Refresh();
         }
 

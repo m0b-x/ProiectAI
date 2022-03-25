@@ -50,7 +50,7 @@ namespace ProiectVolovici
 
                     return pozitii;
                 }
-                catch(System.FormatException exceptie)
+                catch(System.FormatException)
                 {
                     Debug.WriteLine("Exceptie Decodificarepozitie: format invalid!");
                     return new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
