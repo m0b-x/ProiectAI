@@ -13,11 +13,12 @@ namespace ProiectVolovici
 {
     public class SahMultiplayer : JocMultiplayer,IDisposable
     {        
-        Label _labelConexiuneLocala;
-        Label _labelConexiuneSocket;
-        Form _parentForm;
-        System.Timers.Timer timerHost;
-        System.Timers.Timer timerClient;
+        private Label _labelConexiuneLocala;
+        private Label _labelConexiuneSocket;
+        private Form _parentForm;
+
+        private System.Timers.Timer timerHost;
+        private System.Timers.Timer timerClient;
 
         private delegate void DelegatProprietateCrossThread( Control control,
                                                              string propertyName,
