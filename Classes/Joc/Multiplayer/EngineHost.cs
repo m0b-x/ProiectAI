@@ -10,7 +10,7 @@ namespace ProiectVolovici
 {
     public class EngineHost : EngineJoc
     {
-        private static int _intervalTimere = 150;
+        private static int _intervalTimere = 200;
 
         protected NetworkServer _host;
         protected ParserTabla _parserTabla;
@@ -163,27 +163,22 @@ namespace ProiectVolovici
                 {
                     if (_host.Buffer != null)
                     {
+                        String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
+                        while (ultimulMesajPrimitHost.Equals(_host.Buffer))
+                        {
+                            _host.PrimesteDate();
+                        }
                         if (_host.Buffer != NetworkServer.BufferGol && _host.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                         {
                             if (!_host.Buffer.Equals(_host.MesajDeconectare))
                             {
-                                String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
-                                while (ultimulMesajPrimitHost.Equals(_host.Buffer))
+                                _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_host.Buffer);
+                                if (_ultimaMutarePrimitaHost != null)
                                 {
-                                    _host.PrimesteDate();
-                                    _timerJocHostDisposed = true;
-                                }
-                                if (_host.Buffer != null)
-                                {
-                                    _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_host.Buffer);
-                                    if (_ultimaMutarePrimitaHost != null)
-                                    {
-                                        Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer);
-                                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                                        EsteRandulHostului();
-                                        _host.PrimesteDate();
-                                    }
+                                    Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer);
+                                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
+                                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
+                                    EsteRandulHostului();
                                 }
                             }
                             else

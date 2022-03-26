@@ -12,7 +12,7 @@ namespace ProiectVolovici
 {
     public class EngineClient : EngineJoc
     {
-        private static readonly int _intervalTimere = 150;
+        private static readonly int _intervalTimere = 100;
 
         protected Om _jucatorClient;
 
@@ -161,27 +161,23 @@ namespace ProiectVolovici
                 if (_timerJocClientDisposed == false)
                 {
                     if (_client.Buffer != null)
-                    {
+                    {                                
+                        String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
+                        while (ultimulMesajPrimitClient.Equals(_client.Buffer))
+                        {
+                            _client.PrimesteDate();
+                        }
                         if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
                         {
                             if (!_client.Buffer.Equals(_client.MesajDeconectare))
                             {
-                                String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
-                                while (ultimulMesajPrimitClient.Equals(_client.Buffer))
+                                _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
+                                if (_ultimaMutarePrimitaClient != null)
                                 {
-                                    _client.PrimesteDate();
-                                }
-                                if (_client.Buffer != null)
-                                {
-                                    _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                                    if (_ultimaMutarePrimitaClient != null)
-                                    {
-                                        Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                                        Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
-                                        RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                                        EsteRandulClientului();
-                                        _client.PrimesteDate();
-                                    }
+                                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                                    Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
+                                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                                    EsteRandulClientului();
                                 }
                             }
                             else
