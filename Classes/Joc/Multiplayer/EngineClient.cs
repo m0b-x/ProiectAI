@@ -29,6 +29,8 @@ namespace ProiectVolovici
 
         protected bool _timerJocClientDisposed;
 
+        private String _ultimulMesajPrimitClient = NetworkClient.BufferGol;
+
         public Om JucatorOm
         {
             get { return _jucatorClient; }
@@ -163,12 +165,12 @@ namespace ProiectVolovici
                 {
                     if (_esteRandulClientului == false)
                     {
-                        String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
-                        while (ultimulMesajPrimitClient.Equals(_client.Buffer))
+                        while (_ultimulMesajPrimitClient.Equals(_client.Buffer))
                         {
                             _client.PrimesteDate();
                             Debug.WriteLine("CITIRE CLIENT");
                         }
+                        _ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
                         if (_client.Buffer != NetworkClient.BufferGol)
                         {
                             if (!_client.Buffer.Equals(_client.MesajDeconectare))

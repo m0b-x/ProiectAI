@@ -23,6 +23,8 @@ namespace ProiectVolovici
         protected bool _esteRandulHostului;
         protected bool _timerJocClientDisposed;
         protected bool _timerJocHostDisposed;
+
+        private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
         public Om JucatorOm
         {
             get { return _jucatorHost; }
@@ -163,11 +165,11 @@ namespace ProiectVolovici
                 {
                     if (_esteRandulHostului == false)
                     {
-                        String ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
-                        while (ultimulMesajPrimitHost.Equals(_host.Buffer))
+                        while (_ultimulMesajPrimitHost.Equals(_host.Buffer))
                         {
                             _host.PrimesteDate();
                         }
+                        _ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
                         if (_host.Buffer != NetworkServer.BufferGol)
                         {
                             if (!_host.Buffer.Equals(_host.MesajDeconectare))
