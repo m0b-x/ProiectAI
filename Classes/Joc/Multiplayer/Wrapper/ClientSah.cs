@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public class ClientSah : ClientJoc,IDisposable
+    public class ClientSah : EngineClient,IDisposable
     {        
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
@@ -69,7 +69,7 @@ namespace ProiectVolovici
 
             _timerMutare = new System.Timers.Timer();
             _timerMutare.Enabled = true;
-            _timerMutare.Interval = 200;
+            _timerMutare.Interval = 100;
             _timerMutare.Elapsed += new System.Timers.ElapsedEventHandler(VerificaMutare);
             _timerMutare.AutoReset = true;
             base.ConecteazateLaJoc(adresaIP, port);

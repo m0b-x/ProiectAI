@@ -10,7 +10,6 @@ namespace ProiectVolovici
         public static readonly int MarimeVerticala = 10;
         public static readonly int PragRau = 4;
         public static readonly int MarimeRau = 10;
-        public static readonly int LungimeMesajDiferential = 15;
 
         public static Color CuloareCadranPar = Color.BlanchedAlmond;
         public static Color CuloareCadranImpar = Color.DarkGreen;

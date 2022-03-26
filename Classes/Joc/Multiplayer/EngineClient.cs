@@ -44,7 +44,7 @@ namespace ProiectVolovici
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
-            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, ConstantaTabla.LungimeMesajDiferential);
+            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
         }
         public EngineClient(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
@@ -57,7 +57,7 @@ namespace ProiectVolovici
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
-            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala, ConstantaTabla.LungimeMesajDiferential);
+            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
         }
         public void AdaugaEvenimentCadrane()
         {
@@ -131,12 +131,13 @@ namespace ProiectVolovici
         {
             _client = new NetworkClient(adresaIP, port);
             await _client.PornesteCerereaDeConectare();
-            await PrimesteTablaAsync();
+            await PrimesteTablaAsincron();
             _client.TimerCitireDate.Stop();
             PornesteTimerClient();
+            _client.Buffer = NetworkClient.BufferGol;
             EsteRandulHostului();
         }
-        protected virtual async Task PrimesteTablaAsync()
+        protected virtual async Task PrimesteTablaAsincron()
         {
             while (_client.Buffer.Equals(NetworkClient.BufferGol))
             {
@@ -160,25 +161,24 @@ namespace ProiectVolovici
             {
                 if (_timerJocClientDisposed == false)
                 {
-                    if (_client.Buffer != null)
-                    {                                
+                    if (_esteRandulClientului == false)
+                    {
                         String ultimulMesajPrimitClient = _parserTabla.CodificareMutare(_ultimaMutarePrimitaClient.Item1, _ultimaMutarePrimitaClient.Item2);
                         while (ultimulMesajPrimitClient.Equals(_client.Buffer))
                         {
                             _client.PrimesteDate();
+                            Debug.WriteLine("CITIRE CLIENT");
                         }
-                        if (_client.Buffer != NetworkClient.BufferGol && _client.Buffer.Length <= ConstantaTabla.LungimeMesajDiferential)
+                        if (_client.Buffer != NetworkClient.BufferGol)
                         {
                             if (!_client.Buffer.Equals(_client.MesajDeconectare))
                             {
                                 _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_client.Buffer);
-                                if (_ultimaMutarePrimitaClient != null)
-                                {
-                                    Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
-                                    Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
-                                    RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
-                                    EsteRandulClientului();
-                                }
+                                Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1);
+                                Debug.WriteLine("Sincronizeaza jocul Client: " + _client);
+                                RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaClient.Item2);
+                                EsteRandulClientului();
+                                _client.PrimesteDate();
                             }
                             else
                             {
@@ -217,9 +217,7 @@ namespace ProiectVolovici
                     if (piesa != null)
                     {
                         if (piesa.CuloarePiesa == CuloareJoc.Alb)
-                        {
                             return;
-                        }
                         piesa.ArataMutariPosibile(this);
                     }
                     if (ExistaMutariPosibile() == true)

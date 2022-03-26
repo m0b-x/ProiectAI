@@ -12,13 +12,11 @@ namespace ProiectVolovici
     {
         int _liniiDecodificate;
         int _coloaneDecodificate;
-        int _lungimeDiferentiala;
 
-        public ParserTabla(int liniiDecodificate, int coloaneDecodificate, int lungimeDiferentiala)
+        public ParserTabla(int liniiDecodificate, int coloaneDecodificate)
         {
             _liniiDecodificate = liniiDecodificate;
             _coloaneDecodificate = coloaneDecodificate;
-            _lungimeDiferentiala = lungimeDiferentiala;
         }
 
 
