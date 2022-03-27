@@ -168,7 +168,7 @@ namespace ProiectVolovici
                 _ultimulMesajPrimitClient = _client.Buffer;
                 if (_ultimulMesajPrimitClient != NetworkClient.BufferGol)
                 {
-                    if (!_client.Buffer.Equals(_client.MesajDeconectare))
+                    if (!_ultimulMesajPrimitClient.Equals(_client.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1), _ultimaMutarePrimitaClient.Item2);
