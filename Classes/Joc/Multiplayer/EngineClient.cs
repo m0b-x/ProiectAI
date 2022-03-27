@@ -88,8 +88,8 @@ namespace ProiectVolovici
                 else
                 {
                     _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
-                    EsteRandulHostului();
                     RealizeazaMutareaLocal(piesa, pozitie);
+                    EsteRandulHostului();
                 }
             }
         }
@@ -182,68 +182,61 @@ namespace ProiectVolovici
                     }
                 }
             }
-            else
-            {
-                _timerJocClientDisposed = true;
-                _timerJocClient.Stop();
-            }
         }
         public void OnCadranClick(object sender, EventArgs e)
         {
-            if (PiesaSelectata == ConstantaTabla.PiesaNula)
+            if (_esteRandulClientului)
             {
-                if (!_esteRandulClientului)
+                if (PiesaSelectata == ConstantaTabla.PiesaNula)
                 {
-                    return;
+                    Pozitie pozitie = new Pozitie(0, 0);
+                    pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
+                    pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+
+                    if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                    {
+
+                        Piesa piesa = GetPiesaCuPozitia(pozitie);
+
+                        if (piesa != null)
+                        {
+                            if (piesa.CuloarePiesa == CuloareJoc.Alb)
+                                return;
+                            piesa.ArataMutariPosibile(this);
+                            if (ExistaMutariPosibile() == true)
+                            {
+                                ArataPiesaSelectata(piesa);
+                                PiesaSelectata = piesa;
+                            }
+                            else
+                            {
+                                ArataPozitieBlocata(pozitie);
+                            }
+                        }
+                    }
                 }
-                Pozitie pozitie = new Pozitie(0, 0);
-                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-
-                if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                else
                 {
+                    Pozitie pozitie = new Pozitie(0, 0);
+                    pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
+                    pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
 
-                    Piesa piesa = GetPiesaCuPozitia(pozitie);
-
-                    if (piesa != null)
+                    if (PiesaSelectata.Pozitie != pozitie)
                     {
-                        if (piesa.CuloarePiesa == CuloareJoc.Alb)
-                            return;
-                        piesa.ArataMutariPosibile(this);
+                        if (EsteMutareaPosibila(pozitie))
+                        {
+                            AscundePiesaSelectata(PiesaSelectata);
+                            RealizeazaMutareaOnline(PiesaSelectata, pozitie);
+                            if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                            {
+                                ConstantaSunet.SunetPiesaLuata.Play();
+                            }
+                            else
+                            {
+                                ConstantaSunet.SunetPiesaMutata.Play();
+                            }
+                        }
                     }
-                    if (ExistaMutariPosibile() == true)
-                    {
-                        ArataPiesaSelectata(piesa);
-                        PiesaSelectata = piesa;
-                    }
-                    else
-                    {
-                        ArataPozitieBlocata(pozitie);
-                    }
-                }
-            }
-            else
-            {
-                Pozitie pozitie = new Pozitie(0, 0);
-                pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-                pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
-
-                if (PiesaSelectata.Pozitie == pozitie)
-                {
-                    return;
-                }
-                if (EsteMutareaPosibila(pozitie))
-                {
-                    AscundePiesaSelectata(PiesaSelectata);
-                    if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
-                    {
-                        ConstantaSunet.SunetPiesaLuata.Play();
-                    }
-                    else
-                    {
-                        ConstantaSunet.SunetPiesaMutata.Play();
-                    }
-                    RealizeazaMutareaOnline(PiesaSelectata, pozitie);
                 }
             }
         }

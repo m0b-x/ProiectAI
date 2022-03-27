@@ -34,25 +34,14 @@ namespace ProiectVolovici
         }
         public Tuple<Pozitie,Pozitie> DecodificareMutare(String mutare)
         {
-            //Debug.WriteLine("Decodificare" + mutare);
-            try
-                {
-                    mutare = mutare.Replace("{", " ");
-                    mutare = mutare.Replace("}", " ");
-                    int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
+            Debug.WriteLine("Decodificare" + mutare);
+            mutare = mutare.Replace("{", " ");
+            mutare = mutare.Replace("}", " ");
+            int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
 
-                    Pozitie pozitieInitiala = new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]);
-                    Pozitie pozitieFinala = new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]);
 
-                    Tuple<Pozitie, Pozitie> pozitii = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
-
-                    return pozitii;
-                }
-                catch(System.FormatException)
-                {
-                    Debug.WriteLine("Exceptie Decodificarepozitie: format invalid!");
-                    return new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
-                }
+            return new Tuple<Pozitie, Pozitie>(new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]),
+                                               new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]));
             }
         public String CodificareTabla(int[,] matriceTabla)
         {
