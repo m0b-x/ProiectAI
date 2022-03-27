@@ -21,7 +21,7 @@ namespace ProiectVolovici
         Form formHost;
         private void FormJocHost_Load(object sender, EventArgs e)
         {
-            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(), new Om());
+            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(CuloareJoc.Alb), new Om(CuloareJoc.Albastru));
 
             formHost = this;
             jocSah = new HostSah(formHost,jucatori.Item1);

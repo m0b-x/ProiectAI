@@ -31,7 +31,7 @@ namespace ProiectVolovici
 
         private String _ultimulMesajPrimitClient = NetworkClient.BufferGol;
 
-        public Om JucatorOm
+        public Om Jucator
         {
             get { return _jucatorClient; }
         }
@@ -200,7 +200,7 @@ namespace ProiectVolovici
 
                         if (piesa != null)
                         {
-                            if (piesa.CuloarePiesa == CuloareJoc.Alb)
+                            if (piesa.CuloarePiesa != _jucatorClient.Culoare)
                             {
                                 return;
                             }

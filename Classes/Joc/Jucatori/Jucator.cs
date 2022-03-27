@@ -8,9 +8,14 @@ namespace ProiectVolovici
 {
     public abstract class Jucator
     {
-        private String _nume;
-        private CuloareJoc _culoare;
-        private List<Tuple<Piesa,Piesa>> _istoricMutari;
+        protected String _nume;
+        protected CuloareJoc _culoare;
+        protected List<Tuple<Piesa,Piesa>> _istoricMutari;
+
+        public Jucator(CuloareJoc culoare)
+        {
+            _culoare = culoare;
+        }
 
         public String Nume
         {

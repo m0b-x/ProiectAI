@@ -24,7 +24,7 @@ namespace ProiectVolovici
         protected bool _timerJocHostDisposed;
 
         private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
-        public Om JucatorOm
+        public Om Jucator
         {
             get { return _jucatorHost; }
         }
@@ -200,7 +200,7 @@ namespace ProiectVolovici
 
                         if (piesa != null)
                         {
-                            if (piesa.CuloarePiesa == CuloareJoc.Albastru)
+                            if (piesa.CuloarePiesa != _jucatorHost.Culoare)
                             {
                                 return;
                             }
