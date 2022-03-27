@@ -153,10 +153,10 @@ namespace ProiectVolovici
             _timerJocHost.Interval = _timpTimere;
             _timerJocHost.AutoReset = true;
             _timerJocHost.Enabled = true;
-            _timerJocHost.Elapsed += new ElapsedEventHandler(PrimesteDateHost);
+            _timerJocHost.Elapsed += new ElapsedEventHandler(SincronizeazaHost);
             _timerJocHost.Start();
         }
-        public void PrimesteDateHost(object source, ElapsedEventArgs e)
+        public void SincronizeazaHost(object source, ElapsedEventArgs e)
         {
             if (_timerJocHostDisposed == false)
             {

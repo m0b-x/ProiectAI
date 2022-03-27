@@ -154,10 +154,10 @@ namespace ProiectVolovici
             _timerJocClient.Interval = _timpTimere;
             _timerJocClient.AutoReset = true;
             _timerJocClient.Enabled = true;
-            _timerJocClient.Elapsed += new ElapsedEventHandler(PrimesteDateClient);
+            _timerJocClient.Elapsed += new ElapsedEventHandler(SincronizeazaClient);
             _timerJocClient.Start();
         }
-        public void PrimesteDateClient(object source, ElapsedEventArgs e)
+        public void SincronizeazaClient(object source, ElapsedEventArgs e)
         {
             if (_timerJocClientDisposed == false)
             {
