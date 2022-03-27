@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -278,14 +279,22 @@ namespace ProiectVolovici
         {
             ArrayCadrane[piesa.Pozitie.Linie, piesa.Pozitie.Coloana].BackColor = CuloareCadranSelectat;
         }
-        public async void ArataPozitieBlocata(Pozitie pozitie)
+        public void ArataPozitieBlocata(Pozitie pozitie)
         {
             if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor != ConstantaTabla.CuloarePozitieBlocata)
             {
                 Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
-                await Task.Delay(250);
-                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
+                var timer = new System.Threading.Timer(
+                             e => 
+                                { 
+                                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
+                                    PiesaSelectata = ConstantaTabla.PiesaNula;
+                                 },
+                             null,
+                             TimeSpan.Zero,
+                             TimeSpan.FromMilliseconds(100));
+                
             }
         }
 

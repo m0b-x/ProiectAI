@@ -201,12 +201,14 @@ namespace ProiectVolovici
                         if (piesa != null)
                         {
                             if (piesa.CuloarePiesa == CuloareJoc.Albastru)
+                            {
                                 return;
+                            }
+                            PiesaSelectata = piesa;
                             piesa.ArataMutariPosibile(this);
                             if (ExistaMutariPosibile() == true)
                             {
                                 ArataPiesaSelectata(piesa);
-                                PiesaSelectata = piesa;
                             }
                             else
                             {

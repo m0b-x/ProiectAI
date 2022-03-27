@@ -100,10 +100,10 @@ namespace ProiectVolovici
             }
             if(_timerJocHostDisposed == true)
             {
+                _timerMutare.Dispose();
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
-                _timerMutare.Dispose();
             }
         }
 
