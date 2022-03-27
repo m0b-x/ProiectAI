@@ -73,7 +73,7 @@ namespace ProiectVolovici
 
             _timerMutare = new System.Timers.Timer();
             _timerMutare.Enabled = true;
-            _timerMutare.Interval = 200;
+            _timerMutare.Interval = 100;
             _timerMutare.Elapsed += new System.Timers.ElapsedEventHandler(VerificaMutare);
             _timerMutare.AutoReset = true;
             base.HosteazaJoc(port);

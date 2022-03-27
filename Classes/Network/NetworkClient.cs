@@ -195,27 +195,19 @@ namespace ProiectVolovici
             {
                 String date;
                 date = _streamCitire.ReadLine();
-                if (_buffer != date)
+                _buffer = date;
+                if (date == _mesajDeconectare)
                 {
-                    if (date == _mesajDeconectare)
-                    {
-                        Debug.WriteLine("Serverul s-a deconectat de la client`");
-                    }
-                    Debug.WriteLine("Date Primite de Client: " + date);
-                    _buffer = date;
-                    return date;
+                    Debug.WriteLine("Serverul s-a deconectat de la client`");
                 }
-            }
-            catch(System.ObjectDisposedException)
-            {
-                _timerCitireDate.Stop();
-                return _mesajDeconectare;
+                Debug.WriteLine("Date Primite de Client: " + date);
+                return date;
             }
             catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie networkclient TrimiteDate: " + exceptie);
+                return BufferGol;
             }
-            return null;
         }
 
         private void InchidereClient ()

@@ -21,7 +21,6 @@ namespace ProiectVolovici
 
         protected int _timpTimere;
         protected bool _esteRandulHostului;
-        protected bool _timerJocClientDisposed;
         protected bool _timerJocHostDisposed;
 
         private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
@@ -154,44 +153,34 @@ namespace ProiectVolovici
             _timerJocHost.Interval = _timpTimere;
             _timerJocHost.AutoReset = true;
             _timerJocHost.Enabled = true;
-            _timerJocHost.Elapsed += new ElapsedEventHandler(PrimesteDateleHost);
+            _timerJocHost.Elapsed += new ElapsedEventHandler(PrimesteDateHost);
             _timerJocHost.Start();
         }
-        public void PrimesteDateleHost(object source, ElapsedEventArgs e)
+        public void PrimesteDateHost(object source, ElapsedEventArgs e)
         {
-            try
+            if (_timerJocHostDisposed == false)
             {
-                if (_timerJocHostDisposed == false)
+                if (_ultimulMesajPrimitHost.Equals(_host.Buffer))
                 {
-                    if (_esteRandulHostului == false)
+                    _host.PrimesteDate();
+                }
+                _ultimulMesajPrimitHost = _host.Buffer;
+                if (_ultimulMesajPrimitHost != NetworkServer.BufferGol)
+                {
+                    if (!_host.Buffer.Equals(_host.MesajDeconectare))
                     {
-                        while (_ultimulMesajPrimitHost.Equals(_host.Buffer))
-                        {
-                            _host.PrimesteDate();
-                        }
-                        _ultimulMesajPrimitHost = _parserTabla.CodificareMutare(_ultimaMutarePrimitaHost.Item1, _ultimaMutarePrimitaHost.Item2);
-                        if (_host.Buffer != NetworkServer.BufferGol)
-                        {
-                            if (!_host.Buffer.Equals(_host.MesajDeconectare))
-                            {
-                                _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_host.Buffer);
-                                Debug.WriteLine("Sincronizeaza jocul Host: " + _host.Buffer);
-                                Piesa ultimaPiesa = GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1);
-                                RealizeazaMutareaLocal(ultimaPiesa, _ultimaMutarePrimitaHost.Item2);
-                                EsteRandulHostului();
-                                _host.PrimesteDate();
-                            }
-                            else
-                            {
-                                _timerJocHostDisposed = true;
-                                _timerJocHost.Stop();
-                                MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
-                            }
-                        }
+                        _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
+                        RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
+                        EsteRandulHostului();
+                    }
+                    else
+                    {
+                        _timerJocHostDisposed = true;
+                        _timerJocHost.Stop();
+                        MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
                     }
                 }
             }
-            catch { _timerJocHostDisposed = true; _timerJocHost.Stop(); }
         }
 
         public void OnCadranClick(object sender, EventArgs e)

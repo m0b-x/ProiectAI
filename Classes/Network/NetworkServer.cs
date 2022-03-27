@@ -149,23 +149,19 @@ namespace ProiectVolovici
             {
                 String date;
                 date = _streamCitire.ReadLine();
-                if (_buffer != date)
+                _buffer = date;
+                if (date == _mesajDeconectare)
                 {
-                    if (date == _mesajDeconectare)
-                    {
-                        Debug.WriteLine("Clientul s-a deconectat de la server");
-                    }
-                    Debug.WriteLine("Date Primite Server: " + date);
-                    _buffer = date;
-                    return date;
+                    Debug.WriteLine("Clientul s-a deconectat de la server");
                 }
+                Debug.WriteLine("Date Primite Server: " + date);
+                return date;
             }
             catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie networkserver TrimiteDate: " + exceptie);
                 return BufferGol;
             }
-            return null;
         }
 
         private void AcceptaConexiuneClient(IAsyncResult rezultatAsincron)
