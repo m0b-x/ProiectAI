@@ -12,7 +12,7 @@ namespace ProiectVolovici
 {
     public class EngineClient : EngineJoc
     {
-        private static readonly int _intervalTimere = 100;
+        private static readonly int _intervalTimere = 50;
 
         protected Om _jucatorClient;
 
@@ -165,9 +165,9 @@ namespace ProiectVolovici
                 {
                     _client.PrimesteDate();
                 }
-                _ultimulMesajPrimitClient = _client.Buffer;
-                if (_ultimulMesajPrimitClient != NetworkClient.BufferGol)
+                if (_client.Buffer != NetworkClient.BufferGol)
                 {
+                    _ultimulMesajPrimitClient = _client.Buffer;
                     if (!_ultimulMesajPrimitClient.Equals(_client.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);

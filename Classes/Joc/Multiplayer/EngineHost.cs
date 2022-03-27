@@ -10,7 +10,7 @@ namespace ProiectVolovici
 {
     public class EngineHost : EngineJoc
     {
-        private static int _intervalTimere = 100;
+        private static int _intervalTimere = 50;
 
         protected NetworkServer _host;
         protected ParserTabla _parserTabla;
@@ -164,9 +164,9 @@ namespace ProiectVolovici
                 {
                     _host.PrimesteDate();
                 }
-                _ultimulMesajPrimitHost = _host.Buffer;
-                if (_ultimulMesajPrimitHost != NetworkServer.BufferGol)
+                if (_host.Buffer != NetworkServer.BufferGol)
                 {
+                    _ultimulMesajPrimitHost = _host.Buffer;
                     if (!_ultimulMesajPrimitHost.Equals(_host.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
