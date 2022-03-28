@@ -36,68 +36,129 @@ namespace ProiectVolovici
 
             if (_pozitiePiesa.Linie < ultimaLinie - 1)
             {
-                if (_pozitiePiesa.Coloana < ultimaColoana )
-                    if(tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int) CodPiesa.Gol)
-                       if(tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1] == (int) CodPiesa.Gol)
+                if (_pozitiePiesa.Coloana < ultimaColoana)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1));
-                       else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1));
-
-                if (_pozitiePiesa.Coloana > primaColoana)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1] == (int) CodPiesa.Gol)
+                        }
+                    }
+                }
+                else if (_pozitiePiesa.Coloana > primaColoana)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1));
+                        }
                         else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1));
+                        }
+                    }
+                }
             }
-            if(_pozitiePiesa.Linie > primaLinie + 1)
+            else if(_pozitiePiesa.Linie > primaLinie + 1)
             {
                 if (_pozitiePiesa.Coloana < ultimaColoana)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1] == (int) CodPiesa.Gol)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1));
-                        else if(tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1));
-
-                if (_pozitiePiesa.Coloana > primaColoana)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1] == (int) CodPiesa.Gol)
+                        }
+                    }
+                }
+                else if (_pozitiePiesa.Coloana > primaColoana)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1));
-                        else if(tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1));
+                        }
+                    }
+                }
             }
 
             if (_pozitiePiesa.Coloana < ultimaColoana - 1)
             {
                 if (_pozitiePiesa.Linie < ultimaLinie)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2] == (int) CodPiesa.Gol)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2));
-                        else if(tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2));
-
-                if (_pozitiePiesa.Linie > primaLinie)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2] == (int) CodPiesa.Gol)
+                        }
+                    }
+                }
+                else if (_pozitiePiesa.Linie > primaLinie)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2));
-                        else if(tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2));
+                        }
+                    }
+                }
             }
-            if (_pozitiePiesa.Coloana > primaColoana + 1)
+            else if (_pozitiePiesa.Coloana > primaColoana + 1)
             {
-                if (_pozitiePiesa.Linie > primaLinie )
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2] == (int) CodPiesa.Gol)
+                if (_pozitiePiesa.Linie > primaLinie)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2));
-                        else if(tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
+                        }
+                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2));
+                        }
+                    }
+                }
 
-                if (_pozitiePiesa.Linie < ultimaLinie)
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int) CodPiesa.Gol)
-                        if(tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2] == (int) CodPiesa.Gol)
+                else if (_pozitiePiesa.Linie < ultimaLinie)
+                {
+                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                    {
+                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2));
+                        }
                         else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
+                        {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2));
+                        }
+                    }
+                }
             }
             tabla.ColoreazaMutariPosibile(pozitii: pozitii);
         }
