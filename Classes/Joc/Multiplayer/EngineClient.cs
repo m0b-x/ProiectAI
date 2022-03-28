@@ -228,7 +228,6 @@ namespace ProiectVolovici
                         if (EsteMutareaPosibila(pozitie))
                         {
                             AscundePiesaSelectata(PiesaSelectata);
-                            RealizeazaMutareaOnline(PiesaSelectata, pozitie);
                             if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
@@ -237,6 +236,7 @@ namespace ProiectVolovici
                             {
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
+                            RealizeazaMutareaOnline(PiesaSelectata, pozitie);
                         }
                     }
                 }
