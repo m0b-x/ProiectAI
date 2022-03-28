@@ -24,7 +24,29 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.GardianAlb;
             }
         }
-        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc joc) 
+        {
+            List<Pozitie> mutariGardian = new List<Pozitie>();
+            List<Pozitie> pozitii = new List<Pozitie>();
+
+            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie + 1,_pozitiePiesa.Coloana + 1));
+            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
+            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
+            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
+
+            foreach (Pozitie pozitie in mutariGardian)
+            {
+                if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
+                {
+                    if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        pozitii.Add(pozitie);
+                    }
+                }
+
+            }
+            joc.ColoreazaMutariPosibile(pozitii: pozitii);
+        }
 
     }
 }

@@ -32,8 +32,8 @@
         /// <summary>
         /// The ArataMutariPosibile.
         /// </summary>
-        /// <param name="tabla">The tabla<see cref="EngineJoc"/>.</param>
-        public override void ArataMutariPosibile(EngineJoc tabla)
+        /// <param name="joc">The tabla<see cref="EngineJoc"/>.</param>
+        public override void ArataMutariPosibile(EngineJoc joc)
         {
             Debug.WriteLine("ArataMutariPosibileTura " + this._codPiesa);
             List<Pozitie> pozitii = new List<Pozitie>();
@@ -42,13 +42,13 @@
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
-                if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     pozitii.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if(tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if(joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         pozitii.Add(pozitiePosibila);
                     }
@@ -61,13 +61,13 @@
             while (liniePozitiiPosibile >= 0)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
-                if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     pozitii.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         pozitii.Add(pozitiePosibila);
                     }
@@ -80,13 +80,13 @@
             while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     pozitii.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         pozitii.Add(pozitiePosibila);
                     }
@@ -99,13 +99,13 @@
             while (colonaPozitiePosibila >= 0)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     pozitii.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (tabla.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         pozitii.Add(pozitiePosibila);
                     }
@@ -113,7 +113,7 @@
                 }
                 colonaPozitiePosibila--;
             }
-            tabla.ColoreazaMutariPosibile(pozitii: pozitii);
+            joc.ColoreazaMutariPosibile(pozitii: pozitii);
         }
     }
 }

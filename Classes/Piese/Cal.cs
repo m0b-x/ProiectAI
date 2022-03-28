@@ -25,7 +25,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.CalAlb;
             }
         }
-       public override void ArataMutariPosibile(EngineJoc tabla)
+       public override void ArataMutariPosibile(EngineJoc joc)
        {
             List<Pozitie> pozitii = new List<Pozitie>();
 
@@ -38,13 +38,13 @@ namespace ProiectVolovici
             {
                 if (_pozitiePiesa.Coloana < ultimaColoana)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1));
                         }
@@ -52,13 +52,13 @@ namespace ProiectVolovici
                 }
                 else if (_pozitiePiesa.Coloana > primaColoana)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1));
                         }
@@ -69,13 +69,13 @@ namespace ProiectVolovici
             {
                 if (_pozitiePiesa.Coloana < ultimaColoana)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1));
                         }
@@ -83,13 +83,13 @@ namespace ProiectVolovici
                 }
                 else if (_pozitiePiesa.Coloana > primaColoana)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1));
                         }
@@ -101,13 +101,13 @@ namespace ProiectVolovici
             {
                 if (_pozitiePiesa.Linie < ultimaLinie)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2));
                         }
@@ -115,13 +115,13 @@ namespace ProiectVolovici
                 }
                 else if (_pozitiePiesa.Linie > primaLinie)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2));
                         }
@@ -132,13 +132,13 @@ namespace ProiectVolovici
             {
                 if (_pozitiePiesa.Linie > primaLinie)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2));
                         }
@@ -147,20 +147,20 @@ namespace ProiectVolovici
 
                 else if (_pozitiePiesa.Linie < ultimaLinie)
                 {
-                    if (tabla.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCodPiese[_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
                     {
-                        if (tabla.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
+                        if (joc.MatriceCodPiese[_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2] == (int)CodPiesa.Gol)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2));
                         }
-                        else if (tabla.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
+                        else if (joc.GetPiesaCuPozitia(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2)).CuloarePiesa != this.CuloarePiesa)
                         {
                             pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2));
                         }
                     }
                 }
             }
-            tabla.ColoreazaMutariPosibile(pozitii: pozitii);
+            joc.ColoreazaMutariPosibile(pozitii: pozitii);
         }
     }
 }
