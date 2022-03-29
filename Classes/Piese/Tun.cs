@@ -24,6 +24,82 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.TunAlb;
             }
         }
-        public override void ArataMutariPosibile(EngineJoc tabla) { Console.WriteLine("Fa corpul metodei"); }
+        public override void ArataMutariPosibile(EngineJoc joc)
+        {
+            List<Pozitie> pozitii = new List<Pozitie>();
+
+            int liniePozitiiPosibile = this.Pozitie.Linie + 1;
+            while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
+            {
+                Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                {
+                    pozitii.Add(pozitiePosibila);
+                }
+                else
+                {
+                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    {
+                        break;
+                    }
+                }
+                liniePozitiiPosibile++;
+            }
+
+            liniePozitiiPosibile = this.Pozitie.Linie - 1;
+            while (liniePozitiiPosibile >= 0)
+            {
+                Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                {
+                    pozitii.Add(pozitiePosibila);
+                }
+                else
+                {
+                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    {
+                        break;
+                    }
+                }
+                liniePozitiiPosibile--;
+            }
+
+            int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
+            while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
+            {
+                Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                {
+                    pozitii.Add(pozitiePosibila);
+                }
+                else
+                {
+                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    {
+                        break;
+                    }
+                }
+                colonaPozitiePosibila++;
+            }
+
+            colonaPozitiePosibila = this.Pozitie.Coloana - 1;
+            while (colonaPozitiePosibila >= 0)
+            {
+                Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                {
+                    pozitii.Add(pozitiePosibila);
+                }
+                else
+                {
+                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    {
+                        break;
+                    }
+                }
+                colonaPozitiePosibila--;
+            }
+            joc.ColoreazaMutariPosibile(pozitii: pozitii);
+        }
     }
 }
