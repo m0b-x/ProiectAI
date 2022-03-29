@@ -99,22 +99,6 @@ namespace ProiectVolovici
         {
             _esteRandulHostului = true;
         }
-        public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
-        {
-            if (piesa == null || pozitie == null)
-            {
-                return;
-            }
-            Pozitie pozitieInitiala = piesa.Pozitie;
-            DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-            ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-            SeteazaPiesaCadranului(pozitie, piesa);
-            piesa.Pozitie = pozitie;
-            SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
-
-            PiesaSelectata = ConstantaTabla.PiesaNula;
-            PozitiiMutariPosibile.Clear();
-        }
 
         ~EngineHost() => Dispose();
 

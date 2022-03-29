@@ -102,22 +102,6 @@ namespace ProiectVolovici
         {
             _esteRandulClientului = false;
         }
-        public void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
-        {
-            if (piesa == null || pozitie == null)
-            {
-                return;
-            }
-            Pozitie pozitieInitiala = piesa.Pozitie;
-            DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-            ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-            piesa.Pozitie = pozitie;
-            SeteazaPiesaCadranului(pozitie, piesa);
-            SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
-            MatriceCodPiese[pozitieInitiala.Linie, pozitieInitiala.Coloana] = (int)CodPiesa.Gol;
-            PiesaSelectata = ConstantaTabla.PiesaNula;
-            PozitiiMutariPosibile.Clear();
-        }
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
