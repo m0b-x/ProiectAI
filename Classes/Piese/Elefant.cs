@@ -32,18 +32,17 @@ namespace ProiectVolovici
             int ultimaLinie = ConstantaTabla.MarimeOrizontala - 1;
             int ultimaColoana = ConstantaTabla.MarimeVerticala - 1;
 
-            List<Pozitie> mutariElefant = new List<Pozitie>();
-            List<Pozitie> pozitiiDupaEliminare = new List<Pozitie>();
-            List<Pozitie> pozitiiFinale = new List<Pozitie>();
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
+            List<Pozitie> mutariFiltruTabla = new List<Pozitie>();
+            List<Pozitie> mutariFiltruFinal = new List<Pozitie>();
 
-            mutariElefant.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 2));
-            mutariElefant.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 2));
-            mutariElefant.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 2));
-            mutariElefant.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 2));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 2));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 2));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 2));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 2));
 
-            foreach (Pozitie pozitie in mutariElefant)
+            foreach (Pozitie pozitie in mutariNefiltrate)
             {
-                Debug.WriteLine(pozitie.Linie + " " + pozitie.Coloana);
                 if ( pozitie.Linie <= ultimaLinie     &&
                      pozitie.Linie >= primaLinie      &&
                      pozitie.Coloana <= ultimaColoana &&
@@ -55,11 +54,11 @@ namespace ProiectVolovici
                         {
                             if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                             {
-                                pozitiiDupaEliminare.Add(pozitie);
+                                mutariFiltruTabla.Add(pozitie);
                             }
                             else if(joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Alb)
                             {
-                                pozitiiDupaEliminare.Add(pozitie);
+                                mutariFiltruTabla.Add(pozitie);
                             }
                         }
                     }
@@ -69,18 +68,18 @@ namespace ProiectVolovici
                         {
                             if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                             {
-                                pozitiiDupaEliminare.Add(pozitie);
+                                mutariFiltruTabla.Add(pozitie);
                             }
                             else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Albastru)
                             {
-                                pozitiiDupaEliminare.Add(pozitie);
+                                mutariFiltruTabla.Add(pozitie);
                             }
                         }
                     }
                 }
 
             }
-            foreach (Pozitie pozitie in pozitiiDupaEliminare)
+            foreach (Pozitie pozitie in mutariFiltruTabla)
             {
                 Pozitie pozitieElementMijloc = new Pozitie(0,0);
                 if (pozitie.Linie > _pozitiePiesa.Linie)
@@ -101,11 +100,11 @@ namespace ProiectVolovici
                 }
                 if (joc.ArrayCadrane[pozitieElementMijloc.Linie, pozitieElementMijloc.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                 {
-                    pozitiiFinale.Add(pozitie);
+                    mutariFiltruFinal.Add(pozitie);
                 }
 
             }
-            joc.ColoreazaMutariPosibile(pozitii: pozitiiFinale);
+            joc.ColoreazaMutariPosibile(pozitii: mutariFiltruFinal);
         }
     }
 }
