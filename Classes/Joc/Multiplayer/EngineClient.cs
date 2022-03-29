@@ -111,10 +111,10 @@ namespace ProiectVolovici
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
             ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-            SeteazaPiesaCadranului(pozitie, piesa);
             piesa.Pozitie = pozitie;
+            SeteazaPiesaCadranului(pozitie, piesa);
             SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
-
+            MatriceCodPiese[pozitieInitiala.Linie, pozitieInitiala.Coloana] = (int)CodPiesa.Gol;
             PiesaSelectata = ConstantaTabla.PiesaNula;
             PozitiiMutariPosibile.Clear();
         }
