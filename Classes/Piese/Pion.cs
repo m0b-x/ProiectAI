@@ -28,113 +28,50 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> pozitii = new List<Pozitie>();
-            if(CuloarePiesa == CuloareJoc.Albastru)
+            const int primaLinie = 0;
+            const int primaColoana = 0;
+            int ultimaLinie = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaColoana = ConstantaTabla.MarimeVerticala - 1;
+
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
+            List<Pozitie> mutariFiltruTabla = new List<Pozitie>();
+
+            if (this.CuloarePiesa == CuloareJoc.Albastru)
             {
-                int sfarsitLinie = joc.MarimeVerticala - 1;
-                if (this.Pozitie.Linie != sfarsitLinie)
+                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie+1,_pozitiePiesa.Coloana));
+                if(_pozitiePiesa.Linie > joc.PragRau)
                 {
-                    if (joc.ArrayCadrane[this.Pozitie.Linie + 1, this.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-                    {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie + 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
-                        }
-                    }
-                    else
-                    {
-                        pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
-                    }
+                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
+                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
                 }
-                if(this.Pozitie.Linie > joc.PragRau )
+            }
+            else
+            {
+                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
+                if (_pozitiePiesa.Linie <= joc.PragRau)
                 {
-                    int sfarsitColoana = joc.MarimeOrizontala - 1;
-                    const int inceputColoana = 0;
-
-                    if (this.Pozitie.Coloana != sfarsitColoana)
+                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
+                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+                }
+            }
+            foreach (Pozitie pozitie in mutariNefiltrate)
+            {
+                if (pozitie.Linie <= ultimaLinie &&
+                     pozitie.Linie >= primaLinie &&
+                     pozitie.Coloana <= ultimaColoana &&
+                     pozitie.Coloana >= primaColoana)
+                {
+                    if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                     {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran != ConstantaTabla.PiesaNula)
-                        {
-                            if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                            {
-                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                            }
-                        }
-                        else
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                        }
-
+                        mutariFiltruTabla.Add(pozitie);
                     }
-                    if (this.Pozitie.Coloana != inceputColoana)
+                    else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
                     {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran != ConstantaTabla.PiesaNula)
-                        {
-                            if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                            {
-                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                            }
-                        }
-                        else
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                        }
+                        mutariFiltruTabla.Add(pozitie);
                     }
                 }
             }
-            else if (CuloarePiesa == CuloareJoc.Alb)
-            {
-                int inceputLinie = 0;
-                if (this.Pozitie.Linie != inceputLinie)
-                {
-                    if (joc.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-                    {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie - 1, this.Pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
-                        }
-                    }
-                    else
-                    {
-                        pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
-                    }
-                }
-                if (this.Pozitie.Linie <= joc.PragRau)
-                {
-                    int sfarsitColoana = joc.MarimeOrizontala - 1;
-                    const int inceputColoana = 0;
-                    
-                    if (this.Pozitie.Coloana != sfarsitColoana)
-                    {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran != ConstantaTabla.PiesaNula)
-                        {
-                            if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana + 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                            {
-                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                            }
-                        }
-                        else
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                        }
-                    }
-                    if (this.Pozitie.Coloana != inceputColoana)
-                    {
-                        if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran != ConstantaTabla.PiesaNula)
-                        {
-                            if (joc.ArrayCadrane[this.Pozitie.Linie, this.Pozitie.Coloana - 1].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
-                            {
-                                pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                            }
-                        }
-                        else
-                        {
-                            pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                        }
-                    }
-                }
-            }
-            joc.ColoreazaMutariPosibile(pozitii);
+            joc.ColoreazaMutariPosibile(mutariFiltruTabla);
         }
     }
 }
