@@ -29,7 +29,7 @@ namespace ProiectVolovici
         {
             const int primaLinie = 0;
             const int primaColoana = 0;
-            int ultimaLinie = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
             int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
