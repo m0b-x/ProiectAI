@@ -414,7 +414,7 @@ namespace ProiectVolovici
             int coloanaInitiala = (pozitieInitiala.Coloana > pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
             int coloanaFinala = (pozitieInitiala.Coloana < pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
 
-            if (pozitieInitiala.Linie > pozitiaFinala.Linie)
+            if (pozitieInitiala.Linie != pozitiaFinala.Linie)
             {
                 for (int linie = linieInitiala; linie < linieFinala; linie++)
                 {
