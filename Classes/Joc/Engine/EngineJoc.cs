@@ -408,14 +408,10 @@ namespace ProiectVolovici
         {
             Pozitie pozitieInitiala = piesa.Pozitie;
 
-            int linieInitiala = (pozitieInitiala.Linie > pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
-            int linieFinala = (pozitieInitiala.Linie < pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
-
-            int coloanaInitiala = (pozitieInitiala.Coloana > pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
-            int coloanaFinala = (pozitieInitiala.Coloana < pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
-
             if (pozitieInitiala.Linie != pozitiaFinala.Linie)
             {
+                int linieInitiala = (pozitieInitiala.Linie > pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
+                int linieFinala = (pozitieInitiala.Linie < pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
                 for (int linie = linieInitiala; linie < linieFinala; linie++)
                 {
                     if (ArrayCadrane[linie, piesa.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
@@ -427,9 +423,10 @@ namespace ProiectVolovici
                     }
                 }
             }
-
-            if (pozitieInitiala.Coloana != pozitiaFinala.Coloana)
+            else if (pozitieInitiala.Coloana != pozitiaFinala.Coloana)
             {
+                int coloanaInitiala = (pozitieInitiala.Coloana > pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
+                int coloanaFinala = (pozitieInitiala.Coloana < pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
                 for (int coloana = coloanaInitiala; coloana < coloanaFinala; coloana++)
                 {
                     if (ArrayCadrane[piesa.Pozitie.Linie,coloana].PiesaCadran != ConstantaTabla.PiesaNula)
