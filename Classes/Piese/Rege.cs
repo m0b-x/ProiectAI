@@ -24,8 +24,10 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.RegeAlb;
             }
         }
-        public override void ArataMutariPosibile(EngineJoc joc) 
+        public override void ArataMutariPosibile(EngineJoc joc)
         {
+            int sfarsitLinie = joc.MarimeVerticala - 1;
+            int inceputLinie = 0;
             List<Pozitie> mutariRege = new List<Pozitie>();
             List<Pozitie> pozitii = new List<Pozitie>();
 
@@ -40,7 +42,54 @@ namespace ProiectVolovici
                 {
                     if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
-                        pozitii.Add(pozitie);
+                        {
+                            if (this.CuloarePiesa == CuloareJoc.Alb)
+                            {
+                                bool estePosibila = true;
+                                for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
+                                {
+                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    {
+                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.GetType() == new Rege(CuloareJoc.Albastru).GetType())
+                                        {
+                                            estePosibila = false;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (estePosibila == true)
+                                {
+                                    pozitii.Add(pozitie);
+                                }
+                            }
+                            else if (this.CuloarePiesa == CuloareJoc.Albastru)
+                            {
+                                bool estePosibila = true;
+                                for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
+                                {
+                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    {
+                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.GetType() == new Rege(CuloareJoc.Alb).GetType())
+                                        {
+                                            estePosibila = false;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (estePosibila == true)
+                                {
+                                    pozitii.Add(pozitie);
+                                }
+                            }
+                        }
                     }
                 }
 
