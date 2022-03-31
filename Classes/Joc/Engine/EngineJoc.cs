@@ -178,8 +178,8 @@ namespace ProiectVolovici
             AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 2));
             AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 6));
 
-            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 3));
-            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 5));
+            AdaugaPiesa(new General(CuloareJoc.Albastru), new Pozitie(0, 3));
+            AdaugaPiesa(new General(CuloareJoc.Albastru), new Pozitie(0, 5));
 
             AdaugaPiesa(new Rege(CuloareJoc.Albastru), new Pozitie(0, 4));
 
@@ -203,8 +203,8 @@ namespace ProiectVolovici
             AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 2));
             AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 6));
 
-            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 3));
-            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 5));
+            AdaugaPiesa(new General(CuloareJoc.Alb), new Pozitie(9, 3));
+            AdaugaPiesa(new General(CuloareJoc.Alb), new Pozitie(9, 5));
 
             AdaugaPiesa(new Rege(CuloareJoc.Alb), new Pozitie(9, 4));
         }
@@ -230,8 +230,8 @@ namespace ProiectVolovici
                 case CodPiesa.TuraAlbastra: return new Tura(CuloareJoc.Albastru);
                 case CodPiesa.TunAlb: return new Tun(CuloareJoc.Alb);
                 case CodPiesa.TunAlbastru: return new Tun(CuloareJoc.Albastru);
-                case CodPiesa.GardianAlb: return new Gardian(CuloareJoc.Alb);
-                case CodPiesa.GardianAlbastru: return new Gardian(CuloareJoc.Albastru);
+                case CodPiesa.GardianAlb: return new General(CuloareJoc.Alb);
+                case CodPiesa.GardianAlbastru: return new General(CuloareJoc.Albastru);
                 case CodPiesa.ElefantAlb: return new Elefant(CuloareJoc.Alb);
                 case CodPiesa.ElefantAlbastru: return new Elefant(CuloareJoc.Albastru); ;
                 case CodPiesa.CalAlb: return new Cal(CuloareJoc.Alb);
@@ -418,7 +418,6 @@ namespace ProiectVolovici
             {
                 for (int linie = linieInitiala; linie < linieFinala; linie++)
                 {
-                    Debug.WriteLine("linie:"+linie);
                     if (ArrayCadrane[linie, piesa.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
                         if (ArrayCadrane[linie, piesa.Pozitie.Coloana].PiesaCadran.CuloarePiesa != piesa.CuloarePiesa)
