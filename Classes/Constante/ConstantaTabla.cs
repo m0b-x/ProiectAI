@@ -24,6 +24,10 @@ namespace ProiectVolovici
 
         public static readonly int IntervalPiesaBlocata = 125;
 
+        public static readonly int MarimeFont = 15;
+
+        public static readonly string NumeFont = "Arial";
+
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
             _pozitiiPalat.Add(new Pozitie(0, 3));

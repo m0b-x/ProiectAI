@@ -16,6 +16,9 @@ namespace ProiectVolovici
         private List<Piesa> _listaPiese;
         private List<Pozitie> _pozitiiMutariPosibile;
 
+        private Label[] labelColoane;
+        private Label[] labelLinii;
+
         private Piesa _piesaSelectata;
 
         private Tuple<Pozitie, Pozitie> _ultimaMutare;
@@ -126,6 +129,10 @@ namespace ProiectVolovici
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                 }
             }
+            Label[] _labelLinii = new Label[ConstantaTabla.MarimeVerticala];
+            Label[] _labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
+            CreeazaLabeluriLinii(_labelColoane);
+            CreeazaLabeluriColoane(_labelLinii);
         }
 
         public EngineJoc(Form parentForm, int[,] matriceTabla)
@@ -157,6 +164,39 @@ namespace ProiectVolovici
         {
             _tabla.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+
+
+        private void CreeazaLabeluriColoane(Label[] _labelLinii)
+        {
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                _labelLinii[linie] = new Label();
+                _labelLinii[linie].Text = linie.ToString();
+                _labelLinii[linie].Font = new Font(ConstantaTabla.NumeFont, ConstantaTabla.MarimeFont);
+                _labelLinii[linie].AutoSize = false;
+                _labelLinii[linie].Size = new Size(ConstantaCadran.MarimeCadran, ConstantaCadran.MarimeCadran);
+                _labelLinii[linie].Location = new Point(ArrayCadrane[linie, MarimeOrizontala - 1].Location.X + ConstantaCadran.MarimeCadran,
+                                                        ArrayCadrane[linie, MarimeOrizontala - 1].Location.Y + ConstantaCadran.MarimeCadran / 3);
+                _parentForm.Controls.Add(_labelLinii[linie]);
+            }
+        }
+
+        private void CreeazaLabeluriLinii(Label[] _labelColoane)
+        {
+            char literaLinie = 'A';
+            for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+            {
+                _labelColoane[coloana] = new Label();
+                _labelColoane[coloana].Text = literaLinie++.ToString();
+                _labelColoane[coloana].Font = new Font(ConstantaTabla.NumeFont, ConstantaTabla.MarimeFont);
+                _labelColoane[coloana].AutoSize = false;
+                _labelColoane[coloana].Size = new Size(ConstantaCadran.MarimeCadran, ConstantaCadran.MarimeCadran);
+                _labelColoane[coloana].Location = new Point(ArrayCadrane[MarimeVerticala - 1, coloana].Location.X + ConstantaCadran.MarimeCadran / 3,
+                                                            ArrayCadrane[MarimeVerticala - 1, coloana].Location.Y + ConstantaCadran.MarimeCadran);
+                _parentForm.Controls.Add(_labelColoane[coloana]);
+            }
         }
 
         public void AdaugaPieselePrestabilite()
