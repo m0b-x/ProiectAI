@@ -22,7 +22,7 @@ namespace ProiectVolovici
         private System.Timers.Timer _timerCitireDate;
 
         private int _port;
-        private int _timpTimeoutConexiune;
+        private int _intervalTimeoutConexiune;
         private bool _disposed;
         private string _mesajDeconectare;
         private string _mesajConectare;
@@ -80,7 +80,7 @@ namespace ProiectVolovici
 
             _mesajDeconectare = "{8,8,8,8}";
             _mesajConectare = "1";
-            _timpTimeoutConexiune = TimeoutConexiune;
+            _intervalTimeoutConexiune = TimeoutConexiune;
             _buffer = BufferGol;
         }
 
@@ -99,7 +99,7 @@ namespace ProiectVolovici
                     },
                     TaskContinuationOptions.ExecuteSynchronously);
 
-                var taskTimeout = Task.Delay(_timpTimeoutConexiune).
+                var taskTimeout = Task.Delay(_intervalTimeoutConexiune).
                     ContinueWith<TcpClient>(task => null, TaskContinuationOptions.ExecuteSynchronously);
 
                 var rezultatConexiune = Task.WhenAny(taskConexiune, taskTimeout).Unwrap();

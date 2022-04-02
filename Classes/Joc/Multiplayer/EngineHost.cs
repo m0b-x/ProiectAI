@@ -10,7 +10,7 @@ namespace ProiectVolovici
 {
     public class EngineHost : EngineJoc
     {
-        private static int _intervalTimere = 50;
+        public static int IntervalTimerPrimireDate = 50;
 
         protected NetworkServer _host;
         protected ParserTabla _parserTabla;
@@ -19,7 +19,6 @@ namespace ProiectVolovici
         private Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
         protected System.Timers.Timer _timerJocHost;
 
-        protected int _timpTimere;
         protected bool _esteRandulHostului;
         protected bool _timerJocHostDisposed;
 
@@ -35,8 +34,6 @@ namespace ProiectVolovici
 
             _esteRandulHostului = false;
 
-            _timpTimere = _intervalTimere;
-
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
@@ -50,8 +47,6 @@ namespace ProiectVolovici
             _jucatorHost = jucator;
 
             _esteRandulHostului = false;
-
-            _timpTimere = _intervalTimere;
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -134,7 +129,7 @@ namespace ProiectVolovici
         {
             _timerJocHostDisposed = false;
             _timerJocHost = new();
-            _timerJocHost.Interval = _timpTimere;
+            _timerJocHost.Interval = IntervalTimerPrimireDate;
             _timerJocHost.AutoReset = true;
             _timerJocHost.Enabled = true;
             _timerJocHost.Elapsed += new ElapsedEventHandler(SincronizeazaHost);

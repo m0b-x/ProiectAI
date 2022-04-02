@@ -12,6 +12,8 @@ namespace ProiectVolovici
 {
     public class HostSah : EngineHost
     {
+        public static uint IntervalTimerVizual = 50;
+
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Label _labelMutare;
@@ -65,20 +67,20 @@ namespace ProiectVolovici
         public override void HosteazaJoc(int port)
         {
             InitializeazaLabeleHost();
-            _timerHost = new System.Timers.Timer();
-            _timerHost.Enabled = true;
-            _timerHost.Interval = 100;
-            _timerHost.Elapsed += new System.Timers.ElapsedEventHandler(VerificaPrimireHost);
-            _timerHost.AutoReset = true;
-
-            _timerMutare = new System.Timers.Timer();
-            _timerMutare.Enabled = true;
-            _timerMutare.Interval = 100;
-            _timerMutare.Elapsed += new System.Timers.ElapsedEventHandler(VerificaMutare);
-            _timerMutare.AutoReset = true;
+            ActiveazaTimerRepetitiv(ref _timerHost, (uint)EngineHost.IntervalTimerPrimireDate, VerificaPrimireHost);
+            ActiveazaTimerRepetitiv(ref _timerMutare, IntervalTimerVizual, ActualizeazaInterfataVizuala);
             base.HosteazaJoc(port);
         }
-        public void VerificaMutare(object source, System.Timers.ElapsedEventArgs e)
+        void ActiveazaTimerRepetitiv(ref System.Timers.Timer timer, uint interval, System.Timers.ElapsedEventHandler functie)
+        {
+            timer = new System.Timers.Timer();
+            timer.AutoReset = true;
+            timer.Interval = interval;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
+            timer.Enabled = true;
+        }
+
+        public void ActualizeazaInterfataVizuala(object source, System.Timers.ElapsedEventArgs e)
         {
             if (_esteRandulHostului)
             {
@@ -89,9 +91,8 @@ namespace ProiectVolovici
                     _labelMutare.Text = "Mutarea Ta";
                 }
             }
-            else
+            else if (_labelMutare.Text == "Mutarea Ta")
             {
-                if (_labelMutare.Text == "Mutarea Ta")
                 {
                     SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.DarkRed);
                     SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Lui");
@@ -115,6 +116,28 @@ namespace ProiectVolovici
             _timerMutare.Start();
         }
 
+        public static void SeteazaProprietateaDinAltThread(Control control,
+                                                    string propertyName,
+                                                    object propertyValue)
+        {
+            if (control.IsDisposed == false)
+            {
+                if (control.InvokeRequired)
+                {
+                    control.Invoke(new DelegatProprietateCrossThread(SeteazaProprietateaDinAltThread),
+                                                new object[] { control, propertyName, propertyValue });
+                }
+                else
+                {
+                    control.GetType().InvokeMember(
+                        propertyName,
+                        BindingFlags.SetProperty,
+                        null,
+                        control,
+                        new object[] { propertyValue });
+                }
+            }
+        }
 
         public void InitializeazaLabeleHost()
         {
@@ -158,27 +181,5 @@ namespace ProiectVolovici
             _labelMutare.Refresh();
         }
 
-        public static void SeteazaProprietateaDinAltThread(Control control,
-                                                    string propertyName,
-                                                    object propertyValue)
-        {
-            if (control.IsDisposed == false)
-            {
-                if (control.InvokeRequired)
-                {
-                    control.Invoke(new DelegatProprietateCrossThread(SeteazaProprietateaDinAltThread),
-                                                new object[] { control, propertyName, propertyValue });
-                }
-                else
-                {
-                    control.GetType().InvokeMember(
-                        propertyName,
-                        BindingFlags.SetProperty,
-                        null,
-                        control,
-                        new object[] { propertyValue });
-                }
-            }
-        }
     }
 }

@@ -12,7 +12,7 @@ namespace ProiectVolovici
 {
     public class EngineClient : EngineJoc
     {
-        private static readonly int _intervalTimere = 50;
+        public static int IntervalTimerPrimireDate = 50;
 
         protected Om _jucatorClient;
 
@@ -22,8 +22,6 @@ namespace ProiectVolovici
         Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaClient;
 
         protected System.Timers.Timer _timerJocClient;
-
-        protected int _timpTimere;
 
         protected bool _esteRandulClientului;
 
@@ -42,8 +40,6 @@ namespace ProiectVolovici
 
             _esteRandulClientului = false;
 
-            _timpTimere = _intervalTimere;
-
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
@@ -54,8 +50,6 @@ namespace ProiectVolovici
             _jucatorClient = jucator;
 
             _esteRandulClientului = false;
-
-            _timpTimere = _intervalTimere;
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -135,7 +129,7 @@ namespace ProiectVolovici
         {
             _timerJocClientDisposed = false;
             _timerJocClient = new();
-            _timerJocClient.Interval = _timpTimere;
+            _timerJocClient.Interval = IntervalTimerPrimireDate;
             _timerJocClient.AutoReset = true;
             _timerJocClient.Enabled = true;
             _timerJocClient.Elapsed += new ElapsedEventHandler(SincronizeazaClient);

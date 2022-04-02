@@ -13,6 +13,8 @@ namespace ProiectVolovici
 {
     public class ClientSah : EngineClient,IDisposable
     {        
+        public static uint TimpTimerVizual = 50;
+
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Form _parentForm;
@@ -60,21 +62,21 @@ namespace ProiectVolovici
 
         public override void ConecteazateLaJoc(IPAddress adresaIP, int port)
         {
-            InitializeazaLabeleClient();
-            _timerClient = new System.Timers.Timer();
-            _timerClient.Enabled = true;
-            _timerClient.Interval = 100;
-            _timerClient.Elapsed += new System.Timers.ElapsedEventHandler(VerificareConexiuneCuHostul);
-            _timerClient.AutoReset = true;
-
-            _timerMutare = new System.Timers.Timer();
-            _timerMutare.Enabled = true;
-            _timerMutare.Interval = 100;
-            _timerMutare.Elapsed += new System.Timers.ElapsedEventHandler(VerificaMutare);
-            _timerMutare.AutoReset = true;
+            ActiveazaLabeleClient();
+            ActiveazaTimerRepetitiv(ref _timerClient, (uint)EngineClient.IntervalTimerPrimireDate, VerificareConexiuneCuHostul);
+            ActiveazaTimerRepetitiv(ref _timerMutare, TimpTimerVizual, ActualizeazaInterfataVizuala);
             base.ConecteazateLaJoc(adresaIP, port);
         }
-        public void VerificaMutare(object source, System.Timers.ElapsedEventArgs e)
+        void ActiveazaTimerRepetitiv(ref System.Timers.Timer timer, uint interval, System.Timers.ElapsedEventHandler functie)
+        {
+            timer = new System.Timers.Timer();
+            timer.AutoReset = true;
+            timer.Interval = interval;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
+            timer.Enabled = true;
+        }
+
+        public void ActualizeazaInterfataVizuala(object source, System.Timers.ElapsedEventArgs e)
         {
             if (_esteRandulClientului)
             {
@@ -108,7 +110,7 @@ namespace ProiectVolovici
             SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server primit");
             _timerClient.Dispose();
         }
-        public void InitializeazaLabeleClient()
+        public void ActiveazaLabeleClient()
         {
             _labelConexiuneLocala = new System.Windows.Forms.Label();
             _parentForm.Controls.Add(_labelConexiuneLocala);
