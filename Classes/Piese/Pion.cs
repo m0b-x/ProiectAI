@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
-    class Pion : Piesa
+    internal class Pion : Piesa
     {
-        
         public Pion(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
@@ -38,8 +33,8 @@ namespace ProiectVolovici
 
             if (this.CuloarePiesa == CuloareJoc.Albastru)
             {
-                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie+1,_pozitiePiesa.Coloana));
-                if(_pozitiePiesa.Linie > joc.PragRau)
+                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
+                if (_pozitiePiesa.Linie > joc.PragRau)
                 {
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));

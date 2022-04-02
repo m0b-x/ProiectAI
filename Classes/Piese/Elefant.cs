@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
-    class Elefant : Piesa
+    internal class Elefant : Piesa
     {
         public Elefant(CuloareJoc culoare)
         {
@@ -25,7 +20,8 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.ElefantAlb;
             }
         }
-        public override void ArataMutariPosibile(EngineJoc joc) 
+
+        public override void ArataMutariPosibile(EngineJoc joc)
         {
             const int primaLinie = 0;
             const int primaColoana = 0;
@@ -43,12 +39,12 @@ namespace ProiectVolovici
 
             foreach (Pozitie pozitie in mutariNefiltrate)
             {
-                if ( pozitie.Linie <= ultimaLinie     &&
-                     pozitie.Linie >= primaLinie      &&
+                if (pozitie.Linie <= ultimaLinie &&
+                     pozitie.Linie >= primaLinie &&
                      pozitie.Coloana <= ultimaColoana &&
-                     pozitie.Coloana >= primaColoana  )
+                     pozitie.Coloana >= primaColoana)
                 {
-                    if(_culoarePiesa == CuloareJoc.Alb)
+                    if (_culoarePiesa == CuloareJoc.Alb)
                     {
                         if (pozitie.Linie > joc.PragRau)
                         {
@@ -56,7 +52,7 @@ namespace ProiectVolovici
                             {
                                 mutariFiltruTabla.Add(pozitie);
                             }
-                            else if(joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Alb)
+                            else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Alb)
                             {
                                 mutariFiltruTabla.Add(pozitie);
                             }
@@ -77,11 +73,10 @@ namespace ProiectVolovici
                         }
                     }
                 }
-
             }
             foreach (Pozitie pozitie in mutariFiltruTabla)
             {
-                Pozitie pozitieElementMijloc = new Pozitie(0,0);
+                Pozitie pozitieElementMijloc = new Pozitie(0, 0);
                 if (pozitie.Linie > _pozitiePiesa.Linie)
                 {
                     pozitieElementMijloc.Linie = pozitie.Linie - 1;
@@ -102,7 +97,6 @@ namespace ProiectVolovici
                 {
                     mutariFiltruFinal.Add(pozitie);
                 }
-
             }
             joc.ColoreazaMutariPosibile(pozitii: mutariFiltruFinal);
         }

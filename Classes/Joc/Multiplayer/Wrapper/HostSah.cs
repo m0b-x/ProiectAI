@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -32,11 +28,13 @@ namespace ProiectVolovici
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
+
         public HostSah(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla, jucator)
         {
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
+
         ~HostSah() => Dispose();
 
         public override void Dispose()
@@ -71,6 +69,7 @@ namespace ProiectVolovici
             ActiveazaTimerRepetitiv(ref _timerMutare, IntervalTimerVizual, ActualizeazaInterfataVizuala);
             base.HosteazaJoc(port);
         }
+
         public void ActualizeazaInterfataVizuala(object source, System.Timers.ElapsedEventArgs e)
         {
             if (_esteRandulHostului)
@@ -90,7 +89,7 @@ namespace ProiectVolovici
                     _labelMutare.Text = "Mutarea Lui";
                 }
             }
-            if(_timerJocHostDisposed == true)
+            if (_timerJocHostDisposed == true)
             {
                 _timerMutare.Dispose();
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
@@ -171,6 +170,5 @@ namespace ProiectVolovici
             _labelMutare.BackColor = Color.Green;
             _labelMutare.Refresh();
         }
-
     }
 }

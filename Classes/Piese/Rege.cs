@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
-    class Rege : Piesa
+    internal class Rege : Piesa
     {
         public Rege(CuloareJoc culoare)
         {
@@ -24,6 +20,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.RegeAlb;
             }
         }
+
         public override void ArataMutariPosibile(EngineJoc joc)
         {
             int sfarsitLinie = joc.MarimeVerticala - 1;
@@ -92,7 +89,6 @@ namespace ProiectVolovici
                         }
                     }
                 }
-
             }
             joc.ColoreazaMutariPosibile(pozitii: pozitii);
         }

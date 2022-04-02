@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
@@ -22,12 +18,13 @@ namespace ProiectVolovici
             get { return _coloana; }
             set { _coloana = value; }
         }
-        
-        public Pozitie(int linie,int coloana)
+
+        public Pozitie(int linie, int coloana)
         {
             _linie = linie;
             _coloana = coloana;
         }
+
         public override bool Equals(Object obj)
         {
             if ((obj == null) || !this.GetType().Equals(obj.GetType()))
@@ -66,8 +63,7 @@ namespace ProiectVolovici
             }
             return (pozitieStanga.Linie == pozitieDreapta.Linie && pozitieStanga.Coloana == pozitieDreapta.Coloana);
         }
+
         public static bool operator !=(Pozitie pozitieStanga, Pozitie pozitieDreapta) => !(pozitieStanga == pozitieDreapta);
-
-
     }
 }

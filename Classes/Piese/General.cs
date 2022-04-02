@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
-    class General : Piesa
+    internal class General : Piesa
     {
         public General(CuloareJoc culoare)
         {
@@ -25,6 +20,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.GardianAlb;
             }
         }
+
         public override void ArataMutariPosibile(EngineJoc joc)
         {
             List<Pozitie> mutariGardian = new List<Pozitie>();
@@ -40,14 +36,13 @@ namespace ProiectVolovici
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
                     if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
-                        joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] %2 != (int) this._codPiesa % 2)
+                        joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
                         pozitii.Add(pozitie);
                     }
                 }
                 joc.ColoreazaMutariPosibile(pozitii: pozitii);
             }
-
         }
     }
 }

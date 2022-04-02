@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
     public class ParserTabla
     {
-        int _liniiDecodificate;
-        int _coloaneDecodificate;
+        private int _liniiDecodificate;
+        private int _coloaneDecodificate;
 
         public ParserTabla(int liniiDecodificate, int coloaneDecodificate)
         {
@@ -19,11 +15,10 @@ namespace ProiectVolovici
             _coloaneDecodificate = coloaneDecodificate;
         }
 
-
-        public String CodificareMutare(Pozitie pozitieInitiala,Pozitie pozitieFinala)
+        public String CodificareMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
             Debug.WriteLine("CallBack CodificareMutare");
-            string mutareString =  "{" +
+            string mutareString = "{" +
                                     pozitieInitiala.Linie + "," +
                                     pozitieInitiala.Coloana + "," +
                                     pozitieFinala.Linie + "," +
@@ -32,17 +27,18 @@ namespace ProiectVolovici
             Debug.WriteLine(mutareString);
             return mutareString;
         }
-        public Tuple<Pozitie,Pozitie> DecodificareMutare(String mutare)
+
+        public Tuple<Pozitie, Pozitie> DecodificareMutare(String mutare)
         {
             Debug.WriteLine("Decodificare" + mutare);
             mutare = mutare.Replace("{", " ");
             mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
 
-
             return new Tuple<Pozitie, Pozitie>(new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]),
                                                new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]));
-            }
+        }
+
         public String CodificareTabla(int[,] matriceTabla)
         {
             var str = /*"mesajInceput" + */ string.Join("", matriceTabla.OfType<int>()
@@ -55,11 +51,9 @@ namespace ProiectVolovici
 
         public int[,] DecodificareTabla(String stringPrimit)
         {
-
             stringPrimit = stringPrimit.Replace("}{", " ");
 
             stringPrimit = stringPrimit.Substring(1, stringPrimit.Length - 2);
-
 
             int[] vectorAuxiliar = stringPrimit.Split(' ').Select(int.Parse).ToArray();
 
@@ -75,7 +69,6 @@ namespace ProiectVolovici
                 }
             }
             return matriceReturnata;
-
         }
     }
 }

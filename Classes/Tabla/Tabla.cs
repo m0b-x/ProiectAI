@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
@@ -28,22 +25,27 @@ namespace ProiectVolovici
             get { return _pozitiiPalat; }
             set { _pozitiiPalat = value; }
         }
+
         public int MarimeVerticala
         {
             get { return _marimeVerticala; }
         }
+
         public int MarimeOrizontala
         {
             get { return _marimeOrizontala; }
         }
+
         public int PragRau
         {
             get { return _pragRau; }
         }
+
         public int MarimeRau
         {
             get { return _marimeRau; }
         }
+
         public Color CuloareCadranPar
         {
             get { return _culoareCadranPar; }
@@ -65,11 +67,13 @@ namespace ProiectVolovici
             get { return _culoareCadranMutari; }
             set { _culoareCadranMutari = value; }
         }
+
         public Cadran[,] ArrayCadrane
         {
             get { return _arrayCadrane; }
             set { _arrayCadrane = value; }
         }
+
         public Tabla()
         {
             _marimeVerticala = ConstantaTabla.MarimeVerticala;
@@ -106,7 +110,7 @@ namespace ProiectVolovici
 
         public Color DecideCuloareaCadranului(int linie, int coloana)
         {
-            if (_pozitiiPalat.Contains(new Pozitie(linie, coloana)))
+            if (_pozitiiPalat.Contains(_ = new Pozitie(linie, coloana)))
             {
                 if (linie % 2 == 0)
                 {

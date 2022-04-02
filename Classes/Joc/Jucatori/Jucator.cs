@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
@@ -10,7 +7,7 @@ namespace ProiectVolovici
     {
         protected String _nume;
         protected CuloareJoc _culoare;
-        protected List<Tuple<Pozitie,Pozitie>> _istoricMutari;
+        protected List<Tuple<Pozitie, Pozitie>> _istoricMutari;
 
         public Jucator(CuloareJoc culoare)
         {
@@ -22,6 +19,7 @@ namespace ProiectVolovici
             get { return _nume; }
             set { _nume = value; }
         }
+
         public CuloareJoc Culoare
         {
             get { return _culoare; }
@@ -33,6 +31,5 @@ namespace ProiectVolovici
             get { return _istoricMutari; }
             set { _istoricMutari = value; }
         }
-
     }
 }

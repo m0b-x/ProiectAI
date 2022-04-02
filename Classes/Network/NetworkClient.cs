@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -36,12 +32,14 @@ namespace ProiectVolovici
 
         public bool Disposed
         {
-            get{ return _disposed; }
+            get { return _disposed; }
         }
+
         public TcpClient Client
         {
             get { return _client; }
         }
+
         public System.Timers.Timer TimerCitireDate
         {
             get { return _timerCitireDate; }
@@ -52,6 +50,7 @@ namespace ProiectVolovici
         {
             get { return _conectat; }
         }
+
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
@@ -70,7 +69,6 @@ namespace ProiectVolovici
 
         public NetworkClient(IPAddress adresaIP, int port)
         {
-
             _client = new TcpClient();
             _adresaIP = adresaIP;
             _port = port;
@@ -93,7 +91,7 @@ namespace ProiectVolovici
             try
             {
                 var taskConexiune = _client.
-                    ConnectAsync(_adresaIP, _port).ContinueWith(task => 
+                    ConnectAsync(_adresaIP, _port).ContinueWith(task =>
                     {
                         return task.IsFaulted ? null : _client;
                     },
@@ -124,6 +122,7 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie ConecteazaClientLaServer: " + exceptie);
             }
         }
+
         public void AscultaPentruDate()
         {
             if (_timerCitireDate == null)
@@ -210,10 +209,10 @@ namespace ProiectVolovici
             }
         }
 
-        private void InchidereClient ()
+        private void InchidereClient()
         {
             try
-            { 
+            {
                 if (_client != null)
                 {
                     _streamScriere.WriteLine(_mesajDeconectare);

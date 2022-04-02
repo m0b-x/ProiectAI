@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public class ClientSah : EngineClient,IDisposable
-    {        
+    public class ClientSah : EngineClient, IDisposable
+    {
         public static uint TimpTimerVizual = 50;
 
         private Label _labelConexiuneLocala;
@@ -23,7 +19,7 @@ namespace ProiectVolovici
         private System.Timers.Timer _timerClient;
         private System.Timers.Timer _timerMutare;
 
-        private delegate void _DelegatCrossThread( Control control,
+        private delegate void _DelegatCrossThread(Control control,
                                                     string propertyName,
                                                     object propertyValue);
 
@@ -32,11 +28,13 @@ namespace ProiectVolovici
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
+
         public ClientSah(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla, jucator)
         {
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
+
         ~ClientSah() => Dispose();
 
         public override void Dispose()
@@ -96,12 +94,14 @@ namespace ProiectVolovici
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
             }
         }
+
         public void VerificareConexiuneCuHostul(object source, System.Timers.ElapsedEventArgs e)
         {
             SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
             SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server primit");
             _timerClient.Dispose();
         }
+
         public void ActiveazaLabeleClient()
         {
             _labelConexiuneLocala = new System.Windows.Forms.Label();

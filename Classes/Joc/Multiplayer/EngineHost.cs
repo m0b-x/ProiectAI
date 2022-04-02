@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
@@ -23,10 +22,12 @@ namespace ProiectVolovici
         protected bool _timerJocHostDisposed;
 
         private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
+
         public Om Jucator
         {
             get { return _jucatorHost; }
         }
+
         public EngineHost(Form parentForm, Om jucator) : base(parentForm)
         {
             AdaugaEvenimentCadrane();
@@ -37,11 +38,11 @@ namespace ProiectVolovici
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
-        
+
             AdaugaEvenimentCadrane();
         }
 
-        public EngineHost(Form parentForm, int[,] matriceTabla,Om jucator) : base(parentForm, matriceTabla)
+        public EngineHost(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
             AdaugaEvenimentCadrane();
             _jucatorHost = jucator;
@@ -63,6 +64,7 @@ namespace ProiectVolovici
                 }
             }
         }
+
         private void RealizeazaMutareaOnline(Piesa piesa, Pozitie pozitie)
         {
             Debug.WriteLine("MutaPiesaOnline: " + piesa.Pozitie.Linie + " " + piesa.Pozitie.Coloana + "->" + pozitie.Linie + " " + pozitie.Coloana);
@@ -85,6 +87,7 @@ namespace ProiectVolovici
                 }
             }
         }
+
         public void EsteRandulClientului()
         {
             _esteRandulHostului = false;
@@ -107,12 +110,14 @@ namespace ProiectVolovici
             _host.TrimiteDate(_host.MesajDeconectare);
             _timerJocHost.Dispose();
         }
+
         public virtual async void HosteazaJoc(int port)
         {
             _host = new NetworkServer(IPAddress.Any, port);
             _host.AcceptaUrmatorulClient();
             await AsteaptaComunicareaCuClientul();
         }
+
         protected virtual async Task AsteaptaComunicareaCuClientul()
         {
             while (_host.ClientPrimit == false)
@@ -164,7 +169,6 @@ namespace ProiectVolovici
 
                     if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
-
                         Piesa piesa = GetPiesaCuPozitia(pozitie);
 
                         if (piesa != null)
@@ -211,6 +215,5 @@ namespace ProiectVolovici
                 }
             }
         }
-
     }
 }

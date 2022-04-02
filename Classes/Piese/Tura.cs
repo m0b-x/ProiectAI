@@ -48,7 +48,7 @@
                 }
                 else
                 {
-                    if(joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         pozitii.Add(pozitiePosibila);
                     }

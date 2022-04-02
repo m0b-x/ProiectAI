@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
-    class Tun : Piesa
+    internal class Tun : Piesa
     {
         public Tun(CuloareJoc culoare)
         {
@@ -24,6 +20,7 @@ namespace ProiectVolovici
                 this.Cod = CodPiesa.TunAlb;
             }
         }
+
         public override void ArataMutariPosibile(EngineJoc joc)
         {
             List<Pozitie> pozitii = new List<Pozitie>();

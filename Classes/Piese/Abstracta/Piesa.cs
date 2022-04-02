@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
@@ -27,7 +23,7 @@ namespace ProiectVolovici
             get { return _pozitiePiesa; }
             set { _pozitiePiesa = value; }
         }
-       
+
         public Image Imagine
         {
             get { return _imaginePiesa; }
@@ -52,13 +48,12 @@ namespace ProiectVolovici
             set { _selectata = value; }
         }
 
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
             _imaginePiesa.Dispose();
         }
-        public abstract void ArataMutariPosibile(EngineJoc tabla);
 
+        public abstract void ArataMutariPosibile(EngineJoc tabla);
     }
 }

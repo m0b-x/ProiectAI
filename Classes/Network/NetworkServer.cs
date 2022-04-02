@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace ProiectVolovici
@@ -30,10 +25,12 @@ namespace ProiectVolovici
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
+
         public bool Disposed
         {
             get { return _disposed; }
         }
+
         public System.Timers.Timer TimerCitireDate
         {
             get { return _timerCitireDate; }
@@ -47,7 +44,7 @@ namespace ProiectVolovici
 
         public bool ClientPrimit
         {
-            get {  return _clientPrimit; }
+            get { return _clientPrimit; }
         }
 
         public String MesajDeconectare
@@ -66,7 +63,7 @@ namespace ProiectVolovici
             get { return _port; }
         }
 
-        public NetworkServer(IPAddress adresaIP,int port)
+        public NetworkServer(IPAddress adresaIP, int port)
         {
             _adresaIP = adresaIP;
             _port = port;
@@ -87,15 +84,16 @@ namespace ProiectVolovici
                 Debug.WriteLine("Exceptie Constructor: " + exceptie);
             }
         }
+
         ~NetworkServer() => Dispose();
 
         public void AcceptaUrmatorulClient()
         {
             try
             {
-                _server.BeginAcceptTcpClient( new AsyncCallback(AcceptaConexiuneClient), _server);
+                _server.BeginAcceptTcpClient(new AsyncCallback(AcceptaConexiuneClient), _server);
             }
-            catch(Exception exceptie)
+            catch (Exception exceptie)
             {
                 Debug.WriteLine("Exceptie functie AcceptaConexiune: " + exceptie);
             }
@@ -121,8 +119,6 @@ namespace ProiectVolovici
             {
                 Debug.WriteLine("NetworkServer a fost deja sters!");
             }
-
-
         }
 
         public void TrimiteDate(String date)
@@ -134,7 +130,7 @@ namespace ProiectVolovici
             else
                 try
                 {
-                    Debug.WriteLine("Date trimise catre client:" + date); 
+                    Debug.WriteLine("Date trimise catre client:" + date);
                     _streamScriere.WriteLine(date);
                 }
                 catch (Exception exceptie)
@@ -188,6 +184,7 @@ namespace ProiectVolovici
                 _timerCitireDate.Start();
             }
         }
+
         private void AscultaDate_Tick(object source, ElapsedEventArgs e)
         {
             if (_streamClient != null)
@@ -208,11 +205,10 @@ namespace ProiectVolovici
                     _streamScriere.AutoFlush = true;
                 }
             }
-            catch(Exception exceptie)
+            catch (Exception exceptie)
             {
                 Debug.Write("Exceptie la InitializeazaStreamuri: " + exceptie);
             }
-
         }
 
         private void InchideStreamuri()

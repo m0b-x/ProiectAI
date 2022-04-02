@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace ProiectVolovici
@@ -24,7 +23,6 @@ namespace ProiectVolovici
         public static readonly Piesa PiesaNula = null;
 
         public static readonly int IntervalPiesaBlocata = 125;
-
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
@@ -52,6 +50,5 @@ namespace ProiectVolovici
             _pozitiiPalat.Add(new Pozitie(9, 4));
             _pozitiiPalat.Add(new Pozitie(9, 5));
         }
-
     }
 }

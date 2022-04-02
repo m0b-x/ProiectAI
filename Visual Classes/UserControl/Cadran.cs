@@ -51,7 +51,6 @@ namespace ProiectVolovici
 
         public void ArataPalatul()
         {
-
         }
 
         public bool CadranEsteGol()
@@ -82,6 +81,5 @@ namespace ProiectVolovici
         private void cadran_Load(object sender, EventArgs e)
         {
         }
-
     }
 }
