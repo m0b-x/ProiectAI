@@ -30,6 +30,10 @@ namespace ProiectVolovici
         {
             get { return _jucatorClient; }
         }
+        public bool RandulTau
+        {
+            get { return _randulClientului; }   
+        }
 
         public EngineClient(Form parentForm, Om jucator) : base(parentForm)
         {
@@ -143,10 +147,11 @@ namespace ProiectVolovici
                 {
                     _ultimulMesajPrimitClient = _client.Buffer;
                     if (!_ultimulMesajPrimitClient.Equals(_client.MesajDeconectare))
-                    {
+                    {                        
+                        EsteRandulTau();
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1), _ultimaMutarePrimitaClient.Item2);
-                        EsteRandulTau();
+
                     }
                     else
                     {

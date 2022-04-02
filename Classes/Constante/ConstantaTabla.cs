@@ -26,7 +26,8 @@ namespace ProiectVolovici
 
         public static readonly int MarimeFont = 15;
 
-        public static readonly string NumeFont = "Arial";
+        public static readonly string FontPrincipal = "Arial";
+        public static readonly string FontSecundar = "Segoe UI";
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {

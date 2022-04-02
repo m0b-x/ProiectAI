@@ -27,6 +27,10 @@ namespace ProiectVolovici
         {
             get { return _jucatorHost; }
         }
+        public bool RandulTau
+        {
+            get { return _randulHostului; }
+        }
 
         public EngineHost(Form parentForm, Om jucator) : base(parentForm)
         {
@@ -81,9 +85,9 @@ namespace ProiectVolovici
                 }
                 else
                 {
+                    NuEsteRandulTau();
                     _host.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
                     RealizeazaMutareaLocal(piesa, pozitie);
-                    NuEsteRandulTau();
                 }
             }
         }

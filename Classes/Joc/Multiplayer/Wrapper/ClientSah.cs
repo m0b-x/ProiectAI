@@ -14,9 +14,12 @@ namespace ProiectVolovici
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Form _parentForm;
-        private Label _labelMutare;
+        private Label _labelRand;
         RichTextBox _textBoxMutariAlb;
         RichTextBox _textBoxMutariAlbastru;
+        Label _labelMutariAlbastru;
+        Label _labelMutariAlb;
+
 
         private System.Timers.Timer _timerClient;
         private System.Timers.Timer _timerStatusServer;
@@ -25,6 +28,16 @@ namespace ProiectVolovici
                                                     string propertyName,
                                                     object propertyValue);
 
+        public RichTextBox MutariAlb
+        {
+            get { return _textBoxMutariAlb; }   
+            set { _textBoxMutariAlb = value; }  
+        }
+        public RichTextBox MutariAlbastru
+        {
+            get { return _textBoxMutariAlbastru; }  
+            set { _textBoxMutariAlbastru = value; }
+        }
         public ClientSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
             _parentForm = parentForm;
@@ -43,15 +56,11 @@ namespace ProiectVolovici
         {
             Debug.WriteLine("Dispose SahMultiplayer");
             GC.SuppressFinalize(this);
-            if (_labelConexiuneSocket != null)
-            {
-                _labelConexiuneSocket.Dispose();
-            }
-            if (_labelConexiuneLocala != null)
-            {
-                _labelConexiuneLocala.Dispose();
-            }
+            _labelConexiuneSocket.Dispose();
+            _labelConexiuneLocala.Dispose();
             _timerStatusServer.Dispose();
+            _textBoxMutariAlb.Dispose();
+            _textBoxMutariAlbastru.Dispose();
             base.Dispose();
         }
 
@@ -82,16 +91,35 @@ namespace ProiectVolovici
 
         protected override void EsteRandulTau()
         {
-            SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.Green);
-            SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Ta");
+            SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.Green);
+            SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Ta");
             base.EsteRandulTau();
         }
 
         protected override void NuEsteRandulTau()
         {
-            SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.DarkRed);
-            SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Lui");
+            SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
+            SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Lui");
             base.NuEsteRandulTau();
+        }
+
+        protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
+        {
+            base.RealizeazaMutareaLocal(piesa, pozitie);
+            if (RandulTau == true)
+            {
+                ScrieUltimaMutareInTextBox(MutariAlb);
+            }
+            else
+            {
+                ScrieUltimaMutareInTextBox(MutariAlbastru);
+            }
+        }
+
+        private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
+        {
+            String ultimaMutareString = String.Format("     ({0},{1})->({2},{3})", UltimaMutare.Item1.Linie, UltimaMutare.Item1.Coloana, UltimaMutare.Item2.Linie, UltimaMutare.Item2.Linie);
+            SeteazaProprietateaDinAltThread(textBox, "Text", ultimaMutareString);
         }
 
         public void VerificareConexiuneCuHostul(object source, System.Timers.ElapsedEventArgs e)
@@ -104,10 +132,9 @@ namespace ProiectVolovici
         public void InitializeazaInterfataVizuala()
         {
             _labelConexiuneLocala = new System.Windows.Forms.Label();
-            _parentForm.Controls.Add(_labelConexiuneLocala);
             _labelConexiuneLocala.Parent = this._parentForm;
             _labelConexiuneLocala.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            _labelConexiuneLocala.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelConexiuneLocala.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _labelConexiuneLocala.Location = new System.Drawing.Point(200, 675);
             _labelConexiuneLocala.Name = "labelJocConectat";
             _labelConexiuneLocala.Size = new System.Drawing.Size(147, 40);
@@ -117,10 +144,9 @@ namespace ProiectVolovici
             _labelConexiuneLocala.Refresh();
 
             _labelConexiuneSocket = new System.Windows.Forms.Label();
-            _parentForm.Controls.Add(_labelConexiuneSocket);
             _labelConexiuneSocket.Parent = this._parentForm;
             _labelConexiuneSocket.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            _labelConexiuneSocket.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelConexiuneSocket.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _labelConexiuneSocket.Location = new System.Drawing.Point(200, 602);
             _labelConexiuneSocket.Name = "labelClientConectat";
             _labelConexiuneSocket.Size = new System.Drawing.Size(147, 40);
@@ -129,21 +155,20 @@ namespace ProiectVolovici
             _labelConexiuneSocket.Text = "Se Conecteaza";
             _labelConexiuneSocket.Refresh();
 
-            _labelMutare = new System.Windows.Forms.Label();
-            _parentForm.Controls.Add(_labelMutare);
-            _labelMutare.Parent = this._parentForm;
-            _labelMutare.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            _labelMutare.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelMutare.Location = new System.Drawing.Point(200, 10);
-            _labelMutare.Name = "labelMutare";
-            _labelMutare.Size = new System.Drawing.Size(140, 35);
-            _labelMutare.TabIndex = 1;
-            _labelMutare.Text = "Mutarea Ta";
-            _labelMutare.BackColor = Color.Green;
-            _labelMutare.Refresh();
+            _labelRand = new System.Windows.Forms.Label();
+            _labelRand.Parent = this._parentForm;
+            _labelRand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            _labelRand.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelRand.Location = new System.Drawing.Point(200, 10);
+            _labelRand.Name = "labelMutare";
+            _labelRand.Size = new System.Drawing.Size(140, 35);
+            _labelRand.TabIndex = 1;
+            _labelRand.Text = "Mutarea Ta";
+            _labelRand.BackColor = Color.Green;
+            _labelRand.Refresh();
 
             _textBoxMutariAlb = new RichTextBox();
-            _textBoxMutariAlb.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
             _textBoxMutariAlb.Name = "textBoxMutariAlb";
             _textBoxMutariAlb.Size = new System.Drawing.Size(200, 200);
@@ -151,33 +176,59 @@ namespace ProiectVolovici
             _textBoxMutariAlb.Text = "";
 
             _textBoxMutariAlbastru = new RichTextBox();
-            _textBoxMutariAlbastru.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
             _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
             _textBoxMutariAlbastru.Size = new System.Drawing.Size(200, 200);
             _textBoxMutariAlbastru.TabIndex = 1;
             _textBoxMutariAlbastru.Text = "";
+
+            _labelMutariAlbastru = new Label();
+            _labelMutariAlbastru.AutoSize = true;
+            _labelMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelMutariAlbastru.Location = new System.Drawing.Point(566, 58);
+            _labelMutariAlbastru.Name = "richTextBoxMutariAlbastru";
+            _labelMutariAlbastru.Size = new System.Drawing.Size(134, 21);
+            _labelMutariAlbastru.TabIndex = 2;
+            _labelMutariAlbastru.Text = "Mutari Albastru:";
+
+            _labelMutariAlb = new Label();
+            _labelMutariAlb.AutoSize = true;
+            _labelMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _labelMutariAlb.Location = new System.Drawing.Point(585, 320);
+            _labelMutariAlb.Name = "richTextBoxMutariAlb";
+            _labelMutariAlb.Size = new System.Drawing.Size(94, 21);
+            _labelMutariAlb.TabIndex = 3;
+            _labelMutariAlb.Text = "Mutari Alb:";
+
+            _parentForm.Controls.Add(_labelMutariAlb);
+            _parentForm.Controls.Add(_labelMutariAlbastru);
+            _parentForm.Controls.Add(_textBoxMutariAlb);
+            _parentForm.Controls.Add(_textBoxMutariAlbastru);
+            _parentForm.Controls.Add(_labelRand);
+            _parentForm.Controls.Add(_labelConexiuneSocket);
+            _parentForm.Controls.Add(_labelConexiuneLocala);
         }
 
         public static void SeteazaProprietateaDinAltThread(Control control,
-                                                    string propertyName,
-                                                    object propertyValue)
+                                                    string numeProprietate,
+                                                    object valoareProprietate)
         {
             if (control.IsDisposed == false)
             {
                 if (control.InvokeRequired)
                 {
                     control.Invoke(new _DelegatCrossThread(SeteazaProprietateaDinAltThread),
-                                                new object[] { control, propertyName, propertyValue });
+                                                new object[] { control, numeProprietate, valoareProprietate });
                 }
                 else
                 {
                     control.GetType().InvokeMember(
-                        propertyName,
+                        numeProprietate,
                         BindingFlags.SetProperty,
                         null,
                         control,
-                        new object[] { propertyValue });
+                        new object[] { valoareProprietate });
                 }
             }
         }
