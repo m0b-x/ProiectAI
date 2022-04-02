@@ -467,5 +467,13 @@ namespace ProiectVolovici
                 }
             }
         }
+        public void ActiveazaTimerRepetitiv(ref System.Timers.Timer timer, uint interval, System.Timers.ElapsedEventHandler functie)
+        {
+            timer = new System.Timers.Timer();
+            timer.AutoReset = true;
+            timer.Interval = interval;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
+            timer.Enabled = true;
+        }
     }
 }

@@ -67,14 +67,6 @@ namespace ProiectVolovici
             ActiveazaTimerRepetitiv(ref _timerMutare, TimpTimerVizual, ActualizeazaInterfataVizuala);
             base.ConecteazateLaJoc(adresaIP, port);
         }
-        void ActiveazaTimerRepetitiv(ref System.Timers.Timer timer, uint interval, System.Timers.ElapsedEventHandler functie)
-        {
-            timer = new System.Timers.Timer();
-            timer.AutoReset = true;
-            timer.Interval = interval;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
-            timer.Enabled = true;
-        }
 
         public void ActualizeazaInterfataVizuala(object source, System.Timers.ElapsedEventArgs e)
         {

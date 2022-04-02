@@ -113,7 +113,7 @@ namespace ProiectVolovici
             await _client.PornesteCerereaDeConectare();
             await PrimesteTablaAsincron();
             _client.TimerCitireDate.Stop();
-            PornesteTimerClient();
+            ActiveazaTimerRepetitiv(ref _timerJocClient, (uint)IntervalTimerPrimireDate, SincronizeazaClient);
             _client.Buffer = NetworkClient.BufferGol;
             EsteRandulHostului();
         }
@@ -124,16 +124,6 @@ namespace ProiectVolovici
                 await Task.Delay(50);
             }
             ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
-        }
-        private void PornesteTimerClient()
-        {
-            _timerJocClientDisposed = false;
-            _timerJocClient = new();
-            _timerJocClient.Interval = IntervalTimerPrimireDate;
-            _timerJocClient.AutoReset = true;
-            _timerJocClient.Enabled = true;
-            _timerJocClient.Elapsed += new ElapsedEventHandler(SincronizeazaClient);
-            _timerJocClient.Start();
         }
         public void SincronizeazaClient(object source, ElapsedEventArgs e)
         {

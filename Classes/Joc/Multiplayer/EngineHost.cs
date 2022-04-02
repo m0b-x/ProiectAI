@@ -121,20 +121,10 @@ namespace ProiectVolovici
             }
             _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
             _host.TimerCitireDate.Stop();
-            PornesteTimerHost();
+            ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
             EsteRandulHostului();
         }
 
-        private void PornesteTimerHost()
-        {
-            _timerJocHostDisposed = false;
-            _timerJocHost = new();
-            _timerJocHost.Interval = IntervalTimerPrimireDate;
-            _timerJocHost.AutoReset = true;
-            _timerJocHost.Enabled = true;
-            _timerJocHost.Elapsed += new ElapsedEventHandler(SincronizeazaHost);
-            _timerJocHost.Start();
-        }
         public void SincronizeazaHost(object source, ElapsedEventArgs e)
         {
             if (_timerJocHostDisposed == false)
