@@ -15,9 +15,11 @@ namespace ProiectVolovici
         private Label _labelConexiuneSocket;
         private Form _parentForm;
         private Label _labelMutare;
+        RichTextBox _textBoxMutariAlb;
+        RichTextBox _textBoxMutariAlbastru;
 
         private System.Timers.Timer _timerClient;
-        private System.Timers.Timer _timerMutare;
+        private System.Timers.Timer _timerStatusServer;
 
         private delegate void _DelegatCrossThread(Control control,
                                                     string propertyName,
@@ -49,7 +51,7 @@ namespace ProiectVolovici
             {
                 _labelConexiuneLocala.Dispose();
             }
-            _timerMutare.Dispose();
+            _timerStatusServer.Dispose();
             base.Dispose();
         }
 
@@ -60,39 +62,36 @@ namespace ProiectVolovici
 
         public override void ConecteazateLaJoc(IPAddress adresaIP, int port)
         {
-            ActiveazaLabeleClient();
+            InitializeazaInterfataVizuala();
+            NuEsteRandulTau();
             ActiveazaTimerRepetitiv(ref _timerClient, (uint)EngineClient.IntervalTimerPrimireDate, VerificareConexiuneCuHostul);
-            ActiveazaTimerRepetitiv(ref _timerMutare, TimpTimerVizual, ActualizeazaInterfataVizuala);
+            ActiveazaTimerRepetitiv(ref _timerStatusServer, TimpTimerVizual, DeconecteazaServerulVizual);
             base.ConecteazateLaJoc(adresaIP, port);
         }
 
-        public void ActualizeazaInterfataVizuala(object source, System.Timers.ElapsedEventArgs e)
+        public void DeconecteazaServerulVizual(object source, System.Timers.ElapsedEventArgs e)
         {
-            if (_esteRandulClientului)
-            {
-                if (_labelMutare.Text == "Mutarea Lui")
-                {
-                    SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.Green);
-                    SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Ta");
-                    _labelMutare.Text = "Mutarea Ta";
-                }
-            }
-            else
-            {
-                if (_labelMutare.Text == "Mutarea Ta")
-                {
-                    SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.DarkRed);
-                    SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Lui");
-                    _labelMutare.Text = "Mutarea Lui";
-                }
-            }
             if (_timerJocClientDisposed == true)
             {
-                _timerMutare.Dispose();
+                _timerStatusServer.Dispose();
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server Deconectat");
                 SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
             }
+        }
+
+        protected override void EsteRandulTau()
+        {
+            SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.Green);
+            SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Ta");
+            base.EsteRandulTau();
+        }
+
+        protected override void NuEsteRandulTau()
+        {
+            SeteazaProprietateaDinAltThread(_labelMutare, "BackColor", Color.DarkRed);
+            SeteazaProprietateaDinAltThread(_labelMutare, "Text", "Mutarea Lui");
+            base.NuEsteRandulTau();
         }
 
         public void VerificareConexiuneCuHostul(object source, System.Timers.ElapsedEventArgs e)
@@ -102,7 +101,7 @@ namespace ProiectVolovici
             _timerClient.Dispose();
         }
 
-        public void ActiveazaLabeleClient()
+        public void InitializeazaInterfataVizuala()
         {
             _labelConexiuneLocala = new System.Windows.Forms.Label();
             _parentForm.Controls.Add(_labelConexiuneLocala);
@@ -142,6 +141,22 @@ namespace ProiectVolovici
             _labelMutare.Text = "Mutarea Ta";
             _labelMutare.BackColor = Color.Green;
             _labelMutare.Refresh();
+
+            _textBoxMutariAlb = new RichTextBox();
+            _textBoxMutariAlb.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
+            _textBoxMutariAlb.Name = "textBoxMutariAlb";
+            _textBoxMutariAlb.Size = new System.Drawing.Size(200, 200);
+            _textBoxMutariAlb.TabIndex = 0;
+            _textBoxMutariAlb.Text = "";
+
+            _textBoxMutariAlbastru = new RichTextBox();
+            _textBoxMutariAlbastru.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
+            _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
+            _textBoxMutariAlbastru.Size = new System.Drawing.Size(200, 200);
+            _textBoxMutariAlbastru.TabIndex = 1;
+            _textBoxMutariAlbastru.Text = "";
         }
 
         public static void SeteazaProprietateaDinAltThread(Control control,

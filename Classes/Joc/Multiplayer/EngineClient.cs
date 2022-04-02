@@ -20,7 +20,7 @@ namespace ProiectVolovici
 
         protected System.Timers.Timer _timerJocClient;
 
-        protected bool _esteRandulClientului;
+        protected bool _randulClientului;
 
         protected bool _timerJocClientDisposed;
 
@@ -36,7 +36,7 @@ namespace ProiectVolovici
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
 
-            _esteRandulClientului = false;
+            _randulClientului = false;
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -48,7 +48,7 @@ namespace ProiectVolovici
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
 
-            _esteRandulClientului = false;
+            _randulClientului = false;
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -84,19 +84,19 @@ namespace ProiectVolovici
                 {
                     _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
                     RealizeazaMutareaLocal(piesa, pozitie);
-                    EsteRandulHostului();
+                    NuEsteRandulTau();
                 }
             }
         }
 
-        public void EsteRandulClientului()
+        protected virtual void EsteRandulTau()
         {
-            _esteRandulClientului = true;
+            _randulClientului = true;
         }
 
-        public void EsteRandulHostului()
+        protected virtual void NuEsteRandulTau()
         {
-            _esteRandulClientului = false;
+            _randulClientului = false;
         }
 
         public override void Dispose()
@@ -119,7 +119,7 @@ namespace ProiectVolovici
             _client.TimerCitireDate.Stop();
             ActiveazaTimerRepetitiv(ref _timerJocClient, (uint)IntervalTimerPrimireDate, SincronizeazaClient);
             _client.Buffer = NetworkClient.BufferGol;
-            EsteRandulHostului();
+            NuEsteRandulTau();
         }
 
         protected virtual async Task PrimesteTablaAsincron()
@@ -146,7 +146,7 @@ namespace ProiectVolovici
                     {
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1), _ultimaMutarePrimitaClient.Item2);
-                        EsteRandulClientului();
+                        EsteRandulTau();
                     }
                     else
                     {
@@ -160,7 +160,7 @@ namespace ProiectVolovici
 
         public void OnCadranClick(object sender, EventArgs e)
         {
-            if (_esteRandulClientului)
+            if (_randulClientului)
             {
                 if (PiesaSelectata == ConstantaTabla.PiesaNula)
                 {

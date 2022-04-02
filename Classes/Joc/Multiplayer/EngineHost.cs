@@ -18,7 +18,7 @@ namespace ProiectVolovici
         private Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
         protected System.Timers.Timer _timerJocHost;
 
-        protected bool _esteRandulHostului;
+        protected bool _randulHostului;
         protected bool _timerJocHostDisposed;
 
         private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
@@ -33,7 +33,7 @@ namespace ProiectVolovici
             AdaugaEvenimentCadrane();
             _jucatorHost = jucator;
 
-            _esteRandulHostului = false;
+            _randulHostului = false;
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -47,7 +47,7 @@ namespace ProiectVolovici
             AdaugaEvenimentCadrane();
             _jucatorHost = jucator;
 
-            _esteRandulHostului = false;
+            _randulHostului = false;
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
@@ -83,19 +83,19 @@ namespace ProiectVolovici
                 {
                     _host.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
                     RealizeazaMutareaLocal(piesa, pozitie);
-                    EsteRandulClientului();
+                    NuEsteRandulTau();
                 }
             }
         }
 
-        public void EsteRandulClientului()
+        protected virtual void NuEsteRandulTau()
         {
-            _esteRandulHostului = false;
+            _randulHostului = false;
         }
 
-        public void EsteRandulHostului()
+        protected virtual void EsteRandulTau()
         {
-            _esteRandulHostului = true;
+            _randulHostului = true;
         }
 
         ~EngineHost() => Dispose();
@@ -127,7 +127,7 @@ namespace ProiectVolovici
             _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
             _host.TimerCitireDate.Stop();
             ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
-            EsteRandulHostului();
+            EsteRandulTau();
         }
 
         public void SincronizeazaHost(object source, ElapsedEventArgs e)
@@ -145,7 +145,7 @@ namespace ProiectVolovici
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
-                        EsteRandulHostului();
+                        EsteRandulTau();
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace ProiectVolovici
 
         public void OnCadranClick(object sender, EventArgs e)
         {
-            if (_esteRandulHostului)
+            if (_randulHostului)
             {
                 if (PiesaSelectata == ConstantaTabla.PiesaNula)
                 {
