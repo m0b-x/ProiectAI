@@ -60,7 +60,6 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                    Debug.WriteLine(pozitie.Linie + " " + pozitie.Coloana);
                     if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                     {
                         mutariFiltruTabla.Add(pozitie);

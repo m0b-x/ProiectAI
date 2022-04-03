@@ -81,7 +81,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie Constructor: " + exceptie);
+                Debug.WriteLine("Exceptie Constructor: {0}", exceptie.ToString());
             }
         }
 
@@ -95,7 +95,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie AcceptaConexiune: " + exceptie);
+                Debug.WriteLine("Exceptie functie AcceptaConexiune: {0}", exceptie.ToString());
             }
         }
 
@@ -130,12 +130,12 @@ namespace ProiectVolovici
             else
                 try
                 {
-                    Debug.WriteLine("Date trimise catre client:" + date);
+                    Debug.WriteLine("Date trimise catre client: {0}", date);
                     _streamScriere.WriteLine(date);
                 }
                 catch (Exception exceptie)
                 {
-                    Debug.WriteLine("Exceptie functie server TrimiteDate: " + exceptie);
+                    Debug.WriteLine("Exceptie functie server TrimiteDate: {0}", exceptie.ToString());
                 }
         }
 
@@ -150,12 +150,12 @@ namespace ProiectVolovici
                 {
                     Debug.WriteLine("Clientul s-a deconectat de la server");
                 }
-                Debug.WriteLine("Date Primite Server: " + date);
+                Debug.WriteLine("Date Primite Server: {0}", date);
                 return date;
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie networkserver TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie networkserver TrimiteDate: {0}", exceptie.ToString());
                 return BufferGol;
             }
         }
@@ -207,7 +207,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.Write("Exceptie la InitializeazaStreamuri: " + exceptie);
+                Debug.Write("Exceptie la InitializeazaStreamuri: {0}", exceptie.ToString());
             }
         }
 
@@ -243,7 +243,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie InchideServer: " + exceptie);
+                Debug.WriteLine("Exceptie functie InchideServer: {0}", exceptie.ToString());
             }
         }
     }
