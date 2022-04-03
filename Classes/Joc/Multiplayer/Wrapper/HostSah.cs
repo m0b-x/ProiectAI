@@ -81,16 +81,16 @@ namespace ProiectVolovici
             if (_timerJocHostDisposed == true)
             {
                 _timerStatusClient.Dispose();
-                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
-                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
-                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
+                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
+                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
+                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
             }
         }
 
         protected override void NuEsteRandulTau()
         {
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Lui");
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Lui");
             base.NuEsteRandulTau();
         }
 
@@ -110,20 +110,20 @@ namespace ProiectVolovici
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
             String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(textBox, "Text", UtilitatiVizuale.PrimesteTextulDinAltThread(textBox) + Environment.NewLine + ultimaMutareString);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox) + Environment.NewLine + ultimaMutareString);
         }
 
         protected override void EsteRandulTau()
         {
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.Green);
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Ta");
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.Green);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Ta");
             base.EsteRandulTau();
         }
 
         public void VerificaPrimireHost(object source, System.Timers.ElapsedEventArgs e)
         {
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
-            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
             _timerHost.Dispose();
             _timerStatusClient.Start();
         }

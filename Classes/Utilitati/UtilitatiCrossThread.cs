@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public static class UtilitatiVizuale
+    public static class UtilitatiCrossThread
     {
         private delegate void DelegatProprietateCrossThread(Control control,
                                                             string numeProprietate,
