@@ -87,8 +87,8 @@ namespace ProiectVolovici
                 else
                 {
                     _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
-                    RealizeazaMutareaLocal(piesa, pozitie);
                     NuEsteRandulTau();
+                    RealizeazaMutareaLocal(piesa, pozitie);
                 }
             }
         }

@@ -164,7 +164,7 @@ namespace ProiectVolovici
         {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
-                _labelLinii[linie].Dispose();    
+                _labelLinii[linie].Dispose();
             }
             for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
             {
@@ -173,8 +173,6 @@ namespace ProiectVolovici
             _tabla.Dispose();
             GC.SuppressFinalize(this);
         }
-
-
 
         private void CreeazaLabeluriColoane(Label[] __labelLinii)
         {
@@ -392,7 +390,7 @@ namespace ProiectVolovici
         protected void ActualizeazaUltimaMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
             Debug.WriteLine("ActualizareUltimaMutare: " + pozitieInitiala.Linie + " " + pozitieInitiala.Coloana + "->" + pozitieFinala.Linie + " " + pozitieFinala.Coloana);
-            Tuple<Pozitie, Pozitie> _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
+            _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
         public void SeteazaPiesaCadranului(Pozitie pozitie, Piesa piesa)

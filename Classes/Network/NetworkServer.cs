@@ -9,7 +9,7 @@ namespace ProiectVolovici
 {
     public class NetworkServer : IDisposable
     {
-        public static String BufferGol = "";
+        public static String BufferGol = System.String.Empty;
 
         private TcpListener _server;
         private IPAddress _adresaIP;

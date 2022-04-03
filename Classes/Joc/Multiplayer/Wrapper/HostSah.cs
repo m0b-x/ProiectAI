@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -13,20 +12,16 @@ namespace ProiectVolovici
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
         private Label _labelRand;
-        Label _labelMutariAlbastru;
-        Label _labelMutariAlb;
+        private Label _labelMutariAlbastru;
+        private Label _labelMutariAlb;
 
-        RichTextBox _textBoxMutariAlb;
-        RichTextBox _textBoxMutariAlbastru;
+        private RichTextBox _textBoxMutariAlb;
+        private RichTextBox _textBoxMutariAlbastru;
 
         private Form _parentForm;
 
         private System.Timers.Timer _timerHost;
         private System.Timers.Timer _timerStatusClient;
-
-        private delegate void DelegatProprietateCrossThread(Control control,
-                                                             string propertyName,
-                                                             object propertyValue);
 
         public HostSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
@@ -39,16 +34,19 @@ namespace ProiectVolovici
             _parentForm = parentForm;
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
+
         public RichTextBox MutariAlb
         {
             get { return _textBoxMutariAlb; }
             set { _textBoxMutariAlb = value; }
         }
+
         public RichTextBox MutariAlbastru
         {
             get { return _textBoxMutariAlbastru; }
             set { _textBoxMutariAlbastru = value; }
         }
+
         ~HostSah() => Dispose();
 
         public override void Dispose()
@@ -83,16 +81,16 @@ namespace ProiectVolovici
             if (_timerJocHostDisposed == true)
             {
                 _timerStatusClient.Dispose();
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
-                SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
+                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
+                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
+                UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
             }
         }
 
         protected override void NuEsteRandulTau()
         {
-            SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
-            SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Lui");
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Lui");
             base.NuEsteRandulTau();
         }
 
@@ -108,48 +106,26 @@ namespace ProiectVolovici
                 ScrieUltimaMutareInTextBox(MutariAlb);
             }
         }
+
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
-            String ultimaMutareString = String.Format("     ({0},{1})->({2},{3})", UltimaMutare.Item1.Linie, UltimaMutare.Item1.Coloana, UltimaMutare.Item2.Linie, UltimaMutare.Item2.Linie);
-            SeteazaProprietateaDinAltThread(textBox, "Text",ultimaMutareString);
+            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(textBox, "Text", UtilitatiVizuale.PrimesteTextulDinAltThread(textBox) + Environment.NewLine + ultimaMutareString);
         }
 
         protected override void EsteRandulTau()
         {
-            SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.Green);
-            SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Ta");
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.Green);
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelRand, "Text", "Mutarea Ta");
             base.EsteRandulTau();
         }
 
         public void VerificaPrimireHost(object source, System.Timers.ElapsedEventArgs e)
         {
-            SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
-            SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
+            UtilitatiVizuale.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
             _timerHost.Dispose();
             _timerStatusClient.Start();
-        }
-
-        public static void SeteazaProprietateaDinAltThread(Control control,
-                                                    string propertyName,
-                                                    object propertyValue)
-        {
-            if (control.IsDisposed == false)
-            {
-                if (control.InvokeRequired)
-                {
-                    control.Invoke(new DelegatProprietateCrossThread(SeteazaProprietateaDinAltThread),
-                                                new object[] { control, propertyName, propertyValue });
-                }
-                else
-                {
-                    control.GetType().InvokeMember(
-                        propertyName,
-                        BindingFlags.SetProperty,
-                        null,
-                        control,
-                        new object[] { propertyValue });
-                }
-            }
         }
 
         public void InitializeazaInterfataVizuala()
@@ -191,22 +167,24 @@ namespace ProiectVolovici
             _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
             _textBoxMutariAlb.Name = "textBoxMutariAlb";
-            _textBoxMutariAlb.Size = new System.Drawing.Size(200, 200);
+            _textBoxMutariAlb.Size = new System.Drawing.Size(155, 210);
             _textBoxMutariAlb.TabIndex = 0;
-            _textBoxMutariAlb.Text = "";
+            _textBoxMutariAlb.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            _textBoxMutariAlb.Text = System.String.Empty;
 
             _textBoxMutariAlbastru = new RichTextBox();
             _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
             _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
-            _textBoxMutariAlbastru.Size = new System.Drawing.Size(200, 200);
+            _textBoxMutariAlbastru.Size = new System.Drawing.Size(155, 210);
             _textBoxMutariAlbastru.TabIndex = 1;
-            _textBoxMutariAlbastru.Text = "";
+            _textBoxMutariAlbastru.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            _textBoxMutariAlbastru.Text = System.String.Empty;
 
             _labelMutariAlbastru = new Label();
             _labelMutariAlbastru.AutoSize = true;
             _labelMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelMutariAlbastru.Location = new System.Drawing.Point(566, 58);
+            _labelMutariAlbastru.Location = new System.Drawing.Point(550, 58);
             _labelMutariAlbastru.Name = "richTextBoxMutariAlbastru";
             _labelMutariAlbastru.Size = new System.Drawing.Size(134, 21);
             _labelMutariAlbastru.TabIndex = 2;
@@ -215,9 +193,9 @@ namespace ProiectVolovici
             _labelMutariAlb = new Label();
             _labelMutariAlb.AutoSize = true;
             _labelMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelMutariAlb.Location = new System.Drawing.Point(585, 320);
+            _labelMutariAlb.Location = new System.Drawing.Point(550, 320);
             _labelMutariAlb.Name = "richTextBoxMutariAlb";
-            _labelMutariAlb.Size = new System.Drawing.Size(94, 21);
+            _labelMutariAlb.Size = new System.Drawing.Size(134, 21);
             _labelMutariAlb.TabIndex = 3;
             _labelMutariAlb.Text = "Mutari Alb:";
 

@@ -10,7 +10,7 @@ namespace ProiectVolovici
 {
     public class NetworkClient : IDisposable
     {
-        public static String BufferGol = "";
+        public static String BufferGol = System.String.Empty;
         public static int TimeoutConexiune = 5000;
 
         private TcpClient _client;
