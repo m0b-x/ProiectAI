@@ -110,7 +110,7 @@ namespace ProiectVolovici
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
             String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
-            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox) + Environment.NewLine + ultimaMutareString);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{ UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 
         protected override void EsteRandulTau()

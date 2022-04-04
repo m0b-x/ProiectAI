@@ -129,10 +129,10 @@ namespace ProiectVolovici
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                 }
             }
-            Label[] __labelLinii = new Label[ConstantaTabla.MarimeVerticala];
-            Label[] __labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
-            CreeazaLabeluriLinii(__labelColoane);
-            CreeazaLabeluriColoane(__labelLinii);
+            _labelLinii = new Label[ConstantaTabla.MarimeVerticala];
+            _labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
+            CreeazaLabeluriLinii(_labelColoane);
+            CreeazaLabeluriColoane(_labelLinii);
         }
 
         public EngineJoc(Form parentForm, int[,] matriceTabla)
