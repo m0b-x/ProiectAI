@@ -129,10 +129,10 @@ namespace ProiectVolovici
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                 }
             }
-            Label[] __labelLinii = new Label[ConstantaTabla.MarimeVerticala];
-            Label[] __labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
-            CreeazaLabeluriLinii(__labelColoane);
-            CreeazaLabeluriColoane(__labelLinii);
+            _labelLinii = new Label[ConstantaTabla.MarimeVerticala];
+            _labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
+            CreeazaLabeluriLinii(_labelColoane);
+            CreeazaLabeluriColoane(_labelLinii);
         }
 
         public EngineJoc(Form parentForm, int[,] matriceTabla)
@@ -265,7 +265,10 @@ namespace ProiectVolovici
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
                 {
                     Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
-                    AdaugaPiesa(piesa, new Pozitie(linie, coloana));
+                    if (piesa != ConstantaTabla.PiesaNula)
+                    {
+                        AdaugaPiesa(piesa, new Pozitie(linie, coloana));
+                    }
                 }
             }
         }
@@ -296,11 +299,11 @@ namespace ProiectVolovici
         {
             if (pozitie.Linie > MarimeVerticala || pozitie.Coloana > MarimeOrizontala || pozitie.Linie < 0 || pozitie.Coloana < 0)
             {
-                Debug.WriteLine("Linie sau coloana invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
+                Debug.WriteLine("Linie sau coloana invalida! Linie: {0}, Coloana {1}", pozitie.Linie, pozitie.Coloana);
             }
             else if (piesa == ConstantaTabla.PiesaNula)
             {
-                Debug.WriteLine("Piesa invalida! Linie:" + pozitie.Linie + ", Coloana:" + pozitie.Coloana);
+                Debug.WriteLine("Piesa invalida! Linie: {0}, Coloana {1}", pozitie.Linie, pozitie.Coloana);
             }
             else
             {
@@ -389,7 +392,6 @@ namespace ProiectVolovici
 
         protected void ActualizeazaUltimaMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
-            Debug.WriteLine("ActualizareUltimaMutare: " + pozitieInitiala.Linie + " " + pozitieInitiala.Coloana + "->" + pozitieFinala.Linie + " " + pozitieFinala.Coloana);
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
@@ -495,14 +497,12 @@ namespace ProiectVolovici
 
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
-            Debug.WriteLine("GetPiesa Cu pozitia" + pozitie.Linie + " " + pozitie.Coloana);
             if (_listaPiese != null)
             {
                 foreach (Piesa piesa in _listaPiese)
                 {
                     if (piesa.Pozitie == pozitie)
                     {
-                        Debug.WriteLine("Gasit Piesa: " + piesa.Cod);
                         return piesa;
                     }
                 }

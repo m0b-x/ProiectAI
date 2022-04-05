@@ -35,7 +35,6 @@
         /// <param name="joc">The tabla<see cref="EngineJoc"/>.</param>
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            Debug.WriteLine("ArataMutariPosibileTura " + this._codPiesa);
             List<Pozitie> pozitii = new List<Pozitie>();
 
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;

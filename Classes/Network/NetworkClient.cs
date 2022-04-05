@@ -11,7 +11,7 @@ namespace ProiectVolovici
     public class NetworkClient : IDisposable
     {
         public static String BufferGol = System.String.Empty;
-        public static int TimeoutConexiune = 5000;
+        public static readonly int TimeoutConexiune = 5000;
 
         private TcpClient _client;
         private IPAddress _adresaIP;
@@ -119,7 +119,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie ConecteazaClientLaServer: " + exceptie);
+                Debug.WriteLine("Exceptie ConecteazaClientLaServer: {0}", exceptie.ToString());
             }
         }
 
@@ -184,7 +184,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie client TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie client TrimiteDate: {0}", exceptie.ToString());
             }
         }
 
@@ -204,7 +204,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie networkclient TrimiteDate: " + exceptie);
+                Debug.WriteLine("Exceptie functie networkclient TrimiteDate: {0}", exceptie.ToString());
                 return BufferGol;
             }
         }
@@ -222,7 +222,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie InchidereClient: " + exceptie);
+                Debug.WriteLine("Exceptie functie InchidereClient: {0}", exceptie.ToString());
             }
         }
 

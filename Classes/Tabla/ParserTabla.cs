@@ -17,20 +17,17 @@ namespace ProiectVolovici
 
         public String CodificareMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
-            Debug.WriteLine("CallBack CodificareMutare");
             string mutareString = "{" +
                                     pozitieInitiala.Linie + "," +
                                     pozitieInitiala.Coloana + "," +
                                     pozitieFinala.Linie + "," +
                                     pozitieFinala.Coloana +
                                    "}";
-            Debug.WriteLine(mutareString);
             return mutareString;
         }
 
         public Tuple<Pozitie, Pozitie> DecodificareMutare(String mutare)
         {
-            Debug.WriteLine("Decodificare" + mutare);
             mutare = mutare.Replace("{", " ");
             mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
