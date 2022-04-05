@@ -137,7 +137,6 @@ namespace ProiectVolovici
             _labelConexiuneLocala.TabIndex = 0;
             _labelConexiuneLocala.Text = "Client Pornit";
             _labelConexiuneLocala.BackColor = Color.Green;
-            _labelConexiuneLocala.Refresh();
 
             _labelConexiuneSocket = new System.Windows.Forms.Label();
             _labelConexiuneSocket.Parent = this._parentForm;
@@ -149,7 +148,6 @@ namespace ProiectVolovici
             _labelConexiuneSocket.TabIndex = 1;
             _labelConexiuneSocket.BackColor = Color.DarkRed;
             _labelConexiuneSocket.Text = "Se Conecteaza";
-            _labelConexiuneSocket.Refresh();
 
             _labelRand = new System.Windows.Forms.Label();
             _labelRand.Parent = this._parentForm;
@@ -161,7 +159,6 @@ namespace ProiectVolovici
             _labelRand.TabIndex = 1;
             _labelRand.Text = "Mutarea Ta";
             _labelRand.BackColor = Color.Green;
-            _labelRand.Refresh();
 
             _textBoxMutariAlb = new RichTextBox();
             _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

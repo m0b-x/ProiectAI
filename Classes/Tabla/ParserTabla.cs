@@ -59,7 +59,6 @@ namespace ProiectVolovici
 
             int[,] matriceReturnata = new int[_liniiDecodificate, _coloaneDecodificate];
 
-            //din vector in matrice
             int contorElemente = 0;
             for (int linie = 0; linie < _liniiDecodificate; linie++)
             {

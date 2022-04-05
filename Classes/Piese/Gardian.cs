@@ -2,9 +2,9 @@
 
 namespace ProiectVolovici
 {
-    internal class General : Piesa
+    internal class Gardian : Piesa
     {
-        public General(CuloareJoc culoare)
+        public Gardian(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;

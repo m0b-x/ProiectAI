@@ -41,7 +41,7 @@ namespace ProiectVolovici
             else
                 Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran);
 
-            this._pozitieCadran = pozitie;
+            _pozitieCadran = pozitie;
             Size = new Size(_marimeCadran, _marimeCadran);
             BorderStyle = _borderCadran;
             BackColor = culoare;
