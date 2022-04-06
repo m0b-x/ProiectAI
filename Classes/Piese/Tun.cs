@@ -29,7 +29,7 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> pozitii = new List<Pozitie>();
+            List<Pozitie> mutariLegale = new List<Pozitie>();
 
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
@@ -37,7 +37,7 @@ namespace ProiectVolovici
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace ProiectVolovici
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace ProiectVolovici
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace ProiectVolovici
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace ProiectVolovici
                 colonaPozitiePosibila--;
             }
 
-            return pozitii;
+            return mutariLegale;
         }
     }
 }

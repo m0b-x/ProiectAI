@@ -31,15 +31,16 @@ namespace ProiectVolovici
         {
             int sfarsitLinie = joc.MarimeVerticala - 1;
             int inceputLinie = 0;
-            List<Pozitie> mutariRege = new List<Pozitie>();
-            List<Pozitie> pozitii = new List<Pozitie>();
 
-            mutariRege.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
-            mutariRege.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
-            mutariRege.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
-            mutariRege.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
+            List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
-            foreach (Pozitie pozitie in mutariRege)
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+
+            foreach (Pozitie pozitie in mutariNefiltrate)
             {
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
@@ -66,7 +67,7 @@ namespace ProiectVolovici
                                 }
                                 if (estePosibila == true)
                                 {
-                                    pozitii.Add(pozitie);
+                                    mutariFiltrate.Add(pozitie);
                                 }
                             }
                             else if (this.CuloarePiesa == CuloareJoc.Albastru)
@@ -89,14 +90,14 @@ namespace ProiectVolovici
                                 }
                                 if (estePosibila == true)
                                 {
-                                    pozitii.Add(pozitie);
+                                    mutariFiltrate.Add(pozitie);
                                 }
                             }
                         }
                     }
                 }
             }
-            return pozitii;
+            return mutariFiltrate;
         }
     }
 }

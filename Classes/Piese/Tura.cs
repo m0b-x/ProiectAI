@@ -3,15 +3,8 @@
     using System.Collections.Generic;
     using System.Diagnostics;
 
-    /// <summary>
-    /// Defines the <see cref="Tura" />.
-    /// </summary>
     internal class Tura : Piesa
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Tura"/> class.
-        /// </summary>
-        /// <param name="culoare">The culoare<see cref="CuloareJoc"/>.</param>
         public Tura(CuloareJoc culoare)
         {
             this.CuloarePiesa = culoare;
@@ -29,10 +22,6 @@
             }
         }
 
-        /// <summary>
-        /// The ArataMutariPosibile.
-        /// </summary>
-        /// <param name="joc">The tabla<see cref="EngineJoc"/>.</param>
         public override void ArataMutariPosibile(EngineJoc joc)
         {
             List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
@@ -42,7 +31,7 @@
 
         public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> pozitii = new List<Pozitie>();
+            List<Pozitie> mutariLegale = new List<Pozitie>();
             
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
@@ -50,13 +39,13 @@
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
                     if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
-                        pozitii.Add(pozitiePosibila);
+                        mutariLegale.Add(pozitiePosibila);
                     }
                     break;
                 }
@@ -69,13 +58,13 @@
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
                     if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
-                        pozitii.Add(pozitiePosibila);
+                        mutariLegale.Add(pozitiePosibila);
                     }
                     break;
                 }
@@ -88,13 +77,13 @@
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
                     if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
-                        pozitii.Add(pozitiePosibila);
+                        mutariLegale.Add(pozitiePosibila);
                     }
                     break;
                 }
@@ -107,20 +96,20 @@
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
-                    pozitii.Add(pozitiePosibila);
+                    mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
                     if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
-                        pozitii.Add(pozitiePosibila);
+                        mutariLegale.Add(pozitiePosibila);
                     }
                     break;
                 }
                 colonaPozitiePosibila--;
             }
 
-            return pozitii;
+            return mutariLegale;
         }
         
     }

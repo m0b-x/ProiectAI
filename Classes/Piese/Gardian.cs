@@ -29,27 +29,27 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> pozitiiInitiale = new List<Pozitie>();
-            List<Pozitie> pozitii = new List<Pozitie>();
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
+            List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
-            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
-            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
-            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
-            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
+            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
 
-            foreach (Pozitie pozitie in pozitiiInitiale)
+            foreach (Pozitie pozitie in mutariNefiltrate)
             {
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
                     if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
                         joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
-                        pozitii.Add(pozitie);
+                        mutariFiltrate.Add(pozitie);
                     }
                 }
             }
 
-            return pozitii;
+            return mutariFiltrate;
         }
     }
 }

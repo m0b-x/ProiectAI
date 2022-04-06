@@ -31,11 +31,12 @@ namespace ProiectVolovici
         {
             const int primaLinie = 0;
             const int primaColoana = 0;
+
             int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
             int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
-            List<Pozitie> mutariFiltruTabla = new List<Pozitie>();
+            List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
             if (this.CuloarePiesa == CuloareJoc.Albastru)
             {
@@ -64,16 +65,16 @@ namespace ProiectVolovici
                 {
                     if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
                     {
-                        mutariFiltruTabla.Add(pozitie);
+                        mutariFiltrate.Add(pozitie);
                     }
                     else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
                     {
-                        mutariFiltruTabla.Add(pozitie);
+                        mutariFiltrate.Add(pozitie);
                     }
                 }
             }
 
-            return mutariFiltruTabla;
+            return mutariFiltrate;
         }
     }
 }
