@@ -35,8 +35,15 @@
         /// <param name="joc">The tabla<see cref="EngineJoc"/>.</param>
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> pozitii = new List<Pozitie>();
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            
+            joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
+        }
 
+        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        {
+            List<Pozitie> pozitii = new List<Pozitie>();
+            
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
             {
@@ -112,7 +119,9 @@
                 }
                 colonaPozitiePosibila--;
             }
-            joc.ColoreazaMutariPosibile(pozitii: pozitii);
+
+            return pozitii;
         }
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace ProiectVolovici
@@ -54,6 +55,9 @@ namespace ProiectVolovici
             _imaginePiesa.Dispose();
         }
 
-        public abstract void ArataMutariPosibile(EngineJoc tabla);
+        public abstract void ArataMutariPosibile(EngineJoc joc);
+        public abstract List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc);
+
+
     }
 }

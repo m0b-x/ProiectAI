@@ -23,15 +23,21 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariGardian = new List<Pozitie>();
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
+        }
+
+        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        {
+            List<Pozitie> pozitiiInitiale = new List<Pozitie>();
             List<Pozitie> pozitii = new List<Pozitie>();
 
-            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
-            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
-            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
-            mutariGardian.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
+            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
+            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
+            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
+            pozitiiInitiale.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
 
-            foreach (Pozitie pozitie in mutariGardian)
+            foreach (Pozitie pozitie in pozitiiInitiale)
             {
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
@@ -41,8 +47,9 @@ namespace ProiectVolovici
                         pozitii.Add(pozitie);
                     }
                 }
-                joc.ColoreazaMutariPosibile(pozitii: pozitii);
             }
+
+            return pozitii;
         }
     }
 }

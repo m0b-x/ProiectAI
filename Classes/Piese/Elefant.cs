@@ -23,6 +23,12 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
+        }
+
+        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        {
             const int primaLinie = 0;
             const int primaColoana = 0;
             int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
@@ -98,7 +104,8 @@ namespace ProiectVolovici
                     mutariFiltruFinal.Add(pozitie);
                 }
             }
-            joc.ColoreazaMutariPosibile(pozitii: mutariFiltruFinal);
+
+            return mutariFiltruFinal;
         }
     }
 }
