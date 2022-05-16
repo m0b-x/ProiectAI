@@ -370,6 +370,28 @@ namespace ProiectVolovici
             return true;
         }
 
+
+        public List<int[,]> ReturneazaMatriciMutariPosibile(Piesa piesa)
+        {
+            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
+            List<int[,]> matriciMutariPosibile = new();
+            if(pozitiiMutariPosibile != null)
+            {
+                foreach(Pozitie pozitie in pozitiiMutariPosibile)
+                {
+                    int[,] matriceMutariPosibile = this.MatriceCodPiese;
+                    matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                    matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                    matriciMutariPosibile.Add(matriceMutariPosibile);
+                }
+                return matriciMutariPosibile;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
             if (pozitii != null)
