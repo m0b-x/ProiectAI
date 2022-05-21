@@ -29,6 +29,8 @@ namespace ProiectVolovici
         public static readonly string FontPrincipal = "Arial";
         public static readonly string FontSecundar = "Segoe UI";
 
+        public static readonly int TimpAsteptariAI = 300; 
+
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
             _pozitiiPalat.Add(new Pozitie(0, 3));

@@ -6,6 +6,7 @@ namespace ProiectVolovici
     {
         public Gardian(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoareGardian;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

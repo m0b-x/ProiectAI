@@ -6,6 +6,7 @@ namespace ProiectVolovici
     {
         public Pion(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoarePion;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

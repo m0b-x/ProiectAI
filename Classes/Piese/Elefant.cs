@@ -6,6 +6,7 @@ namespace ProiectVolovici
     {
         public Elefant(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoareElefant;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

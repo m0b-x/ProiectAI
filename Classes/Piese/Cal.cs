@@ -7,6 +7,7 @@ namespace ProiectVolovici
     {
         public Cal(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoareCal;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

@@ -9,7 +9,10 @@ namespace ProiectVolovici
         protected CuloareJoc _culoarePiesa;
         protected Pozitie _pozitiePiesa;
         protected Image _imaginePiesa;
+
         protected CodPiesa _codPiesa;
+
+        protected double _valoarePiesa;
         protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
@@ -47,6 +50,12 @@ namespace ProiectVolovici
         {
             get { return _selectata; }
             set { _selectata = value; }
+        }
+
+        public double ValoarePiesa
+        {
+            get { return _valoarePiesa; }
+            set { _valoarePiesa = value; }
         }
 
         public void Dispose()

@@ -6,6 +6,7 @@ namespace ProiectVolovici
     {
         public Rege(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoareRege;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

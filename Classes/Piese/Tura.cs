@@ -7,6 +7,7 @@
     {
         public Tura(CuloareJoc culoare)
         {
+            this.ValoarePiesa = ConstantaPiese.ValoareTura;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;

@@ -142,7 +142,7 @@ namespace ProiectVolovici
             _labelConexiuneSocket.Parent = this._parentForm;
             _labelConexiuneSocket.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             _labelConexiuneSocket.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneSocket.Location = new System.Drawing.Point(200, 602);
+            _labelConexiuneSocket.Location = new System.Drawing.Point(200, 610);
             _labelConexiuneSocket.Name = "labelClientConectat";
             _labelConexiuneSocket.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneSocket.TabIndex = 1;
