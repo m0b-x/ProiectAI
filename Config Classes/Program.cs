@@ -14,7 +14,7 @@ namespace ProiectVolovici
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormJoc());
+            Application.Run(new FormMeniu());
         }
     }
 }

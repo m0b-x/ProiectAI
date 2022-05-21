@@ -52,10 +52,20 @@ namespace ProiectVolovici
             set { _tabla.ArrayCadrane = value; }
         }
 
-        public int[,] MatriceCodPiese
+        public int[,] MatriceCoduriPiese
         {
-            get { return _matriceCodPiese; }
-            set { _matriceCodPiese = value; }
+            get
+            {
+                int[,] matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+                for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+                {
+                    for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                    {
+                        matriceCodPiese[linie, coloana] = _matriceCodPiese[linie, coloana];
+                    }
+                }
+                return matriceCodPiese;
+            }
         }
 
         public int MarimeVerticala
@@ -313,10 +323,6 @@ namespace ProiectVolovici
                 }
                 else
                 {
-                    if (_matriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
-                    {
-                        Debug.WriteLine("Eroare:adugare piesa peste alta! Linie:{0},Coloana:{1},PiesaAdaugata:{2}", pozitie.Linie, pozitie.Coloana, piesa.Cod);
-                    }
                     piesa.Pozitie = pozitie;
                     piesa.PusaPeTabla = true;
                     SeteazaPiesaCadranului(piesa.Pozitie, piesa);
@@ -343,7 +349,7 @@ namespace ProiectVolovici
                                 },
                              null,
                              TimeSpan.Zero,
-                             TimeSpan.FromMilliseconds(100));
+                             TimeSpan.FromMilliseconds(ConstantaTabla.IntervalPiesaBlocata));
             }
         }
 
@@ -370,19 +376,36 @@ namespace ProiectVolovici
             return true;
         }
 
-
-        public List<int[,]> ReturneazaMatriciMutariPosibile(Piesa piesa)
+        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa, int[,] matrice)
         {
             List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
-            List<int[,]> matriciMutariPosibile = new();
-            if(pozitiiMutariPosibile != null)
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
+
+            if (pozitiiMutariPosibile != null)
             {
-                foreach(Pozitie pozitie in pozitiiMutariPosibile)
+                foreach (Pozitie pozitie in pozitiiMutariPosibile)
                 {
-                    int[,] matriceMutariPosibile = this.MatriceCodPiese;
+                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
+                    int[,] matriceMutariPosibile = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+                    for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+                    {
+                        for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                        {
+                            matriceMutariPosibile[linie, coloana] = MatriceCoduriPiese[linie, coloana];
+                        }
+                    }
+
                     matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                    matriciMutariPosibile.Add(matriceMutariPosibile);
+                    for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+                    {
+                        for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                        {
+                            Debug.WriteLine(matriceMutariPosibile[linie, coloana]);
+                        }
+                    }
+                    Debug.WriteLine("");
+                    matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
                 }
                 return matriciMutariPosibile;
             }
@@ -390,6 +413,79 @@ namespace ProiectVolovici
             {
                 return null;
             }
+        }
+
+        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa)
+        {
+            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
+
+            if (pozitiiMutariPosibile != null)
+            {
+                if (piesa.Cod == CodPiesa.TunAlb || piesa.Cod == CodPiesa.TunAlbastru)
+                {
+                    return ReturneazaMatricileTunului(piesa, pozitiiMutariPosibile, matriciMutariPosibile);
+                }
+                else
+                {
+                    foreach (Pozitie pozitie in pozitiiMutariPosibile)
+                    {
+                        Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
+                        int[,] matriceMutariPosibile = this.MatriceCoduriPiese;
+
+                        matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                        matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+
+                        matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
+                    }
+                    return matriciMutariPosibile;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatricileTunului(Piesa piesa, List<Pozitie> pozitiiMutariPosibile, List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile)
+        {
+            foreach (Pozitie pozitie in pozitiiMutariPosibile)
+            {
+                Pozitie pozitieInitiala = piesa.Pozitie;
+
+                Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
+                int[,] matriceMutariPosibile = this.MatriceCoduriPiese;
+
+                matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+
+                if (pozitieInitiala.Linie != pozitie.Linie)
+                {
+                    int linieInitiala = (pozitieInitiala.Linie > pozitie.Linie) ? pozitie.Linie : pozitieInitiala.Linie;
+                    int linieFinala = (pozitieInitiala.Linie < pozitie.Linie) ? pozitie.Linie : pozitieInitiala.Linie;
+                    for (int linie = linieInitiala; linie < linieFinala; linie++)
+                    {
+                        if (matriceMutariPosibile[linie, piesa.Pozitie.Coloana] != (int)CodPiesa.Gol)
+                        {
+                            matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                        }
+                    }
+                }
+                else if (pozitieInitiala.Coloana != pozitie.Coloana)
+                {
+                    int coloanaInitiala = (pozitieInitiala.Coloana > pozitie.Coloana) ? pozitie.Coloana : pozitieInitiala.Coloana;
+                    int coloanaFinala = (pozitieInitiala.Coloana < pozitie.Coloana) ? pozitie.Coloana : pozitieInitiala.Coloana;
+                    for (int coloana = coloanaInitiala; coloana < coloanaFinala; coloana++)
+                    {
+                        if (matriceMutariPosibile[piesa.Pozitie.Linie, coloana] != (int)CodPiesa.Gol)
+                        {
+                            matriceMutariPosibile[piesa.Pozitie.Linie, coloana] = (int)CodPiesa.Gol;
+                        }
+                    }
+                }
+                matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
+            }
+            return matriciMutariPosibile;
         }
 
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
@@ -459,7 +555,6 @@ namespace ProiectVolovici
                 }
             }
         }
-
         protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
             if (piesa == null || pozitie == null)
@@ -550,6 +645,26 @@ namespace ProiectVolovici
             timer.Interval = interval;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
             timer.Enabled = true;
+        }
+        public void Asteapta(int milisecunde)
+        {
+            var timerAsteptare = new System.Windows.Forms.Timer();
+            if (milisecunde == 0 || milisecunde < 0) return;
+
+            timerAsteptare.Interval = milisecunde;
+            timerAsteptare.Enabled = true;
+            timerAsteptare.Start();
+
+            timerAsteptare.Tick += (s, e) =>
+            {
+                timerAsteptare.Enabled = false;
+                timerAsteptare.Stop();
+            };
+
+            while (timerAsteptare.Enabled)
+            {
+                Application.DoEvents();
+            }
         }
     }
 }

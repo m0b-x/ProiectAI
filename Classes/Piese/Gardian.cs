@@ -42,8 +42,8 @@ namespace ProiectVolovici
             {
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
-                    if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
-                        joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
+                    if (joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
+                        joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
                         mutariFiltrate.Add(pozitie);
                     }

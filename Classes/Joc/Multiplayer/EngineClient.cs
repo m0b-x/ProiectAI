@@ -205,7 +205,7 @@ namespace ProiectVolovici
                         if (EsteMutareaPosibila(pozitie))
                         {
                             AscundePiesaSelectata(PiesaSelectata);
-                            if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }

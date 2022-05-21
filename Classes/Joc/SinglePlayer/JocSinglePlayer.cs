@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProiectVolovici.Classes.Joc.SinglePlayer
+namespace ProiectVolovici
 {
-    public class JocSinglePlayer
+    public class JocSinglePlayer 
     {
 
     }

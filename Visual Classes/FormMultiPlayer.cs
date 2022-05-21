@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-    public partial class FormJoc : Form
+    public partial class FormMultiPlayer : Form
     {
-        public FormJoc()
+        public FormMultiPlayer()
         {
             InitializeComponent();
         }

@@ -22,14 +22,14 @@ namespace ProiectVolovici
 
         public static readonly Piesa PiesaNula = null;
 
-        public static readonly int IntervalPiesaBlocata = 125;
+        public static readonly int IntervalPiesaBlocata = 300;
 
         public static readonly int MarimeFont = 15;
 
         public static readonly string FontPrincipal = "Arial";
         public static readonly string FontSecundar = "Segoe UI";
 
-        public static readonly int TimpAsteptariAI = 300; 
+        public static readonly int TimpAsteptariAI = 600; 
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {

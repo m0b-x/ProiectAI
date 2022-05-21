@@ -42,8 +42,6 @@ namespace ProiectVolovici
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
-
-            AdaugaEvenimentCadrane();
         }
 
         public EngineHost(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
@@ -126,7 +124,7 @@ namespace ProiectVolovici
             {
                 await Task.Delay(50);
             }
-            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCodPiese));
+            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCoduriPiese));
             _host.TimerCitireDate.Stop();
             ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
             EsteRandulTau();
@@ -203,7 +201,7 @@ namespace ProiectVolovici
                         if (EsteMutareaPosibila(pozitie))
                         {
                             AscundePiesaSelectata(PiesaSelectata);
-                            if (MatriceCodPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }

@@ -45,7 +45,7 @@ namespace ProiectVolovici
             {
                 if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
                 {
-                    if (joc.MatriceCodPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
+                    if (joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
                         {
                             if (this.CuloarePiesa == CuloareJoc.Alb)
