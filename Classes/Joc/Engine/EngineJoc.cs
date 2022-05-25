@@ -56,15 +56,7 @@ namespace ProiectVolovici
         {
             get
             {
-                int[,] matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
-                for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
-                {
-                    for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
-                    {
-                        matriceCodPiese[linie, coloana] = _matriceCodPiese[linie, coloana];
-                    }
-                }
-                return matriceCodPiese;
+                return (int[,])_matriceCodPiese.Clone();
             }
         }
 
@@ -431,7 +423,7 @@ namespace ProiectVolovici
                     foreach (Pozitie pozitie in pozitiiMutariPosibile)
                     {
                         Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                        int[,] matriceMutariPosibile = this.MatriceCoduriPiese;
+                        int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
 
                         matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
@@ -454,7 +446,7 @@ namespace ProiectVolovici
                 Pozitie pozitieInitiala = piesa.Pozitie;
 
                 Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                int[,] matriceMutariPosibile = this.MatriceCoduriPiese;
+                int[,] matriceMutariPosibile = (int[,])(int[,])_matriceCodPiese.Clone();
 
                 matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
