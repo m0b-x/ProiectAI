@@ -483,6 +483,7 @@ namespace ProiectVolovici
                         }
                     }
                 }
+                matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                 matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
             }
             return matriciMutariPosibile;

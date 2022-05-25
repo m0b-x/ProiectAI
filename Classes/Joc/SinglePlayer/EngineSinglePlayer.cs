@@ -184,6 +184,14 @@ namespace ProiectVolovici
                             _matriciMutariPosibile = ReturneazaMatriciMutariPosibile(piesaAI);
                             foreach (var matrice in _matriciMutariPosibile)
                             {
+                                for (int linie1 = 0; linie1 < ConstantaTabla.MarimeVerticala; linie1++)
+                                {
+                                    for (int coloana1 = 0; coloana1 < ConstantaTabla.MarimeOrizontala; coloana1++)
+                                    {
+                                        Debug.Write(matrice.Item2[linie1, coloana1] + " ");
+                                    }
+                                    Debug.WriteLine("");
+                                }
                                 tupluMutariSiMatriciPosibile.Add(matrice);
                             }
                         }
@@ -221,6 +229,14 @@ namespace ProiectVolovici
         }
         public double EvalueazaPozitia(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
         {
+            for (int linie1 = 0; linie1 < ConstantaTabla.MarimeVerticala; linie1++)
+            {
+                for (int coloana1 = 0; coloana1 < ConstantaTabla.MarimeOrizontala; coloana1++)
+                {
+                    Debug.Write(matrice[linie1, coloana1] + " ");
+                }
+                Debug.WriteLine("");
+            }
             if (adancime == 0)
             {
                 double evaluare = EvalueazaMatricea(matrice);
@@ -275,7 +291,7 @@ namespace ProiectVolovici
                         {
                             if (ReturneazaCuloareDupaCodulPiesei((CodPiesa)matrice[linie, coloana]) == CuloareJoc.Albastru)
                             {
-                                Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)MatriceCoduriPiese[linie, coloana]);
+                                Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(this);
                                 foreach (var mutarePosibila in mutariPosibile)
