@@ -457,7 +457,6 @@ namespace ProiectVolovici
                     {
                         if (matriceMutariPosibile[linie, piesa.Pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            MessageBox.Show("SEX");
                             matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         }
                     }
@@ -470,7 +469,6 @@ namespace ProiectVolovici
                     {
                         if (matriceMutariPosibile[piesa.Pozitie.Linie, coloana] != (int)CodPiesa.Gol)
                         {
-                            MessageBox.Show("SEX");
                             matriceMutariPosibile[piesa.Pozitie.Linie, coloana] = (int)CodPiesa.Gol;
                         }
                     }
