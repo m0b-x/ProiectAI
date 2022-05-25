@@ -416,7 +416,7 @@ namespace ProiectVolovici
             {
                 if (piesa.Cod == CodPiesa.TunAlb || piesa.Cod == CodPiesa.TunAlbastru)
                 {
-                    return ReturneazaMatricileTunului(piesa, pozitiiMutariPosibile, matriciMutariPosibile);
+                    return ReturneazaMatricileTunului(piesa, pozitiiMutariPosibile);
                 }
                 else
                 {
@@ -439,17 +439,15 @@ namespace ProiectVolovici
             }
         }
 
-        private List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatricileTunului(Piesa piesa, List<Pozitie> pozitiiMutariPosibile, List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile)
+        private List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatricileTunului(Piesa piesa, List<Pozitie> pozitiiMutariPosibile)
         {
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
             foreach (Pozitie pozitie in pozitiiMutariPosibile)
             {
                 Pozitie pozitieInitiala = piesa.Pozitie;
 
                 Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                int[,] matriceMutariPosibile = (int[,])(int[,])_matriceCodPiese.Clone();
-
-                matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
 
                 if (pozitieInitiala.Linie != pozitie.Linie)
                 {
@@ -459,6 +457,7 @@ namespace ProiectVolovici
                     {
                         if (matriceMutariPosibile[linie, piesa.Pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
+                            MessageBox.Show("SEX");
                             matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         }
                     }
@@ -471,10 +470,12 @@ namespace ProiectVolovici
                     {
                         if (matriceMutariPosibile[piesa.Pozitie.Linie, coloana] != (int)CodPiesa.Gol)
                         {
+                            MessageBox.Show("SEX");
                             matriceMutariPosibile[piesa.Pozitie.Linie, coloana] = (int)CodPiesa.Gol;
                         }
                     }
                 }
+                matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                 matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
             }
