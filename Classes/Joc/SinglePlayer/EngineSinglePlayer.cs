@@ -11,7 +11,7 @@ namespace ProiectVolovici
     public class EngineJocSinglePlayer : EngineJoc
     {
         public static int IntervalTimerPrimireDate = 50;
-        private static readonly int Adancime = 1;
+        private static readonly int Adancime = 2;
         private int _nrMutari = 0;
 
         protected Om _jucatorOm;
@@ -168,8 +168,7 @@ namespace ProiectVolovici
             Tuple<Pozitie,Pozitie> mutareaOptima = new(new Pozitie(0,0),new Pozitie(0,0));
             double scorulMutariiOptime = 0;
 
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new (); 
-
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new ();
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
@@ -181,6 +180,7 @@ namespace ProiectVolovici
                         piesaAI.Pozitie = new Pozitie(linie, coloana);
                         if (piesaAI.CuloarePiesa == CuloareJoc.Albastru)
                         {
+                            //AICI
                             _matriciMutariPosibile = ReturneazaMatriciMutariPosibile(piesaAI);
                             foreach (var matrice in _matriciMutariPosibile)
                             {
@@ -191,7 +191,7 @@ namespace ProiectVolovici
                 }
             }
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
-            scorulMutariiOptime = EvalueazaPozitia(tupluMutariSiMatriciPosibile[0].Item2, Double.NegativeInfinity, Double.PositiveInfinity, Adancime, CuloareJoc.Alb);
+            scorulMutariiOptime = EvalueazaPozitia(tupluMutariSiMatriciPosibile[0].Item2, Double.NegativeInfinity, Double.PositiveInfinity, Adancime, CuloareJoc.Albastru);
 
             if (_nrMutari > 0)
             {
@@ -348,7 +348,19 @@ namespace ProiectVolovici
             }
 
         }
-
+        public void AfisareMatriciDebug(int[,] matrice)
+        {
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    Debug.Write(matrice[linie, coloana] + " ");
+                }
+                Debug.WriteLine("");
+            }
+            Debug.WriteLine(EvalueazaMatricea(matrice));
+            Debug.WriteLine("------------------------------------------");
+        }
         public Tuple<Pozitie, Pozitie> ReturneazaMutareaAI()
         {
             Tuple<Pozitie, Pozitie> pozitieReturnata = Tuple.Create(new Pozitie(0, 0), new Pozitie(0, 0));

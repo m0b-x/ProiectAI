@@ -27,16 +27,6 @@ namespace ProiectVolovici
             formPrincipal = this;
             jocSah = new EngineJocSinglePlayer(formPrincipal, jucatori.Item1);
             jocSah.AdaugaPieselePrestabilite();
-
-            for (int i = 0; i < ConstantaTabla.MarimeVerticala; i++)
-            {
-                for (int j = 0; j < ConstantaTabla.MarimeOrizontala; j++)
-                {
-                    Debug.Write(jocSah.MatriceCoduriPiese[i, j] + " ");
-                }
-                Debug.WriteLine("");
-            }
-
         }
     }
 }

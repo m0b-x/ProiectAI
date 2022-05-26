@@ -389,14 +389,6 @@ namespace ProiectVolovici
 
                     matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                    for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
-                    {
-                        for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
-                        {
-                            Debug.WriteLine(matriceMutariPosibile[linie, coloana]);
-                        }
-                    }
-                    Debug.WriteLine("");
                     matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
                 }
                 return matriciMutariPosibile;
@@ -406,6 +398,9 @@ namespace ProiectVolovici
                 return null;
             }
         }
+        // 0 1 2
+        // 0 0 0
+        // 3 4 5
 
         public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa)
         {
@@ -445,7 +440,6 @@ namespace ProiectVolovici
             foreach (Pozitie pozitie in pozitiiMutariPosibile)
             {
                 Pozitie pozitieInitiala = piesa.Pozitie;
-
                 Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
                 int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
 
@@ -457,7 +451,7 @@ namespace ProiectVolovici
                     {
                         if (matriceMutariPosibile[linie, piesa.Pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                            matriceMutariPosibile[linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                         }
                     }
                 }
@@ -473,6 +467,7 @@ namespace ProiectVolovici
                         }
                     }
                 }
+                //AICIAFIS
                 matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                 matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                 matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
@@ -505,6 +500,8 @@ namespace ProiectVolovici
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
+
+        //AICI
         public void SeteazaPiesaCadranului(Pozitie pozitie, Piesa piesa)
         {
             if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
@@ -547,21 +544,21 @@ namespace ProiectVolovici
                 }
             }
         }
-        protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
+        protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitiaFinala)
         {
-            if (piesa == null || pozitie == null)
+            if (piesa == null || pozitiaFinala == null)
             {
                 return;
             }
             if (piesa.GetType().Equals(typeof(Tun)))
             {
-                TerminaMutareaTunului(piesa, pozitie);
+                TerminaMutareaTunului(piesa, pozitiaFinala);
             }
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
-            ActualizeazaUltimaMutare(pozitieInitiala, pozitie);
-            SeteazaPiesaCadranului(pozitie, piesa);
-            piesa.Pozitie = pozitie;
+            ActualizeazaUltimaMutare(pozitieInitiala, pozitiaFinala);
+            SeteazaPiesaCadranului(pozitiaFinala, piesa);
+            piesa.Pozitie = pozitiaFinala;
             SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
 
             PiesaSelectata = ConstantaTabla.PiesaNula;
