@@ -23,6 +23,9 @@ namespace ProiectVolovici
 
         List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new();
 
+        private RichTextBox _textBoxMutariAlb;
+        private RichTextBox _textBoxMutariAlbastru;
+
         public Om Jucator
         {
             get { return _jucatorOm; }
@@ -34,6 +37,7 @@ namespace ProiectVolovici
 
         public EngineJocSinglePlayer(Form parentForm, Om jucator) : base(parentForm)
         {
+            InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
 
@@ -44,6 +48,7 @@ namespace ProiectVolovici
 
         public EngineJocSinglePlayer(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
+            InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
 
@@ -69,6 +74,35 @@ namespace ProiectVolovici
         protected virtual void EsteRandulTau()
         {
             _randulOmului = true;
+        }
+
+        public void InitializeazaInterfataVizuala()
+        {
+            _textBoxMutariAlb = new RichTextBox();
+            _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
+            _textBoxMutariAlb.Name = "textBoxMutariAlb";
+            _textBoxMutariAlb.Size = new System.Drawing.Size(155, 210);
+            _textBoxMutariAlb.TabIndex = 0;
+            _textBoxMutariAlb.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            _textBoxMutariAlb.Text = System.String.Empty;
+
+            _textBoxMutariAlbastru = new RichTextBox();
+            _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
+            _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
+            _textBoxMutariAlbastru.Size = new System.Drawing.Size(155, 210);
+            _textBoxMutariAlbastru.TabIndex = 1;
+            _textBoxMutariAlbastru.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            _textBoxMutariAlbastru.Text = System.String.Empty;
+
+            ParentForm.Controls.Add(_textBoxMutariAlb);
+            ParentForm.Controls.Add(_textBoxMutariAlbastru);
+        }
+        private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
+        {
+            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 
         protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
@@ -129,9 +163,11 @@ namespace ProiectVolovici
                             {
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
-                            NuEsteRandulTau();
+                            NuEsteRandulTau(); 
+                            ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                             RealizeazaMutareaAI();
+                            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                         }
                     }
                 }
