@@ -10,7 +10,6 @@ namespace ProiectVolovici
 {
     public class EngineJocSinglePlayer : EngineJoc
     {
-        public static int IntervalTimerPrimireDate = 50;
         private static readonly int Adancime = 2;
         private int _nrMutari = 0;
 
@@ -257,7 +256,7 @@ namespace ProiectVolovici
                     matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
                     matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] =  codPiesa;
 
-                    newBeta = EvalueazaMatricea(matriceSuccesor);
+                    //newBeta = EvalueazaMatricea(matriceSuccesor);
                     newBeta = Math.Min(newBeta, EvalueazaPozitia(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
                     if (newBeta <= alpha) 
                         break;
@@ -294,8 +293,8 @@ namespace ProiectVolovici
                     matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
                     matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesa;
 
-                    newAlpha = EvalueazaMatricea(matriceSuccesor);
-                    newAlpha = Math.Min(newAlpha, EvalueazaPozitia(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
+                    //newAlpha = EvalueazaMatricea(matriceSuccesor);
+                    newAlpha = Math.Max(newAlpha, EvalueazaPozitia(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); 
                     if (beta <= newAlpha) 
                         break;
                 }
