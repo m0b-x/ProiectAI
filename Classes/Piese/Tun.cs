@@ -32,9 +32,6 @@ namespace ProiectVolovici
         {
             List<Pozitie> mutariLegale = new List<Pozitie>();
 
-            bool aTrecutPestePiesaLinie = false;
-            bool aTrecutPestePiesaColoana = false;
-
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
             {
@@ -42,20 +39,22 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
-                    if (aTrecutPestePiesaLinie)
-                    {
-                        break;
-                    }
                 }
                 else
                 {
-                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    liniePozitiiPosibile++;
                     {
-                        break;
-                    }
-                    else
-                    {
-                        aTrecutPestePiesaLinie = true;
+                        while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
+                        {
+                            pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                            if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol() &&
+                                joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                            {
+                                mutariLegale.Add(pozitiePosibila);
+                                goto sfarsit_functie;
+                            }
+                            liniePozitiiPosibile++;
+                        }
                     }
                 }
                 liniePozitiiPosibile++;
@@ -68,20 +67,22 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
-                    if (aTrecutPestePiesaLinie)
-                    {
-                        break;
-                    }
                 }
                 else
                 {
-                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    liniePozitiiPosibile--;
                     {
-                        break;
-                    }
-                    else
-                    {
-                        aTrecutPestePiesaLinie = true;
+                        while (liniePozitiiPosibile >= 0)
+                        {
+                            pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                            if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol() &&
+                                joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                            {
+                                mutariLegale.Add(pozitiePosibila);
+                                goto sfarsit_functie;
+                            }
+                            liniePozitiiPosibile--;
+                        }
                     }
                 }
                 liniePozitiiPosibile--;
@@ -94,20 +95,22 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
-                    if (aTrecutPestePiesaColoana)
-                    {
-                        break;
-                    }
                 }
                 else
                 {
-                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    colonaPozitiePosibila++;
                     {
-                        break;
-                    }
-                    else
-                    {
-                        aTrecutPestePiesaColoana = true;
+                        while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
+                        {
+                            pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+                            if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol() &&
+                                joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                            {
+                                mutariLegale.Add(pozitiePosibila);
+                                goto sfarsit_functie;
+                            }
+                            colonaPozitiePosibila++;
+                        }
                     }
                 }
                 colonaPozitiePosibila++;
@@ -120,25 +123,27 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
-                    if(aTrecutPestePiesaColoana)
-                    {
-                        break;
-                    }
                 }
                 else
                 {
-                    if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    colonaPozitiePosibila--;
                     {
-                        break;
-                    }
-                    else
-                    {
-                        aTrecutPestePiesaColoana = true;
+                        while (colonaPozitiePosibila >= 0)
+                        {
+                            pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+                            if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol() &&
+                                joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                            {
+                                mutariLegale.Add(pozitiePosibila);
+                                goto sfarsit_functie;
+                            }
+                            colonaPozitiePosibila--;
+                        }
                     }
                 }
                 colonaPozitiePosibila--;
             }
-
+           sfarsit_functie:
             return mutariLegale;
         }
     }

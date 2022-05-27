@@ -333,15 +333,9 @@ namespace ProiectVolovici
             {
                 Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
-                var timer = new System.Threading.Timer(
-                             e =>
-                                {
-                                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
-                                    PiesaSelectata = ConstantaTabla.PiesaNula;
-                                },
-                             null,
-                             TimeSpan.Zero,
-                             TimeSpan.FromMilliseconds(ConstantaTabla.IntervalPiesaBlocata));
+                Asteapta(ConstantaTabla.IntervalPiesaBlocata);
+                ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
+                PiesaSelectata = ConstantaTabla.PiesaNula;
             }
         }
 
@@ -398,9 +392,6 @@ namespace ProiectVolovici
                 return null;
             }
         }
-        // 0 1 2
-        // 0 0 0
-        // 3 4 5
 
         public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa)
         {
@@ -409,70 +400,22 @@ namespace ProiectVolovici
 
             if (pozitiiMutariPosibile != null)
             {
-                if (piesa.Cod == CodPiesa.TunAlb || piesa.Cod == CodPiesa.TunAlbastru)
+                foreach (Pozitie pozitie in pozitiiMutariPosibile)
                 {
-                    return ReturneazaMatricileTunului(piesa, pozitiiMutariPosibile);
-                }
-                else
-                {
-                    foreach (Pozitie pozitie in pozitiiMutariPosibile)
-                    {
-                        Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                        int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
+                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
+                    int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
 
-                        matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                        matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                    matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                    matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
 
-                        matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                    }
-                    return matriciMutariPosibile;
+                    matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
                 }
+                return matriciMutariPosibile;
             }
             else
             {
                 return null;
             }
-        }
-
-        private List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatricileTunului(Piesa piesa, List<Pozitie> pozitiiMutariPosibile)
-        {
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
-            foreach (Pozitie pozitie in pozitiiMutariPosibile)
-            {
-                Pozitie pozitieInitiala = piesa.Pozitie;
-                Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
-
-                if (pozitieInitiala.Linie != pozitie.Linie)
-                {
-                    int linieInitiala = (pozitieInitiala.Linie > pozitie.Linie) ? pozitie.Linie : pozitieInitiala.Linie;
-                    int linieFinala = (pozitieInitiala.Linie < pozitie.Linie) ? pozitie.Linie : pozitieInitiala.Linie;
-                    for (int linie = linieInitiala; linie < linieFinala; linie++)
-                    {
-                        if (matriceMutariPosibile[linie, piesa.Pozitie.Coloana] != (int)CodPiesa.Gol)
-                        {
-                            matriceMutariPosibile[linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                        }
-                    }
-                }
-                else if (pozitieInitiala.Coloana != pozitie.Coloana)
-                {
-                    int coloanaInitiala = (pozitieInitiala.Coloana > pozitie.Coloana) ? pozitie.Coloana : pozitieInitiala.Coloana;
-                    int coloanaFinala = (pozitieInitiala.Coloana < pozitie.Coloana) ? pozitie.Coloana : pozitieInitiala.Coloana;
-                    for (int coloana = coloanaInitiala; coloana < coloanaFinala; coloana++)
-                    {
-                        if (matriceMutariPosibile[piesa.Pozitie.Linie, coloana] != (int)CodPiesa.Gol)
-                        {
-                            matriceMutariPosibile[piesa.Pozitie.Linie, coloana] = (int)CodPiesa.Gol;
-                        }
-                    }
-                }
-                //AICIAFIS
-                matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-            }
-            return matriciMutariPosibile;
         }
 
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
@@ -550,10 +493,6 @@ namespace ProiectVolovici
             {
                 return;
             }
-            if (piesa.GetType().Equals(typeof(Tun)))
-            {
-                TerminaMutareaTunului(piesa, pozitiaFinala);
-            }
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
             ActualizeazaUltimaMutare(pozitieInitiala, pozitiaFinala);
@@ -563,42 +502,6 @@ namespace ProiectVolovici
 
             PiesaSelectata = ConstantaTabla.PiesaNula;
             PozitiiMutariPosibile.Clear();
-        }
-
-        public void TerminaMutareaTunului(Piesa piesa, Pozitie pozitiaFinala)
-        {
-            Pozitie pozitieInitiala = piesa.Pozitie;
-
-            if (pozitieInitiala.Linie != pozitiaFinala.Linie)
-            {
-                int linieInitiala = (pozitieInitiala.Linie > pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
-                int linieFinala = (pozitieInitiala.Linie < pozitiaFinala.Linie) ? pozitiaFinala.Linie : pozitieInitiala.Linie;
-                for (int linie = linieInitiala; linie < linieFinala; linie++)
-                {
-                    if (ArrayCadrane[linie, piesa.Pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-                    {
-                        if (ArrayCadrane[linie, piesa.Pozitie.Coloana].PiesaCadran.CuloarePiesa != piesa.CuloarePiesa)
-                        {
-                            SeteazaPiesaCadranului(new Pozitie(linie, piesa.Pozitie.Coloana), ConstantaTabla.PiesaNula);
-                        }
-                    }
-                }
-            }
-            else if (pozitieInitiala.Coloana != pozitiaFinala.Coloana)
-            {
-                int coloanaInitiala = (pozitieInitiala.Coloana > pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
-                int coloanaFinala = (pozitieInitiala.Coloana < pozitiaFinala.Coloana) ? pozitiaFinala.Coloana : pozitieInitiala.Coloana;
-                for (int coloana = coloanaInitiala; coloana < coloanaFinala; coloana++)
-                {
-                    if (ArrayCadrane[piesa.Pozitie.Linie, coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-                    {
-                        if (ArrayCadrane[piesa.Pozitie.Linie, coloana].PiesaCadran.CuloarePiesa != piesa.CuloarePiesa)
-                        {
-                            SeteazaPiesaCadranului(new Pozitie(piesa.Pozitie.Linie, coloana), ConstantaTabla.PiesaNula);
-                        }
-                    }
-                }
-            }
         }
 
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
