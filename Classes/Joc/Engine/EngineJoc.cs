@@ -14,7 +14,7 @@ namespace ProiectVolovici
         private int[,] _matriceCodPiese;
 
         private List<Piesa> _listaPiese;
-        private List<Pozitie> _pozitiiMutariPosibile;
+        protected List<Pozitie> _pozitiiMutariPosibile;
 
         private Label[] _labelColoane;
         private Label[] _labelLinii;
@@ -627,6 +627,13 @@ namespace ProiectVolovici
             }
         }
 
+        public void StergePozitiaDinLista(ref List<Pozitie> pozitii, Pozitie pozitieDeSters)
+        {
+            if (pozitii.Contains(pozitieDeSters))
+            {
+                pozitii.Remove(pozitieDeSters);
+            }
+        }
         public void ActiveazaTimerRepetitiv(ref System.Timers.Timer timer, uint interval, System.Timers.ElapsedEventHandler functie)
         {
             timer = new System.Timers.Timer();

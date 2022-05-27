@@ -14,6 +14,7 @@ namespace ProiectVolovici
         private int _nrMutari = 0;
 
         protected Om _jucatorOm;
+        protected AI _jucatorAi;
 
         protected bool _randulOmului;
 
@@ -40,6 +41,7 @@ namespace ProiectVolovici
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
+            _jucatorAi = new AI(CuloareJoc.Albastru);
 
             _randulOmului = true;
 
@@ -51,6 +53,7 @@ namespace ProiectVolovici
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
+            _jucatorAi = new AI(CuloareJoc.Albastru);
 
             _randulOmului = false;
         }
@@ -166,6 +169,7 @@ namespace ProiectVolovici
                             NuEsteRandulTau(); 
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
+                            _jucatorOm.UltimaPozitie = pozitie;
                             RealizeazaMutareaAI();
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                         }
@@ -251,6 +255,7 @@ namespace ProiectVolovici
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
             Pozitie pozitie = mutareaOptima.Item2;
             RealizeazaMutareaLocal(piesa, pozitie);
+            _jucatorAi.UltimaPozitie = pozitie;
             EsteRandulTau();
 
         }
@@ -276,7 +281,7 @@ namespace ProiectVolovici
                                 Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(this);
-                                foreach(var mutarePosibila in mutariPosibile)
+                                foreach (var mutarePosibila in mutariPosibile)
                                 {
                                      mutari.Add(new(piesa.Pozitie, mutarePosibila));
                                 }

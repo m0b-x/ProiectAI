@@ -32,6 +32,9 @@ namespace ProiectVolovici
         {
             List<Pozitie> mutariLegale = new List<Pozitie>();
 
+            bool aTrecutPestePiesaLinie = false;
+            bool aTrecutPestePiesaColoana = false;
+
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
             {
@@ -39,12 +42,20 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
+                    if (aTrecutPestePiesaLinie)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
                     if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         break;
+                    }
+                    else
+                    {
+                        aTrecutPestePiesaLinie = true;
                     }
                 }
                 liniePozitiiPosibile++;
@@ -57,12 +68,20 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
+                    if (aTrecutPestePiesaLinie)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
                     if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         break;
+                    }
+                    else
+                    {
+                        aTrecutPestePiesaLinie = true;
                     }
                 }
                 liniePozitiiPosibile--;
@@ -75,12 +94,20 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
+                    if (aTrecutPestePiesaColoana)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
                     if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         break;
+                    }
+                    else
+                    {
+                        aTrecutPestePiesaColoana = true;
                     }
                 }
                 colonaPozitiePosibila++;
@@ -93,12 +120,20 @@ namespace ProiectVolovici
                 if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
                 {
                     mutariLegale.Add(pozitiePosibila);
+                    if(aTrecutPestePiesaColoana)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
                     if (!joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                     {
                         break;
+                    }
+                    else
+                    {
+                        aTrecutPestePiesaColoana = true;
                     }
                 }
                 colonaPozitiePosibila--;
