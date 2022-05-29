@@ -161,6 +161,7 @@ namespace ProiectVolovici
             _labelRand.BackColor = Color.Green;
 
             _textBoxMutariAlb = new RichTextBox();
+            _textBoxMutariAlb.ReadOnly = true;
             _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
             _textBoxMutariAlb.Name = "textBoxMutariAlb";
@@ -170,6 +171,7 @@ namespace ProiectVolovici
             _textBoxMutariAlb.Text = System.String.Empty;
 
             _textBoxMutariAlbastru = new RichTextBox();
+            _textBoxMutariAlbastru.ReadOnly = true;
             _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
             _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";

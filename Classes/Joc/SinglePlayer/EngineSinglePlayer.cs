@@ -82,6 +82,7 @@ namespace ProiectVolovici
         public void InitializeazaInterfataVizuala()
         {
             _textBoxMutariAlb = new RichTextBox();
+            _textBoxMutariAlb.ReadOnly = true;
             _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
             _textBoxMutariAlb.Name = "textBoxMutariAlb";
@@ -91,6 +92,7 @@ namespace ProiectVolovici
             _textBoxMutariAlb.Text = System.String.Empty;
 
             _textBoxMutariAlbastru = new RichTextBox();
+            _textBoxMutariAlbastru.ReadOnly = true;
             _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
             _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
@@ -166,11 +168,15 @@ namespace ProiectVolovici
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             NuEsteRandulTau(); 
+                            VerificaSahulLaAi(pozitie);
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             _jucatorOm.UltimaPozitie = pozitie;
-                            RealizeazaMutareaAI();
-                            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
+                            if (_esteGataMeciul == false)
+                            {
+                                RealizeazaMutareaAI();
+                                ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
+                            }
                         }
                     }
                 }
@@ -208,10 +214,12 @@ namespace ProiectVolovici
 
         public void RealizeazaMutareaAI()
         {
-            Tuple<Pozitie,Pozitie> mutareaOptima = new(new Pozitie(0,0),new Pozitie(0,0));
+            Stopwatch cronometru = new();
+            cronometru.Start();
+            Tuple<Pozitie, Pozitie> mutareaOptima = new(new Pozitie(0, 0), new Pozitie(0, 0));
             double scorulMutariiOptime = 0;
 
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new ();
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new();
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
@@ -223,9 +231,8 @@ namespace ProiectVolovici
                         piesaAI.Pozitie = new Pozitie(linie, coloana);
                         if (piesaAI.CuloarePiesa == CuloareJoc.Albastru)
                         {
-                            //AICI
                             _matriciMutariPosibile = ReturneazaMatriciMutariPosibile(piesaAI);
-                            foreach(var matrice in _matriciMutariPosibile)
+                            foreach (var matrice in _matriciMutariPosibile)
                             {
                                 tupluMutariSiMatriciPosibile.Add(matrice);
                             }
@@ -246,7 +253,6 @@ namespace ProiectVolovici
                         mutareaOptima = tupluMutariSiMatriciPosibile[linie].Item1;
                         scorulMutariiOptime = coloana;
                     }
-
                 }
             }
             else
@@ -255,13 +261,56 @@ namespace ProiectVolovici
                 int index = (int)generatorRandom.NextInt64(tupluMutariSiMatriciPosibile.Count);
                 mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
             }
+            VerificaSahulLaJucator(scorulMutariiOptime);
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
             Pozitie pozitie = mutareaOptima.Item2;
             RealizeazaMutareaLocal(piesa, pozitie);
             _jucatorAi.UltimaPozitie = pozitie;
             EsteRandulTau();
-
+            Debug.WriteLine(cronometru.Elapsed);
+            cronometru.Stop();
         }
+
+        public void TerminaMeciul()
+        {
+            _esteGataMeciul = true;
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    ArrayCadrane[linie, coloana].Click -= OnCadranClick;
+                }
+            }
+        }
+        private void VerificaSahulLaAi(Pozitie pozitie)
+        {
+            Piesa piesa = GetPiesaCuPozitia(pozitie);
+            if (piesa != null)
+            {
+                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    MessageBox.Show("Ai castigat");
+                    TerminaMeciul();
+                }
+            }
+        }
+        private void VerificaSahulLaJucator(double scorulMutariiOptime)
+        {
+            if (scorulMutariiOptime > ConstantaTabla.PragSahLaAlbastru)
+            {
+                MessageBox.Show("Ai pierdut");
+                TerminaMeciul();
+            }
+            else
+            {
+                if (scorulMutariiOptime < ConstantaTabla.PragSahLaAlb)
+                {
+                    MessageBox.Show("Ai castigat");
+                    TerminaMeciul();
+                }
+            }
+        }
+
         public double EvalueazaPozitia(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
         {
             if (adancime == 0)

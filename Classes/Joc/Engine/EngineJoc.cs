@@ -24,6 +24,8 @@ namespace ProiectVolovici
 
         private Tuple<Pozitie, Pozitie> _ultimaMutare;
 
+        protected bool _esteGataMeciul;
+
         public List<Pozitie> PozitiiMutariPosibile
         {
             get { return _pozitiiMutariPosibile; }

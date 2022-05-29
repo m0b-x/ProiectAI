@@ -144,8 +144,9 @@ namespace ProiectVolovici
                     if (!_ultimulMesajPrimitHost.Equals(_host.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
+                        VerificaSahul(_ultimaMutarePrimitaHost.Item2);
+                        RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);                   
                         EsteRandulTau();
-                        RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
                     }
                     else
                     {
@@ -153,6 +154,35 @@ namespace ProiectVolovici
                         _timerJocHost.Stop();
                         MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
                     }
+                }
+            }
+        }
+
+        private void VerificaSahul(Pozitie pozitie)
+        {
+            Piesa piesa = GetPiesaCuPozitia(pozitie);
+            if (piesa != null)
+            {
+                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    MessageBox.Show("Ai castigat");
+                    TerminaMeciul();
+                }
+                else if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    MessageBox.Show("Ai pierdut");
+                    TerminaMeciul();
+                }
+            }
+        }
+        public void TerminaMeciul()
+        {
+            _esteGataMeciul = true;
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    ArrayCadrane[linie, coloana].Click -= OnCadranClick;
                 }
             }
         }
@@ -200,6 +230,7 @@ namespace ProiectVolovici
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
+                            VerificaSahul(pozitie);
                             AscundePiesaSelectata(PiesaSelectata);
                             if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                             {

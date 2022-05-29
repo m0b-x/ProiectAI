@@ -145,11 +145,11 @@ namespace ProiectVolovici
                 {
                     _ultimulMesajPrimitClient = _client.Buffer;
                     if (!_ultimulMesajPrimitClient.Equals(_client.MesajDeconectare))
-                    {                        
-                        EsteRandulTau();
+                    {                      
                         _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);
+                        VerificaSahul(_ultimaMutarePrimitaClient.Item2);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1), _ultimaMutarePrimitaClient.Item2);
-
+                        EsteRandulTau();
                     }
                     else
                     {
@@ -157,6 +157,34 @@ namespace ProiectVolovici
                         _timerJocClient.Stop();
                         MessageBox.Show("Server Deconectat(Cod 3)", "Server s-a deconectat");
                     }
+                }
+            }
+        }
+        private void VerificaSahul(Pozitie pozitie)
+        {
+            Piesa piesa = GetPiesaCuPozitia(pozitie);
+            if (piesa != null)
+            {
+                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    MessageBox.Show("Ai pierdut");
+                    TerminaMeciul();
+                }
+                else if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    MessageBox.Show("Ai castigat");
+                    TerminaMeciul();
+                }
+            }
+        }
+        public void TerminaMeciul()
+        {
+            _esteGataMeciul = true;
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    ArrayCadrane[linie, coloana].Click -= OnCadranClick;
                 }
             }
         }
@@ -213,6 +241,7 @@ namespace ProiectVolovici
                             {
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
+                            VerificaSahul(pozitie);
                             RealizeazaMutareaOnline(PiesaSelectata, pozitie);
                         }
                     }

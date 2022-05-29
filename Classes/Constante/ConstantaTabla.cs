@@ -5,6 +5,9 @@ namespace ProiectVolovici
 {
     public static class ConstantaTabla
     {
+        public static readonly double PragSahLaAlb = -500000;
+        public static readonly double PragSahLaAlbastru = 500000;
+
         public static readonly int MarimeOrizontala = 9;
         public static readonly int MarimeVerticala = 10;
         public static readonly int PragRau = 4;
