@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
@@ -160,8 +161,55 @@ namespace ProiectVolovici
                 }
             }
         }
+        private int VerificaTentativaDeSah()
+        {
+            foreach (Cadran cadran in ArrayCadrane)
+            {
+                if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
+                {
+                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this);
+                    foreach (var mutare in mutari)
+                    {
+                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                            return ConstantaTabla.SahLaRegeAlb;
+                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                            return ConstantaTabla.SahLaRegerAlbastru;
+                    }
+                }
+            }
+            return ConstantaTabla.NuEsteSah;
+        }
+
+        public void VerificaSahulPersistent()
+        {
+            int tentativaSah = VerificaTentativaDeSah();
+
+            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
+                _nrSahuriLaAlbastru++;
+            else
+                _nrSahuriLaAlbastru = 0;
+
+
+            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
+                _nrSahuriLaAlbastru++;
+            else
+                _nrSahuriLaAlb = 0;
+
+            if (_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
+            {
+                MessageBox.Show("Ai castigat");
+                TerminaMeciul();
+            }
+            if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
+            {
+                MessageBox.Show("Ai pierdut");
+                TerminaMeciul();
+            }
+        }
+
         private void VerificaSahul(Pozitie pozitie)
         {
+            VerificaSahulPersistent();
             Piesa piesa = GetPiesaCuPozitia(pozitie);
             if (piesa != null)
             {

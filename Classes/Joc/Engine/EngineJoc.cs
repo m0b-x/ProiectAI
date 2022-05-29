@@ -10,7 +10,7 @@ namespace ProiectVolovici
     public class EngineJoc : IDisposable
     {
         private Form _parentForm;
-        private Tabla _tabla;
+        protected Tabla _tabla;
 
         private int[,] _matriceCodPiese;
 
@@ -25,6 +25,8 @@ namespace ProiectVolovici
         private Tuple<Pozitie, Pozitie> _ultimaMutare;
 
         protected bool _esteGataMeciul;
+        protected int _nrSahuriLaAlb = 0;
+        protected int _nrSahuriLaAlbastru = 0;
 
         public List<Pozitie> PozitiiMutariPosibile
         {

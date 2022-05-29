@@ -271,6 +271,53 @@ namespace ProiectVolovici
             cronometru.Stop();
         }
 
+
+        private int VerificaTentativaDeSah()
+        {
+            foreach (Cadran cadran in ArrayCadrane)
+            {
+                if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
+                {
+                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this);
+                    foreach (var mutare in mutari)
+                    {
+                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                            return ConstantaTabla.SahLaRegeAlb;
+                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                            return ConstantaTabla.SahLaRegerAlbastru;
+                    }
+                }
+            }
+            return ConstantaTabla.NuEsteSah;
+        }
+
+        public void VerificaSahulPersistent()
+        {
+            int tentativaSah = VerificaTentativaDeSah();
+
+            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
+                _nrSahuriLaAlbastru++;
+            else
+                _nrSahuriLaAlbastru = 0;
+
+
+            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
+                _nrSahuriLaAlbastru++;
+            else
+                _nrSahuriLaAlb = 0;
+
+            if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
+            {
+                MessageBox.Show("Ai castigat");
+                TerminaMeciul();
+            }
+            if (_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
+            {
+                MessageBox.Show("Ai pierdut");
+                TerminaMeciul();
+            }
+        }
+
         public void TerminaMeciul()
         {
             _esteGataMeciul = true;
@@ -284,6 +331,8 @@ namespace ProiectVolovici
         }
         private void VerificaSahulLaAi(Pozitie pozitie)
         {
+
+            VerificaSahulPersistent();
             Piesa piesa = GetPiesaCuPozitia(pozitie);
             if (piesa != null)
             {
@@ -296,6 +345,8 @@ namespace ProiectVolovici
         }
         private void VerificaSahulLaJucator(double scorulMutariiOptime)
         {
+
+            VerificaSahulPersistent();
             if (scorulMutariiOptime > ConstantaTabla.PragSahLaAlbastru)
             {
                 MessageBox.Show("Ai pierdut");
