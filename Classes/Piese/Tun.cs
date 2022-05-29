@@ -51,7 +51,7 @@ namespace ProiectVolovici
                                 joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                             {
                                 mutariLegale.Add(pozitiePosibila);
-                                goto functie_coloane;
+                                goto functie_linie;
                             }
                             liniePozitiiPosibile++;
                         }
@@ -59,6 +59,7 @@ namespace ProiectVolovici
                 }
                 liniePozitiiPosibile++;
             }
+            functie_linie:
             liniePozitiiPosibile = this.Pozitie.Linie - 1;
             while (liniePozitiiPosibile >= 0)
             {
@@ -106,7 +107,7 @@ namespace ProiectVolovici
                                 joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
                             {
                                 mutariLegale.Add(pozitiePosibila);
-                                goto sfarsit_functie;
+                                goto functie_coloane2;
                             }
                             colonaPozitiePosibila++;
                         }
@@ -114,7 +115,7 @@ namespace ProiectVolovici
                 }
                 colonaPozitiePosibila++;
             }
-
+            functie_coloane2:
             colonaPozitiePosibila = this.Pozitie.Coloana - 1;
             while (colonaPozitiePosibila >= 0)
             {
