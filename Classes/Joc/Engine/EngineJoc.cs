@@ -12,7 +12,7 @@ namespace ProiectVolovici
         private Form _parentForm;
         protected Tabla _tabla;
 
-        private int[,] _matriceCodPiese;
+        protected int[,] _matriceCodPiese;
 
         private List<Piesa> _listaPiese;
         protected List<Pozitie> _pozitiiMutariPosibile;

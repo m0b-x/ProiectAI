@@ -3,6 +3,7 @@
     public enum CuloareJoc
     {
         Alb,
-        Albastru
+        Albastru,
+        Niciuna
     }
 }
