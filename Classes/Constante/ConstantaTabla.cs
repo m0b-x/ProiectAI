@@ -10,7 +10,8 @@ namespace ProiectVolovici
         public static int SahLaRegeAlb = 1;
         public static int SahLaRegerAlbastru = 2;
         public static int NrSahuriPermise = 3;
-        public static int NrMaximSahuri = NrSahuriPermise * 2 * 2;
+        public static int CompensareNrSahuri = 4;
+        public static int NrMaximSahuri = NrSahuriPermise * CompensareNrSahuri;
 
         public static readonly double PragSahLaAlb = -500000;
         public static readonly double PragSahLaAlbastru = 500000;
