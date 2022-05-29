@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -348,7 +349,7 @@ namespace ProiectVolovici
         {
             if (_pozitiiMutariPosibile != null)
             {
-                foreach (Pozitie pozitie in _pozitiiMutariPosibile)
+                foreach(Pozitie pozitie in _pozitiiMutariPosibile)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
                 }
@@ -372,14 +373,7 @@ namespace ProiectVolovici
                 foreach (Pozitie pozitie in pozitiiMutariPosibile)
                 {
                     Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                    int[,] matriceMutariPosibile = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
-                    for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
-                    {
-                        for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
-                        {
-                            matriceMutariPosibile[linie, coloana] = MatriceCoduriPiese[linie, coloana];
-                        }
-                    }
+                    int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
 
                     matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
@@ -422,7 +416,7 @@ namespace ProiectVolovici
         {
             if (pozitii != null)
             {
-                foreach (Pozitie pozitie in pozitii)
+                foreach(Pozitie pozitie in pozitii)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
                     _pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
@@ -493,6 +487,8 @@ namespace ProiectVolovici
             {
                 return;
             }
+
+            AscundePiesaSelectata(piesa);
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
             ActualizeazaUltimaMutare(pozitieInitiala, pozitiaFinala);

@@ -94,6 +94,58 @@ namespace ProiectVolovici
                             }
                         }
                     }
+                    else
+                    {
+                        if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].EsteAdversar(this.CuloarePiesa))
+                        {
+                            if (this.CuloarePiesa == CuloareJoc.Alb)
+                            {
+                                bool estePosibila = true;
+                                for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
+                                {
+                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    {
+                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Albastru).Cod)
+                                        {
+                                            estePosibila = false;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (estePosibila == true)
+                                {
+                                    mutariFiltrate.Add(pozitie);
+                                }
+                            }
+                            else if (this.CuloarePiesa == CuloareJoc.Albastru)
+                            {
+                                bool estePosibila = true;
+                                for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
+                                {
+                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    {
+                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Alb).Cod)
+                                        {
+                                            estePosibila = false;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (estePosibila == true)
+                                {
+                                    mutariFiltrate.Add(pozitie);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             return mutariFiltrate;

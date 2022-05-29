@@ -157,7 +157,6 @@ namespace ProiectVolovici
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
-                            AscundePiesaSelectata(PiesaSelectata);
                             if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
@@ -167,8 +166,8 @@ namespace ProiectVolovici
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             NuEsteRandulTau(); 
-                            ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
+                            ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             _jucatorOm.UltimaPozitie = pozitie;
                             RealizeazaMutareaAI();
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
@@ -184,19 +183,24 @@ namespace ProiectVolovici
             double scorAlb = 0;
             double scorAlbastru = 0;
 
-            foreach(int codPiesa in matrice )
-            {
-                if(codPiesa != (int)CodPiesa.Gol)
-                {
-                    if(EstePiesaAlba(codPiesa))
-                    {
-                        scorAlb += ReturneazaScorPiese((CodPiesa)codPiesa);
-                    }
-                    else
-                    {
-                        scorAlbastru += ReturneazaScorPiese((CodPiesa)codPiesa);
-                    }
 
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
+                {
+                    CodPiesa codPiesa = (CodPiesa)matrice[linie, coloana];
+                    if (codPiesa != CodPiesa.Gol)
+                    {
+                        if (EstePiesaAlba(matrice[linie, coloana]))
+                        {
+                            scorAlb += ReturneazaScorPiese(codPiesa);
+                        }
+                        else
+                        {
+                            scorAlbastru += ReturneazaScorPiese(codPiesa);
+                        }
+
+                    }
                 }
             }
             return scorAlbastru-scorAlb;
@@ -208,11 +212,11 @@ namespace ProiectVolovici
             double scorulMutariiOptime = 0;
 
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new ();
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
                 {
-                    if (MatriceCoduriPiese[linie,coloana] != (int)CodPiesa.Gol)
+                    if (MatriceCoduriPiese[linie, coloana] != (int)CodPiesa.Gol)
                     {
                         Piesa piesaAI = ConvertesteCodPiesaInObiect((CodPiesa)MatriceCoduriPiese[linie, coloana]);
 
@@ -221,7 +225,7 @@ namespace ProiectVolovici
                         {
                             //AICI
                             _matriciMutariPosibile = ReturneazaMatriciMutariPosibile(piesaAI);
-                            foreach (var matrice in _matriciMutariPosibile)
+                            foreach(var matrice in _matriciMutariPosibile)
                             {
                                 tupluMutariSiMatriciPosibile.Add(matrice);
                             }
@@ -251,7 +255,6 @@ namespace ProiectVolovici
                 int index = (int)generatorRandom.NextInt64(tupluMutariSiMatriciPosibile.Count);
                 mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
             }
-
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
             Pozitie pozitie = mutareaOptima.Item2;
             RealizeazaMutareaLocal(piesa, pozitie);
@@ -297,7 +300,6 @@ namespace ProiectVolovici
                     matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
                     matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] =  codPiesa;
 
-                    //newBeta = EvalueazaMatricea(matriceSuccesor);
                     newBeta = Math.Min(newBeta, EvalueazaPozitia(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
                     if (newBeta <= alpha) 
                         break;
@@ -334,7 +336,6 @@ namespace ProiectVolovici
                     matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
                     matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesa;
 
-                    //newAlpha = EvalueazaMatricea(matriceSuccesor);
                     newAlpha = Math.Max(newAlpha, EvalueazaPozitia(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); 
                     if (beta <= newAlpha) 
                         break;
