@@ -317,6 +317,11 @@ namespace ProiectVolovici
         public void TerminaMeciul()
         {
             _esteGataMeciul = true;
+            StergeEvenimenteleCadranelor();
+        }
+
+        private void StergeEvenimenteleCadranelor()
+        {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
@@ -325,10 +330,9 @@ namespace ProiectVolovici
                 }
             }
         }
+
         private void VerificaSahulLaAi(Pozitie pozitie)
         {
-
-            VerificaSahulPersistent();
             Piesa piesa = GetPiesaCuPozitia(pozitie);
             if (piesa != null)
             {

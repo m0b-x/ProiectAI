@@ -148,12 +148,17 @@ namespace ProiectVolovici
                         VerificaSahul(_ultimaMutarePrimitaHost.Item2);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);                   
                         EsteRandulTau();
+                        VerificaSahulPersistent();
                     }
                     else
                     {
                         _timerJocHostDisposed = true;
                         _timerJocHost.Stop();
                         MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
+                        if (_esteGataMeciul == false)
+                        {
+                            VerificaSahulPersistent();
+                        }
                     }
                 }
             }
@@ -207,8 +212,6 @@ namespace ProiectVolovici
 
         private void VerificaSahul(Pozitie pozitie)
         {
-
-            VerificaSahulPersistent();
             Piesa piesa = GetPiesaCuPozitia(pozitie);
             if (piesa != null)
             {
@@ -229,6 +232,13 @@ namespace ProiectVolovici
         public void TerminaMeciul()
         {
             _esteGataMeciul = true;
+            StergeEvenimenteleCadranelor();
+            _timerJocHost.Stop();
+            _host.TrimiteDate(_host.MesajDeconectare);
+        }
+
+        private void StergeEvenimenteleCadranelor()
+        {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)

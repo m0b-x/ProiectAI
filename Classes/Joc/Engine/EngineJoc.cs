@@ -27,6 +27,8 @@ namespace ProiectVolovici
         protected bool _esteGataMeciul;
         protected int _nrSahuriLaAlb = 0;
         protected int _nrSahuriLaAlbastru = 0;
+        protected bool _sahPersistentLaAlb = false;
+        protected bool _sahPersistentLaAlbastru = false;
 
         public List<Pozitie> PozitiiMutariPosibile
         {
