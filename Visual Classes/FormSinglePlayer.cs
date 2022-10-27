@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax;
 
 namespace ProiectVolovici
 {
@@ -17,7 +18,7 @@ namespace ProiectVolovici
         {
             InitializeComponent();
         }
-        EngineJocSinglePlayer jocSah;
+        EngineMiniMax jocSah;
         Form formPrincipal;
         private void FormSinglePlayer_Load(object sender, EventArgs e)
         {
@@ -25,7 +26,7 @@ namespace ProiectVolovici
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(CuloareJoc.Alb), new Om(CuloareJoc.Albastru));
 
             formPrincipal = this;
-            jocSah = new EngineJocSinglePlayer(formPrincipal, jucatori.Item1);
+            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1);
             jocSah.AdaugaPieselePrestabilite();
         }
     }

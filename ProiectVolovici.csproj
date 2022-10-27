@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows8.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>False</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Classes\Joc\SinglePlayer\MiniMaxAI.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
@@ -26,6 +31,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Classes\Joc\SinglePlayer\MonteCarlo\" />
   </ItemGroup>
 
 </Project>

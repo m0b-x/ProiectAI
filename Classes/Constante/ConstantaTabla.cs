@@ -5,6 +5,7 @@ namespace ProiectVolovici
 {
     public static class ConstantaTabla
     {
+        public const int Adancime = 0;
 
         public static int NuEsteSah = 0;
         public static int SahLaRegeAlb = 1;

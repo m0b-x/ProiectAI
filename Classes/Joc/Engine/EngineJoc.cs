@@ -169,6 +169,7 @@ namespace ProiectVolovici
             }
         }
 
+
         public virtual void Dispose()
         {
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
@@ -355,7 +356,7 @@ namespace ProiectVolovici
         {
             if (_pozitiiMutariPosibile != null)
             {
-                foreach(Pozitie pozitie in _pozitiiMutariPosibile)
+                foreach (Pozitie pozitie in _pozitiiMutariPosibile)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
                 }
@@ -376,7 +377,7 @@ namespace ProiectVolovici
 
             if (pozitiiMutariPosibile != null)
             {
-                foreach (Pozitie pozitie in pozitiiMutariPosibile)
+                Parallel.ForEach(pozitiiMutariPosibile, pozitie =>
                 {
                     Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
                     int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
@@ -384,7 +385,8 @@ namespace ProiectVolovici
                     matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                     matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                }
+                });
+
                 return matriciMutariPosibile;
             }
             else
@@ -400,7 +402,7 @@ namespace ProiectVolovici
 
             if (pozitiiMutariPosibile != null)
             {
-                foreach (Pozitie pozitie in pozitiiMutariPosibile)
+                Parallel.ForEach(pozitiiMutariPosibile, pozitie =>
                 {
                     Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
                     int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
@@ -409,7 +411,7 @@ namespace ProiectVolovici
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
 
                     matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                }
+                }); 
                 return matriciMutariPosibile;
             }
             else
@@ -422,7 +424,7 @@ namespace ProiectVolovici
         {
             if (pozitii != null)
             {
-                foreach(Pozitie pozitie in pozitii)
+                foreach (Pozitie pozitie in pozitii)
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = CuloareCadranMutari;
                     _pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
@@ -547,6 +549,7 @@ namespace ProiectVolovici
             timer.Elapsed += new System.Timers.ElapsedEventHandler(functie);
             timer.Enabled = true;
         }
+
         public void Asteapta(int milisecunde)
         {
             var timerAsteptare = new System.Windows.Forms.Timer();
@@ -566,6 +569,94 @@ namespace ProiectVolovici
             {
                 Application.DoEvents();
             }
+        }
+
+        private double EvalueazaMatricea(int[,] matrice)
+        {
+
+            double scorAlb = 0;
+            double scorAlbastru = 0;
+
+
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
+                {
+                    CodPiesa codPiesa = (CodPiesa)matrice[linie, coloana];
+                    if (codPiesa != CodPiesa.Gol)
+                    {
+                        if (EstePiesaAlba(matrice[linie, coloana]))
+                        {
+                            scorAlb += ReturneazaScorPiese(codPiesa);
+                        }
+                        else
+                        {
+                            scorAlbastru += ReturneazaScorPiese(codPiesa);
+                        }
+
+                    }
+                }
+            }
+            return scorAlbastru - scorAlb;
+        }
+        public CuloareJoc ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
+        {
+            if ((int)codPiesa % 2 == 0)
+                return CuloareJoc.Alb;
+            else
+                return CuloareJoc.Albastru;
+        }
+        public bool EstePiesaAlba(int codPiesa)
+        {
+            return codPiesa % 2 == 1 ? true : false;
+        }
+
+        public bool EstePiesaAlbastra(int codPiesa)
+        {
+            return codPiesa % 2 == 0 ? true : false;
+        }
+
+        public double ReturneazaScorPiese(CodPiesa codPiesa)
+        {
+            switch (codPiesa)
+            {
+                case CodPiesa.CalAlb: return ConstantaPiese.ValoareCal;
+                case CodPiesa.CalAbastru: return ConstantaPiese.ValoareCal;
+
+                case CodPiesa.ElefantAlb: return ConstantaPiese.ValoareElefant;
+                case CodPiesa.ElefantAlbastru: return ConstantaPiese.ValoareElefant;
+
+                case CodPiesa.GardianAlb: return ConstantaPiese.ValoareGardian;
+                case CodPiesa.GardianAlbastru: return ConstantaPiese.ValoareGardian;
+
+                case CodPiesa.PionAlb: return ConstantaPiese.ValoarePion;
+                case CodPiesa.PionAlbastru: return ConstantaPiese.ValoarePion;
+
+                case CodPiesa.RegeAlb: return ConstantaPiese.ValoareRege;
+                case CodPiesa.RegeAlbastru: return ConstantaPiese.ValoareRege;
+
+                case CodPiesa.TuraAlba: return ConstantaPiese.ValoareTura;
+                case CodPiesa.TuraAlbastra: return ConstantaPiese.ValoareTura;
+
+                case CodPiesa.TunAlb: return ConstantaPiese.ValoareTun;
+                case CodPiesa.TunAlbastru: return ConstantaPiese.ValoareTun;
+
+                default: return 0;
+            }
+
+        }
+        public void AfisareMatriciDebug(int[,] matrice)
+        {
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                {
+                    Debug.Write(matrice[linie, coloana] + " ");
+                }
+                Debug.WriteLine("");
+            }
+            Debug.WriteLine(EvalueazaMatricea(matrice));
+            Debug.WriteLine("------------------------------------------");
         }
     }
 }

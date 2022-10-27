@@ -11,7 +11,9 @@ namespace ProiectVolovici
         private Piesa _piesaCadran;
 
         private int _marimeCadran = ConstantaCadran.MarimeCadran;
-        private int _offsetCadran = ConstantaCadran.OffsetCadran;
+        private int _offsetCadranGeneral = ConstantaCadran.OffsetCadranGeneral;
+        private int _offsetCadranGeneralX = ConstantaCadran.OffsetCadranX;
+        private int _offsetCadranGeneralY = ConstantaCadran.OffsetCadranY;
 
         private static ImageLayout _layoutCadran = ConstantaCadran.LayoutCadran;
         private static BorderStyle _borderCadran = ConstantaCadran.BorderCadran;
@@ -37,9 +39,9 @@ namespace ProiectVolovici
         {
             Parent = joc.ParentForm;
             if (pozitie.Linie > joc.PragRau)
-                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran + joc.MarimeRau);
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadranGeneralX, pozitie.Linie * _marimeCadran + _offsetCadranGeneralY + joc.MarimeRau);
             else
-                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadran, pozitie.Linie * _marimeCadran + _offsetCadran);
+                Location = new Point(pozitie.Coloana * _marimeCadran + _offsetCadranGeneralX, pozitie.Linie * _marimeCadran + _offsetCadranGeneralY);
 
             _pozitieCadran = pozitie;
             Size = new Size(_marimeCadran, _marimeCadran);
