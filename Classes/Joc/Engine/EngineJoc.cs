@@ -63,7 +63,7 @@ namespace ProiectVolovici
         {
             get
             {
-                return (int[,])_matriceCodPiese.Clone();
+                return _matriceCodPiese;
             }
         }
 
@@ -369,7 +369,6 @@ namespace ProiectVolovici
                 return false;
             return true;
         }
-
         public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa, int[,] matrice)
         {
             List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
@@ -377,7 +376,7 @@ namespace ProiectVolovici
 
             if (pozitiiMutariPosibile != null)
             {
-                Parallel.ForEach(pozitiiMutariPosibile, pozitie =>
+                foreach(var pozitie in pozitiiMutariPosibile)
                 {
                     Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
                     int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
@@ -385,7 +384,7 @@ namespace ProiectVolovici
                     matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
                     matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                });
+                }
 
                 return matriciMutariPosibile;
             }
@@ -402,7 +401,7 @@ namespace ProiectVolovici
 
             if (pozitiiMutariPosibile != null)
             {
-                Parallel.ForEach(pozitiiMutariPosibile, pozitie =>
+                foreach (var pozitie in pozitiiMutariPosibile)
                 {
                     Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
                     int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
@@ -411,7 +410,7 @@ namespace ProiectVolovici
                     matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
 
                     matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                }); 
+                } 
                 return matriciMutariPosibile;
             }
             else
@@ -647,6 +646,7 @@ namespace ProiectVolovici
         }
         public void AfisareMatriciDebug(int[,] matrice)
         {
+            Debug.WriteLine("------------------------------------------");
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
@@ -655,7 +655,7 @@ namespace ProiectVolovici
                 }
                 Debug.WriteLine("");
             }
-            Debug.WriteLine(EvalueazaMatricea(matrice));
+            Debug.WriteLine("Evaluare:"+EvalueazaMatricea(matrice));
             Debug.WriteLine("------------------------------------------");
         }
     }

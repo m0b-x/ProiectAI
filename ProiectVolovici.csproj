@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Classes\Joc\SinglePlayer\MonteCarlo\**" />
+    <EmbeddedResource Remove="Classes\Joc\SinglePlayer\MonteCarlo\**" />
+    <None Remove="Classes\Joc\SinglePlayer\MonteCarlo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Classes\Joc\SinglePlayer\MiniMaxAI.cs" />
   </ItemGroup>
 
@@ -21,9 +27,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Visual Classes\FormMeniu.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Visual Classes\FormMeniu.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +35,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Classes\Joc\SinglePlayer\MonteCarlo\" />
   </ItemGroup>
 
 </Project>

@@ -17,9 +17,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private string _ultimulMesajPrimitHost = NetworkServer.BufferGol;
 
-        public Dictionary<Piesa, int> _dictionarValoriPiese = new();
+        public Dictionary<Piesa, int> _dictionarValoriPiese = new Dictionary<Piesa, int>();
 
-        List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new();
+        List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new ();
 
         private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
@@ -177,12 +177,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             _jucatorOm.UltimaPozitie = pozitie;
                             if (_esteGataMeciul == false)
                             {
-
                                 ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                                 await Task.Run(() =>
                                 {
                                     RealizeazaMutareaAI();
-                                });}
+                                });
+                            }
                         }
                     }
                 }
@@ -326,14 +326,14 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
 
             VerificaSahulPersistent();
-            if (scorulMutariiOptime > ConstantaTabla.PragSahLaAlbastru)
+            if (scorulMutariiOptime > ConstantaPiese.PragSahLaAlbastru)
             {
                 MessageBox.Show("Ai pierdut");
                 TerminaMeciul();
             }
             else
             {
-                if (scorulMutariiOptime < ConstantaTabla.PragSahLaAlb)
+                if (scorulMutariiOptime < ConstantaPiese.PragSahLaAlb)
                 {
                     MessageBox.Show("Ai castigat");
                     TerminaMeciul();

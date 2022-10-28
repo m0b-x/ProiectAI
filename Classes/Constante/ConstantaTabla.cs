@@ -5,7 +5,7 @@ namespace ProiectVolovici
 {
     public static class ConstantaTabla
     {
-        public const int Adancime = 0;
+        public const int Adancime = 2;
 
         public static int NuEsteSah = 0;
         public static int SahLaRegeAlb = 1;
@@ -13,9 +13,6 @@ namespace ProiectVolovici
         public static int NrSahuriPermise = 3;
         public static int CompensareNrSahuri = 4;
         public static int NrMaximSahuri = NrSahuriPermise * CompensareNrSahuri;
-
-        public static readonly double PragSahLaAlb = -500000;
-        public static readonly double PragSahLaAlbastru = 500000;
 
         public static readonly int MarimeOrizontala = 9;
         public static readonly int MarimeVerticala = 10;
