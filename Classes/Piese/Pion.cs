@@ -24,11 +24,11 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
             joc.ColoreazaMutariPosibile(mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
             const int primaLinie = 0;
             const int primaColoana = 0;
@@ -42,7 +42,7 @@ namespace ProiectVolovici
             if (this.CuloarePiesa == CuloareJoc.Albastru)
             {
                 mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
-                if (_pozitiePiesa.Linie > joc.PragRau)
+                if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)
                 {
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
@@ -51,7 +51,7 @@ namespace ProiectVolovici
             else
             {
                 mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
-                if (_pozitiePiesa.Linie <= joc.PragRau)
+                if (_pozitiePiesa.Linie <= ConstantaTabla.PragRau)
                 {
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
                     mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
@@ -64,11 +64,11 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                    if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
+                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
                         mutariFiltrate.Add(pozitie);
                     }
-                    else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != this.CuloarePiesa)
+                    else if (matrice[pozitie.Linie, pozitie.Coloana] %2 != (int)this.Cod%2)
                     {
                         mutariFiltrate.Add(pozitie);
                     }

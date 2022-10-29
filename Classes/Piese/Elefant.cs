@@ -24,11 +24,11 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
             const int primaLinie = 0;
             const int primaColoana = 0;
@@ -52,34 +52,17 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                    if (_culoarePiesa == CuloareJoc.Alb)
+                if (pozitie.Linie > ConstantaTabla.PragRau || pozitie.Linie <= ConstantaTabla.PragRau)
+                {
+                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (pozitie.Linie > joc.PragRau)
-                        {
-                            if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
-                            {
-                                mutariFiltruTabla.Add(pozitie);
-                            }
-                            else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Alb)
-                            {
-                                mutariFiltruTabla.Add(pozitie);
-                            }
-                        }
+                        mutariFiltruTabla.Add(pozitie);
                     }
-                    else
+                    else if (matrice[pozitie.Linie, pozitie.Coloana] %2 != (int)Cod%2)
                     {
-                        if (pozitie.Linie <= joc.PragRau)
-                        {
-                            if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
-                            {
-                                mutariFiltruTabla.Add(pozitie);
-                            }
-                            else if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.CuloarePiesa != CuloareJoc.Albastru)
-                            {
-                                mutariFiltruTabla.Add(pozitie);
-                            }
-                        }
+                        mutariFiltruTabla.Add(pozitie);
                     }
+                }
                 }
             }
             foreach (Pozitie pozitie in mutariFiltruTabla)
@@ -101,7 +84,11 @@ namespace ProiectVolovici
                 {
                     pozitieElementMijloc.Coloana = _pozitiePiesa.Coloana - 1;
                 }
-                if (joc.ArrayCadrane[pozitieElementMijloc.Linie, pozitieElementMijloc.Coloana].PiesaCadran == ConstantaTabla.PiesaNula)
+                if (matrice[pozitieElementMijloc.Linie, pozitieElementMijloc.Coloana] == (int) CodPiesa.Gol)
+                {
+                    mutariFiltruFinal.Add(pozitie);
+                }
+                else if(matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)Cod % 2)
                 {
                     mutariFiltruFinal.Add(pozitie);
                 }

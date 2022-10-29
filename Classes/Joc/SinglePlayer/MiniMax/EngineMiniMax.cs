@@ -241,7 +241,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             {
                 if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
                 {
-                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this);
+                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
                     foreach (Pozitie mutare in mutari)
                     {
                         if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)

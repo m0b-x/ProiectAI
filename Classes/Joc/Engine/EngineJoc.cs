@@ -371,7 +371,7 @@ namespace ProiectVolovici
         }
         public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa, int[,] matrice)
         {
-            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
+            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
 
             if (pozitiiMutariPosibile != null)
@@ -396,7 +396,7 @@ namespace ProiectVolovici
 
         public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa)
         {
-            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this);
+            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
 
             if (pozitiiMutariPosibile != null)
@@ -644,7 +644,7 @@ namespace ProiectVolovici
             }
 
         }
-        public void AfisareMatriciDebug(int[,] matrice)
+        public void AfiseazaMatriceDebug(int[,] matrice)
         {
             Debug.WriteLine("------------------------------------------");
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)

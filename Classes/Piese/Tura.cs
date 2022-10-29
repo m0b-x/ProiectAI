@@ -25,12 +25,12 @@
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
             
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
             List<Pozitie> mutariLegale = new List<Pozitie>();
             
@@ -38,13 +38,13 @@
             while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
-                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] %2 != (int) this.Cod%2)
                     {
                         mutariLegale.Add(pozitiePosibila);
                     }
@@ -57,13 +57,13 @@
             while (liniePozitiiPosibile >= 0)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
-                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] %2 != (int) this.Cod%2)
                     {
                         mutariLegale.Add(pozitiePosibila);
                     }
@@ -76,13 +76,13 @@
             while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] %2 != (int) this.Cod%2)
                     {
                         mutariLegale.Add(pozitiePosibila);
                     }
@@ -95,13 +95,13 @@
             while (colonaPozitiePosibila >= 0)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].CadranEsteGol())
+                if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
                 }
                 else
                 {
-                    if (joc.ArrayCadrane[pozitiePosibila.Linie, pozitiePosibila.Coloana].EsteAdversar(this.CuloarePiesa))
+                    if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] %2 != (int) this.Cod%2)
                     {
                         mutariLegale.Add(pozitiePosibila);
                     }

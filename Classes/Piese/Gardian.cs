@@ -24,11 +24,11 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltrate = new List<Pozitie>();
@@ -40,10 +40,10 @@ namespace ProiectVolovici
 
             foreach (Pozitie pozitie in mutariNefiltrate)
             {
-                if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
+                if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
                 {
-                    if (joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
-                        joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
+                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
+                        matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
                         mutariFiltrate.Add(pozitie);
                     }

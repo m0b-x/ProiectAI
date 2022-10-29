@@ -170,7 +170,7 @@ namespace ProiectVolovici
             {
                 if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
                 {
-                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this);
+                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
                     foreach (var mutare in mutari)
                     {
                         if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)

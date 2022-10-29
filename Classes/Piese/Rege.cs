@@ -24,13 +24,13 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc)
+        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
-            int sfarsitLinie = joc.MarimeVerticala - 1;
+            int sfarsitLinie = ConstantaTabla.MarimeVerticala - 1;
             int inceputLinie = 0;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
@@ -43,18 +43,18 @@ namespace ProiectVolovici
 
             foreach (Pozitie pozitie in mutariNefiltrate)
             {
-                if (joc.TablaJoc.PozitiiPalat.Contains(pozitie))
+                if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
                 {
-                    if (joc.MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
+                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
                         if (this.CuloarePiesa == CuloareJoc.Alb)
                         {
                             bool estePosibila = true;
                             for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
                             {
-                                if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
                                 {
-                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Albastru).Cod)
+                                    if (matrice[linie, pozitie.Coloana] != (int) CodPiesa.RegeAlbastru)
                                     {
                                         estePosibila = false;
                                         break;
@@ -75,9 +75,9 @@ namespace ProiectVolovici
                             bool estePosibila = true;
                             for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
                             {
-                                if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
                                 {
-                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Alb).Cod)
+                                    if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlb)
                                     {
                                         estePosibila = false;
                                         break;
@@ -96,16 +96,16 @@ namespace ProiectVolovici
                     }
                     else
                     {
-                        if (joc.ArrayCadrane[pozitie.Linie, pozitie.Coloana].EsteAdversar(this.CuloarePiesa))
+                        if (matrice[pozitie.Linie, pozitie.Coloana]%2 != (int)this.Cod%2)
                         {
                             if (this.CuloarePiesa == CuloareJoc.Alb)
                             {
                                 bool estePosibila = true;
                                 for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
                                 {
-                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
                                     {
-                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Albastru).Cod)
+                                        if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlbastru)
                                         {
                                             estePosibila = false;
                                             break;
@@ -126,9 +126,9 @@ namespace ProiectVolovici
                                 bool estePosibila = true;
                                 for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
                                 {
-                                    if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                                    if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
                                     {
-                                        if (joc.ArrayCadrane[linie, pozitie.Coloana].PiesaCadran.Cod == new Rege(CuloareJoc.Alb).Cod)
+                                        if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlb)
                                         {
                                             estePosibila = false;
                                             break;

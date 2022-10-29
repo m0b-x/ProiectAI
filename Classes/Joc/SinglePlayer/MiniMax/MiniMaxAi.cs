@@ -28,7 +28,7 @@ namespace ProiectVolovici
             _adancime = adancime;
         }
 
-        public class DuplicateKeyComparer<TKey>
+        public class ComparatorMax<TKey>
                         : IComparer<double>
         {
             #region IComparer<TKey> Members
@@ -40,6 +40,23 @@ namespace ProiectVolovici
                 if (result == 0)
                     return 1; 
                 else          
+                    return result;
+            }
+
+            #endregion
+        }
+        public class ComparatorMin<TKey>
+                        : IComparer<double>
+        {
+            #region IComparer<TKey> Members
+
+            public int Compare(double x, double y)
+            {
+                int result = y.CompareTo(x);
+
+                if (result == 0)
+                    return 1;
+                else
                     return result;
             }
 
@@ -71,10 +88,7 @@ namespace ProiectVolovici
         }
         public double EvalueazaMatricea(int[,] matrice)
         {
-
-            double scorAlb = 0;
-            double scorAlbastru = 0;
-
+            double scor = 0;
 
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
             {
@@ -83,15 +97,15 @@ namespace ProiectVolovici
                     CodPiesa codPiesa = (CodPiesa)matrice[linie, coloana];
                     if (_engine.EstePiesaAlba(matrice[linie, coloana]))
                     {
-                        scorAlb += _engine.ReturneazaScorPiese(codPiesa);
+                        scor -= _engine.ReturneazaScorPiese(codPiesa);
                     }
                     else
                     {
-                        scorAlbastru += _engine.ReturneazaScorPiese(codPiesa);
+                        scor += _engine.ReturneazaScorPiese(codPiesa);
                     }
                 }
             }
-            return scorAlbastru - scorAlb;
+            return scor;
         }
         public double EvalueazaPozitiaCurenta(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
         {
@@ -103,8 +117,7 @@ namespace ProiectVolovici
 
             if (culoare == CuloareJoc.Albastru)
             {
-                SortedList<double, Tuple<Pozitie, Pozitie>> mutari = new(new DuplicateKeyComparer<double>());
-                double scorMatrice = EvalueazaMatricea(matrice);
+                double newBeta = beta;
                 for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
@@ -115,34 +128,32 @@ namespace ProiectVolovici
                             {
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
-                                var mutariPosibile = piesa.ReturneazaMutariPosibile(_engine);
+                                var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var scorNou = scorMatrice + _engine.ReturneazaScorPiese(piesa.Cod);
-                                    mutari.Add(scorNou, new(piesa.Pozitie, mutarePosibila));
+                                    var matriceSuccesor = (int[,])matrice.Clone();
+                                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, mutarePosibila);
+
+                                    int codPiesaMutata = matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana];
+                                    int codPiesaLuata = matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana];
+
+                                    matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesaMutata;
+
+                                    newBeta = Math.Min(newBeta, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
+
+                                    if (newBeta <= alpha)
+                                        break;
                                 }
                             }
                         }
                     }
-                }
-                double newBeta = beta;
-                foreach (var mutare in mutari)
-                {
-                    int[,] matriceSuccesor = (int[,])matrice.Clone();
-                    int codPiesa = matriceSuccesor[mutare.Value.Item1.Linie, mutare.Value.Item1.Coloana];
-                    matriceSuccesor[mutare.Value.Item1.Linie, mutare.Value.Item1.Coloana] = (int)CodPiesa.Gol;
-                    matriceSuccesor[mutare.Value.Item2.Linie, mutare.Value.Item2.Coloana] = codPiesa;
-
-                    newBeta = Math.Min(newBeta, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, culoare == CuloareJoc.Alb ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
-                    if (newBeta <= alpha)
-                        break;
                 }
                 return newBeta;
             }
             else
             {
-                SortedList<double,Tuple<Pozitie, Pozitie>> mutari = new(new DuplicateKeyComparer<double>());
-                double scorMatrice = EvalueazaMatricea(matrice);
+                double newAlpha = alpha;
                 for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
@@ -153,27 +164,26 @@ namespace ProiectVolovici
                             {
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
-                                var mutariPosibile = piesa.ReturneazaMutariPosibile(_engine);
+                                var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var scorNou = scorMatrice - _engine.ReturneazaScorPiese(piesa.Cod);
-                                    mutari.Add(scorNou,new(piesa.Pozitie, mutarePosibila));
+                                    var matriceSuccesor = (int[,])matrice.Clone();
+                                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, mutarePosibila);
+
+                                    int codPiesaMutata = matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana];
+                                    int codPiesaLuata = matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana];
+
+                                    matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesaLuata;
+
+                                    newAlpha = Math.Max(newAlpha, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
+
+                                    if (beta <= newAlpha)
+                                        break;
                                 }
                             }
                         }
                     }
-                }
-                double newAlpha = alpha;
-                foreach (var mutare in mutari)
-                {
-                    int[,] matriceSuccesor = (int[,])matrice.Clone();
-                    int codPiesa = matriceSuccesor[mutare.Value.Item1.Linie, mutare.Value.Item1.Coloana];
-                    matriceSuccesor[mutare.Value.Item1.Linie, mutare.Value.Item1.Coloana] = (int)CodPiesa.Gol;
-                    matriceSuccesor[mutare.Value.Item2.Linie, mutare.Value.Item2.Coloana] = codPiesa;
-
-                    newAlpha = Math.Max(newAlpha, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, culoare == CuloareJoc.Alb ? CuloareJoc.Albastru : CuloareJoc.Alb));
-                    if (beta <= newAlpha)
-                        break;
                 }
                 return newAlpha;
             }

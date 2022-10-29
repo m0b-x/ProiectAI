@@ -65,7 +65,7 @@ namespace ProiectVolovici
         }
 
         public abstract void ArataMutariPosibile(EngineJoc joc);
-        public abstract List<Pozitie> ReturneazaMutariPosibile(EngineJoc joc);
+        public abstract List<Pozitie> ReturneazaMutariPosibile(int[,] matrice);
 
     }
 }
