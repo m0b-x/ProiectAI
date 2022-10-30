@@ -52,7 +52,8 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                if (pozitie.Linie > ConstantaTabla.PragRau || pozitie.Linie <= ConstantaTabla.PragRau)
+                if (pozitie.Linie > ConstantaTabla.PragRau && this.CuloarePiesa == CuloareJoc.Alb
+                        || pozitie.Linie <= ConstantaTabla.PragRau && this.CuloarePiesa == CuloareJoc.Albastru)
                 {
                     if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {

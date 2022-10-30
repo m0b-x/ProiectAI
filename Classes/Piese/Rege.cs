@@ -34,121 +34,69 @@ namespace ProiectVolovici
             int inceputLinie = 0;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
-            List<Pozitie> mutariFiltrate = new List<Pozitie>();
+            List<Pozitie> mutariPrimaFiltrare = new List<Pozitie>();
+            List<Pozitie> mutariADouaFiltrare = new List<Pozitie>();
 
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+            const int primaLinie = 0;
+            const int primaColoana = 0;
+
+            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
+            int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
 
             foreach (Pozitie pozitie in mutariNefiltrate)
             {
-                if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
+                if (pozitie.Linie <= ultimaLinie &&
+                     pozitie.Linie >= primaLinie &&
+                     pozitie.Coloana <= ultimaColoana &&
+                     pozitie.Coloana >= primaColoana &&
+                     ConstantaTabla.PozitiiPalat.Contains(pozitie))
                 {
                     if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
-                        if (this.CuloarePiesa == CuloareJoc.Alb)
+                        mutariPrimaFiltrare.Add(pozitie);
+                    }
+                    else if (matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)this.Cod % 2)
+                    {
+                        mutariPrimaFiltrare.Add(pozitie);
+                    }
+                }
+            }
+            foreach (Pozitie pozitie in mutariPrimaFiltrare)
+            {
+                if(this.CuloarePiesa == CuloareJoc.Alb)
+                {
+                    for(int linie = this.Pozitie.Linie-1;linie>= 0;linie--)
+                    {
+                        if (matrice[linie,this.Pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            bool estePosibila = true;
-                            for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
+                            if(matrice[linie,this.Pozitie.Coloana] != (int)CodPiesa.RegeAlbastru)
                             {
-                                if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
-                                {
-                                    if (matrice[linie, pozitie.Coloana] != (int) CodPiesa.RegeAlbastru)
-                                    {
-                                        estePosibila = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
+                                mutariADouaFiltrare.Add(pozitie);
                             }
-                            if (estePosibila == true)
-                            {
-                                mutariFiltrate.Add(pozitie);
-                            }
-                        }
-                        else if (this.CuloarePiesa == CuloareJoc.Albastru)
-                        {
-                            bool estePosibila = true;
-                            for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
-                            {
-                                if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
-                                {
-                                    if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlb)
-                                    {
-                                        estePosibila = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            if (estePosibila == true)
-                            {
-                                mutariFiltrate.Add(pozitie);
-                            }
+                            break;
                         }
                     }
-                    else
+                }
+                else
+                {
+                    for (int linie = this.Pozitie.Linie +1; linie <= 9; linie++)
                     {
-                        if (matrice[pozitie.Linie, pozitie.Coloana]%2 != (int)this.Cod%2)
+                        if (matrice[linie, this.Pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            if (this.CuloarePiesa == CuloareJoc.Alb)
+                            if (matrice[linie, this.Pozitie.Coloana] != (int)CodPiesa.RegeAlb)
                             {
-                                bool estePosibila = true;
-                                for (int linie = pozitie.Linie; linie >= inceputLinie; linie--)
-                                {
-                                    if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
-                                    {
-                                        if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlbastru)
-                                        {
-                                            estePosibila = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (estePosibila == true)
-                                {
-                                    mutariFiltrate.Add(pozitie);
-                                }
+                                mutariADouaFiltrare.Add(pozitie);
                             }
-                            else if (this.CuloarePiesa == CuloareJoc.Albastru)
-                            {
-                                bool estePosibila = true;
-                                for (int linie = pozitie.Linie; linie <= sfarsitLinie; linie++)
-                                {
-                                    if (matrice[linie, pozitie.Coloana]!= (int)CodPiesa.Gol)
-                                    {
-                                        if (matrice[linie, pozitie.Coloana] == (int)CodPiesa.RegeAlb)
-                                        {
-                                            estePosibila = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (estePosibila == true)
-                                {
-                                    mutariFiltrate.Add(pozitie);
-                                }
-                            }
+                            break;
                         }
                     }
                 }
             }
-            return mutariFiltrate;
+            return mutariADouaFiltrare;
         }
     }
 }

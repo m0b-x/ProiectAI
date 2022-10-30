@@ -42,8 +42,11 @@ namespace ProiectVolovici
             {
                 if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
                 {
-                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol ||
-                        matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
+                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
+                    {
+                        mutariFiltrate.Add(pozitie);
+                    }
+                    else if (matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
                         mutariFiltrate.Add(pozitie);
                     }
