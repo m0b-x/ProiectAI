@@ -157,6 +157,7 @@ namespace ProiectVolovici
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                Debug.WriteLine("Iteratie Max");
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
                                     var matriceSuccesor = matrice;
@@ -194,6 +195,7 @@ namespace ProiectVolovici
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                Debug.WriteLine("Iteratie Min");
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
                                     var matriceSuccesor = matrice;
