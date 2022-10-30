@@ -86,6 +86,29 @@ namespace ProiectVolovici
                 mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
             }
         }
+
+        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> CalculeazaMutariPosibileAI()
+        {
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new();
+            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
+                {
+                    if (_engine.MatriceCoduriPiese[linie, coloana] != (int)CodPiesa.Gol)
+                    {
+                        if (_engine.EstePiesaAlbastra(_engine.MatriceCoduriPiese[linie, coloana]))
+                        {
+                            Piesa piesaAI = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)_engine.MatriceCoduriPiese[linie, coloana]);
+
+                            piesaAI.Pozitie = new Pozitie(linie, coloana);
+                            tupluMutariSiMatriciPosibile.AddRange(_engine.ReturneazaMatriciMutariPosibile(piesaAI, _engine.MatriceCoduriPiese));
+                        }
+                    }
+                }
+            }
+
+            return tupluMutariSiMatriciPosibile;
+        }
         public double EvalueazaMatricea(int[,] matrice)
         {
             double scor = 0;

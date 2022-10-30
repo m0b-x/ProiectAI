@@ -31,7 +31,6 @@ namespace ProiectVolovici
         public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
             int sfarsitLinie = ConstantaTabla.MarimeVerticala - 1;
-            int inceputLinie = 0;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariPrimaFiltrare = new List<Pozitie>();

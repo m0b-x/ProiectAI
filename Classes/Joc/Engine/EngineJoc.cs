@@ -19,6 +19,7 @@ namespace ProiectVolovici
 
         private Label[] _labelColoane;
         private Label[] _labelLinii;
+        private Label _labelAsteptare;
 
         private Piesa _piesaSelectata;
 
@@ -59,6 +60,11 @@ namespace ProiectVolovici
             set { _tabla.ArrayCadrane = value; }
         }
 
+        public Label LabelAsteptare
+        {
+            get { return _labelAsteptare; }
+            set { _labelAsteptare = value; }
+        }
         public int[,] MatriceCoduriPiese
         {
             get
@@ -141,6 +147,7 @@ namespace ProiectVolovici
             _labelLinii = new Label[ConstantaTabla.MarimeVerticala];
             _labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
             CreeazaLabeluriLinii(_labelColoane);
+            CreeazaLabelAsteptare();
             CreeazaLabeluriColoane(_labelLinii);
         }
 
@@ -197,6 +204,15 @@ namespace ProiectVolovici
                                                         ArrayCadrane[linie, MarimeOrizontala - 1].Location.Y + ConstantaCadran.MarimeCadran / 3);
                 _parentForm.Controls.Add(__labelLinii[linie]);
             }
+        }
+        protected void CreeazaLabelAsteptare()
+        {
+            _labelAsteptare = new Label();
+            _labelAsteptare.Text = String.Empty;
+            _labelAsteptare.Font = new Font(ConstantaTabla.FontPrincipal, ConstantaTabla.MarimeFont);
+            _labelAsteptare.AutoSize = true;
+            _labelAsteptare.Location = new Point(255,30);
+            _parentForm.Controls.Add(_labelAsteptare);
         }
 
         private void CreeazaLabeluriLinii(Label[] __labelColoane)
@@ -341,7 +357,7 @@ namespace ProiectVolovici
             {
                 Color culoareCadranPrecedenta = ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor;
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = ConstantaTabla.CuloarePozitieBlocata;
-                Asteapta(ConstantaTabla.IntervalPiesaBlocata);
+                BlocheazaComenzi(ConstantaTabla.IntervalPiesaBlocata);
                 ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackColor = culoareCadranPrecedenta;
                 PiesaSelectata = ConstantaTabla.PiesaNula;
             }
@@ -394,30 +410,6 @@ namespace ProiectVolovici
             }
         }
 
-        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa)
-        {
-            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
-
-            if (pozitiiMutariPosibile != null)
-            {
-                foreach (var pozitie in pozitiiMutariPosibile)
-                {
-                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                    int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
-
-                    matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                    matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-
-                    matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                } 
-                return matriciMutariPosibile;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
         {
@@ -444,8 +436,6 @@ namespace ProiectVolovici
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
 
-
-        //AICI
         public void SeteazaPiesaCadranului(Pozitie pozitie, Piesa piesa)
         {
             if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
@@ -549,7 +539,7 @@ namespace ProiectVolovici
             timer.Enabled = true;
         }
 
-        public void Asteapta(int milisecunde)
+        public void BlocheazaComenzi(int milisecunde)
         {
             var timerAsteptare = new System.Windows.Forms.Timer();
             if (milisecunde == 0 || milisecunde < 0) return;
@@ -573,8 +563,7 @@ namespace ProiectVolovici
         private double EvalueazaMatricea(int[,] matrice)
         {
 
-            double scorAlb = 0;
-            double scorAlbastru = 0;
+            double scor = 0;
 
 
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
@@ -586,17 +575,17 @@ namespace ProiectVolovici
                     {
                         if (EstePiesaAlba(matrice[linie, coloana]))
                         {
-                            scorAlb += ReturneazaScorPiese(codPiesa);
+                            scor -= ReturneazaScorPiese(codPiesa);
                         }
                         else
                         {
-                            scorAlbastru += ReturneazaScorPiese(codPiesa);
+                            scor += ReturneazaScorPiese(codPiesa);
                         }
 
                     }
                 }
             }
-            return scorAlbastru - scorAlb;
+            return scor;
         }
         public CuloareJoc ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
         {

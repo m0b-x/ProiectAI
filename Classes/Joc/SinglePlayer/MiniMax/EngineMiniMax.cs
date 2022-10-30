@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
@@ -23,6 +24,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
+
+        protected System.Timers.Timer _timerAsteptareAI;
+        protected short _valoareTimerAsteptare;
 
         public Om Jucator
         {
@@ -46,7 +50,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _miniMaxAI = new MiniMaxAI(CuloareJoc.Albastru, adancime, this);
 
             _randulOmului = true;
-
+            InitializeazaTimerAsteptare();
             EsteRandulTau();
         }
 
@@ -56,10 +60,53 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
             _miniMaxAI = new MiniMaxAI(CuloareJoc.Albastru, adancime, this);
-
             _randulOmului = false;
+            InitializeazaTimerAsteptare();
         }
+        public void InitializeazaTimerAsteptare()
+        {
+            _valoareTimerAsteptare = 0;
+            _timerAsteptareAI = new();
+            _timerAsteptareAI.Elapsed += new ElapsedEventHandler(SchimbaTextAsteptare);
+            _timerAsteptareAI.Interval = 300;
+            _timerAsteptareAI.Enabled = false;
 
+        }
+        public void SchimbaTextAsteptare(object source, ElapsedEventArgs e)
+        {
+            switch (_valoareTimerAsteptare)
+            {
+                case 0:
+                    {
+                        UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "In Asteptare AI.");
+                        _valoareTimerAsteptare++;
+                        break;
+                    }
+                case 1:
+                    {
+                        UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "In Asteptare AI..");
+                        _valoareTimerAsteptare++;
+                        break;
+                    }
+                case 2:
+                    {
+                        UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "In Asteptare AI...");
+                        _valoareTimerAsteptare = 0;
+                        break;
+                    }
+            }
+        }
+        public void PornesteTimerAsteptareAI()
+        {
+            _valoareTimerAsteptare = 0;
+            _timerAsteptareAI.Start();
+        }
+        public void OpresteTimerAsteptareAI()
+        {
+            _valoareTimerAsteptare = 0;
+            _timerAsteptareAI.Stop();
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", String.Empty);
+        }
         public void AdaugaEvenimentCadrane()
         {
 
@@ -116,6 +163,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
             _nrMutari++;
+            PornesteTimerAsteptareAI();
             base.RealizeazaMutareaLocal(piesa, pozitie);
         }
 
@@ -185,6 +233,14 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             }
                         }
                     }
+                    else
+                    {
+                        AscundePiesaSelectata(PiesaSelectata);
+                        Pozitie pozitieInitiala = PiesaSelectata.Pozitie;
+                        DecoloreazaMutariPosibile(PozitiiMutariPosibile);
+                        PiesaSelectata = ConstantaTabla.PiesaNula;
+                        PozitiiMutariPosibile.Clear();
+                    }
                 }
             }
         }
@@ -196,7 +252,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Tuple<Pozitie, Pozitie> mutareaOptima = new(new Pozitie(0, 0), new Pozitie(0, 0));
             double scorulMutariiOptime = 0;
 
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = CalculeazaMutariPosibile();
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaMutariPosibileAI();
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
             scorulMutariiOptime = _miniMaxAI.EvalueazaPozitiaCurenta(tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity, _miniMaxAI.Adancime, CuloareJoc.Albastru);
             _miniMaxAI.CalculeazaMutareaOptima(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
@@ -209,31 +265,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             EsteRandulTau();
             Debug.WriteLine(cronometru.Elapsed);
             cronometru.Stop();
+            OpresteTimerAsteptareAI();
         }
 
-
-        private List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> CalculeazaMutariPosibile()
-        {
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new();
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
-            {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
-                {
-                    if (MatriceCoduriPiese[linie, coloana] != (int)CodPiesa.Gol)
-                    {
-                        if (EstePiesaAlbastra(MatriceCoduriPiese[linie, coloana]))
-                        {
-                            Piesa piesaAI = ConvertesteCodPiesaInObiect((CodPiesa)MatriceCoduriPiese[linie, coloana]);
-
-                            piesaAI.Pozitie = new Pozitie(linie, coloana);
-                            tupluMutariSiMatriciPosibile.AddRange(ReturneazaMatriciMutariPosibile(piesaAI));
-                        }
-                    }
-                }
-            }
-
-            return tupluMutariSiMatriciPosibile;
-        }
 
         private int VerificaTentativaDeSah()
         {
