@@ -71,8 +71,10 @@ namespace ProiectVolovici
             {
                 for (int mutareSiMatrice = 0; mutareSiMatrice < tupluMutariSiMatriciPosibile.Count; mutareSiMatrice++)
                 {
-                    double scorMutare = MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity, 
-                        _adancime, CuloareJoc.Albastru);
+                    List<Tuple<Tuple<Pozitie, Pozitie>, int>> list = new();
+                    double scorMutare = MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity
+                        ,_adancime, CuloareJoc.Albastru,ref list);
+                    
                     if (scorMutare >= scorulMutariiOptime)
                     {
                         mutareaOptima = tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1;
@@ -130,12 +132,14 @@ namespace ProiectVolovici
             }
             return scor;
         }
-        public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
+        public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime,
+            CuloareJoc culoare,ref List<Tuple <Tuple<Pozitie,Pozitie>,int>> mutariRollBack)
         {
             _engine.AfiseazaMatriceDebug(matrice,adancime);
             if (adancime == 0)
             {
                 double evaluare = EvalueazaMatricea(matrice);
+                RollBackMatrice(matrice, ref mutariRollBack);
                 return evaluare;
             }
 
@@ -155,12 +159,17 @@ namespace ProiectVolovici
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = matrice.Clone() as int[,];
+                                    var matriceSuccesor = matrice;
 
+                                    mutariRollBack.Add(new(new(piesa.Pozitie, mutarePosibila),
+                                        matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana]));
+
+                                    Debug.WriteLine($"{piesa.Pozitie.Linie},{piesa.Pozitie.Coloana} -> {mutarePosibila.Linie},{mutarePosibila.Coloana}");
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
 
-                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, CuloareJoc.Alb)); //think about how to change moves
+                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1,
+                                        CuloareJoc.Alb,ref mutariRollBack)); //think about how to change moves
 
                                     if (newBeta <= alpha)
                                         break;
@@ -187,13 +196,16 @@ namespace ProiectVolovici
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = matrice.Clone() as int[,];
+                                    var matriceSuccesor = matrice;
 
+                                    mutariRollBack.Add(new(new(piesa.Pozitie, mutarePosibila),
+                                            matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana]));
+
+                                    Debug.WriteLine($"Piesa:{piesa.Cod} : {piesa.Pozitie.Linie},{piesa.Pozitie.Coloana} -> {mutarePosibila.Linie},{mutarePosibila.Coloana}");
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
-
-                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, CuloareJoc.Albastru));
-
+                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1,
+                                        CuloareJoc.Albastru,ref mutariRollBack));
                                     if (beta <= newAlpha)
                                         break;
                                 }
@@ -203,6 +215,27 @@ namespace ProiectVolovici
                 }
                 return newAlpha;
             }
+        }
+
+        private void RollBackMatrice(int[,] matrice,
+            ref List<Tuple<Tuple<Pozitie, Pozitie>, int>> mutariRollBack)
+        {
+            for (int i= mutariRollBack.Count-1; i>=0;i--)
+            {
+                matrice[mutariRollBack[i].Item1.Item1.Linie, mutariRollBack[i].Item1.Item1.Coloana] =
+                    matrice[mutariRollBack[i].Item1.Item2.Linie, mutariRollBack[i].Item1.Item2.Coloana];
+
+
+                Debug.WriteLine($"{mutariRollBack[i].Item1.Item2.Linie},{mutariRollBack[i].Item1.Item2.Coloana}<-{mutariRollBack[i].Item1.Item1.Linie} {mutariRollBack[i].Item1.Item1.Coloana}");
+                Debug.WriteLine($"{mutariRollBack[i].Item2}");
+
+                matrice[mutariRollBack[i].Item1.Item2.Linie, mutariRollBack[i].Item1.Item2.Coloana] = mutariRollBack[i].Item2;
+            }
+            if(mutariRollBack.Count>0)
+            mutariRollBack.RemoveAt(mutariRollBack.Count - 1);
+            Debug.WriteLine($"Count:{mutariRollBack.Count}\n\n");
+            _engine.AfiseazaMatriceDebug(matrice, -1);
+            Debug.WriteLine("\n\n\n");
         }
     }
 }
