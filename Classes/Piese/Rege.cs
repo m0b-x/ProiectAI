@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ProiectVolovici
 {
@@ -30,7 +31,6 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
         {
-            int sfarsitLinie = ConstantaTabla.MarimeVerticala - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariPrimaFiltrare = new List<Pozitie>();
@@ -40,6 +40,7 @@ namespace ProiectVolovici
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+
             const int primaLinie = 0;
             const int primaColoana = 0;
 
@@ -64,35 +65,51 @@ namespace ProiectVolovici
                     }
                 }
             }
-            foreach (Pozitie pozitie in mutariPrimaFiltrare)
+            foreach(Pozitie pozitie in mutariPrimaFiltrare)
             {
-                if(this.CuloarePiesa == CuloareJoc.Alb)
-                {
-                    for(int linie = this.Pozitie.Linie-1;linie>= 0;linie--)
+                bool okMutare = true;
+                if (this.CuloarePiesa == CuloareJoc.Alb)
+                { 
+                    for(int linie = this.Pozitie.Linie-1;linie>=0;linie--)
                     {
-                        if (matrice[linie,this.Pozitie.Coloana] != (int)CodPiesa.Gol)
+                        if (matrice[linie,pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            if(matrice[linie,this.Pozitie.Coloana] != (int)CodPiesa.RegeAlbastru)
+                            if(matrice[linie, pozitie.Coloana] != (int)CodPiesa.RegeAlbastru)
                             {
                                 mutariADouaFiltrare.Add(pozitie);
+                                break;
                             }
-                            break;
+                            else
+                            {
+                                okMutare = false;
+                                break;
+                            }
                         }
                     }
+                    if(okMutare)
+                        mutariADouaFiltrare.Add(pozitie);
                 }
-                else
+                else if (this.CuloarePiesa == CuloareJoc.Albastru)
                 {
-                    for (int linie = this.Pozitie.Linie +1; linie <= 9; linie++)
+                    okMutare = true;
+                    for (int linie = this.Pozitie.Linie + 1; linie <= 9; linie++)
                     {
-                        if (matrice[linie, this.Pozitie.Coloana] != (int)CodPiesa.Gol)
+                        if (matrice[linie, pozitie.Coloana] != (int)CodPiesa.Gol)
                         {
-                            if (matrice[linie, this.Pozitie.Coloana] != (int)CodPiesa.RegeAlb)
+                            if (matrice[linie, pozitie.Coloana] != (int)CodPiesa.RegeAlb)
                             {
                                 mutariADouaFiltrare.Add(pozitie);
+                                break;
                             }
-                            break;
+                            else
+                            {
+                                okMutare = false;
+                                break;
+                            }
                         }
                     }
+                    if(okMutare)
+                        mutariADouaFiltrare.Add(pozitie);
                 }
             }
             return mutariADouaFiltrare;

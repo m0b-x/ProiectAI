@@ -139,7 +139,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _textBoxMutariAlb.Size = new System.Drawing.Size(155, 210);
             _textBoxMutariAlb.TabIndex = 0;
             _textBoxMutariAlb.RightToLeft = RightToLeft.No;
-            _textBoxMutariAlb.Text = string.Empty;
+            _textBoxMutariAlb.Text = "Mutari Jucator:\n";
 
             _textBoxMutariAlbastru = new RichTextBox();
             _textBoxMutariAlbastru.ReadOnly = true;
@@ -149,7 +149,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _textBoxMutariAlbastru.Size = new System.Drawing.Size(155, 210);
             _textBoxMutariAlbastru.TabIndex = 1;
             _textBoxMutariAlbastru.RightToLeft = RightToLeft.No;
-            _textBoxMutariAlbastru.Text = string.Empty;
+            _textBoxMutariAlbastru.Text = "Mutari AI:\n";
 
             ParentForm.Controls.Add(_textBoxMutariAlb);
             ParentForm.Controls.Add(_textBoxMutariAlbastru);
@@ -225,7 +225,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             _jucatorOm.UltimaPozitie = pozitie;
                             if (_esteGataMeciul == false)
                             {
-                                ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                                 await Task.Run(() =>
                                 {
                                     RealizeazaMutareaAI();
@@ -253,19 +252,28 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             double scorulMutariiOptime = 0;
 
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaMutariPosibileAI();
+            if(tupluMutariSiMatriciPosibile.Count == 0)
+            {
+                MessageBox.Show("Ai castigat");
+                TerminaMeciul();
+                return;
+            }
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
             scorulMutariiOptime = _miniMaxAI.EvalueazaPozitiaCurenta(tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity, _miniMaxAI.Adancime, CuloareJoc.Albastru);
+            
             _miniMaxAI.CalculeazaMutareaOptima(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
             VerificaSahulLaJucator(scorulMutariiOptime);
+            
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
             Pozitie pozitie = mutareaOptima.Item2;
-            //aici
+
             RealizeazaMutareaLocal(piesa, pozitie);
             _miniMaxAI.UltimaPozitie = pozitie;
             EsteRandulTau();
             Debug.WriteLine(cronometru.Elapsed);
             cronometru.Stop();
             OpresteTimerAsteptareAI();
+            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
         }
 
 
@@ -317,12 +325,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
             if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
             {
-                MessageBox.Show("Ai castigat");
+                MessageBox.Show("Ai castigat(regula de 3)");
                 TerminaMeciul();
             }
             if (_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
             {
-                MessageBox.Show("Ai pierdut");
+                MessageBox.Show("Ai pierdut(regula de 3)");
                 TerminaMeciul();
             }
         }
@@ -362,14 +370,14 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             VerificaSahulPersistent();
             if (scorulMutariiOptime > ConstantaPiese.PragSahLaAlbastru)
             {
-                MessageBox.Show("Ai pierdut");
+                MessageBox.Show($"Ai pierdut(rege luat){scorulMutariiOptime}");
                 TerminaMeciul();
             }
             else
             {
                 if (scorulMutariiOptime < ConstantaPiese.PragSahLaAlb)
                 {
-                    MessageBox.Show("Ai castigat");
+                    MessageBox.Show($"Ai castigat(rege luat){scorulMutariiOptime}");
                     TerminaMeciul();
                 }
             }

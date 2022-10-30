@@ -198,13 +198,14 @@ namespace ProiectVolovici
                 __labelLinii[linie] = new Label();
                 __labelLinii[linie].Text = linie.ToString();
                 __labelLinii[linie].Font = new Font(ConstantaTabla.FontPrincipal, ConstantaTabla.MarimeFont);
-                __labelLinii[linie].AutoSize = false;
+                __labelLinii[linie].AutoSize = true;
                 __labelLinii[linie].Size = new Size(ConstantaCadran.MarimeCadran, ConstantaCadran.MarimeCadran);
                 __labelLinii[linie].Location = new Point(ArrayCadrane[linie, MarimeOrizontala - 1].Location.X + ConstantaCadran.MarimeCadran,
                                                         ArrayCadrane[linie, MarimeOrizontala - 1].Location.Y + ConstantaCadran.MarimeCadran / 3);
                 _parentForm.Controls.Add(__labelLinii[linie]);
             }
         }
+
         protected void CreeazaLabelAsteptare()
         {
             _labelAsteptare = new Label();

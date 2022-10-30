@@ -82,7 +82,7 @@ namespace ProiectVolovici
             }
             else
             {
-                int index = (int)GeneratorRandom.NextInt64(tupluMutariSiMatriciPosibile.Count);
+                int index = (int)GeneratorRandom.Next(tupluMutariSiMatriciPosibile.Count);
                 mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
             }
         }
@@ -155,13 +155,11 @@ namespace ProiectVolovici
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
                                     var matriceSuccesor = (int[,])matrice.Clone();
-                                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, mutarePosibila);
 
-                                    int codPiesaMutata = matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana];
-                                    int codPiesaLuata = matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana];
+                                    int codPiesaMutata = matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana];
 
-                                    matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
-                                    matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesaMutata;
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaMutata;
 
                                     newBeta = Math.Min(newBeta, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
 
@@ -191,13 +189,11 @@ namespace ProiectVolovici
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
                                     var matriceSuccesor = (int[,])matrice.Clone();
-                                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, mutarePosibila);
 
-                                    int codPiesaMutata = matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana];
-                                    int codPiesaLuata = matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana];
+                                    int codPiesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
 
-                                    matriceSuccesor[mutare.Item1.Linie, mutare.Item1.Coloana] = (int)CodPiesa.Gol;
-                                    matriceSuccesor[mutare.Item2.Linie, mutare.Item2.Coloana] = codPiesaLuata;
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaLuata;
 
                                     newAlpha = Math.Max(newAlpha, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
 
