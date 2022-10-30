@@ -63,7 +63,7 @@ namespace ProiectVolovici
             #endregion
         }
 
-        public void CalculeazaMutareaOptima(ref Tuple<Pozitie, Pozitie> mutareaOptima,
+        public void CalculeazaMutareaAI(ref Tuple<Pozitie, Pozitie> mutareaOptima,
                                                 ref double scorulMutariiOptime, List<Tuple<Tuple<Pozitie, Pozitie>,
                                                 int[,]>> tupluMutariSiMatriciPosibile)
         {
@@ -72,7 +72,7 @@ namespace ProiectVolovici
                 for (int mutareSiMatrice = 0; mutareSiMatrice < tupluMutariSiMatriciPosibile.Count; mutareSiMatrice++)
                 {
                     double scorMutare = MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity, 
-                        _adancime, CuloareJoc.Alb);
+                        _adancime, CuloareJoc.Albastru);
                     if (scorMutare >= scorulMutariiOptime)
                     {
                         mutareaOptima = tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1;
@@ -132,6 +132,7 @@ namespace ProiectVolovici
         }
         public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
         {
+            _engine.AfiseazaMatriceDebug(matrice,adancime);
             if (adancime == 0)
             {
                 double evaluare = EvalueazaMatricea(matrice);
@@ -156,12 +157,10 @@ namespace ProiectVolovici
                                 {
                                     var matriceSuccesor = matrice.Clone() as int[,];
 
-                                    int codPiesaMutata = matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana];
-
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaMutata;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
 
-                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
+                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, CuloareJoc.Alb)); //think about how to change moves
 
                                     if (newBeta <= alpha)
                                         break;
@@ -190,12 +189,10 @@ namespace ProiectVolovici
                                 {
                                     var matriceSuccesor = matrice.Clone() as int[,];
 
-                                    int codPiesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
-
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaLuata;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
 
-                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
+                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, CuloareJoc.Albastru));
 
                                     if (beta <= newAlpha)
                                         break;

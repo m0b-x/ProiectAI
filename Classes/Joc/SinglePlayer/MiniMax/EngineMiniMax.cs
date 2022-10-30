@@ -261,7 +261,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
             scorulMutariiOptime = _miniMaxAI.MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity, _miniMaxAI.Adancime, CuloareJoc.Albastru);
             
-            _miniMaxAI.CalculeazaMutareaOptima(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
+            _miniMaxAI.CalculeazaMutareaAI(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
             VerificaSahulLaJucator(scorulMutariiOptime);
             
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);

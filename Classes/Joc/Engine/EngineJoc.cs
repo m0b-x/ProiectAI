@@ -237,6 +237,7 @@ namespace ProiectVolovici
             //piese albastre
 
             AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 0));
+            /*
             AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 2));
             AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 4));
             AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 6));
@@ -256,12 +257,13 @@ namespace ProiectVolovici
 
             AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 3));
             AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 5));
-
+            */
             AdaugaPiesa(new Rege(CuloareJoc.Albastru), new Pozitie(0, 4));
 
             //piese albe
 
             AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 0));
+            /*
             AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 2));
             AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 4));
             AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 6));
@@ -281,7 +283,7 @@ namespace ProiectVolovici
 
             AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 3));
             AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 5));
-
+            */
             AdaugaPiesa(new Rege(CuloareJoc.Alb), new Pozitie(9, 4));
         }
 
@@ -634,7 +636,7 @@ namespace ProiectVolovici
             }
 
         }
-        public void AfiseazaMatriceDebug(int[,] matrice)
+        public void AfiseazaMatriceDebug(int[,] matrice,int adancime)
         {
             Debug.WriteLine("------------------------------------------");
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
@@ -646,6 +648,7 @@ namespace ProiectVolovici
                 Debug.WriteLine("");
             }
             Debug.WriteLine("Evaluare:"+EvalueazaMatricea(matrice));
+            Debug.WriteLine("Adancime:"+adancime);
             Debug.WriteLine("------------------------------------------");
         }
     }
