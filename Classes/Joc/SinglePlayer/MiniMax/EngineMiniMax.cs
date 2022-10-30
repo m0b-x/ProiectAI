@@ -259,7 +259,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 return;
             }
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
-            scorulMutariiOptime = _miniMaxAI.MiniMaxOptimizat(tupluMutariSiMatriciPosibile[0].Item2, tupluMutariSiMatriciPosibile[0].Item2.Clone() as int[,], double.NegativeInfinity, double.PositiveInfinity, _miniMaxAI.Adancime, CuloareJoc.Albastru);
+            scorulMutariiOptime = _miniMaxAI.MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity, _miniMaxAI.Adancime, CuloareJoc.Albastru);
             
             _miniMaxAI.CalculeazaMutareaOptima(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
             VerificaSahulLaJucator(scorulMutariiOptime);
