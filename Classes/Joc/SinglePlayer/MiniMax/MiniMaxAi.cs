@@ -71,7 +71,7 @@ namespace ProiectVolovici
             {
                 for (int mutareSiMatrice = 0; mutareSiMatrice < tupluMutariSiMatriciPosibile.Count; mutareSiMatrice++)
                 {
-                    double scorMutare = EvalueazaPozitiaCurenta(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity, 
+                    double scorMutare = MiniMaxOptimizat(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2.Clone() as int[,], double.NegativeInfinity, double.PositiveInfinity, 
                         _adancime, CuloareJoc.Alb);
                     if (scorMutare >= scorulMutariiOptime)
                     {
@@ -130,7 +130,7 @@ namespace ProiectVolovici
             }
             return scor;
         }
-        public double EvalueazaPozitiaCurenta(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
+        public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime, CuloareJoc culoare)
         {
             if (adancime == 0)
             {
@@ -154,14 +154,14 @@ namespace ProiectVolovici
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = (int[,])matrice.Clone();
+                                    var matriceSuccesor = matrice.Clone() as int[,];
 
                                     int codPiesaMutata = matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana];
 
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaMutata;
 
-                                    newBeta = Math.Min(newBeta, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
+                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
 
                                     if (newBeta <= alpha)
                                         break;
@@ -188,14 +188,92 @@ namespace ProiectVolovici
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = (int[,])matrice.Clone();
+                                    var matriceSuccesor = matrice.Clone() as int[,];
 
                                     int codPiesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
 
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaLuata;
 
-                                    newAlpha = Math.Max(newAlpha, EvalueazaPozitiaCurenta(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
+                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
+
+                                    if (beta <= newAlpha)
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+                return newAlpha;
+            }
+        }
+        public double MiniMaxOptimizat(int[,] matrice, int[,]matriceInitiala, double alpha, double beta, int adancime, CuloareJoc culoare)
+        {
+            if (adancime == 0)
+            {
+                double evaluare = EvalueazaMatricea(matrice);
+                matrice = matriceInitiala;
+                return evaluare;
+            }
+
+            if (culoare == CuloareJoc.Albastru)
+            {
+                double newBeta = beta;
+                for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+                {
+                    for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                    {
+                        if (matrice[linie, coloana] != (int)CodPiesa.Gol)
+                        {
+                            if (_engine.ReturneazaCuloareDupaCodulPiesei((CodPiesa)matrice[linie, coloana]) == culoare)
+                            {
+                                Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
+                                piesa.Pozitie = new Pozitie(linie, coloana);
+                                var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                foreach (var mutarePosibila in mutariPosibile)
+                                {
+                                    var matriceSuccesor = matrice;
+
+                                    int codPiesaMutata = matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana];
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaMutata;
+
+                                    newBeta = Math.Min(newBeta, MiniMaxOptimizat(matriceSuccesor, matriceInitiala, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb)); //think about how to change moves
+
+                                    if (newBeta <= alpha)
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+                return newBeta;
+            }
+            else
+            {
+                double newAlpha = alpha;
+                for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+                {
+                    for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                    {
+                        if (matrice[linie, coloana] != (int)CodPiesa.Gol)
+                        {
+                            if (_engine.ReturneazaCuloareDupaCodulPiesei((CodPiesa)matrice[linie, coloana]) == culoare)
+                            {
+                                Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
+                                piesa.Pozitie = new Pozitie(linie, coloana);
+                                var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                foreach (var mutarePosibila in mutariPosibile)
+                                {
+                                    var matriceSuccesor = matrice;
+
+                                    int codPiesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = codPiesaLuata;
+
+                                    newAlpha = Math.Max(newAlpha, MiniMaxOptimizat(matriceSuccesor, matriceInitiala, alpha, beta, adancime - 1, (culoare == CuloareJoc.Alb) ? CuloareJoc.Albastru : CuloareJoc.Alb));
 
                                     if (beta <= newAlpha)
                                         break;
