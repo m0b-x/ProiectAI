@@ -21,7 +21,7 @@ namespace ProiectVolovici
         {
             get { return _adancime; }
         }
-        public MiniMaxAI(CuloareJoc culoare,int adancime, EngineMiniMax engine) : base(culoare)
+        public MiniMaxAI(CuloareJoc culoare, int adancime, EngineMiniMax engine) : base(culoare)
         {
             this._engine = engine;
             _culoare = culoare;
@@ -38,8 +38,8 @@ namespace ProiectVolovici
                 int result = x.CompareTo(y);
 
                 if (result == 0)
-                    return 1; 
-                else          
+                    return 1;
+                else
                     return result;
             }
 
@@ -69,11 +69,14 @@ namespace ProiectVolovici
         {
             if (_engine.NrMutari > 0)
             {
+                double scorInitial = EvalueazaMatricea(_engine.MatriceCoduriPiese);
                 for (int mutareSiMatrice = 0; mutareSiMatrice < tupluMutariSiMatriciPosibile.Count; mutareSiMatrice++)
                 {
-                    double scorMutare = MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity
-                        ,_adancime, CuloareJoc.Albastru);
-                    
+                    double scorMutare = MiniMaxNeoptimizat(scorInitial + _engine.ReturneazaScorPiese((CodPiesa)_engine.MatriceCoduriPiese[tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1.Item2.Linie,
+                        tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1.Item2.Coloana]),
+                        tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity
+                        , _adancime, CuloareJoc.Albastru);
+
                     if (scorMutare >= scorulMutariiOptime)
                     {
                         mutareaOptima = tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1;
@@ -99,7 +102,7 @@ namespace ProiectVolovici
 
                 if (result == 0)
                     return 1;
-                else         
+                else
                     return result;
             }
 
@@ -161,14 +164,12 @@ namespace ProiectVolovici
                 return Comparer<T>.Default.Compare(y, x);
             }
         }
-        public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime,
+        public double MiniMaxNeoptimizat(double eval, int[,] matrice, double alpha, double beta, int adancime,
             CuloareJoc culoare)
         {
-            //_engine.AfiseazaMatriceDebug(matrice, adancime);
             if (adancime == 0)
             {
-                double evaluare = EvalueazaMatricea(matrice);
-                return evaluare;
+                return eval;
             }
 
             if (culoare == CuloareJoc.Albastru)
@@ -185,16 +186,21 @@ namespace ProiectVolovici
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
-                                SortedList<double, Pozitie> lista = new(new DescComparer<double>());
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = matrice.Clone() as int[,];
+                                    var matriceSuccesor = matrice;
 
+                                    var piesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
 
-                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1,
-                                        CuloareJoc.Alb)); 
+                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(eval -
+                                        _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+                                        matriceSuccesor, alpha, beta, adancime - 1,
+                                        CuloareJoc.Alb));
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesaLuata;
 
                                     if (newBeta <= alpha)
                                         break;
@@ -222,12 +228,18 @@ namespace ProiectVolovici
 
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
-                                    var matriceSuccesor = matrice.Clone() as int[,];
+                                    var matriceSuccesor = matrice;
+                                    var piesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
 
                                     matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
                                     matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
-                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(matriceSuccesor, alpha, beta, adancime - 1,
+                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(eval +
+                                        _engine.ReturneazaScorPiese((CodPiesa)piesaLuata), matriceSuccesor,
+                                        alpha, beta, adancime - 1,
                                         CuloareJoc.Albastru));
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesaLuata;
 
 
                                     if (beta <= newAlpha)
