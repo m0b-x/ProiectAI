@@ -259,9 +259,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 return;
             }
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
-            List<Tuple<Tuple<Pozitie, Pozitie>, int>> list = new();
+
             scorulMutariiOptime = _miniMaxAI.MiniMaxNeoptimizat(tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity,
-                _miniMaxAI.Adancime, CuloareJoc.Albastru, ref list);
+                _miniMaxAI.Adancime, CuloareJoc.Albastru);
             
             _miniMaxAI.CalculeazaMutareaAI(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
             VerificaSahulLaJucator(scorulMutariiOptime);
