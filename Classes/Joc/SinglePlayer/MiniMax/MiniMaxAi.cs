@@ -87,10 +87,28 @@ namespace ProiectVolovici
                 mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
             }
         }
-
-        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> CalculeazaMutariPosibileAI()
+        public class DuplicateKeyComparer<TKey>
+                :
+             IComparer<TKey> where TKey : IComparable
         {
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new();
+            #region IComparer<TKey> Members
+
+            public int Compare(TKey x, TKey y)
+            {
+                int result = y.CompareTo(x);
+
+                if (result == 0)
+                    return 1;
+                else         
+                    return result;
+            }
+
+            #endregion
+        }
+        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> CalculeazaPrimeleMutariAI()
+        {
+            SortedList<double, Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new(new DuplicateKeyComparer<double>());
+            double evaluareInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
@@ -102,13 +120,16 @@ namespace ProiectVolovici
                             Piesa piesaAI = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)_engine.MatriceCoduriPiese[linie, coloana]);
 
                             piesaAI.Pozitie = new Pozitie(linie, coloana);
-                            tupluMutariSiMatriciPosibile.AddRange(_engine.ReturneazaMatriciMutariPosibile(piesaAI, _engine.MatriceCoduriPiese));
+                            var matriciMutari = _engine.ReturneazaMatriciMutariPosibile(piesaAI, _engine.MatriceCoduriPiese);
+                            foreach (var matMut in matriciMutari)
+                            {
+                                tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.ReturneazaScorPiese((CodPiesa)_engine.MatriceCoduriPiese[matMut.Item1.Item2.Linie, matMut.Item1.Item2.Coloana]), matMut);
+                            }
                         }
                     }
                 }
             }
-
-            return tupluMutariSiMatriciPosibile;
+            return tupluMutariSiMatriciPosibile.Values.ToList();
         }
         public double EvalueazaMatricea(int[,] matrice)
         {
@@ -131,10 +152,19 @@ namespace ProiectVolovici
             }
             return scor;
         }
+        class DescComparer<T> : IComparer<T>
+        {
+            public int Compare(T x, T y)
+            {
+                if (x == null) return -1;
+                if (y == null) return 1;
+                return Comparer<T>.Default.Compare(y, x);
+            }
+        }
         public double MiniMaxNeoptimizat(int[,] matrice, double alpha, double beta, int adancime,
             CuloareJoc culoare)
         {
-            _engine.AfiseazaMatriceDebug(matrice, adancime);
+            //_engine.AfiseazaMatriceDebug(matrice, adancime);
             if (adancime == 0)
             {
                 double evaluare = EvalueazaMatricea(matrice);
@@ -155,6 +185,7 @@ namespace ProiectVolovici
                                 Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
                                 piesa.Pozitie = new Pozitie(linie, coloana);
                                 var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                SortedList<double, Pozitie> lista = new(new DescComparer<double>());
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
                                     var matriceSuccesor = matrice.Clone() as int[,];

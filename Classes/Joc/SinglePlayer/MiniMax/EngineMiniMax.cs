@@ -251,7 +251,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Tuple<Pozitie, Pozitie> mutareaOptima = new(new Pozitie(0, 0), new Pozitie(0, 0));
             double scorulMutariiOptime = 0;
 
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaMutariPosibileAI();
+            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
             if(tupluMutariSiMatriciPosibile.Count == 0)
             {
                 MessageBox.Show("Ai castigat");
