@@ -4,13 +4,13 @@ namespace ProiectVolovici
 {
     internal class Pion : Piesa
     {
-        public Pion(CuloareJoc culoare)
+        public Pion(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoarePion;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bpawn;
                 this.Cod = CodPiesa.PionAlbastru;
@@ -33,13 +33,13 @@ namespace ProiectVolovici
             const int primaLinie = 0;
             const int primaColoana = 0;
 
-            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
-            int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaLinie = ConstantaTabla.NrLinii - 1;
+            int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
-            if (this.CuloarePiesa == CuloareJoc.Albastru)
+            if (this.CuloarePiesa == Culoare.Albastru)
             {
                 mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
                 if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)

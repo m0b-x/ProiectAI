@@ -135,17 +135,17 @@ namespace ProiectVolovici
             _tabla = new Tabla();
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
-            _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+            _matriceCodPiese = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
 
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                 }
             }
-            _labelLinii = new Label[ConstantaTabla.MarimeVerticala];
-            _labelColoane = new Label[ConstantaTabla.MarimeOrizontala];
+            _labelLinii = new Label[ConstantaTabla.NrLinii];
+            _labelColoane = new Label[ConstantaTabla.NrColoane];
             CreeazaLabeluriLinii(_labelColoane);
             CreeazaLabelAsteptare();
             CreeazaLabeluriColoane(_labelLinii);
@@ -160,11 +160,11 @@ namespace ProiectVolovici
             _tabla = new Tabla();
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
-            _matriceCodPiese = new int[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+            _matriceCodPiese = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
 
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     ArrayCadrane[linie, coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                     if (matriceTabla[linie, coloana] != (int)CodPiesa.Gol)
@@ -179,11 +179,11 @@ namespace ProiectVolovici
 
         public virtual void Dispose()
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 _labelLinii[linie].Dispose();
             }
-            for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+            for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
             {
                 _labelColoane[coloana].Dispose();
             }
@@ -193,7 +193,7 @@ namespace ProiectVolovici
 
         private void CreeazaLabeluriColoane(Label[] __labelLinii)
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 __labelLinii[linie] = new Label();
                 __labelLinii[linie].Text = linie.ToString();
@@ -219,7 +219,7 @@ namespace ProiectVolovici
         private void CreeazaLabeluriLinii(Label[] __labelColoane)
         {
             char literaLinie = 'A';
-            for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+            for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
             {
                 __labelColoane[coloana] = new Label();
                 __labelColoane[coloana].Text = literaLinie++.ToString();
@@ -236,60 +236,61 @@ namespace ProiectVolovici
         {
             //piese albastre
 
-            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 0));
-            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 2));
-            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 4));
-            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 6));
-            AdaugaPiesa(new Pion(CuloareJoc.Albastru), new Pozitie(3, 8));
+            AdaugaPiesa(new Pion(Culoare.Albastru), new Pozitie(3, 0));
+            AdaugaPiesa(new Pion(Culoare.Albastru), new Pozitie(3, 2));
+            AdaugaPiesa(new Pion(Culoare.Albastru), new Pozitie(3, 4));
+            AdaugaPiesa(new Pion(Culoare.Albastru), new Pozitie(3, 6));
+            AdaugaPiesa(new Pion(Culoare.Albastru), new Pozitie(3, 8));
 
-            AdaugaPiesa(new Tun(CuloareJoc.Albastru), new Pozitie(2, 1));
-            AdaugaPiesa(new Tun(CuloareJoc.Albastru), new Pozitie(2, 7));
+            AdaugaPiesa(new Tun(Culoare.Albastru), new Pozitie(2, 1));
+            AdaugaPiesa(new Tun(Culoare.Albastru), new Pozitie(2, 7));
 
-            AdaugaPiesa(new Tura(CuloareJoc.Albastru), new Pozitie(0, 0));
-            AdaugaPiesa(new Tura(CuloareJoc.Albastru), new Pozitie(0, 8));
+            AdaugaPiesa(new Tura(Culoare.Albastru), new Pozitie(0, 0));
+            AdaugaPiesa(new Tura(Culoare.Albastru), new Pozitie(0, 8));
 
-            AdaugaPiesa(new Cal(CuloareJoc.Albastru), new Pozitie(0, 1));
-            AdaugaPiesa(new Cal(CuloareJoc.Albastru), new Pozitie(0, 7));
+            AdaugaPiesa(new Cal(Culoare.Albastru), new Pozitie(0, 1));
+            AdaugaPiesa(new Cal(Culoare.Albastru), new Pozitie(0, 7));
 
-            AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 2));
-            AdaugaPiesa(new Elefant(CuloareJoc.Albastru), new Pozitie(0, 6));
+            AdaugaPiesa(new Elefant(Culoare.Albastru), new Pozitie(0, 2));
+            AdaugaPiesa(new Elefant(Culoare.Albastru), new Pozitie(0, 6));
 
-            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 3));
-            AdaugaPiesa(new Gardian(CuloareJoc.Albastru), new Pozitie(0, 5));
+            AdaugaPiesa(new Gardian(Culoare.Albastru), new Pozitie(0, 3));
+            AdaugaPiesa(new Gardian(Culoare.Albastru), new Pozitie(0, 5));
 
-            AdaugaPiesa(new Rege(CuloareJoc.Albastru), new Pozitie(0, 4));
+            AdaugaPiesa(new Rege(Culoare.Albastru), new Pozitie(0, 4));
 
             //piese albe
 
-            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 0));
-            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 2));
-            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 4));
-            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 6));
-            AdaugaPiesa(new Pion(CuloareJoc.Alb), new Pozitie(6, 8));
+            AdaugaPiesa(new Pion(Culoare.Alb), new Pozitie(6, 0));
 
-            AdaugaPiesa(new Tun(CuloareJoc.Alb), new Pozitie(7, 1));
-            AdaugaPiesa(new Tun(CuloareJoc.Alb), new Pozitie(7, 7));
+            AdaugaPiesa(new Pion(Culoare.Alb), new Pozitie(6, 2));
+            AdaugaPiesa(new Pion(Culoare.Alb), new Pozitie(6, 4));
+            AdaugaPiesa(new Pion(Culoare.Alb), new Pozitie(6, 6));
+            AdaugaPiesa(new Pion(Culoare.Alb), new Pozitie(6, 8));
 
-            AdaugaPiesa(new Tura(CuloareJoc.Alb), new Pozitie(9, 0));
-            AdaugaPiesa(new Tura(CuloareJoc.Alb), new Pozitie(9, 8));
+            AdaugaPiesa(new Tun(Culoare.Alb), new Pozitie(7, 1));
+            AdaugaPiesa(new Tun(Culoare.Alb), new Pozitie(7, 7));
 
-            AdaugaPiesa(new Cal(CuloareJoc.Alb), new Pozitie(9, 1));
-            AdaugaPiesa(new Cal(CuloareJoc.Alb), new Pozitie(9, 7));
+            AdaugaPiesa(new Tura(Culoare.Alb), new Pozitie(9, 0));
+            AdaugaPiesa(new Tura(Culoare.Alb), new Pozitie(9, 8));
 
-            AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 2));
-            AdaugaPiesa(new Elefant(CuloareJoc.Alb), new Pozitie(9, 6));
+            AdaugaPiesa(new Cal(Culoare.Alb), new Pozitie(9, 1));
+            AdaugaPiesa(new Cal(Culoare.Alb), new Pozitie(9, 7));
 
-            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 3));
-            AdaugaPiesa(new Gardian(CuloareJoc.Alb), new Pozitie(9, 5));
+            AdaugaPiesa(new Elefant(Culoare.Alb), new Pozitie(9, 2));
+            AdaugaPiesa(new Elefant(Culoare.Alb), new Pozitie(9, 6));
 
-            AdaugaPiesa(new Rege(CuloareJoc.Alb), new Pozitie(9, 4));
+            AdaugaPiesa(new Gardian(Culoare.Alb), new Pozitie(9, 3));
+            AdaugaPiesa(new Gardian(Culoare.Alb), new Pozitie(9, 5));
+
+            AdaugaPiesa(new Rege(Culoare.Alb), new Pozitie(9, 4));
         }
 
         public void ActualizeazaIntreagaTabla(int[,] matriceTabla)
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie, coloana]));
                     if (piesa != ConstantaTabla.PiesaNula)
@@ -304,20 +305,20 @@ namespace ProiectVolovici
         {
             switch (codPiesa)
             {
-                case CodPiesa.PionAlb: return new Pion(CuloareJoc.Alb);
-                case CodPiesa.PionAlbastru: return new Pion(CuloareJoc.Albastru);
-                case CodPiesa.TuraAlba: return new Tura(CuloareJoc.Alb);
-                case CodPiesa.TuraAlbastra: return new Tura(CuloareJoc.Albastru);
-                case CodPiesa.TunAlb: return new Tun(CuloareJoc.Alb);
-                case CodPiesa.TunAlbastru: return new Tun(CuloareJoc.Albastru);
-                case CodPiesa.GardianAlb: return new Gardian(CuloareJoc.Alb);
-                case CodPiesa.GardianAlbastru: return new Gardian(CuloareJoc.Albastru);
-                case CodPiesa.ElefantAlb: return new Elefant(CuloareJoc.Alb);
-                case CodPiesa.ElefantAlbastru: return new Elefant(CuloareJoc.Albastru); ;
-                case CodPiesa.CalAlb: return new Cal(CuloareJoc.Alb);
-                case CodPiesa.CalAbastru: return new Cal(CuloareJoc.Albastru);
-                case CodPiesa.RegeAlb: return new Rege(CuloareJoc.Alb);
-                case CodPiesa.RegeAlbastru: return new Rege(CuloareJoc.Albastru);
+                case CodPiesa.PionAlb: return new Pion(Culoare.Alb);
+                case CodPiesa.PionAlbastru: return new Pion(Culoare.Albastru);
+                case CodPiesa.TuraAlba: return new Tura(Culoare.Alb);
+                case CodPiesa.TuraAlbastra: return new Tura(Culoare.Albastru);
+                case CodPiesa.TunAlb: return new Tun(Culoare.Alb);
+                case CodPiesa.TunAlbastru: return new Tun(Culoare.Albastru);
+                case CodPiesa.GardianAlb: return new Gardian(Culoare.Alb);
+                case CodPiesa.GardianAlbastru: return new Gardian(Culoare.Albastru);
+                case CodPiesa.ElefantAlb: return new Elefant(Culoare.Alb);
+                case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.Albastru); ;
+                case CodPiesa.CalAlb: return new Cal(Culoare.Alb);
+                case CodPiesa.CalAbastru: return new Cal(Culoare.Albastru);
+                case CodPiesa.RegeAlb: return new Rege(Culoare.Alb);
+                case CodPiesa.RegeAlbastru: return new Rege(Culoare.Albastru);
                 default: return ConstantaTabla.PiesaNula;
             }
         }
@@ -561,39 +562,12 @@ namespace ProiectVolovici
             }
         }
 
-        private double EvalueazaMatricea(int[,] matrice)
-        {
-
-            double scor = 0;
-
-
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; ++linie)
-            {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; ++coloana)
-                {
-                    CodPiesa codPiesa = (CodPiesa)matrice[linie, coloana];
-                    if (codPiesa != CodPiesa.Gol)
-                    {
-                        if (EstePiesaAlba(matrice[linie, coloana]))
-                        {
-                            scor -= ReturneazaScorPiese(codPiesa);
-                        }
-                        else
-                        {
-                            scor += ReturneazaScorPiese(codPiesa);
-                        }
-
-                    }
-                }
-            }
-            return scor;
-        }
-        public CuloareJoc ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
+        public Culoare ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
         {
             if ((int)codPiesa % 2 == 0)
-                return CuloareJoc.Alb;
+                return Culoare.Alb;
             else
-                return CuloareJoc.Albastru;
+                return Culoare.Albastru;
         }
         public bool EstePiesaAlba(int codPiesa)
         {
@@ -609,6 +583,7 @@ namespace ProiectVolovici
         {
             switch (codPiesa)
             {
+                case CodPiesa.Gol: return 0;
                 case CodPiesa.CalAlb: return ConstantaPiese.ValoareCal;
                 case CodPiesa.CalAbastru: return ConstantaPiese.ValoareCal;
 
@@ -634,19 +609,19 @@ namespace ProiectVolovici
             }
 
         }
-        public void AfiseazaMatriceDebug(int[,] matrice,int adancime)
+        public void AfiseazaMatriceDebug(int[,] matrice,int adancime,double eval)
         {
             Debug.WriteLine("------------------------------------------");
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     Debug.Write(matrice[linie, coloana] + " ");
                 }
                 Debug.WriteLine("");
             }
-            Debug.WriteLine("Evaluare:"+EvalueazaMatricea(matrice));
             Debug.WriteLine("Adancime:"+adancime);
+            Debug.WriteLine("Eval:" + eval);
             Debug.WriteLine("------------------------------------------");
         }
     }

@@ -4,13 +4,13 @@ namespace ProiectVolovici
 {
     internal class Tun : Piesa
     {
-        public Tun(CuloareJoc culoare)
+        public Tun(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTun;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bcannon;
                 this.Cod = CodPiesa.TunAlbastru;
@@ -33,7 +33,7 @@ namespace ProiectVolovici
             List<Pozitie> mutariLegale = new List<Pozitie>();
 
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
-            while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
+            while (liniePozitiiPosibile < ConstantaTabla.NrLinii)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                 if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
@@ -44,7 +44,7 @@ namespace ProiectVolovici
                 {
                     liniePozitiiPosibile++;
                     {
-                        while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
+                        while (liniePozitiiPosibile < ConstantaTabla.NrLinii)
                         {
                             pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
                             if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] != (int) CodPiesa.Gol &&
@@ -89,7 +89,7 @@ namespace ProiectVolovici
             }
             functie_coloane:
             int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
-            while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
+            while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
@@ -100,7 +100,7 @@ namespace ProiectVolovici
                 {
                     colonaPozitiePosibila++;
                     {
-                        while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
+                        while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
                         {
                             pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                             if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] != (int) CodPiesa.Gol &&

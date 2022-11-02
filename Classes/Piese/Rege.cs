@@ -5,13 +5,13 @@ namespace ProiectVolovici
 {
     internal class Rege : Piesa
     {
-        public Rege(CuloareJoc culoare)
+        public Rege(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareRege;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bking;
                 this.Cod = CodPiesa.RegeAlbastru;
@@ -44,8 +44,8 @@ namespace ProiectVolovici
             const int primaLinie = 0;
             const int primaColoana = 0;
 
-            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
-            int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaLinie = ConstantaTabla.NrLinii - 1;
+            int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
             foreach (Pozitie pozitie in mutariNefiltrate)
             {
@@ -68,7 +68,7 @@ namespace ProiectVolovici
             foreach(Pozitie pozitie in mutariPrimaFiltrare)
             {
                 bool okMutare = true;
-                if (this.CuloarePiesa == CuloareJoc.Alb)
+                if (this.CuloarePiesa == Culoare.Alb)
                 { 
                     for(int linie = this.Pozitie.Linie-1;linie>=0;linie--)
                     {
@@ -89,7 +89,7 @@ namespace ProiectVolovici
                     if(okMutare)
                         mutariADouaFiltrare.Add(pozitie);
                 }
-                else if (this.CuloarePiesa == CuloareJoc.Albastru)
+                else if (this.CuloarePiesa == Culoare.Albastru)
                 {
                     okMutare = true;
                     for (int linie = this.Pozitie.Linie + 1; linie <= 9; linie++)

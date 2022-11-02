@@ -23,7 +23,7 @@ namespace ProiectVolovici
         private void FormSinglePlayer_Load(object sender, EventArgs e)
         {
 
-            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(CuloareJoc.Alb), new Om(CuloareJoc.Albastru));
+            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.Alb), new Om(Culoare.Albastru));
 
             formPrincipal = this;
             jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1);

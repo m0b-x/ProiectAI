@@ -2,7 +2,7 @@
 {
     public class Om : Jucator
     {
-        public Om(CuloareJoc culoare) : base(culoare)
+        public Om(Culoare culoare) : base(culoare)
         {
             _culoare = culoare;
         }

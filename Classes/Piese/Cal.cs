@@ -5,13 +5,13 @@ namespace ProiectVolovici
 {
     internal class Cal : Piesa
     {
-        public Cal(CuloareJoc culoare)
+        public Cal(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareCal;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.bhorse;
                 this.Cod = CodPiesa.CalAbastru;
@@ -35,8 +35,8 @@ namespace ProiectVolovici
             const int primaLinie = 0;
             const int primaColoana = 0;
             
-            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
-            int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaLinie = ConstantaTabla.NrLinii - 1;
+            int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltruTabla = new List<Pozitie>();

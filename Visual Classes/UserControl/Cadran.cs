@@ -67,7 +67,7 @@ namespace ProiectVolovici
             }
         }
 
-        public bool EsteAdversar(CuloareJoc culoare)
+        public bool EsteAdversar(Culoare culoare)
         {
             if (this.CadranEsteGol())
             {

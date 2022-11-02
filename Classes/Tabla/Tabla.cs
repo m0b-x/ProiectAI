@@ -76,8 +76,8 @@ namespace ProiectVolovici
 
         public Tabla()
         {
-            _marimeVerticala = ConstantaTabla.MarimeVerticala;
-            _marimeOrizontala = ConstantaTabla.MarimeOrizontala;
+            _marimeVerticala = ConstantaTabla.NrLinii;
+            _marimeOrizontala = ConstantaTabla.NrColoane;
 
             _pragRau = ConstantaTabla.PragRau;
             _marimeRau = ConstantaTabla.MarimeRau;
@@ -90,14 +90,14 @@ namespace ProiectVolovici
             _pozitiiPalat = new List<Pozitie>();
             ConstantaTabla.InitializeazaPolitiiPalat(ref _pozitiiPalat);
 
-            _arrayCadrane = new Cadran[ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala];
+            _arrayCadrane = new Cadran[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
         }
 
         public void Dispose()
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     ArrayCadrane[linie, coloana].Dispose();
                 }

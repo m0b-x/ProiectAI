@@ -1,6 +1,6 @@
 ﻿namespace ProiectVolovici
 {
-    public enum CuloareJoc
+    public enum Culoare
     {
         Alb,
         Albastru,

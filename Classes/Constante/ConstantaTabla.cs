@@ -14,8 +14,8 @@ namespace ProiectVolovici
         public static int CompensareNrSahuri = 4;
         public static int NrMaximSahuri = NrSahuriPermise * CompensareNrSahuri;
 
-        public static readonly int MarimeOrizontala = 9;
-        public static readonly int MarimeVerticala = 10;
+        public static readonly int NrColoane = 9;
+        public static readonly int NrLinii = 10;
         public static readonly int PragRau = 4;
         public static readonly int MarimeRau = 10;
 

@@ -6,10 +6,10 @@ namespace ProiectVolovici
     public abstract class Jucator
     {
         protected String _nume;
-        protected CuloareJoc _culoare;
+        protected Culoare _culoare;
         protected List<Tuple<Pozitie, Pozitie>> _istoricMutari;
         protected Pozitie _ultimaPozitie;
-        public Jucator(CuloareJoc culoare)
+        public Jucator(Culoare culoare)
         {
             _culoare = culoare;
             _ultimaPozitie = new(-1,-1);
@@ -26,7 +26,7 @@ namespace ProiectVolovici
             set { _nume = value; }
         }
 
-        public CuloareJoc Culoare
+        public Culoare Culoare
         {
             get { return _culoare; }
             set { _culoare = value; }

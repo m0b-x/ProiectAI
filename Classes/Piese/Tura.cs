@@ -5,13 +5,13 @@
 
     internal class Tura : Piesa
     {
-        public Tura(CuloareJoc culoare)
+        public Tura(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTura;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.brook;
                 this.Cod = CodPiesa.TuraAlbastra;
@@ -34,10 +34,10 @@
         {
             List<Pozitie> mutariLegale = new List<Pozitie>();
             
-            int liniePozitiiPosibile = this.Pozitie.Linie + 1;
-            while (liniePozitiiPosibile < ConstantaTabla.MarimeVerticala)
+            int liniePoz = this.Pozitie.Linie + 1;
+            while (liniePoz < ConstantaTabla.NrLinii)
             {
-                Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
                 if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
@@ -50,13 +50,13 @@
                     }
                     break;
                 }
-                liniePozitiiPosibile++;
+                liniePoz++;
             }
 
-            liniePozitiiPosibile = this.Pozitie.Linie - 1;
-            while (liniePozitiiPosibile >= 0)
+            liniePoz = this.Pozitie.Linie - 1;
+            while (liniePoz >= 0)
             {
-                Pozitie pozitiePosibila = new Pozitie(linie: liniePozitiiPosibile, coloana: this.Pozitie.Coloana);
+                Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
                 if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
                 {
                     mutariLegale.Add(pozitiePosibila);
@@ -69,11 +69,11 @@
                     }
                     break;
                 }
-                liniePozitiiPosibile--;
+                liniePoz--;
             }
 
             int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
-            while (colonaPozitiePosibila < ConstantaTabla.MarimeOrizontala)
+            while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
             {
                 Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
                 if (matrice[pozitiePosibila.Linie, pozitiePosibila.Coloana] == (int) CodPiesa.Gol)
@@ -109,7 +109,6 @@
                 }
                 colonaPozitiePosibila--;
             }
-
             return mutariLegale;
         }
         

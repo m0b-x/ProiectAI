@@ -4,13 +4,13 @@ namespace ProiectVolovici
 {
     internal class Gardian : Piesa
     {
-        public Gardian(CuloareJoc culoare)
+        public Gardian(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareGardian;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.benvoy;
                 this.Cod = CodPiesa.GardianAlbastru;

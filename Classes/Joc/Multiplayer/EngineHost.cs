@@ -42,7 +42,7 @@ namespace ProiectVolovici
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
-            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
+            _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }
 
         public EngineHost(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
@@ -54,14 +54,14 @@ namespace ProiectVolovici
 
             _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
 
-            _parserTabla = new ParserTabla(ConstantaTabla.MarimeVerticala, ConstantaTabla.MarimeOrizontala);
+            _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }
 
         public void AdaugaEvenimentCadrane()
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     ArrayCadrane[linie, coloana].Click += OnCadranClick;
                 }
@@ -239,9 +239,9 @@ namespace ProiectVolovici
 
         private void StergeEvenimenteleCadranelor()
         {
-            for (int linie = 0; linie < ConstantaTabla.MarimeVerticala; linie++)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                for (int coloana = 0; coloana < ConstantaTabla.MarimeOrizontala; coloana++)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
                     ArrayCadrane[linie, coloana].Click -= OnCadranClick;
                 }

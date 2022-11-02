@@ -4,13 +4,13 @@ namespace ProiectVolovici
 {
     internal class Elefant : Piesa
     {
-        public Elefant(CuloareJoc culoare)
+        public Elefant(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareElefant;
             this.CuloarePiesa = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == CuloareJoc.Albastru)
+            if (culoare == Culoare.Albastru)
             {
                 this.Imagine = Properties.Resources.belephantrev2;
                 this.Cod = CodPiesa.ElefantAlbastru;
@@ -33,8 +33,8 @@ namespace ProiectVolovici
             const int primaLinie = 0;
             const int primaColoana = 0;
 
-            int ultimaLinie = ConstantaTabla.MarimeVerticala - 1;
-            int ultimaColoana = ConstantaTabla.MarimeOrizontala - 1;
+            int ultimaLinie = ConstantaTabla.NrLinii - 1;
+            int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltruTabla = new List<Pozitie>();
@@ -52,8 +52,8 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                if (pozitie.Linie > ConstantaTabla.PragRau && this.CuloarePiesa == CuloareJoc.Alb
-                        || pozitie.Linie <= ConstantaTabla.PragRau && this.CuloarePiesa == CuloareJoc.Albastru)
+                if (pozitie.Linie > ConstantaTabla.PragRau && this.CuloarePiesa == Culoare.Alb
+                        || pozitie.Linie <= ConstantaTabla.PragRau && this.CuloarePiesa == Culoare.Albastru)
                 {
                     if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {

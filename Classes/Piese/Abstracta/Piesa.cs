@@ -6,7 +6,7 @@ namespace ProiectVolovici
 {
     public abstract class Piesa : IDisposable
     {
-        protected CuloareJoc _culoarePiesa;
+        protected Culoare _culoarePiesa;
         protected Pozitie _pozitiePiesa;
         protected Image _imaginePiesa;
 
@@ -16,7 +16,7 @@ namespace ProiectVolovici
         protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
-        public CuloareJoc CuloarePiesa
+        public Culoare CuloarePiesa
         {
             get { return _culoarePiesa; }
             set { _culoarePiesa = value; }
