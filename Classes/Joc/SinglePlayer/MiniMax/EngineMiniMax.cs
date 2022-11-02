@@ -20,7 +20,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         public Dictionary<Piesa, int> _dictionarValoriPiese = new Dictionary<Piesa, int>();
 
-        List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new ();
+        List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new();
 
         private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
@@ -252,18 +252,28 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             double scorulMutariiOptime = 0;
 
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
-            if(tupluMutariSiMatriciPosibile.Count == 0)
+            if (tupluMutariSiMatriciPosibile.Count == 0)
             {
                 MessageBox.Show("Ai castigat");
                 TerminaMeciul();
                 return;
             }
             mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
+<<<<<<< HEAD
             scorulMutariiOptime = double.MinValue;
             
             _miniMaxAI.EvalueazaMutarileAI(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
             //VerificaSahulLaJucator(scorulMutariiOptime);
             
+=======
+
+            scorulMutariiOptime = _miniMaxAI.MiniMaxNeoptimizat(_miniMaxAI.EvalueazaMatricea(tupluMutariSiMatriciPosibile[0].Item2), tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity,
+                _miniMaxAI.Adancime, CuloareJoc.Albastru);
+
+            _miniMaxAI.CalculeazaMutareaAI(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
+            VerificaSahulLaJucator(scorulMutariiOptime);
+
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
             Pozitie pozitie = mutareaOptima.Item2;
 

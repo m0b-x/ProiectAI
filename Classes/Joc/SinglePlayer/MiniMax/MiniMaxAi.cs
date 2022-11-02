@@ -22,8 +22,12 @@ namespace ProiectVolovici
         {
             get { return _adancime; }
         }
+<<<<<<< HEAD
         List<Piesa> _pieseVirtuale = new();
         public MiniMaxAI(Culoare culoare,int adancime, EngineMiniMax engine) : base(culoare)
+=======
+        public MiniMaxAI(CuloareJoc culoare, int adancime, EngineMiniMax engine) : base(culoare)
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
         {
             this._engine = engine;
             _culoare = culoare;
@@ -33,6 +37,7 @@ namespace ProiectVolovici
 
         private void InitializeazaPiseleVirtuale()
         {
+<<<<<<< HEAD
             _pieseVirtuale.Add(null);
             _pieseVirtuale.Add(new Pion(Culoare.Alb));
             _pieseVirtuale.Add(new Pion(Culoare.Albastru));
@@ -51,6 +56,68 @@ namespace ProiectVolovici
         }
 
         public class DuplicateKeyComparerDesc<TKey>
+=======
+            #region IComparer<TKey> Members
+
+            public int Compare(double x, double y)
+            {
+                int result = x.CompareTo(y);
+
+                if (result == 0)
+                    return 1;
+                else
+                    return result;
+            }
+
+            #endregion
+        }
+        public class ComparatorMin<TKey>
+                        : IComparer<double>
+        {
+            #region IComparer<TKey> Members
+
+            public int Compare(double x, double y)
+            {
+                int result = y.CompareTo(x);
+
+                if (result == 0)
+                    return 1;
+                else
+                    return result;
+            }
+
+            #endregion
+        }
+
+        public void CalculeazaMutareaAI(ref Tuple<Pozitie, Pozitie> mutareaOptima,
+                                                ref double scorulMutariiOptime, List<Tuple<Tuple<Pozitie, Pozitie>,
+                                                int[,]>> tupluMutariSiMatriciPosibile)
+        {
+            if (_engine.NrMutari > 0)
+            {
+                double scorInitial = EvalueazaMatricea(_engine.MatriceCoduriPiese);
+                for (int mutareSiMatrice = 0; mutareSiMatrice < tupluMutariSiMatriciPosibile.Count; mutareSiMatrice++)
+                {
+                    double scorMutare = MiniMaxNeoptimizat(scorInitial + _engine.ReturneazaScorPiese((CodPiesa)_engine.MatriceCoduriPiese[tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1.Item2.Linie,
+                        tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1.Item2.Coloana]),
+                        tupluMutariSiMatriciPosibile[mutareSiMatrice].Item2, double.NegativeInfinity, double.PositiveInfinity
+                        , _adancime, CuloareJoc.Albastru);
+
+                    if (scorMutare >= scorulMutariiOptime)
+                    {
+                        mutareaOptima = tupluMutariSiMatriciPosibile[mutareSiMatrice].Item1;
+                        scorulMutariiOptime = scorMutare;
+                    }
+                }
+            }
+            else
+            {
+                int index = (int)GeneratorRandom.Next(tupluMutariSiMatriciPosibile.Count);
+                mutareaOptima = tupluMutariSiMatriciPosibile[index].Item1;
+            }
+        }
+        public class DuplicateKeyComparer<TKey>
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
                 :
              IComparer<TKey> where TKey : IComparable
         {
@@ -62,7 +129,7 @@ namespace ProiectVolovici
 
                 if (result == 0)
                     return 1;
-                else         
+                else
                     return result;
             }
 
@@ -160,11 +227,17 @@ namespace ProiectVolovici
                     matriceCopiata[i, j] = matriceInitiala[i, j];
             return matriceCopiata;
         }
+<<<<<<< HEAD
 
         public double MiniMaxNeoptimizat(double eval,int[,] matrice, double alpha, double beta, int adancime,
             Culoare culoare)
         {
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
+=======
+        public double MiniMaxNeoptimizat(double eval, int[,] matrice, double alpha, double beta, int adancime,
+            CuloareJoc culoare)
+        {
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
             if (adancime == 0)
             {
                 return eval;
@@ -182,6 +255,7 @@ namespace ProiectVolovici
                         {
                             if (matrice[linie, coloana]%2 == 0)
                             {
+<<<<<<< HEAD
                                 int piesaCareIa = matrice[linie, coloana];
                                 _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
@@ -201,6 +275,26 @@ namespace ProiectVolovici
 
                                     matrice[linie, coloana] = piesaCareIa;
                                     matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
+=======
+                                Piesa piesa = EngineJoc.ConvertesteCodPiesaInObiect((CodPiesa)matrice[linie, coloana]);
+                                piesa.Pozitie = new Pozitie(linie, coloana);
+                                var mutariPosibile = piesa.ReturneazaMutariPosibile(matrice);
+                                foreach (var mutarePosibila in mutariPosibile)
+                                {
+                                    var matriceSuccesor = matrice;
+
+                                    var piesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
+
+                                    newBeta = Math.Min(newBeta, MiniMaxNeoptimizat(eval -
+                                        _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+                                        matriceSuccesor, alpha, beta, adancime - 1,
+                                        CuloareJoc.Alb));
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesaLuata;
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
 
                                     if (beta <= alpha)
                                         break;
@@ -229,6 +323,7 @@ namespace ProiectVolovici
 
                                 foreach (var mutarePosibila in mutariPosibile)
                                 {
+<<<<<<< HEAD
                                     //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
                                     var piesaLuata = matrice[mutarePosibila.Linie, mutarePosibila.Coloana];
 
@@ -239,6 +334,21 @@ namespace ProiectVolovici
                                         matrice, alpha, beta, adancime - 1,
                                         Culoare.Albastru));
                                     beta = Math.Min(newBeta, beta);
+=======
+                                    var matriceSuccesor = matrice;
+                                    var piesaLuata = matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana];
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesa.Cod;
+                                    newAlpha = Math.Max(newAlpha, MiniMaxNeoptimizat(eval +
+                                        _engine.ReturneazaScorPiese((CodPiesa)piesaLuata), matriceSuccesor,
+                                        alpha, beta, adancime - 1,
+                                        CuloareJoc.Albastru));
+
+                                    matriceSuccesor[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)piesa.Cod;
+                                    matriceSuccesor[mutarePosibila.Linie, mutarePosibila.Coloana] = (int)piesaLuata;
+
+>>>>>>> f1526d87b5bd5e983b5b3c2ce4b7ecedb2ebe8ad
 
                                     matrice[linie, coloana] = piesaCareIa;
                                     matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
