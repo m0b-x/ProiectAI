@@ -250,7 +250,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             cronometru.Start();
 
 
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
+            var tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
             if(tupluMutariSiMatriciPosibile.Count == 0)
             {
                 MessageBox.Show("Ai castigat");

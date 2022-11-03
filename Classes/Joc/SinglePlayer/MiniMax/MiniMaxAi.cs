@@ -68,65 +68,118 @@ namespace ProiectVolovici
 
             #endregion
         }
-        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> CalculeazaPrimeleMutariAI()
+        public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI()
         {
-            SortedList<double, Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = new(new DuplicateKeyComparerDesc<double>());
+            SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile = new(new DuplicateKeyComparerDesc<double>());
             double evaluareInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
+            var copieMatrice = CopiazaMatrice( _engine.MatriceCoduriPiese, ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
             for (int linie = 0; linie < ConstantaTabla.NrLinii; ++linie)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; ++coloana)
                 {
-                    if (_engine.MatriceCoduriPiese[linie, coloana] != (int)CodPiesa.Gol)
+                    if ((_engine.MatriceCoduriPiese[linie, coloana]-1) % 2 == 1)
                     {
-                        if (_engine.MatriceCoduriPiese[linie, coloana] % 2 == 0)
+                        _pieseVirtuale[_engine.MatriceCoduriPiese[linie, coloana]].Pozitie = new Pozitie(linie, coloana);
+                        var mutari = _pieseVirtuale[_engine.MatriceCoduriPiese[linie, coloana]].ReturneazaMutariPosibile(_engine.MatriceCoduriPiese);
+                        foreach (var mut in mutari)
                         {
-                            _pieseVirtuale[_engine.MatriceCoduriPiese[linie, coloana]].Pozitie = new Pozitie(linie, coloana);
-                            var matriciMutari = _engine.ReturneazaMatriciMutariPosibile(_pieseVirtuale[_engine.MatriceCoduriPiese[linie, coloana]], _engine.MatriceCoduriPiese);
-                            foreach (var matMut in matriciMutari)
-                            {
-                                tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.ReturneazaScorPiese((CodPiesa)_engine.MatriceCoduriPiese[matMut.Item1.Item2.Linie, matMut.Item1.Item2.Coloana]), matMut);
-                            }
+                            int piesaLuata = copieMatrice[mut.Linie, mut.Coloana];
+                            int piesaCareIa = _engine.MatriceCoduriPiese[linie, coloana];
+
+                            copieMatrice[mut.Linie, mut.Coloana] = piesaCareIa;
+                            copieMatrice[linie, coloana] = (int)CodPiesa.Gol;
+
+                            tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata)
+                                , new(new(linie, coloana),mut));
+
+                            copieMatrice[mut.Linie, mut.Coloana] =  piesaLuata;
+                            copieMatrice[linie, coloana] = piesaCareIa;
+
                         }
                     }
                 }
             }
-            return tupluMutariSiMatriciPosibile.Values.ToList();
+            return tupluMutariSiMatriciPosibile;
         }
         //TODO:adauga pozitia initiala
-        public Tuple<Tuple<Pozitie, Pozitie>, double> EvalueazaMutarileAI( List<Tuple<Tuple<Pozitie, Pozitie>,int[,]>> tupluMutariSiMatriciPosibile)
+        public Tuple<Tuple<Pozitie, Pozitie>, double> EvalueazaMutarileAI( SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile)
         {
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
-            Tuple<Pozitie, Pozitie> mutareOptima = tupluMutariSiMatriciPosibile[0].Item1;
+            Tuple<Pozitie, Pozitie> mutareOptima = tupluMutariSiMatriciPosibile.Values[0];
 
+            var matriceInitiala = _engine.MatriceCoduriPiese.Clone() as int[,];
 
             int codPiesaLuata = _engine.MatriceCoduriPiese[
-                tupluMutariSiMatriciPosibile[0].Item1.Item2.Linie,
-                tupluMutariSiMatriciPosibile[0].Item1.Item2.Coloana];
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana];
+
+            int codPiesaCareIa = _engine.MatriceCoduriPiese[
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana];
+
+            matriceInitiala[
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana] = 0;
+
+            matriceInitiala[
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana] = codPiesaCareIa;
 
             double scorMutareOptima = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
-                    tupluMutariSiMatriciPosibile[0].Item2, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime);
+                    matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
+                    , _adancime-1);
+
+            matriceInitiala[
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana] = codPiesaCareIa;
+
+            matriceInitiala[
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
+                tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana] = codPiesaLuata;
+
 
             for (int i = 1; i < tupluMutariSiMatriciPosibile.Count; i++)
             {
                 codPiesaLuata = _engine.MatriceCoduriPiese[
-                    tupluMutariSiMatriciPosibile[i].Item1.Item2.Linie,
-                    tupluMutariSiMatriciPosibile[i].Item1.Item2.Coloana];
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Coloana];
+
+                codPiesaCareIa = _engine.MatriceCoduriPiese[
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Coloana];
+
+
+                matriceInitiala[
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Coloana] = 0;
+
+                matriceInitiala[
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Coloana] = codPiesaCareIa;
 
                 double scorMutare = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
-                    tupluMutariSiMatriciPosibile[i].Item2, double.NegativeInfinity, double.PositiveInfinity
-                    ,_adancime);
+                    matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
+                    , _adancime-1);
+
+                matriceInitiala[
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item1.Coloana] = codPiesaCareIa;
+
+                matriceInitiala[
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Linie,
+                    tupluMutariSiMatriciPosibile.Values[i].Item2.Coloana] = codPiesaLuata;
+
                 //Debug.WriteLine(tupluMutariSiMatriciPosibile[i].Item1.Item1.Linie + "," + tupluMutariSiMatriciPosibile[i].Item1.Item1.Coloana + "->"+
                 //    tupluMutariSiMatriciPosibile[i].Item1.Item2.Linie + "," + tupluMutariSiMatriciPosibile[i].Item1.Item2.Coloana+" "+ scorMutare);
 
                 if (scorMutare >= scorMutareOptima)
                 {
-                    mutareOptima = tupluMutariSiMatriciPosibile[i].Item1;
+                    mutareOptima = tupluMutariSiMatriciPosibile.Values[i];
                     scorMutareOptima = scorMutare;
                 }
-                Debug.WriteLine(scorMutareOptima);
+                //Debug.WriteLine(scorMutareOptima);
             }
             return new(mutareOptima, scorMutareOptima);
         }
