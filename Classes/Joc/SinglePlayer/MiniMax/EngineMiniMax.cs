@@ -42,24 +42,24 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator, int adancime = ConstantaTabla.Adancime) : base(parentForm)
+        public EngineMiniMax(Form parentForm, Om jucator) : base(parentForm)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, adancime, this);
+            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
 
             _randulOmului = true;
             InitializeazaTimerAsteptare();
             EsteRandulTau();
         }
 
-        public EngineMiniMax(Form parentForm, int[,] matriceTabla, Om jucator, int adancime = 0) : base(parentForm, matriceTabla)
+        public EngineMiniMax(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, adancime, this);
+            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
             _randulOmului = false;
             InitializeazaTimerAsteptare();
         }
@@ -248,8 +248,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             Stopwatch cronometru = new();
             cronometru.Start();
-            Tuple<Pozitie, Pozitie> mutareaOptima = new(new Pozitie(0, 0), new Pozitie(0, 0));
-            double scorulMutariiOptime = 0;
+
 
             List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
             if(tupluMutariSiMatriciPosibile.Count == 0)
@@ -258,14 +257,11 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 TerminaMeciul();
                 return;
             }
-            mutareaOptima = tupluMutariSiMatriciPosibile[0].Item1;
-            scorulMutariiOptime = double.MinValue;
-            
-            _miniMaxAI.EvalueazaMutarileAI(ref mutareaOptima, ref scorulMutariiOptime, tupluMutariSiMatriciPosibile);
+            var mutareaOptima = _miniMaxAI.EvalueazaMutarileAI(tupluMutariSiMatriciPosibile);
             //VerificaSahulLaJucator(scorulMutariiOptime);
             
-            Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1);
-            Pozitie pozitie = mutareaOptima.Item2;
+            Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
+            Pozitie pozitie = mutareaOptima.Item1.Item2;
 
             RealizeazaMutareaLocal(piesa, pozitie);
             _miniMaxAI.UltimaPozitie = pozitie;
