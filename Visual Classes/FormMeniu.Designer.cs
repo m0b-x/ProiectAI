@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMeniu));
             this.labelTitlu = new System.Windows.Forms.Label();
             this.butonExit = new System.Windows.Forms.Button();
             this.butonMultiPlayer = new System.Windows.Forms.Button();
@@ -38,11 +39,11 @@
             // 
             this.labelTitlu.AutoSize = true;
             this.labelTitlu.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelTitlu.Location = new System.Drawing.Point(12, 34);
+            this.labelTitlu.Location = new System.Drawing.Point(24, 31);
             this.labelTitlu.Name = "labelTitlu";
-            this.labelTitlu.Size = new System.Drawing.Size(161, 37);
+            this.labelTitlu.Size = new System.Drawing.Size(143, 37);
             this.labelTitlu.TabIndex = 8;
-            this.labelTitlu.Text = "Xiang Qi";
+            this.labelTitlu.Text = "Xiangqi";
             // 
             // butonExit
             // 
@@ -92,8 +93,9 @@
             this.Controls.Add(this.butonMultiPlayer);
             this.Controls.Add(this.butonSinglePlayer);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMeniu";
-            this.Text = "FormMeniu";
+            this.ShowIcon = false;
             this.Load += new System.EventHandler(this.FormMeniu_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
