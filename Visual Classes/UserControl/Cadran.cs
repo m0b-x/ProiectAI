@@ -73,7 +73,7 @@ namespace ProiectVolovici
             {
                 return true;
             }
-            if (this._piesaCadran.CuloarePiesa == culoare)
+            if (this._piesaCadran.Culoare == culoare)
             {
                 return false;
             }

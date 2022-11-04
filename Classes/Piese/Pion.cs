@@ -7,7 +7,7 @@ namespace ProiectVolovici
         public Pion(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoarePion;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)
@@ -39,7 +39,7 @@ namespace ProiectVolovici
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
-            if (this.CuloarePiesa == Culoare.Albastru)
+            if (this.Culoare == Culoare.Albastru)
             {
                 mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
                 if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)

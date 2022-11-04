@@ -7,7 +7,7 @@ namespace ProiectVolovici
         public Tun(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTun;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)

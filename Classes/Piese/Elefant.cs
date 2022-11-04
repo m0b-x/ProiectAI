@@ -7,7 +7,7 @@ namespace ProiectVolovici
         public Elefant(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareElefant;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)
@@ -52,8 +52,8 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                if (pozitie.Linie > ConstantaTabla.PragRau && this.CuloarePiesa == Culoare.Alb
-                        || pozitie.Linie <= ConstantaTabla.PragRau && this.CuloarePiesa == Culoare.Albastru)
+                if (pozitie.Linie > ConstantaTabla.PragRau && this.Culoare == Culoare.Alb
+                        || pozitie.Linie <= ConstantaTabla.PragRau && this.Culoare == Culoare.Albastru)
                 {
                     if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
                     {

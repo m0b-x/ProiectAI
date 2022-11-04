@@ -264,7 +264,7 @@ namespace ProiectVolovici
 
                         if (piesa != null)
                         {
-                            if (piesa.CuloarePiesa != _jucatorHost.Culoare)
+                            if (piesa.Culoare != _jucatorHost.Culoare)
                             {
                                 return;
                             }

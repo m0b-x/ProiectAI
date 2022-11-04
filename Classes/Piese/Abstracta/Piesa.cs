@@ -16,7 +16,7 @@ namespace ProiectVolovici
         protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
-        public Culoare CuloarePiesa
+        public Culoare Culoare
         {
             get { return _culoarePiesa; }
             set { _culoarePiesa = value; }

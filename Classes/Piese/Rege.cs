@@ -8,7 +8,7 @@ namespace ProiectVolovici
         public Rege(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareRege;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)
@@ -68,7 +68,7 @@ namespace ProiectVolovici
             foreach(Pozitie pozitie in mutariPrimaFiltrare)
             {
                 bool okMutare = true;
-                if (this.CuloarePiesa == Culoare.Alb)
+                if (this.Culoare == Culoare.Alb)
                 { 
                     for(int linie = this.Pozitie.Linie-1;linie>=0;linie--)
                     {
@@ -89,7 +89,7 @@ namespace ProiectVolovici
                     if(okMutare)
                         mutariADouaFiltrare.Add(pozitie);
                 }
-                else if (this.CuloarePiesa == Culoare.Albastru)
+                else if (this.Culoare == Culoare.Albastru)
                 {
                     okMutare = true;
                     for (int linie = this.Pozitie.Linie + 1; linie <= 9; linie++)

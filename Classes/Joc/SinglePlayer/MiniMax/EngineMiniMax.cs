@@ -183,7 +183,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
                         if (piesa != null)
                         {
-                            if (piesa.CuloarePiesa != _jucatorOm.Culoare)
+                            if (piesa.Culoare != _jucatorOm.Culoare)
                             {
                                 return;
                             }
@@ -219,7 +219,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             NuEsteRandulTau();
-                            VerificaSahulLaAi(pozitie);
+                            VerificaSahulPersistent();
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             _jucatorOm.UltimaPozitie = pozitie;
@@ -228,6 +228,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                 await Task.Run(() =>
                                 {
                                     RealizeazaMutareaAI();
+                                    VerificaSahulPersistent();
                                 });
                             }
                         }
@@ -249,20 +250,19 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Stopwatch cronometru = new();
             cronometru.Start();
 
-
             var tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
-            if(tupluMutariSiMatriciPosibile.Count == 0)
-            {
-                MessageBox.Show("Ai castigat");
-                TerminaMeciul();
-                return;
-            }
             var mutareaOptima = _miniMaxAI.EvalueazaMutarileAI(tupluMutariSiMatriciPosibile);
-            //VerificaSahulLaJucator(scorulMutariiOptime);
             
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
-
+            Piesa piesaLuata = GetPiesaCuPozitia(mutareaOptima.Item1.Item2);
+            if (piesaLuata != ConstantaTabla.PiesaNula)
+            {
+                if (piesaLuata.Cod == CodPiesa.RegeAlb)
+                {
+                    TerminaMeciul();
+                }
+            }
             RealizeazaMutareaLocal(piesa, pozitie);
             _miniMaxAI.UltimaPozitie = pozitie;
             EsteRandulTau();
@@ -297,42 +297,57 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             return ConstantaTabla.NuEsteSah;
         }
 
-        public void VerificaSahulPersistent()
+
+        public void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
         {
-            int tentativaSah = VerificaTentativaDeSah();
-
-            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
+            switch(tipSah)
             {
-                _nrSahuriLaAlbastru++;
+                case TipSah.Nespecificat:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.RegeAlbLuat:
+                    {
+                        MessageBox.Show("2");
+                        break;
+                    }
+                case TipSah.RegeAlbastruLuat:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.SahPersistentAlb:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.SahPersistentAlbastru:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.FaraMutariAlb:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.FaraMutariAlbastru:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.AbandonAlb:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
+                case TipSah.AbandonAlbastru:
+                    {
+                        MessageBox.Show("1");
+                        break;
+                    }
             }
-            else
-            {
-                _nrSahuriLaAlbastru = 0;
-            }
-
-            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
-            {
-                _nrSahuriLaAlbastru++;
-            }
-            else
-            {
-                _nrSahuriLaAlb = 0;
-            }
-
-            if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
-            {
-                MessageBox.Show("Ai castigat(regula de 3)");
-                TerminaMeciul();
-            }
-            if (_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
-            {
-                MessageBox.Show("Ai pierdut(regula de 3)");
-                TerminaMeciul();
-            }
-        }
-
-        public void TerminaMeciul()
-        {
             _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();
         }
@@ -347,35 +362,55 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 }
             }
         }
-
-        private void VerificaSahulLaAi(Pozitie pozitie)
+        private void VerificaSahulPersistent()
         {
-            Piesa piesa = GetPiesaCuPozitia(pozitie);
-            if (piesa != null)
+            int codRegeAlb = (int)CodPiesa.RegeAlb;
+            int codRegeAlbastru = (int)CodPiesa.RegeAlbastru;
+            bool esteSah = false;
+            foreach (var piesa in ListaPieseAlbe)
             {
-                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                foreach(var mutare in mutariPosibile)
                 {
-                    MessageBox.Show("Ai castigat");
-                    TerminaMeciul();
+                    if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlbastru)
+                    {
+                        _nrSahuriLaAlbastru++;
+                        if (_nrSahuriLaAlbastru == 3)
+                        {
+                            MessageBox.Show("SEX§");
+                            TerminaMeciul();
+                            esteSah = true;
+                            break;
+                        }
+                    }
                 }
             }
-        }
-        private void VerificaSahulLaJucator(double scorulMutariiOptime)
-        {
-
-            VerificaSahulPersistent();
-            if (scorulMutariiOptime > ConstantaPiese.PragSahLaAlbastru)
+            if(esteSah == false)
             {
-                MessageBox.Show($"Ai pierdut(rege luat){scorulMutariiOptime}");
-                TerminaMeciul();
+                _nrSahuriLaAlbastru = 0;
             }
-            else
+            esteSah = false;
+            foreach (var piesa in ListaPieseAlbastre)
             {
-                if (scorulMutariiOptime < ConstantaPiese.PragSahLaAlb)
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                foreach (var mutare in mutariPosibile)
                 {
-                    MessageBox.Show($"Ai castigat(rege luat){scorulMutariiOptime}");
-                    TerminaMeciul();
+                    if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlb)
+                    {
+                        _nrSahuriLaAlb++;
+                        if (_nrSahuriLaAlb == 3)
+                        {
+                            MessageBox.Show("SEX§2");
+                            TerminaMeciul();
+                            esteSah = true;
+                            break;
+                        }
+                    }
                 }
+            }
+            if (esteSah == false)
+            {
+                _nrSahuriLaAlb = 0;
             }
         }
 

@@ -8,7 +8,7 @@
         public Tura(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTura;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)

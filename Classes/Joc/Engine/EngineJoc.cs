@@ -15,6 +15,8 @@ namespace ProiectVolovici
         protected int[,] _matriceCodPiese;
 
         private List<Piesa> _listaPiese;
+        private List<Piesa> _listaPieseAlbe;
+        private List<Piesa> _listaPieseAlbastre;
         protected List<Pozitie> _pozitiiMutariPosibile;
 
         private Label[] _labelColoane;
@@ -41,6 +43,16 @@ namespace ProiectVolovici
         {
             get { return _listaPiese; }
             set { _listaPiese = value; }
+        }
+        public List<Piesa> ListaPieseAlbe
+        {
+            get { return _listaPieseAlbe; }
+            set { _listaPieseAlbe = value; }
+        }
+        public List<Piesa> ListaPieseAlbastre
+        {
+            get { return _listaPieseAlbastre; }
+            set { _listaPieseAlbastre = value; }
         }
 
         public Form ParentForm
@@ -130,6 +142,8 @@ namespace ProiectVolovici
         {
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
+            _listaPieseAlbe = new List<Piesa>();
+            _listaPieseAlbastre = new List<Piesa>();
             _pozitiiMutariPosibile = new List<Pozitie>();
 
             _tabla = new Tabla();
@@ -155,6 +169,8 @@ namespace ProiectVolovici
         {
             _parentForm = parentForm;
             _listaPiese = new List<Piesa>();
+            _listaPieseAlbe = new List<Piesa>();
+            _listaPieseAlbastre = new List<Piesa>();
             _pozitiiMutariPosibile = new List<Pozitie>();
 
             _tabla = new Tabla();
@@ -446,8 +462,19 @@ namespace ProiectVolovici
                 {
                     piesa.Pozitie = pozitie;
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
-                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Dispose();
                     ListaPiese.Add(piesa);
+                    ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Dispose();
+
+                    if (piesa.Culoare == Culoare.Alb)
+                    {
+                        ListaPieseAlbe.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                        ListaPieseAlbe.Add(piesa);
+                    }
+                    else
+                    {
+                        ListaPieseAlbastre.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                        ListaPieseAlbastre.Add(piesa);
+                    }
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PozitieCadran = pozitie;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
@@ -455,6 +482,14 @@ namespace ProiectVolovici
                 }
                 else
                 {
+                    if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran.Culoare == Culoare.Alb)
+                    {
+                        ListaPieseAlbe.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                    }
+                    else
+                    {
+                        ListaPieseAlbastre.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
+                    }
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran);
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = ConstantaTabla.PiesaNula;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
@@ -466,6 +501,15 @@ namespace ProiectVolovici
                 if (piesa != ConstantaTabla.PiesaNula)
                 {
                     piesa.Pozitie = pozitie;
+
+                    if (piesa.Culoare == Culoare.Alb)
+                    {
+                        ListaPieseAlbe.Add(piesa);
+                    }
+                    else
+                    {
+                        ListaPieseAlbastre.Add(piesa);
+                    }
                     ListaPiese.Add(piesa);
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PozitieCadran = pozitie;

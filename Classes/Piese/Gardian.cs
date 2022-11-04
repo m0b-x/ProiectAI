@@ -7,7 +7,7 @@ namespace ProiectVolovici
         public Gardian(Culoare culoare)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareGardian;
-            this.CuloarePiesa = culoare;
+            this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
             if (culoare == Culoare.Albastru)

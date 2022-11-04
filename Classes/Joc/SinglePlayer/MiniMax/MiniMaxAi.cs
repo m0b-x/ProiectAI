@@ -113,6 +113,9 @@ namespace ProiectVolovici
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana];
 
+            if(codPiesaLuata == (int) CodPiesa.RegeAlb)
+                return new(mutareOptima, double.MaxValue);
+
             int codPiesaCareIa = _engine.MatriceCoduriPiese[
                 tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
                 tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana];
@@ -144,6 +147,9 @@ namespace ProiectVolovici
                 codPiesaLuata = _engine.MatriceCoduriPiese[
                     tupluMutariSiMatriciPosibile.Values[i].Item2.Linie,
                     tupluMutariSiMatriciPosibile.Values[i].Item2.Coloana];
+
+                if (codPiesaLuata == (int)CodPiesa.RegeAlb)
+                    return new(mutareOptima, double.MaxValue);
 
                 codPiesaCareIa = _engine.MatriceCoduriPiese[
                     tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
