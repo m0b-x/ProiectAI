@@ -337,16 +337,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                         MessageBox.Show("1");
                         break;
                     }
-                case TipSah.AbandonAlb:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.AbandonAlbastru:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
             }
             _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();

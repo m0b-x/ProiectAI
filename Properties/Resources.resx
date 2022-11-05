@@ -118,61 +118,67 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="welephantrev2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\welephantrev2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bking.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wcannon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wcannon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bhorse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bhorse.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wenvoy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wenvoy.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="benvoy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\benvoy.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="belephantrev2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\belephantrev2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wking.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="whorse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\whorse.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_noBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_noBackground.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="bcannon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bcannon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="belephantrev2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\belephantrev2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="benvoy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\benvoy.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bhorse" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bhorse.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bking" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bking.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bpawn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bpawn.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="brook" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\brook.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icon_noBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon_noBackground.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="piesaLuata" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\piesaLuata.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="piesaMutata" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\piesaMutata.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="sunetMiscareGresita" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sunetMiscareGresita.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="wcannon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wcannon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="welephantrev2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\welephantrev2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="wenvoy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wenvoy.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="whorse" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\whorse.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="wking" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wking.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wpawn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wpawn.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="piesaMutata" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\piesaMutata.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bpawn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bpawn.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="party-popper_1f389" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\party-popper_1f389.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="wrook" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wrook.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sunetMiscareGresita" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sunetMiscareGresita.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="brook" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brook.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disappointed_but_relieved_face_1f625" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disappointed-but-relieved-face_1f625.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

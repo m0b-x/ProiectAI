@@ -141,12 +141,32 @@ namespace ProiectVolovici.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap disappointed_but_relieved_face_1f625 {
+            get {
+                object obj = ResourceManager.GetObject("disappointed_but_relieved_face_1f625", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon_noBackground {
             get {
                 object obj = ResourceManager.GetObject("icon_noBackground", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap party_popper_1f389 {
+            get {
+                object obj = ResourceManager.GetObject("party-popper_1f389", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
