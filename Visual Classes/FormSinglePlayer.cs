@@ -14,7 +14,7 @@ namespace ProiectVolovici
 {
     public partial class FormSinglePlayer : Form
     {
-        public FormSinglePlayer()
+        public FormSinglePlayer(Form form)
         {
             InitializeComponent();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProiectVolovici.Visual_Classes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -653,6 +654,57 @@ namespace ProiectVolovici
             }
 
         }
+
+        public virtual void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
+        {
+            switch (tipSah)
+            {
+                case TipSah.Nespecificat:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.NoCotest, "Meci terminat!", "(nespecificat)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.RegeAlbLuat:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlbastru, "Meci terminat!", "(Albastru castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.RegeAlbastruLuat:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlb, "Meci terminat!", "(Alb castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.SahPersistentLaAlb:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlbastru, "Meci terminat!", "(Albastru castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.SahPersistentLaAlbastru:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlb, "Meci terminat!", "(Alb castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.FaraMutariAlb:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlbastru, "Meci terminat!", "(Albastru castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+                case TipSah.FaraMutariAlbastru:
+                    {
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlb, "Meci terminat!", "(Alb castiga!)");
+                        formMesaj.ShowDialog();
+                        break;
+                    }
+            }
+            _esteGataMeciul = true;
+        }
+
         public void AfiseazaMatriceDebug(int[,] matrice,int adancime,double eval)
         {
             Debug.WriteLine("------------------------------------------");

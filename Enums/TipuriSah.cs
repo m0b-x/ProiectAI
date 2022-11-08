@@ -2,11 +2,12 @@
 {
     public enum TipSah : int
     {
+        NuEsteSah = -1,
         Nespecificat = 0,
         RegeAlbLuat = 1,
         RegeAlbastruLuat = 2,
-        SahPersistentAlb = 3,
-        SahPersistentAlbastru = 4,
+        SahPersistentLaAlb = 3,
+        SahPersistentLaAlbastru = 4,
         FaraMutariAlb = 5,
         FaraMutariAlbastru = 6,
         AbandonAlb = 7,

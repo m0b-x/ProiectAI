@@ -25,7 +25,7 @@ namespace ProiectVolovici
         private void butonSinglePlayer_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer();
+            Form formSinglePlayer = new FormSinglePlayer(this);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }

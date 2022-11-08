@@ -202,12 +202,10 @@ namespace ProiectVolovici
 
             if (_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
             {
-                MessageBox.Show("Ai castigat");
                 TerminaMeciul();
             }
             if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
             {
-                MessageBox.Show("Ai pierdut");
                 TerminaMeciul();
             }
         }

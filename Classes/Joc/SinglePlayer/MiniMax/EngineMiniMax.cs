@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProiectVolovici.Visual_Classes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -164,7 +165,30 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             _nrMutari++;
             PornesteTimerAsteptareAI();
+            var tipSah = VerificaSahulPersistent();
+            var piesaLuata = MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana];
             base.RealizeazaMutareaLocal(piesa, pozitie);
+            TerminaMeciulDacaEsteSah(tipSah, piesaLuata);
+        }
+
+        private void TerminaMeciulDacaEsteSah(TipSah tipSah, int piesaLuata)
+        {
+            if (piesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                TerminaMeciul(TipSah.RegeAlbLuat);
+            }
+            else if (piesaLuata == (int)CodPiesa.RegeAlbastru)
+            {
+                TerminaMeciul(TipSah.RegeAlbastruLuat);
+            }
+            if (tipSah == TipSah.SahPersistentLaAlb)
+            {
+                TerminaMeciul(TipSah.SahPersistentLaAlb);
+            }
+            else if (tipSah == TipSah.SahPersistentLaAlbastru)
+            {
+                TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+            }
         }
 
         public async void OnCadranClick(object sender, EventArgs e)
@@ -219,7 +243,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             NuEsteRandulTau();
-                            VerificaSahulPersistent();
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             _jucatorOm.UltimaPozitie = pozitie;
@@ -227,8 +250,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             {
                                 await Task.Run(() =>
                                 {
-                                    RealizeazaMutareaAI();
-                                    VerificaSahulPersistent();
+                                    RealizeazaMutareaAI();;
                                 });
                             }
                         }
@@ -256,20 +278,13 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
             Piesa piesaLuata = GetPiesaCuPozitia(mutareaOptima.Item1.Item2);
-            if (piesaLuata != ConstantaTabla.PiesaNula)
-            {
-                if (piesaLuata.Cod == CodPiesa.RegeAlb)
-                {
-                    TerminaMeciul();
-                }
-            }
+            OpresteTimerAsteptareAI();
+            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             RealizeazaMutareaLocal(piesa, pozitie);
             _miniMaxAI.UltimaPozitie = pozitie;
             EsteRandulTau();
             Debug.WriteLine(cronometru.Elapsed);
             cronometru.Stop();
-            OpresteTimerAsteptareAI();
-            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
         }
 
 
@@ -297,51 +312,11 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             return ConstantaTabla.NuEsteSah;
         }
 
-
-        public void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
+        public override void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
         {
-            switch(tipSah)
-            {
-                case TipSah.Nespecificat:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.RegeAlbLuat:
-                    {
-                        MessageBox.Show("2");
-                        break;
-                    }
-                case TipSah.RegeAlbastruLuat:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.SahPersistentAlb:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.SahPersistentAlbastru:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.FaraMutariAlb:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-                case TipSah.FaraMutariAlbastru:
-                    {
-                        MessageBox.Show("1");
-                        break;
-                    }
-            }
-            _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();
+            base.TerminaMeciul(tipSah);
         }
-
         private void StergeEvenimenteleCadranelor()
         {
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
@@ -352,7 +327,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 }
             }
         }
-        private void VerificaSahulPersistent()
+        private TipSah VerificaSahulPersistent()
         {
             int codRegeAlb = (int)CodPiesa.RegeAlb;
             int codRegeAlbastru = (int)CodPiesa.RegeAlbastru;
@@ -367,10 +342,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                         _nrSahuriLaAlbastru++;
                         if (_nrSahuriLaAlbastru == 3)
                         {
-                            MessageBox.Show("SEX§");
-                            TerminaMeciul();
                             esteSah = true;
-                            break;
+                            return TipSah.SahPersistentLaAlbastru;
                         }
                     }
                 }
@@ -389,11 +362,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     {
                         _nrSahuriLaAlb++;
                         if (_nrSahuriLaAlb == 3)
-                        {
-                            MessageBox.Show("SEX§2");
-                            TerminaMeciul();
+                        { 
                             esteSah = true;
-                            break;
+                            return TipSah.SahPersistentLaAlb;
                         }
                     }
                 }
@@ -402,6 +373,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             {
                 _nrSahuriLaAlb = 0;
             }
+            return TipSah.NuEsteSah;
         }
 
     }

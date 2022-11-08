@@ -43,13 +43,13 @@
             this.panelDocked.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelDocked.Location = new System.Drawing.Point(0, 122);
             this.panelDocked.Name = "panelDocked";
-            this.panelDocked.Size = new System.Drawing.Size(312, 13);
+            this.panelDocked.Size = new System.Drawing.Size(359, 13);
             this.panelDocked.TabIndex = 0;
             // 
             // pictureBoxEmote
             // 
             this.pictureBoxEmote.Image = global::ProiectVolovici.Properties.Resources.winemoji;
-            this.pictureBoxEmote.Location = new System.Drawing.Point(12, 12);
+            this.pictureBoxEmote.Location = new System.Drawing.Point(12, 14);
             this.pictureBoxEmote.Name = "pictureBoxEmote";
             this.pictureBoxEmote.Size = new System.Drawing.Size(100, 97);
             this.pictureBoxEmote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -64,12 +64,13 @@
             this.buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonOk.Font = new System.Drawing.Font("Segoe UI Black", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.buttonOk.ForeColor = System.Drawing.SystemColors.Control;
-            this.buttonOk.Location = new System.Drawing.Point(159, 81);
+            this.buttonOk.Location = new System.Drawing.Point(161, 81);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(84, 30);
             this.buttonOk.TabIndex = 2;
             this.buttonOk.Text = "Continua";
             this.buttonOk.UseVisualStyleBackColor = false;
+            this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // labelStareCastig
             // 
@@ -98,16 +99,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(312, 135);
+            this.ClientSize = new System.Drawing.Size(359, 135);
             this.ControlBox = false;
             this.Controls.Add(this.labelMotivCastig);
             this.Controls.Add(this.labelStareCastig);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.pictureBoxEmote);
             this.Controls.Add(this.panelDocked);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormMesaj";
-            this.Opacity = 0.8D;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEmote)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
