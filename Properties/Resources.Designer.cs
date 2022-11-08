@@ -141,16 +141,6 @@ namespace ProiectVolovici.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap disappointed_but_relieved_face_1f625 {
-            get {
-                object obj = ResourceManager.GetObject("disappointed_but_relieved_face_1f625", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon_noBackground {
@@ -163,9 +153,19 @@ namespace ProiectVolovici.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap party_popper_1f389 {
+        internal static System.Drawing.Bitmap loseemoji {
             get {
-                object obj = ResourceManager.GetObject("party-popper_1f389", resourceCulture);
+                object obj = ResourceManager.GetObject("loseemoji", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap neutralemoji {
+            get {
+                object obj = ResourceManager.GetObject("neutralemoji", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,6 +233,16 @@ namespace ProiectVolovici.Properties {
         internal static System.Drawing.Bitmap whorse {
             get {
                 object obj = ResourceManager.GetObject("whorse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap winemoji {
+            get {
+                object obj = ResourceManager.GetObject("winemoji", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
