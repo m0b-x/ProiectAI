@@ -17,10 +17,6 @@ namespace ProiectVolovici.Visual_Classes
         public static Color CuloareAlb = Color.Beige;
         public static Color CuloareAlbastru = Color.FromArgb(89, 132, 189);
         public static Color CuloareNeutra = System.Drawing.SystemColors.ControlDarkDark;
-
-        public static Image ImagineCastigAlb = Resources.winemoji;
-        public static Image ImagineAlbastru = Resources.loseemoji;
-        public static Image ImagineNeutra = Resources.neutralemoji;
         public FormMesaj(Form parentForm,TipCastig tipMesaj, string mesajStare, string mesajMotiv)
         {
             InitializeComponent();
@@ -31,7 +27,6 @@ namespace ProiectVolovici.Visual_Classes
                     buttonOk.BackColor = CuloareNeutra;
                     labelMotivCastig.ForeColor = CuloareNeutra;
                     labelStareCastig.ForeColor = CuloareNeutra;
-                    pictureBoxEmote.Image = ImagineNeutra;
                     break;
 
                 case TipCastig.CastigAlb:
@@ -39,7 +34,6 @@ namespace ProiectVolovici.Visual_Classes
                     buttonOk.BackColor = CuloareAlb;
                     labelMotivCastig.ForeColor = CuloareAlb;
                     labelStareCastig.ForeColor = CuloareAlb;
-                    pictureBoxEmote.Image = ImagineCastigAlb;
                     break;
 
                 case TipCastig.CastigAlbastru:
@@ -47,7 +41,6 @@ namespace ProiectVolovici.Visual_Classes
                     buttonOk.BackColor = CuloareAlbastru;
                     labelMotivCastig.ForeColor = CuloareAlbastru;
                     labelStareCastig.ForeColor = CuloareAlbastru;
-                    pictureBoxEmote.Image = ImagineAlbastru;
                     break;
             }
             labelStareCastig.Text = mesajStare;
@@ -58,7 +51,6 @@ namespace ProiectVolovici.Visual_Classes
         {
             this.Close(); 
             Application.Restart();
-            Environment.Exit(0);
         }
     }
 }
