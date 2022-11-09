@@ -705,6 +705,87 @@ namespace ProiectVolovici
             _esteGataMeciul = true;
         }
 
+
+        protected void TerminaMeciulDacaEsteSahDirect(TipSah tipSah, int piesaLuata)
+        {
+            if (piesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                TerminaMeciul(TipSah.RegeAlbLuat);
+            }
+            else if (piesaLuata == (int)CodPiesa.RegeAlbastru)
+            {
+                TerminaMeciul(TipSah.RegeAlbastruLuat);
+            }
+            if (tipSah == TipSah.SahPersistentLaAlb)
+            {
+                TerminaMeciul(TipSah.SahPersistentLaAlb);
+            }
+            else if (tipSah == TipSah.SahPersistentLaAlbastru)
+            {
+                TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+            }
+        }
+
+        protected TipSah VerificaSahulPersistent()
+        {
+            int codRegeAlb = (int)CodPiesa.RegeAlb;
+            int codRegeAlbastru = (int)CodPiesa.RegeAlbastru;
+            bool esteSah = false;
+            int contorMutariAlb = 0;
+            foreach (var piesa in ListaPieseAlbe)
+            {
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                contorMutariAlb += mutariPosibile.Count;
+                foreach (var mutare in mutariPosibile)
+                {
+                    if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlbastru)
+                    {
+                        _nrSahuriLaAlbastru++;
+                        if (_nrSahuriLaAlbastru == 3)
+                        {
+                            esteSah = true;
+                            return TipSah.SahPersistentLaAlbastru;
+                        }
+                    }
+                }
+            }
+            if (esteSah == false)
+            {
+                _nrSahuriLaAlbastru = 0;
+            }
+            if (contorMutariAlb == 0)
+            {
+                return TipSah.FaraMutariAlbastru;
+            }
+            esteSah = false;
+            int contorMutariAlbastru = 0;
+            foreach (var piesa in ListaPieseAlbastre)
+            {
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                contorMutariAlbastru += mutariPosibile.Count;
+                foreach (var mutare in mutariPosibile)
+                {
+                    if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlb)
+                    {
+                        _nrSahuriLaAlb++;
+                        if (_nrSahuriLaAlb == 3)
+                        {
+                            esteSah = true;
+                            return TipSah.SahPersistentLaAlb;
+                        }
+                    }
+                }
+            }
+            if (esteSah == false)
+            {
+                _nrSahuriLaAlb = 0;
+            }
+            if (contorMutariAlbastru == 0)
+            {
+                return TipSah.FaraMutariAlb;
+            }
+            return TipSah.NuEsteSah;
+        }
         public void AfiseazaMatriceDebug(int[,] matrice,int adancime,double eval)
         {
             Debug.WriteLine("------------------------------------------");
