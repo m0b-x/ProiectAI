@@ -332,10 +332,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             int codRegeAlb = (int)CodPiesa.RegeAlb;
             int codRegeAlbastru = (int)CodPiesa.RegeAlbastru;
             bool esteSah = false;
+            int contorMutariAlb = 0;
             foreach (var piesa in ListaPieseAlbe)
             {
                 var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
-                foreach(var mutare in mutariPosibile)
+                contorMutariAlb += mutariPosibile.Count;
+                foreach (var mutare in mutariPosibile)
                 {
                     if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlbastru)
                     {
@@ -352,10 +354,16 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             {
                 _nrSahuriLaAlbastru = 0;
             }
+            if(contorMutariAlb == 0)
+            {
+                return TipSah.FaraMutariAlbastru;
+            }
             esteSah = false;
+            int contorMutariAlbastru = 0;
             foreach (var piesa in ListaPieseAlbastre)
             {
                 var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                contorMutariAlbastru += mutariPosibile.Count;
                 foreach (var mutare in mutariPosibile)
                 {
                     if (_matriceCodPiese[mutare.Linie, mutare.Coloana] == codRegeAlb)
@@ -372,6 +380,10 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             if (esteSah == false)
             {
                 _nrSahuriLaAlb = 0;
+            }
+            if(contorMutariAlbastru == 0)
+            {
+                return TipSah.FaraMutariAlb;
             }
             return TipSah.NuEsteSah;
         }
