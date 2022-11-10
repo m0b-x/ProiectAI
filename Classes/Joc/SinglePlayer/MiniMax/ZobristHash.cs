@@ -1,45 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProiectVolovici;
+using System;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
+namespace ProiectVolovici
 {
-    internal class ZobristHash
+    public static class ZobristHash
     {
-        static int NrPozitiiTabla = 90;
-        static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
-        static Random GeneratorRandom = new Random();
 
-        int[,] _tabel = new int[NrPozitiiTabla, NrPiese];
+        private static readonly Int64[] tabeltranspozitie;
 
-        //inspirat https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-5-zobrist-hashing/
-        public void InitHash()
+        static int MarimeTabel = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii * Enum.GetNames(typeof(CodPiesa)).Length;
+        static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
+
+        static ZobristHash()
         {
-            for(int i=0; i < NrPozitiiTabla; i++)
-                for(int j =0; j<NrPiese; j++)
-                {
-                    _tabel[i, j] = GeneratorRandom.Next(0,int.MaxValue);
-                }
+            Random rnd;
+
+            rnd = new Random(0);
+            tabeltranspozitie = new long[MarimeTabel];
+            for (int i = 0; i < MarimeTabel; i++)
+            {
+                tabeltranspozitie[i] = rnd.NextInt64();
+            }
         }
 
-        public long Hash(int[,] matrice)
+        public static long UpdateazaHash(long zobristKey, int pos, int piesaluata, int piesaCareIa)
         {
-            long h = 0;
-            for (int i = 0; i < NrPozitiiTabla; i++)
-                for (int j = 0; j < NrPiese; j++)
-                {
-                    if (matrice[i,j] != 0)
-                    {
-                        int piesa = matrice[i, j];
-                        h ^= _tabel[i+j, piesa];
-                    }
-                }
-            return h;
+            int baseIndex;
+
+            baseIndex = pos << 4;
+            zobristKey ^= tabeltranspozitie[baseIndex + (piesaluata)] ^
+                          tabeltranspozitie[baseIndex + (piesaCareIa)];
+            return zobristKey;
         }
 
+        public static long UpdateazaHash(long zobristKey,
+                                            int pos1,
+                                            int oldPiece1,
+                                            int newPiece1,
+                                            int pos2,
+                                            int oldPiece2,
+                                            int newPiece2)
+        {
+            int baseIndex1;
+            int baseIndex2;
 
-    }
-}
+            baseIndex1 = pos1 << 4;
+            baseIndex2 = pos2 << 4;
+            zobristKey ^= tabeltranspozitie[baseIndex1 + (oldPiece1)] ^
+                          tabeltranspozitie[baseIndex1 + (newPiece1)] ^
+                          tabeltranspozitie[baseIndex2 + (oldPiece2)] ^
+                          tabeltranspozitie[baseIndex2 + (newPiece2)];
+            return zobristKey;
+        }
+
+        public static long Hash(int[,] tabla)
+        {
+            long retVal = 0;
+
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
+            {
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
+                {
+                    retVal ^= tabeltranspozitie[(linie+coloana << 4) + tabla[linie, coloana]];
+                }
+            }
+           return retVal;
+        }
+    } 
+} 
