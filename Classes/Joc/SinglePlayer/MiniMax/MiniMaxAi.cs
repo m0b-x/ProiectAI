@@ -102,12 +102,12 @@ namespace ProiectVolovici
             return tupluMutariSiMatriciPosibile;
         }
         //TODO:adauga pozitia initiala
-        public Tuple<Tuple<Pozitie, Pozitie>, double> EvalueazaMutarileAI( SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile)
+        public Tuple<Tuple<Pozitie, Pozitie>, double> IncepeEvaluareaMiniMax( SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile)
         {
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             Tuple<Pozitie, Pozitie> mutareOptima = tupluMutariSiMatriciPosibile.Values[0];
 
-            var matriceInitiala = _engine.MatriceCoduriPiese.Clone() as int[,];
+            var matriceInitiala = CopiazaMatrice(_engine.MatriceCoduriPiese, ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
 
             int codPiesaLuata = _engine.MatriceCoduriPiese[
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
@@ -131,7 +131,7 @@ namespace ProiectVolovici
             double scorMutareOptima = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime-1, codPiesaLuata);
+                    , _adancime, codPiesaLuata);
 
             matriceInitiala[
                 tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
@@ -167,7 +167,7 @@ namespace ProiectVolovici
                 double scorMutare = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime-1, codPiesaLuata);
+                    , _adancime, codPiesaLuata);
 
                 matriceInitiala[
                     tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,

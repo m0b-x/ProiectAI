@@ -14,7 +14,7 @@ namespace ProiectVolovici.Visual_Classes
 {
     public partial class FormMesaj : Form
     {
-        public static Color CuloareAlb = Color.Beige;
+        public static Color CuloareAlb = Color.SandyBrown;
         public static Color CuloareAlbastru = Color.FromArgb(89, 132, 189);
         public static Color CuloareNeutra = System.Drawing.SystemColors.ControlDarkDark;
         public FormMesaj(Form parentForm,TipCastig tipMesaj, string mesajStare, string mesajMotiv)

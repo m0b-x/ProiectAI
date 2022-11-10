@@ -164,8 +164,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
         {
             _nrMutari++;
-            PornesteTimerAsteptareAI();
-            var tipSah = VerificaSahulPersistent();
+            var tipSah = base.VerificaSahulPersistent();
             var piesaLuata = MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana];
             base.RealizeazaMutareaLocal(piesa, pozitie);
             TerminaMeciulDacaEsteSahDirect(tipSah, piesaLuata);
@@ -223,6 +222,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             NuEsteRandulTau();
+                            PornesteTimerAsteptareAI();
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
                             _jucatorOm.UltimaPozitie = pozitie;
@@ -253,7 +253,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             cronometru.Start();
 
             var tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
-            var mutareaOptima = _miniMaxAI.EvalueazaMutarileAI(tupluMutariSiMatriciPosibile);
+
+            var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariSiMatriciPosibile);
             
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
