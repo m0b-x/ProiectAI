@@ -131,7 +131,7 @@ namespace ProiectVolovici
             double scorMutareOptima = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime-1);
+                    , _adancime-1, codPiesaLuata);
 
             matriceInitiala[
                 tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
@@ -167,7 +167,7 @@ namespace ProiectVolovici
                 double scorMutare = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime-1);
+                    , _adancime-1, codPiesaLuata);
 
                 matriceInitiala[
                     tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
@@ -220,10 +220,10 @@ namespace ProiectVolovici
                     matriceCopiata[i, j] = matriceInitiala[i, j];
             return matriceCopiata;
         }
-        public double Minimax_Albastru(double eval, int[,] matrice, double alpha, double beta, int adancime)
+        public double Minimax_Albastru(double eval, int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata)
         {
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
-            if (adancime == 0)
+            if (piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
             {
                 return eval;
             }
@@ -249,7 +249,7 @@ namespace ProiectVolovici
                                 matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
 
                                 newAlpha = Math.Max(newAlpha, Minimax_Alb(eval + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
-                                    matrice, alpha, beta, adancime - 1));
+                                    matrice, alpha, beta, adancime - 1, piesaLuata));
                                 alpha = Math.Max(newAlpha, alpha);
 
                                 matrice[linie, coloana] = piesaCareIa;
@@ -270,10 +270,10 @@ namespace ProiectVolovici
             return (matrice[linie, coloana] - 1) % 2 == 1;
         }
 
-        public double Minimax_Alb(double eval,int[,] matrice, double alpha, double beta, int adancime)
+        public double Minimax_Alb(double eval,int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata)
         {
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
-            if (adancime == 0)
+            if (piesaCapturata == (int)CodPiesa.RegeAlbastru || adancime == 0)
             {
                 return eval;
             }
@@ -300,7 +300,7 @@ namespace ProiectVolovici
                                 matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
 
                                 newBeta = Math.Min(newBeta, Minimax_Albastru(eval - _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
-                                    matrice, alpha, beta, adancime - 1));
+                                    matrice, alpha, beta, adancime - 1, piesaLuata));
                                 beta = Math.Min(newBeta, beta);
 
                                 matrice[linie, coloana] = piesaCareIa;
