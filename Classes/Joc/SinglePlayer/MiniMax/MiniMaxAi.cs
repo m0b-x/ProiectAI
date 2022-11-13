@@ -18,8 +18,6 @@ namespace ProiectVolovici
         private EngineMiniMax _engine;
         private int _adancime;
 
-        private Dictionary<(long, int), double> _dictionarMutariAlbastru = new();
-        private Dictionary<(long, int), double> _dictionarMutariAlb = new();
         public int Adancime
         {
             get { return _adancime; }
@@ -111,8 +109,6 @@ namespace ProiectVolovici
 
             var matriceInitiala = CopiazaMatrice(_engine.MatriceCoduriPiese, ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
 
-            long cheieZobristInitiala = ZobristHash.Hash(matriceInitiala);
-
             int codPiesaLuata = _engine.MatriceCoduriPiese[
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana];
@@ -132,20 +128,10 @@ namespace ProiectVolovici
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie,
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana] = codPiesaCareIa;
 
-            long cheieZobristUpdatata = ZobristHash.UpdateazaHash(cheieZobristInitiala,
-                                            tupluMutariSiMatriciPosibile.Values[0].Item1.Linie+
-                                            tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana,
-                                            codPiesaCareIa,
-                                            0,
-                                            tupluMutariSiMatriciPosibile.Values[0].Item2.Linie+
-                                            tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana,
-                                            codPiesaLuata,
-                                            codPiesaCareIa);
-
             double scorMutareOptima = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime, codPiesaLuata, cheieZobristUpdatata);
+                    , _adancime, codPiesaLuata);
 
             matriceInitiala[
                 tupluMutariSiMatriciPosibile.Values[0].Item1.Linie,
@@ -178,20 +164,10 @@ namespace ProiectVolovici
                     tupluMutariSiMatriciPosibile.Values[i].Item2.Linie,
                     tupluMutariSiMatriciPosibile.Values[i].Item2.Coloana] = codPiesaCareIa;
 
-                cheieZobristUpdatata = ZobristHash.UpdateazaHash(cheieZobristInitiala,
-                                            tupluMutariSiMatriciPosibile.Values[0].Item1.Linie +
-                                            tupluMutariSiMatriciPosibile.Values[0].Item1.Coloana,
-                                            codPiesaCareIa,
-                                            0,
-                                            tupluMutariSiMatriciPosibile.Values[0].Item2.Linie +
-                                            tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana,
-                                            codPiesaLuata,
-                                            codPiesaCareIa);
-
                 double scorMutare = Minimax_Alb(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime, codPiesaLuata, cheieZobristUpdatata);
+                    , _adancime, codPiesaLuata);
 
                 matriceInitiala[
                     tupluMutariSiMatriciPosibile.Values[i].Item1.Linie,
@@ -211,7 +187,6 @@ namespace ProiectVolovici
                 }
                 //Debug.WriteLine(scorMutareOptima);
             }
-            Debug.WriteLine(scorMutareOptima);
             return new(mutareOptima, scorMutareOptima);
         }
         public double EvalueazaMatricea(int[,] matrice)
@@ -245,20 +220,15 @@ namespace ProiectVolovici
                     matriceCopiata[i, j] = matriceInitiala[i, j];
             return matriceCopiata;
         }
-        public double Minimax_Albastru(double eval, int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata, long cheie)
+        public double Minimax_Albastru(double eval, int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata)
         {
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
             {
                 return eval;
             }
-
             else
             {
-                if (_dictionarMutariAlbastru.ContainsKey((cheie, adancime)))
-                {
-                    return _dictionarMutariAlbastru[(cheie, adancime)];
-                }
                 double newAlpha = double.MinValue;
                 for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
                 {
@@ -275,38 +245,15 @@ namespace ProiectVolovici
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
 
                                 var piesaLuata = matrice[mutarePosibila.Linie, mutarePosibila.Coloana];
+                                matrice[linie, coloana] = (int)CodPiesa.Gol;
+                                matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
 
-
-                                long cheieZobristUpdatata = ZobristHash.UpdateazaHash(cheie,
-                                                            linie + coloana,
-                                                            piesaCareIa,
-                                                            0,
-                                                            mutarePosibila.Linie + mutarePosibila.Coloana,
-                                                            piesaLuata,
-                                                            piesaCareIa);
-
-                                double rezultatMinimax;
-                                if (_dictionarMutariAlb.ContainsKey(new(cheieZobristUpdatata, adancime - 1)))
-                                {
-                                    rezultatMinimax = _dictionarMutariAlb[new(cheieZobristUpdatata, adancime - 1)];
-                                }
-                                else
-                                {
-                                    matrice[linie, coloana] = (int)CodPiesa.Gol;
-                                    matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
-
-
-                                    rezultatMinimax = Minimax_Alb(eval + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
-                                        matrice, alpha, beta, adancime - 1, piesaLuata, cheieZobristUpdatata);
-                                
-                                    matrice[linie, coloana] = piesaCareIa;
-                                    matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
-
-                                    _dictionarMutariAlb.Add((cheieZobristUpdatata, adancime - 1), rezultatMinimax);
-                                }
-                                newAlpha = Math.Max(newAlpha, rezultatMinimax);
-
+                                newAlpha = Math.Max(newAlpha, Minimax_Alb(eval + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+                                    matrice, alpha, beta, adancime - 1, piesaLuata));
                                 alpha = Math.Max(newAlpha, alpha);
+
+                                matrice[linie, coloana] = piesaCareIa;
+                                matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
 
                                 if (beta <= alpha)
                                     break;
@@ -323,19 +270,15 @@ namespace ProiectVolovici
             return (matrice[linie, coloana] - 1) % 2 == 1;
         }
 
-        public double Minimax_Alb(double eval,int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata, long cheie)
+        public double Minimax_Alb(double eval,int[,] matrice, double alpha, double beta, int adancime, int piesaCapturata)
         {
-                //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
+            //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru || adancime == 0)
             {
                 return eval;
             }
             else
             {
-                if (_dictionarMutariAlb.ContainsKey(new(cheie,adancime)))
-                {
-                    return _dictionarMutariAlb[new(cheie,adancime)];
-                }
                 double newBeta = double.MaxValue;
                 for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
                 {
@@ -353,34 +296,16 @@ namespace ProiectVolovici
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
                                 var piesaLuata = matrice[mutarePosibila.Linie, mutarePosibila.Coloana];
 
+                                matrice[linie, coloana] = (int)CodPiesa.Gol;
+                                matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
 
-                                long cheieZobristUpdatata = ZobristHash.UpdateazaHash(cheie,
-                                                            linie + coloana,
-                                                            piesaCareIa,
-                                                            0,
-                                                            mutarePosibila.Linie + mutarePosibila.Coloana,
-                                                            piesaLuata,
-                                                            piesaCareIa);
-                                double rezultatMinimax;
-                                if (_dictionarMutariAlbastru.ContainsKey(new(cheieZobristUpdatata, adancime - 1)))
-                                {
-                                    rezultatMinimax = _dictionarMutariAlbastru[new(cheieZobristUpdatata, adancime - 1)];
-                                }
-                                else
-                                {
-                                    matrice[linie, coloana] = (int)CodPiesa.Gol;
-                                    matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = matrice[linie, coloana];
-
-                                    rezultatMinimax = Minimax_Albastru(eval - _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
-                                        matrice, alpha, beta, adancime - 1, piesaLuata, cheieZobristUpdatata);
-
-                                    matrice[linie, coloana] = piesaCareIa;
-                                    matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
-
-                                    _dictionarMutariAlbastru.Add((cheieZobristUpdatata, adancime - 1), rezultatMinimax);
-                                }
-                                newBeta = Math.Min(newBeta, rezultatMinimax);
+                                newBeta = Math.Min(newBeta, Minimax_Albastru(eval - _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+                                    matrice, alpha, beta, adancime - 1, piesaLuata));
                                 beta = Math.Min(newBeta, beta);
+
+                                matrice[linie, coloana] = piesaCareIa;
+                                matrice[mutarePosibila.Linie, mutarePosibila.Coloana] = piesaLuata;
+
                                 if (beta <= alpha)
                                     break;
                             }
