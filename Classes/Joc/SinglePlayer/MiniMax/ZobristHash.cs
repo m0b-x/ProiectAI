@@ -1,5 +1,6 @@
 ﻿using ProiectVolovici;
 using System;
+using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ProiectVolovici
@@ -7,51 +8,22 @@ namespace ProiectVolovici
     public static class ZobristHash
     {
 
-        private static readonly Int64[] tabeltranspozitie;
-
-        static int MarimeTabel = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii * Enum.GetNames(typeof(CodPiesa)).Length;
+        static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
         static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
+
+        private static readonly Int64[,] tabeltranspozitie;
 
         static ZobristHash()
         {
             Random rnd;
 
-            rnd = new Random(0);
-            tabeltranspozitie = new long[MarimeTabel];
-            for (int i = 0; i < MarimeTabel; i++)
+            rnd = new Random();
+            tabeltranspozitie = new long[MarimeTabla, NrPiese];
+            for (int i = 0; i < MarimeTabla; i++)
             {
-                tabeltranspozitie[i] = rnd.NextInt64();
+                for(int j =0;j<NrPiese; j++)
+                    tabeltranspozitie[i,j] = rnd.NextInt64();
             }
-        }
-
-        public static long UpdateazaHash(long zobristKey, int pos, int piesaluata, int piesaCareIa)
-        {
-            int baseIndex;
-
-            baseIndex = pos << 4;
-            zobristKey ^= tabeltranspozitie[baseIndex + (piesaluata)] ^
-                          tabeltranspozitie[baseIndex + (piesaCareIa)];
-            return zobristKey;
-        }
-
-        public static long UpdateazaHash(long zobristKey,
-                                            int pos1,
-                                            int oldPiece1,
-                                            int newPiece1,
-                                            int pos2,
-                                            int oldPiece2,
-                                            int newPiece2)
-        {
-            int baseIndex1;
-            int baseIndex2;
-
-            baseIndex1 = pos1 << 4;
-            baseIndex2 = pos2 << 4;
-            zobristKey ^= tabeltranspozitie[baseIndex1 + (oldPiece1)] ^
-                          tabeltranspozitie[baseIndex1 + (newPiece1)] ^
-                          tabeltranspozitie[baseIndex2 + (oldPiece2)] ^
-                          tabeltranspozitie[baseIndex2 + (newPiece2)];
-            return zobristKey;
         }
 
         public static long Hash(int[,] tabla)
@@ -62,10 +34,27 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    retVal ^= tabeltranspozitie[(linie+coloana << 4) + tabla[linie, coloana]];
+                    if (tabla[linie,coloana] != (int)CodPiesa.Gol)
+                    {
+                        var piesa = tabla[linie, coloana];
+                        retVal ^= tabeltranspozitie[linie * 10 + coloana, piesa];
+                    }
                 }
             }
            return retVal;
+        }
+
+        public static long UpdateazaHash(long hashInitial,
+                                  int linieInitiala,int coloanaInitiala,
+                                  int piesaInitiala,
+                                  int linieFinala, int coloanaFinala,
+                                  int piesaFinala)
+        {
+            long hashFinal = hashInitial;
+            hashFinal ^= tabeltranspozitie[linieInitiala * 10 + coloanaInitiala, (int)CodPiesa.Gol];
+            hashFinal ^= tabeltranspozitie[linieFinala * 10 + coloanaFinala, piesaFinala];
+
+            return hashFinal;
         }
     } 
 } 
