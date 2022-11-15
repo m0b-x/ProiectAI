@@ -1,5 +1,7 @@
 ﻿using ProiectVolovici;
 using System;
+using System.Diagnostics;
+using System.Numerics;
 using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -11,22 +13,26 @@ namespace ProiectVolovici
         static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
         static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
 
-        private static readonly Int64[,] tabeltranspozitie;
+        private static readonly long[,] tabeltranspozitie;
 
         static ZobristHash()
         {
             Random rnd;
 
-            rnd = new Random();
+            rnd = new Random(0);
             tabeltranspozitie = new long[MarimeTabla, NrPiese];
             for (int i = 0; i < MarimeTabla; i++)
             {
-                for(int j =0;j<NrPiese; j++)
-                    tabeltranspozitie[i,j] = rnd.NextInt64();
+                for (int j = 1; j < NrPiese; j++)
+                {
+                    long valRandom = rnd.NextInt64();
+                    tabeltranspozitie[i, j] = valRandom;
+                }
+
             }
         }
 
-        public static long Hash(int[,] tabla)
+        public static long HashuiesteTabla(int[,] tabla)
         {
             long retVal = 0;
 
@@ -37,7 +43,8 @@ namespace ProiectVolovici
                     if (tabla[linie,coloana] != (int)CodPiesa.Gol)
                     {
                         var piesa = tabla[linie, coloana];
-                        retVal ^= tabeltranspozitie[linie * 10 + coloana, piesa];
+                        //Debug.WriteLine(linie * (ConstantaTabla.NrLinii-1) + coloana);
+                        retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana , piesa];
                     }
                 }
             }
@@ -46,13 +53,16 @@ namespace ProiectVolovici
 
         public static long UpdateazaHash(long hashInitial,
                                   int linieInitiala,int coloanaInitiala,
-                                  int piesaInitiala,
+                                  int piesaLuata,
                                   int linieFinala, int coloanaFinala,
-                                  int piesaFinala)
+                                  int piesaCareIa)
         {
             long hashFinal = hashInitial;
-            hashFinal ^= tabeltranspozitie[linieInitiala * 10 + coloanaInitiala, (int)CodPiesa.Gol];
-            hashFinal ^= tabeltranspozitie[linieFinala * 10 + coloanaFinala, piesaFinala];
+            //Debug.WriteLine(linieInitiala * (ConstantaTabla.NrLinii - 1));
+            //Debug.WriteLine(linieFinala * (ConstantaTabla.NrLinii - 1));
+            hashFinal ^= tabeltranspozitie[linieInitiala * (ConstantaTabla.NrLinii - 1) + coloanaInitiala, piesaCareIa];
+            hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala, piesaLuata];
+            hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala, piesaCareIa];
 
             return hashFinal;
         }
