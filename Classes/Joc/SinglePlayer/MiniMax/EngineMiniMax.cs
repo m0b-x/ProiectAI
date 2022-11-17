@@ -21,8 +21,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         public Dictionary<Piesa, int> _dictionarValoriPiese = new Dictionary<Piesa, int>();
 
-        List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> _matriciMutariPosibile = new ();
-
         private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
 
@@ -106,7 +104,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             _valoareTimerAsteptare = 0;
             _timerAsteptareAI.Stop();
-            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", String.Empty);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "Este randul tau(alb)");
         }
         public void AdaugaEvenimentCadrane()
         {
@@ -165,7 +163,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             _nrMutari++;
             var tipSah = base.VerificaSahulPersistent();
-            var piesaLuata = MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana];
+            var piesaLuata = MatriceJaggedCoduriPiese[pozitie.Linie][ pozitie.Coloana];
             base.RealizeazaMutareaLocal(piesa, pozitie);
             TerminaMeciulDacaEsteSahDirect(tipSah, piesaLuata);
         }
@@ -213,7 +211,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
-                            if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceJaggedCoduriPiese[pozitie.Linie][ pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }
@@ -275,15 +273,15 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             {
                 if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
                 {
-                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
+                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
                     foreach (Pozitie mutare in mutari)
                     {
-                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                        if (MatriceJaggedCoduriPiese[mutare.Linie][ mutare.Coloana] == (int)CodPiesa.RegeAlb)
                         {
                             return ConstantaTabla.SahLaRegeAlb;
                         }
 
-                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                        if (MatriceJaggedCoduriPiese[mutare.Linie][ mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
                         {
                             return ConstantaTabla.SahLaRegerAlbastru;
                         }

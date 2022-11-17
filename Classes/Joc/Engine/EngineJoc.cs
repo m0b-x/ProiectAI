@@ -14,6 +14,7 @@ namespace ProiectVolovici
         protected Tabla _tabla;
 
         protected int[,] _matriceCodPiese;
+        protected int[][] _matriceJaggedCodPiese;
 
         private List<Piesa> _listaPiese;
         private List<Piesa> _listaPieseAlbe;
@@ -85,6 +86,13 @@ namespace ProiectVolovici
                 return _matriceCodPiese;
             }
         }
+        public int[][] MatriceJaggedCoduriPiese
+        {
+            get
+            {
+                return _matriceJaggedCodPiese;
+            }
+        }
 
         public int MarimeVerticala
         {
@@ -152,6 +160,10 @@ namespace ProiectVolovici
 
             _matriceCodPiese = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
 
+            _matriceJaggedCodPiese = new int[ConstantaTabla.NrLinii][];
+            for (int i = 0; i < ConstantaTabla.NrLinii; i++)
+                _matriceJaggedCodPiese[i] = new int[ConstantaTabla.NrColoane];
+
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
@@ -178,6 +190,10 @@ namespace ProiectVolovici
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
             _matriceCodPiese = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
+
+            _matriceJaggedCodPiese = new int[ConstantaTabla.NrLinii][];
+            for (int i = 0; i < ConstantaTabla.NrLinii; i++)
+                _matriceJaggedCodPiese[i] = new int[ConstantaTabla.NrColoane];
 
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
@@ -404,30 +420,6 @@ namespace ProiectVolovici
                 return false;
             return true;
         }
-        public List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> ReturneazaMatriciMutariPosibile(Piesa piesa, int[,] matrice)
-        {
-            List<Pozitie> pozitiiMutariPosibile = piesa.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
-            List<Tuple<Tuple<Pozitie, Pozitie>, int[,]>> matriciMutariPosibile = new();
-
-            if (pozitiiMutariPosibile != null)
-            {
-                foreach(var pozitie in pozitiiMutariPosibile)
-                {
-                    Tuple<Pozitie, Pozitie> mutare = new(piesa.Pozitie, pozitie);
-                    int[,] matriceMutariPosibile = (int[,])_matriceCodPiese.Clone();
-
-                    matriceMutariPosibile[piesa.Pozitie.Linie, piesa.Pozitie.Coloana] = (int)CodPiesa.Gol;
-                    matriceMutariPosibile[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
-                    matriciMutariPosibile.Add(new(mutare, matriceMutariPosibile));
-                }
-
-                return matriciMutariPosibile;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
 
         public void ColoreazaMutariPosibile(List<Pozitie> pozitii)
@@ -480,6 +472,7 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PozitieCadran = pozitie;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                    _matriceJaggedCodPiese[pozitie.Linie][ pozitie.Coloana] = (int)piesa.Cod;
                 }
                 else
                 {
@@ -495,6 +488,7 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = ConstantaTabla.PiesaNula;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
+                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
                 }
             }
             else
@@ -516,12 +510,14 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PozitieCadran = pozitie;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = piesa.Imagine;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)piesa.Cod;
+                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)piesa.Cod;
                 }
                 else
                 {
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].BackgroundImage = null;
                     ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran = ConstantaTabla.PiesaNula;
                     _matriceCodPiese[pozitie.Linie, pozitie.Coloana] = (int)CodPiesa.Gol;
+                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
                 }
             }
         }
