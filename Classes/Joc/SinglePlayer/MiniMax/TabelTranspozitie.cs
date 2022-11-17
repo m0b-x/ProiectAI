@@ -1,45 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
+namespace ProiectVolovici
 {
-    struct TabelTranspozitie : IEquatable<TabelTranspozitie>
+    public class TabelTranspozitie
     {
-        long hashCode;
-        double evaluare;
-        TipIntrare tipIntrare;
-        int adancime;
-        int generatie;
+        private Dictionary<long, IntrareTabelTranspozitie> _tabel = new();
 
-        public TabelTranspozitie(long hashCode, double evaluare, TipIntrare tipIntrare, int adancime, int generatie)
+        public Dictionary<long, IntrareTabelTranspozitie> Tabel
         {
-            this.hashCode = hashCode;
-            this.evaluare = evaluare;
-            this.tipIntrare = tipIntrare;
-            this.adancime = adancime;
-            this.generatie = generatie;
+            get { return _tabel; }
         }
 
-        public override bool Equals(object obj)
+        public TabelTranspozitie(Dictionary<long, IntrareTabelTranspozitie> tabel)
         {
-            return obj is TabelTranspozitie transpozitie && Equals(transpozitie);
+            _tabel = tabel;
+        }
+        public TabelTranspozitie()
+        {
+        }
+        public void AdaugaIntrare(long cheie, IntrareTabelTranspozitie intrare)
+        {
+                _tabel.TryAdd(cheie, intrare);
         }
 
-        public bool Equals(TabelTranspozitie other)
+        public void ReseteazaTabel()
         {
-            return hashCode == other.hashCode &&
-                   evaluare == other.evaluare &&
-                   tipIntrare == other.tipIntrare &&
-                   adancime == other.adancime &&
-                   generatie == other.generatie;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(hashCode, evaluare, tipIntrare, adancime, generatie);
+            _tabel = new();
         }
     }
 }
