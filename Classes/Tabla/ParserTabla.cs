@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ProiectVolovici
@@ -36,7 +35,7 @@ namespace ProiectVolovici
                                                new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]));
         }
 
-        public String CodificareTabla(int[,] matriceTabla)
+        public String CodificareTabla(int[][] matriceTabla)
         {
             var str = /*"mesajInceput" + */ string.Join("", matriceTabla.OfType<int>()
                                             .Select((value, index) => new { value, index })
@@ -46,7 +45,7 @@ namespace ProiectVolovici
             return str;
         }
 
-        public int[,] DecodificareTabla(String stringPrimit)
+        public int[][] DecodificareTabla(String stringPrimit)
         {
             stringPrimit = stringPrimit.Replace("}{", " ");
 
@@ -54,14 +53,15 @@ namespace ProiectVolovici
 
             int[] vectorAuxiliar = stringPrimit.Split(' ').Select(int.Parse).ToArray();
 
-            int[,] matriceReturnata = new int[_liniiDecodificate, _coloaneDecodificate];
-
+            int[][] matriceReturnata = new int[_liniiDecodificate][];
+            for (int i = 0; i < _liniiDecodificate; i++)
+                matriceReturnata[i] = new int[_coloaneDecodificate];
             int contorElemente = 0;
             for (int linie = 0; linie < _liniiDecodificate; linie++)
             {
                 for (int coloana = 0; coloana < _coloaneDecodificate; coloana++)
                 {
-                    matriceReturnata[linie, coloana] = vectorAuxiliar[contorElemente++];
+                    matriceReturnata[linie][coloana] = vectorAuxiliar[contorElemente++];
                 }
             }
             return matriceReturnata;

@@ -24,9 +24,10 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceJaggedCoduriPiese);
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
+
         public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
         {
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
@@ -41,38 +42,11 @@ namespace ProiectVolovici
             {
                 if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
                 {
-                    if (matrice[pozitie.Linie][ pozitie.Coloana] == (int)CodPiesa.Gol)
+                    if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
                     {
                         mutariFiltrate.Add(pozitie);
                     }
-                    else if (matrice[pozitie.Linie][ pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
-                    {
-                        mutariFiltrate.Add(pozitie);
-                    }
-                }
-            }
-
-            return mutariFiltrate;
-        }
-        public override List<Pozitie> ReturneazaMutariPosibile(int[,] matrice)
-        {
-            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
-            List<Pozitie> mutariFiltrate = new List<Pozitie>();
-
-            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
-            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
-            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
-            mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
-
-            foreach (Pozitie pozitie in mutariNefiltrate)
-            {
-                if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
-                {
-                    if (matrice[pozitie.Linie, pozitie.Coloana] == (int)CodPiesa.Gol)
-                    {
-                        mutariFiltrate.Add(pozitie);
-                    }
-                    else if (matrice[pozitie.Linie, pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
+                    else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
                     {
                         mutariFiltrate.Add(pozitie);
                     }

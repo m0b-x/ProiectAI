@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProiectVolovici
+﻿namespace ProiectVolovici
 {
     public static class ConstantaPiese
     {
@@ -19,6 +13,5 @@ namespace ProiectVolovici
 
         public static readonly double PragSahLaAlb = -4000;
         public static readonly double PragSahLaAlbastru = 4000;
-
     }
 }

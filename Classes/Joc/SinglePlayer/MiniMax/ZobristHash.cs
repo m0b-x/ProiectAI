@@ -1,17 +1,11 @@
-﻿using ProiectVolovici;
-using System;
-using System.Diagnostics;
-using System.Numerics;
-using static System.Windows.Forms.LinkLabel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+﻿using System;
 
 namespace ProiectVolovici
 {
     public static class ZobristHash
     {
-
-        static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
-        static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
+        private static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
+        private static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
 
         private static readonly long[][] tabeltranspozitie;
 
@@ -32,9 +26,9 @@ namespace ProiectVolovici
                     long valRandom = rnd.NextInt64();
                     tabeltranspozitie[i][j] = valRandom;
                 }
-
             }
         }
+
         public static long HashuiesteTabla(int[][] tabla)
         {
             long retVal = 0;
@@ -43,27 +37,9 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    if (tabla[linie][ coloana] != (int)CodPiesa.Gol)
+                    if (tabla[linie][coloana] != (int)CodPiesa.Gol)
                     {
-                        var piesa = tabla[linie][ coloana];
-                        //Debug.WriteLine(linie * (ConstantaTabla.NrLinii-1) + coloana);
-                        retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana][piesa];
-                    }
-                }
-            }
-            return retVal;
-        }
-        public static long HashuiesteTabla(int[,] tabla)
-        {
-            long retVal = 0;
-
-            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
-            {
-                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
-                {
-                    if (tabla[linie, coloana] != (int)CodPiesa.Gol)
-                    {
-                        var piesa = tabla[linie, coloana];
+                        var piesa = tabla[linie][coloana];
                         //Debug.WriteLine(linie * (ConstantaTabla.NrLinii-1) + coloana);
                         retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana][piesa];
                     }

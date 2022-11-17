@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
     public struct IntrareTabelTranspozitie : IEquatable<IntrareTabelTranspozitie>
     {
-        long _hashCode;
-        int _adancime;
-        double _alpha;
-        double _beta;
-
+        private long _hashCode;
+        private int _adancime;
+        private double _alpha;
+        private double _beta;
 
         public int Adancime
         {
             get { return _adancime; }
             set { _adancime = value; }
         }
+
         public double Alpha
         {
             get { return _alpha; }
             set { _alpha = value; }
         }
+
         public double Beta
         {
             get { return _beta; }

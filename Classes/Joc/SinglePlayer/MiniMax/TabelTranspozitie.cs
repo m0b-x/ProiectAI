@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProiectVolovici
 {
@@ -20,12 +15,14 @@ namespace ProiectVolovici
         {
             _tabel = tabel;
         }
+
         public TabelTranspozitie()
         {
         }
+
         public void AdaugaIntrare(long cheie, IntrareTabelTranspozitie intrare)
         {
-                _tabel.TryAdd(cheie, intrare);
+            _tabel.TryAdd(cheie, intrare);
         }
 
         public void ReseteazaTabel()

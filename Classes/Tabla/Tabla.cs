@@ -6,7 +6,7 @@ namespace ProiectVolovici
 {
     public class Tabla : IDisposable
     {
-        private Cadran[,] _arrayCadrane;
+        private Cadran[][] _arrayCadrane;
         private List<Pozitie> _pozitiiPalat;
 
         private int _pragRau;
@@ -68,7 +68,7 @@ namespace ProiectVolovici
             set { _culoareCadranMutari = value; }
         }
 
-        public Cadran[,] ArrayCadrane
+        public Cadran[][] ArrayCadrane
         {
             get { return _arrayCadrane; }
             set { _arrayCadrane = value; }
@@ -90,7 +90,9 @@ namespace ProiectVolovici
             _pozitiiPalat = new List<Pozitie>();
             ConstantaTabla.InitializeazaPolitiiPalat(ref _pozitiiPalat);
 
-            _arrayCadrane = new Cadran[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
+            _arrayCadrane = new Cadran[ConstantaTabla.NrLinii][];
+            for (int i = 0; i < ConstantaTabla.NrLinii; i++)
+                _arrayCadrane[i] = new Cadran[ConstantaTabla.NrColoane];
         }
 
         public void Dispose()
@@ -99,7 +101,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].Dispose();
+                    ArrayCadrane[linie][coloana].Dispose();
                 }
             }
             _pozitiiPalat.Clear();

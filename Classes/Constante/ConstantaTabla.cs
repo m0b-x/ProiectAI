@@ -66,6 +66,7 @@ namespace ProiectVolovici
             new Pozitie(9, 4),
             new Pozitie(9, 5)
         };
+
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
             _pozitiiPalat.Add(new Pozitie(0, 3));

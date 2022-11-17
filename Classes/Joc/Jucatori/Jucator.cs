@@ -9,10 +9,11 @@ namespace ProiectVolovici
         protected Culoare _culoare;
         protected List<Tuple<Pozitie, Pozitie>> _istoricMutari;
         protected Pozitie _ultimaPozitie;
+
         public Jucator(Culoare culoare)
         {
             _culoare = culoare;
-            _ultimaPozitie = new(-1,-1);
+            _ultimaPozitie = new(-1, -1);
         }
 
         public Pozitie UltimaPozitie
@@ -20,6 +21,7 @@ namespace ProiectVolovici
             get { return _ultimaPozitie; }
             set { _ultimaPozitie = value; }
         }
+
         public String Nume
         {
             get { return _nume; }

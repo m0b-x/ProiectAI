@@ -1,5 +1,4 @@
-﻿using ProiectVolovici.Visual_Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -31,10 +30,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             get { return _jucatorOm; }
         }
+
         public bool RandulTau
         {
             get { return _randulOmului; }
         }
+
         public int NrMutari
         {
             get { return _nrMutari; }
@@ -53,7 +54,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             EsteRandulTau();
         }
 
-        public EngineMiniMax(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
+        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
@@ -62,6 +63,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _randulOmului = false;
             InitializeazaTimerAsteptare();
         }
+
         public void InitializeazaTimerAsteptare()
         {
             _valoareTimerAsteptare = 0;
@@ -69,8 +71,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _timerAsteptareAI.Elapsed += new ElapsedEventHandler(SchimbaTextAsteptare);
             _timerAsteptareAI.Interval = 300;
             _timerAsteptareAI.Enabled = false;
-
         }
+
         public void SchimbaTextAsteptare(object source, ElapsedEventArgs e)
         {
             switch (_valoareTimerAsteptare)
@@ -95,25 +97,27 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     }
             }
         }
+
         public void PornesteTimerAsteptareAI()
         {
             _valoareTimerAsteptare = 0;
             _timerAsteptareAI.Start();
         }
+
         public void OpresteTimerAsteptareAI()
         {
             _valoareTimerAsteptare = 0;
             _timerAsteptareAI.Stop();
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "Este randul tau(alb)");
         }
+
         public void AdaugaEvenimentCadrane()
         {
-
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].Click += OnCadranClick;
+                    ArrayCadrane[linie][coloana].Click += OnCadranClick;
                 }
             }
         }
@@ -153,6 +157,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             ParentForm.Controls.Add(_textBoxMutariAlb);
             ParentForm.Controls.Add(_textBoxMutariAlbastru);
         }
+
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
             string ultimaMutareString = string.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
@@ -163,7 +168,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             _nrMutari++;
             var tipSah = base.VerificaSahulPersistent();
-            var piesaLuata = MatriceJaggedCoduriPiese[pozitie.Linie][ pozitie.Coloana];
+            var piesaLuata = MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana];
             base.RealizeazaMutareaLocal(piesa, pozitie);
             TerminaMeciulDacaEsteSahDirect(tipSah, piesaLuata);
         }
@@ -178,7 +183,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                     pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
 
-                    if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
                         Piesa piesa = GetPiesaCuPozitia(pozitie);
 
@@ -211,7 +216,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
-                            if (MatriceJaggedCoduriPiese[pozitie.Linie][ pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }
@@ -228,7 +233,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             {
                                 await Task.Run(() =>
                                 {
-                                    RealizeazaMutareaAI();;
+                                    RealizeazaMutareaAI(); ;
                                 });
                             }
                         }
@@ -253,7 +258,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             var tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
 
             var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariSiMatriciPosibile);
-            
+
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
             Piesa piesaLuata = GetPiesaCuPozitia(mutareaOptima.Item1.Item2);
@@ -266,24 +271,26 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             cronometru.Stop();
         }
 
-
         private int VerificaTentativaDeSah()
         {
-            foreach (Cadran cadran in ArrayCadrane)
+            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
-                if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
+                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
-                    foreach (Pozitie mutare in mutari)
+                    if (ArrayCadrane[linie][coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
-                        if (MatriceJaggedCoduriPiese[mutare.Linie][ mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                        List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
+                        foreach (Pozitie mutare in mutari)
                         {
-                            return ConstantaTabla.SahLaRegeAlb;
-                        }
+                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                            {
+                                return ConstantaTabla.SahLaRegeAlb;
+                            }
 
-                        if (MatriceJaggedCoduriPiese[mutare.Linie][ mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
-                        {
-                            return ConstantaTabla.SahLaRegerAlbastru;
+                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                            {
+                                return ConstantaTabla.SahLaRegerAlbastru;
+                            }
                         }
                     }
                 }
@@ -296,16 +303,16 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             StergeEvenimenteleCadranelor();
             base.TerminaMeciul(tipSah);
         }
+
         private void StergeEvenimenteleCadranelor()
         {
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].Click -= OnCadranClick;
+                    ArrayCadrane[linie][coloana].Click -= OnCadranClick;
                 }
             }
         }
-
     }
 }

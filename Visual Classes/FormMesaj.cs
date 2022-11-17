@@ -1,13 +1,5 @@
-﻿using ProiectVolovici.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici.Visual_Classes
@@ -17,10 +9,11 @@ namespace ProiectVolovici.Visual_Classes
         public static Color CuloareAlb = Color.SandyBrown;
         public static Color CuloareAlbastru = Color.FromArgb(89, 132, 189);
         public static Color CuloareNeutra = System.Drawing.SystemColors.ControlDarkDark;
-        public FormMesaj(Form parentForm,TipCastig tipMesaj, string mesajStare, string mesajMotiv)
+
+        public FormMesaj(Form parentForm, TipCastig tipMesaj, string mesajStare, string mesajMotiv)
         {
             InitializeComponent();
-            switch(tipMesaj)
+            switch (tipMesaj)
             {
                 case TipCastig.NoCotest:
                     panelDocked.BackColor = CuloareNeutra;
@@ -49,7 +42,7 @@ namespace ProiectVolovici.Visual_Classes
 
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Close();
             Application.Restart();
         }
     }

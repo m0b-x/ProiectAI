@@ -28,6 +28,7 @@ namespace ProiectVolovici
         {
             get { return _jucatorHost; }
         }
+
         public bool RandulTau
         {
             get { return _randulHostului; }
@@ -45,7 +46,7 @@ namespace ProiectVolovici
             _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }
 
-        public EngineHost(Form parentForm, int[,] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
+        public EngineHost(Form parentForm, int[][] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
         {
             AdaugaEvenimentCadrane();
             _jucatorHost = jucator;
@@ -63,7 +64,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].Click += OnCadranClick;
+                    ArrayCadrane[linie][coloana].Click += OnCadranClick;
                 }
             }
         }
@@ -125,7 +126,7 @@ namespace ProiectVolovici
             {
                 await Task.Delay(50);
             }
-            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCoduriPiese));
+            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceJaggedCoduriPiese));
             _host.TimerCitireDate.Stop();
             ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
             EsteRandulTau();
@@ -146,7 +147,7 @@ namespace ProiectVolovici
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
                         VerificaSahul(_ultimaMutarePrimitaHost.Item2);
-                        RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);                   
+                        RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
                         EsteRandulTau();
                         VerificaSahulPersistent();
                     }
@@ -166,48 +167,24 @@ namespace ProiectVolovici
 
         private int VerificaTentativaDeSah()
         {
-            foreach (Cadran cadran in ArrayCadrane)
+            for (int i = 0; i < ConstantaTabla.NrLinii; i++)
             {
-                if (cadran.PiesaCadran != ConstantaTabla.PiesaNula)
+                for (int j = 0; j < ConstantaTabla.NrLinii; j++)
                 {
-                    List<Pozitie> mutari = cadran.PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
-                    foreach (var mutare in mutari)
+                    if (ArrayCadrane[i][j].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
-                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlb)
-                            return ConstantaTabla.SahLaRegeAlb;
-                        if (MatriceCoduriPiese[mutare.Linie, mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
-                            return ConstantaTabla.SahLaRegerAlbastru;
+                        List<Pozitie> mutari = ArrayCadrane[i][j].PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
+                        foreach (var mutare in mutari)
+                        {
+                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                                return ConstantaTabla.SahLaRegeAlb;
+                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                                return ConstantaTabla.SahLaRegerAlbastru;
+                        }
                     }
                 }
             }
             return ConstantaTabla.NuEsteSah;
-        }
-
-        public void VerificaSahulPersistent()
-        {
-            int tentativaSah = VerificaTentativaDeSah();
-
-            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
-                _nrSahuriLaAlbastru++;
-            else
-                _nrSahuriLaAlbastru = 0;
-
-
-            if (tentativaSah == ConstantaTabla.SahLaRegerAlbastru)
-                _nrSahuriLaAlbastru++;
-            else
-                _nrSahuriLaAlb = 0;
-
-            if(_nrSahuriLaAlb >= ConstantaTabla.NrMaximSahuri)
-            {
-                MessageBox.Show("Ai pierdut");
-                TerminaMeciul();
-            }
-            if (_nrSahuriLaAlbastru >= ConstantaTabla.NrMaximSahuri)
-            {
-                MessageBox.Show("Ai castigat");
-                TerminaMeciul();
-            }
         }
 
         private void VerificaSahul(Pozitie pozitie)
@@ -228,7 +205,6 @@ namespace ProiectVolovici
             }
         }
 
-
         public void TerminaMeciul()
         {
             _esteGataMeciul = true;
@@ -243,7 +219,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie, coloana].Click -= OnCadranClick;
+                    ArrayCadrane[linie][coloana].Click -= OnCadranClick;
                 }
             }
         }
@@ -258,7 +234,7 @@ namespace ProiectVolovici
                     pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
                     pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
 
-                    if (ArrayCadrane[pozitie.Linie, pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
                         Piesa piesa = GetPiesaCuPozitia(pozitie);
 
@@ -293,7 +269,7 @@ namespace ProiectVolovici
                         {
                             VerificaSahul(pozitie);
                             AscundePiesaSelectata(PiesaSelectata);
-                            if (MatriceCoduriPiese[pozitie.Linie, pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }

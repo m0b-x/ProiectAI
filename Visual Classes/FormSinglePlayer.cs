@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax;
+using System;
 using System.Windows.Forms;
-using ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax;
 
 namespace ProiectVolovici
 {
@@ -18,11 +10,12 @@ namespace ProiectVolovici
         {
             InitializeComponent();
         }
-        EngineMiniMax jocSah;
-        Form formPrincipal;
+
+        private EngineMiniMax jocSah;
+        private Form formPrincipal;
+
         private void FormSinglePlayer_Load(object sender, EventArgs e)
         {
-
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.Alb), new Om(Culoare.Albastru));
 
             formPrincipal = this;
