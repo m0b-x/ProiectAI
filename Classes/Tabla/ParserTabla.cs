@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ProiectVolovici
@@ -34,12 +35,32 @@ namespace ProiectVolovici
             return new Tuple<Pozitie, Pozitie>(new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]),
                                                new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]));
         }
+        static T[,] ConvertesteJaggedIn2D<T>(T[][] source)
+        {
+            try
+            {
+                int FirstDim = source.Length;
+                int SecondDim = source.GroupBy(row => row.Length).Single().Key; // throws InvalidOperationException if source is not rectangular
 
+                var result = new T[FirstDim, SecondDim];
+                for (int i = 0; i < FirstDim; ++i)
+                    for (int j = 0; j < SecondDim; ++j)
+                        result[i, j] = source[i][j];
+
+                return result;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException("The given jagged array is not rectangular.");
+            }
+        }
         public String CodificareTabla(int[][] matriceTabla)
         {
-            var str = /*"mesajInceput" + */ string.Join("", matriceTabla.OfType<int>()
+            int[,] matrice2D = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
+            matrice2D = ConvertesteJaggedIn2D(matriceTabla);
+            var str = /*"mesajInceput" + */ string.Join("", matrice2D.OfType<int>()
                                             .Select((value, index) => new { value, index })
-                                            .GroupBy(linie => linie.index / matriceTabla.GetLength(1))
+                                            .GroupBy(linie => linie.index / matrice2D.GetLength(1))
                                             .Select(linie => $"{{{string.Join(" ", linie.Select(linie => linie.value))}}}"));
 
             return str;
@@ -51,6 +72,7 @@ namespace ProiectVolovici
 
             stringPrimit = stringPrimit.Substring(1, stringPrimit.Length - 2);
 
+            Debug.WriteLine(stringPrimit);
             int[] vectorAuxiliar = stringPrimit.Split(' ').Select(int.Parse).ToArray();
 
             int[][] matriceReturnata = new int[_liniiDecodificate][];

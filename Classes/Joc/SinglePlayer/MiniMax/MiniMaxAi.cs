@@ -16,34 +16,32 @@ namespace ProiectVolovici
             get { return _adancime; }
         }
 
-        private List<Piesa> _pieseVirtuale = new();
+        private List<Piesa> _pieseVirtuale = new()
+        {
+            null,
+            new Pion(Culoare.Alb),
+            new Pion(Culoare.Albastru),
+            new Tura(Culoare.Alb),
+            new Tura(Culoare.Albastru),
+            new Tun(Culoare.Alb),
+            new Tun(Culoare.Albastru),
+            new Gardian(Culoare.Alb),
+            new Gardian(Culoare.Albastru),
+            new Elefant(Culoare.Alb),
+            new Elefant(Culoare.Albastru),
+            new Cal(Culoare.Alb),
+            new Cal(Culoare.Albastru),
+            new Rege(Culoare.Alb),
+            new Rege(Culoare.Albastru)
+        };
 
         public MiniMaxAI(Culoare culoare, EngineMiniMax engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
         {
             this._engine = engine;
             _culoare = culoare;
             _adancime = adancime;
-            InitializeazaPiseleVirtuale();
         }
 
-        private void InitializeazaPiseleVirtuale()
-        {
-            _pieseVirtuale.Add(null);
-            _pieseVirtuale.Add(new Pion(Culoare.Alb));
-            _pieseVirtuale.Add(new Pion(Culoare.Albastru));
-            _pieseVirtuale.Add(new Tura(Culoare.Alb));
-            _pieseVirtuale.Add(new Tura(Culoare.Albastru));
-            _pieseVirtuale.Add(new Tun(Culoare.Alb));
-            _pieseVirtuale.Add(new Tun(Culoare.Albastru));
-            _pieseVirtuale.Add(new Gardian(Culoare.Alb));
-            _pieseVirtuale.Add(new Gardian(Culoare.Albastru));
-            _pieseVirtuale.Add(new Elefant(Culoare.Alb));
-            _pieseVirtuale.Add(new Elefant(Culoare.Albastru));
-            _pieseVirtuale.Add(new Cal(Culoare.Alb));
-            _pieseVirtuale.Add(new Cal(Culoare.Albastru));
-            _pieseVirtuale.Add(new Rege(Culoare.Alb));
-            _pieseVirtuale.Add(new Rege(Culoare.Albastru));
-        }
 
         public class DuplicateKeyComparerDesc<TKey>
                 :
@@ -289,11 +287,7 @@ namespace ProiectVolovici
                                 {
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
-                                        var elementTabel = _tabelTranspozitie.Tabel[hashUpdatat];
-                                        if (elementTabel.Alpha < alpha)
-                                        {
-                                            elementTabel.Alpha = alpha;
-                                        }
+                                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
                                     }
                                     else
                                     {
@@ -378,16 +372,11 @@ namespace ProiectVolovici
                                 {
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
-                                        var elementTabel = _tabelTranspozitie.Tabel[hashUpdatat];
-                                        if (elementTabel.Beta > beta)
-                                        {
-                                            elementTabel.Beta = beta;
-                                            elementTabel.Alpha = beta;
-                                        }
+                                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
                                     }
                                     else
                                     {
-                                        _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, beta, beta));
+                                        _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
                                     }
                                     return beta;
                                 }
