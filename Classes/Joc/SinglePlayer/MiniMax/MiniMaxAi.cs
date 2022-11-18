@@ -234,7 +234,9 @@ namespace ProiectVolovici
             return scor;
         }
 
-        public double Minimax_PieseAlbastre(double eval, int[][] matrice, double alpha, double beta, int adancime, int piesaCapturata, long hash, int nrPieseAlbastre, int nrPieseAlbe)
+        public double Minimax_PieseAlbastre(double eval, int[][] matrice, double alpha, 
+            double beta, int adancime, int piesaCapturata, long hash,
+            int nrPieseAlbastre, int nrPieseAlbe)
         {
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
