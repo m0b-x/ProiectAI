@@ -1,6 +1,7 @@
 ﻿using ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ProiectVolovici
 {
@@ -249,12 +250,18 @@ namespace ProiectVolovici
             {
                 long hashUpdatat = -1;
                 double newAlpha = double.MinValue;
-                for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
+                int ctPieseEvaluate = 0;
+                for (int linie = ConstantaTabla.NrLinii -1; linie >= 0; linie--)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                     {
+                        if(ctPieseEvaluate == _engine.ListaPieseAlbastre.Count)
+                        {
+                            goto ValoareFinala;
+                        }
                         if (EstePiesaAlbastra(matrice, linie, coloana))
                         {
+                            ctPieseEvaluate++;
                             int piesaCareIa = matrice[linie][coloana];
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
@@ -299,6 +306,7 @@ namespace ProiectVolovici
                         }
                     }
                 }
+                ValoareFinala:
                 return alpha;
             }
         }
@@ -333,12 +341,19 @@ namespace ProiectVolovici
             {
                 double newBeta = double.MaxValue;
                 long hashUpdatat = -1;
+
+                int ctPieseEvaluate = 0;
                 for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                     {
+                        if (ctPieseEvaluate == _engine.ListaPieseAlbe.Count)
+                        {
+                            goto ValoareFinala;
+                        }
                         if (EstePiesaAlba(matrice, linie, coloana))
                         {
+                            ctPieseEvaluate++;
                             int piesaCareIa = matrice[linie][coloana];
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
@@ -384,6 +399,7 @@ namespace ProiectVolovici
                         }
                     }
                 }
+                ValoareFinala:
                 return beta;
             }
         }
