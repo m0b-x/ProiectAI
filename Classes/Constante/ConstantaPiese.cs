@@ -9,9 +9,9 @@
         public static double ValoareCal = 4;
         public static double ValoareGardian = 2;
         public static double ValoareElefant = 2.5;
-        public static double ValoareRege = 2000;
+        public static double ValoareRege = 4000;
 
-        public static readonly double PragSahLaAlb = -4000;
-        public static readonly double PragSahLaAlbastru = 4000;
+        public static readonly double PragSahLaAlb = -5001;
+        public static readonly double PragSahLaAlbastru = 5001;
     }
 }

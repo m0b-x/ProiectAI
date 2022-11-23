@@ -4,7 +4,6 @@ namespace ProiectVolovici
 {
     public struct IntrareTabelTranspozitie : IEquatable<IntrareTabelTranspozitie>
     {
-        private long _hashCode;
         private int _adancime;
         private double _alpha;
         private double _beta;
@@ -41,13 +40,12 @@ namespace ProiectVolovici
 
         public bool Equals(IntrareTabelTranspozitie other)
         {
-            return _hashCode == other._hashCode &&
-                   _adancime == other._adancime;
+            return  _adancime == other._adancime;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_hashCode, _adancime);
+            return HashCode.Combine( _adancime);
         }
 
         public static bool operator ==(IntrareTabelTranspozitie left, IntrareTabelTranspozitie right)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace ProiectVolovici
 {
@@ -11,7 +12,7 @@ namespace ProiectVolovici
 
         private EngineMiniMax _engine;
         private int _adancime;
-
+        private TabelTranspozitie _tabelTranspozitie = new TabelTranspozitie();
         public int Adancime
         {
             get { return _adancime; }
@@ -41,6 +42,7 @@ namespace ProiectVolovici
             this._engine = engine;
             _culoare = culoare;
             _adancime = adancime;
+            AdaugaOpeningsInCache();
         }
 
 
@@ -62,6 +64,86 @@ namespace ProiectVolovici
 
             #endregion IComparer<TKey> Members
         }
+
+        Dictionary<long, (Pozitie, Pozitie)> _cacheDeschideri = new();
+        public void AdaugaOpeningsInCache()
+        {
+
+            //AICI
+            int[][] atacTunAlbStanga = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 6, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            long hash = ZobristHash.HashuiesteTabla(atacTunAlbStanga);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(9, 0), new Pozitie(9, 1)));
+            int[][] atacTunAlbDreapta = new int[10][]
+            {
+                new int[] { 4, 12, 10, 8, 14, 8, 10, 12, 4 },
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2 },
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1 },
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0 },
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 6, 3 }
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacTunAlbDreapta);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(9, 9), new Pozitie(9, 8)));
+
+            int[][] atacTunAlbastruStanga = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 5, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruStanga);
+
+
+            _cacheDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(0, 7)));
+
+            int[][] atacTunAlbastruDreapta = new int[10][]
+            {
+                new int [] { 4, 5, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruDreapta);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
+
+        }
+
 
         public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI()
         {
@@ -99,11 +181,20 @@ namespace ProiectVolovici
         //TODO:adauga pozitia initiala
         public Tuple<Tuple<Pozitie, Pozitie>, double> IncepeEvaluareaMiniMax(SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile)
         {
+
+
+            //ADAUGA AICI CACHE OPENINGS
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceJaggedCoduriPiese);
             Tuple<Pozitie, Pozitie> mutareOptima = tupluMutariSiMatriciPosibile.Values[0];
 
             var matriceInitiala = _engine.MatriceJaggedCoduriPiese;
             long hashInitial = ZobristHash.HashuiesteTabla(matriceInitiala);
+
+            if(_cacheDeschideri.ContainsKey(hashInitial))
+            {
+                var item = _cacheDeschideri[hashInitial];
+                return new(new Tuple<Pozitie, Pozitie>(item.Item1, item.Item2), double.MaxValue);
+            }
 
             int codPiesaLuata = _engine.MatriceJaggedCoduriPiese[
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie][
@@ -242,7 +333,7 @@ namespace ProiectVolovici
             {
                 var elementTabel = _tabelTranspozitie.Tabel[hash];
 
-                if (elementTabel.Alpha >= alpha)
+                if (elementTabel.Alpha <= alpha)
                 {
                     if (elementTabel.Adancime >= adancime)
                     {
@@ -252,7 +343,9 @@ namespace ProiectVolovici
                 }
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
-            if (piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
+            if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
+                piesaCapturata == (int)CodPiesa.RegeAlb ||
+                adancime == 0)
             {
                 return eval;
             }
@@ -307,7 +400,8 @@ namespace ProiectVolovici
                                 {
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
-                                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
+                                        if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                                            _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
                                     }
                                     else
                                     {
@@ -320,6 +414,7 @@ namespace ProiectVolovici
                     }
                 }
             ValoareFinala:
+
                 return alpha;
             }
         }
@@ -329,7 +424,6 @@ namespace ProiectVolovici
             return (codPiesa - 1) % 2 == 1;
         }
 
-        private TabelTranspozitie _tabelTranspozitie = new TabelTranspozitie();
 
         public double Minimax_PieseAlbe(double eval, int[][] matrice,
             double alpha, double beta, int adancime, int piesaCapturata,
@@ -338,7 +432,7 @@ namespace ProiectVolovici
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
                 var elementTabel = _tabelTranspozitie.Tabel[hash];
-                if (elementTabel.Beta <= beta)
+                if (elementTabel.Beta >= beta)
                 {
                     if (elementTabel.Adancime >= adancime)
                     {
@@ -348,7 +442,9 @@ namespace ProiectVolovici
                 beta = Math.Min(beta, elementTabel.Beta);
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
-            if (piesaCapturata == (int)CodPiesa.RegeAlbastru || adancime == 0)
+            if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
+                piesaCapturata == (int)CodPiesa.RegeAlb ||
+                adancime == 0)
             {
                 return eval;
             }
@@ -406,7 +502,8 @@ namespace ProiectVolovici
                                 {
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
-                                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
+                                        if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                                            _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
                                     }
                                     else
                                     {
