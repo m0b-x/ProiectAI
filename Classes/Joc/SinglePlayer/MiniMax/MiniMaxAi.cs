@@ -190,12 +190,14 @@ namespace ProiectVolovici
             var matriceInitiala = _engine.MatriceJaggedCoduriPiese;
             long hashInitial = ZobristHash.HashuiesteTabla(matriceInitiala);
 
-            if(_cacheDeschideri.ContainsKey(hashInitial))
+            if (_engine.NrMutari <= 1)
             {
-                var item = _cacheDeschideri[hashInitial];
-                return new(new Tuple<Pozitie, Pozitie>(item.Item1, item.Item2), double.MaxValue);
+                if (_cacheDeschideri.ContainsKey(hashInitial))
+                {
+                    var item = _cacheDeschideri[hashInitial];
+                    return new(new Tuple<Pozitie, Pozitie>(item.Item1, item.Item2), double.MaxValue);
+                }
             }
-
             int codPiesaLuata = _engine.MatriceJaggedCoduriPiese[
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Linie][
                 tupluMutariSiMatriciPosibile.Values[0].Item2.Coloana];
