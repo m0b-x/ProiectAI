@@ -53,6 +53,13 @@ namespace ProiectVolovici
                                 mutariLegale.Add(pozitiePosibila);
                                 goto functie_linie;
                             }
+                            else
+
+                            if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] != (int)CodPiesa.Gol &&
+                                matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
+                            {
+                                goto functie_linie;
+                            }
                             liniePozitiiPosibile++;
                         }
                     }
@@ -81,7 +88,14 @@ namespace ProiectVolovici
                                 mutariLegale.Add(pozitiePosibila);
                                 goto functie_coloane;
                             }
-                            liniePozitiiPosibile--;
+                            else
+
+                            if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] != (int)CodPiesa.Gol &&
+                                matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 == (int)this.Cod % 2)
+                            {
+                                goto functie_coloane;
+                            }
+                                liniePozitiiPosibile--;
                         }
                     }
                 }
@@ -107,6 +121,13 @@ namespace ProiectVolovici
                                 matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
                             {
                                 mutariLegale.Add(pozitiePosibila);
+                                goto functie_coloane2;
+                            }
+                            else
+
+                            if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] != (int)CodPiesa.Gol &&
+                                matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 == (int)this.Cod % 2)
+                            {
                                 goto functie_coloane2;
                             }
                             colonaPozitiePosibila++;
@@ -135,6 +156,13 @@ namespace ProiectVolovici
                                 matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
                             {
                                 mutariLegale.Add(pozitiePosibila);
+                                goto sfarsit_functie;
+                            }
+                            else
+
+                            if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] != (int)CodPiesa.Gol &&
+                                matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 == (int)this.Cod % 2)
+                            {
                                 goto sfarsit_functie;
                             }
                             colonaPozitiePosibila--;
