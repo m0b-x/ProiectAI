@@ -770,7 +770,7 @@ namespace ProiectVolovici
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
                 IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
-                if (elementTabel.Adancime >= adancime)
+                if (elementTabel.Adancime >= adancime && elementTabel.Alpha >= beta)
                 {
                     return elementTabel.Alpha;
                 }
@@ -872,7 +872,7 @@ namespace ProiectVolovici
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
                 IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
-                if (elementTabel.Adancime >= adancime)
+                if (elementTabel.Adancime >= adancime && elementTabel.Beta <= alpha)
                 {
                     return elementTabel.Beta;
                 }
