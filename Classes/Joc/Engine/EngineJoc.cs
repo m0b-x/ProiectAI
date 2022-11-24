@@ -12,7 +12,7 @@ namespace ProiectVolovici
         private Form _parentForm;
         protected Tabla _tabla;
 
-        protected int[][] _matriceJaggedCodPiese;
+        protected int[][] _matriceCodPiese;
 
         private List<Piesa> _listaPiese;
         private List<Piesa> _listaPieseAlbe;
@@ -26,6 +26,7 @@ namespace ProiectVolovici
         private Piesa _piesaSelectata;
 
         private Tuple<Pozitie, Pozitie> _ultimaMutare;
+        private int _codPiesaLuata;
 
         protected bool _esteGataMeciul;
         protected int _nrSahuriLaAlb = 0;
@@ -57,6 +58,10 @@ namespace ProiectVolovici
             set { _listaPieseAlbastre = value; }
         }
 
+        public int CodPiesaLuata
+        {
+            get { return _codPiesaLuata; }
+        }
         public Form ParentForm
         {
             get { return _parentForm; }
@@ -84,7 +89,7 @@ namespace ProiectVolovici
         {
             get
             {
-                return _matriceJaggedCodPiese;
+                return _matriceCodPiese;
             }
         }
 
@@ -152,9 +157,9 @@ namespace ProiectVolovici
             _tabla = new Tabla();
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
-            _matriceJaggedCodPiese = new int[ConstantaTabla.NrLinii][];
+            _matriceCodPiese = new int[ConstantaTabla.NrLinii][];
             for (int i = 0; i < ConstantaTabla.NrLinii; i++)
-                _matriceJaggedCodPiese[i] = new int[ConstantaTabla.NrColoane];
+                _matriceCodPiese[i] = new int[ConstantaTabla.NrColoane];
 
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
@@ -181,9 +186,9 @@ namespace ProiectVolovici
             _tabla = new Tabla();
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(new Pozitie(0, 0), new Pozitie(0, 0));
 
-            _matriceJaggedCodPiese = new int[ConstantaTabla.NrLinii][];
+            _matriceCodPiese = new int[ConstantaTabla.NrLinii][];
             for (int i = 0; i < ConstantaTabla.NrLinii; i++)
-                _matriceJaggedCodPiese[i] = new int[ConstantaTabla.NrColoane];
+                _matriceCodPiese[i] = new int[ConstantaTabla.NrColoane];
 
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
@@ -459,7 +464,7 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PozitieCadran = pozitie;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackgroundImage = piesa.Imagine;
-                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)piesa.Cod;
+                    _matriceCodPiese[pozitie.Linie][pozitie.Coloana] = (int)piesa.Cod;
                 }
                 else
                 {
@@ -474,7 +479,7 @@ namespace ProiectVolovici
                     ListaPiese.Remove(ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran);
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran = ConstantaTabla.PiesaNula;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackgroundImage = null;
-                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
+                    _matriceCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
                 }
             }
             else
@@ -495,28 +500,25 @@ namespace ProiectVolovici
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran = piesa;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PozitieCadran = pozitie;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackgroundImage = piesa.Imagine;
-                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)piesa.Cod;
+                    _matriceCodPiese[pozitie.Linie][pozitie.Coloana] = (int)piesa.Cod;
                 }
                 else
                 {
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackgroundImage = null;
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran = ConstantaTabla.PiesaNula;
-                    _matriceJaggedCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
+                    _matriceCodPiese[pozitie.Linie][pozitie.Coloana] = (int)CodPiesa.Gol;
                 }
             }
         }
 
         protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitiaFinala)
         {
-            if (piesa == null || pozitiaFinala == null)
-            {
-                return;
-            }
 
             AscundePiesaSelectata(piesa);
             Pozitie pozitieInitiala = piesa.Pozitie;
             DecoloreazaMutariPosibile(PozitiiMutariPosibile);
             ActualizeazaUltimaMutare(pozitieInitiala, pozitiaFinala);
+            _codPiesaLuata = _matriceCodPiese[pozitiaFinala.Linie][pozitiaFinala.Coloana];
             SeteazaPiesaCadranului(pozitiaFinala, piesa);
             piesa.Pozitie = pozitiaFinala;
             SeteazaPiesaCadranului(pozitieInitiala, ConstantaTabla.PiesaNula);
@@ -607,34 +609,28 @@ namespace ProiectVolovici
             return codPiesa % 2 == 0 ? true : false;
         }
 
+        private double[] _arrayScorPiese = new double[]
+        {
+            0,
+            ConstantaPiese.ValoarePion,
+            ConstantaPiese.ValoarePion,
+            ConstantaPiese.ValoareTura,
+            ConstantaPiese.ValoareTura,
+            ConstantaPiese.ValoareTun,
+            ConstantaPiese.ValoareTun,
+            ConstantaPiese.ValoareGardian,
+            ConstantaPiese.ValoareGardian,
+            ConstantaPiese.ValoareElefant,
+            ConstantaPiese.ValoareElefant,
+            ConstantaPiese.ValoareCal,
+            ConstantaPiese.ValoareCal ,
+            ConstantaPiese.ValoareRege,
+            ConstantaPiese.ValoareRege
+        };
+
         public double ReturneazaScorPiese(CodPiesa codPiesa)
         {
-            switch (codPiesa)
-            {
-                case CodPiesa.Gol: return 0;
-                case CodPiesa.CalAlb: return ConstantaPiese.ValoareCal;
-                case CodPiesa.CalAbastru: return ConstantaPiese.ValoareCal;
-
-                case CodPiesa.ElefantAlb: return ConstantaPiese.ValoareElefant;
-                case CodPiesa.ElefantAlbastru: return ConstantaPiese.ValoareElefant;
-
-                case CodPiesa.GardianAlb: return ConstantaPiese.ValoareGardian;
-                case CodPiesa.GardianAlbastru: return ConstantaPiese.ValoareGardian;
-
-                case CodPiesa.PionAlb: return ConstantaPiese.ValoarePion;
-                case CodPiesa.PionAlbastru: return ConstantaPiese.ValoarePion;
-
-                case CodPiesa.RegeAlb: return ConstantaPiese.ValoareRege;
-                case CodPiesa.RegeAlbastru: return ConstantaPiese.ValoareRege;
-
-                case CodPiesa.TuraAlba: return ConstantaPiese.ValoareTura;
-                case CodPiesa.TuraAlbastra: return ConstantaPiese.ValoareTura;
-
-                case CodPiesa.TunAlb: return ConstantaPiese.ValoareTun;
-                case CodPiesa.TunAlbastru: return ConstantaPiese.ValoareTun;
-
-                default: return 0;
-            }
+            return _arrayScorPiese[(int)codPiesa];
         }
 
         public virtual void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
@@ -715,11 +711,11 @@ namespace ProiectVolovici
             int contorMutariAlb = 0;
             foreach (var piesa in ListaPieseAlbe)
             {
-                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceJaggedCodPiese);
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
                 contorMutariAlb += mutariPosibile.Count;
                 foreach (var mutare in mutariPosibile)
                 {
-                    if (_matriceJaggedCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlbastru)
+                    if (_matriceCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlbastru)
                     {
                         _nrSahuriLaAlbastru++;
                         if (_nrSahuriLaAlbastru == 3)
@@ -742,11 +738,11 @@ namespace ProiectVolovici
             int contorMutariAlbastru = 0;
             foreach (var piesa in ListaPieseAlbastre)
             {
-                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceJaggedCodPiese);
+                var mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
                 contorMutariAlbastru += mutariPosibile.Count;
                 foreach (var mutare in mutariPosibile)
                 {
-                    if (_matriceJaggedCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlb)
+                    if (_matriceCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlb)
                     {
                         _nrSahuriLaAlb++;
                         if (_nrSahuriLaAlb == 3)

@@ -255,9 +255,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Stopwatch cronometru = new();
             cronometru.Start();
 
-            var tupluMutariSiMatriciPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
+            var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
 
-            var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariSiMatriciPosibile);
+            var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile);
 
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
