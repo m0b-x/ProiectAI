@@ -777,16 +777,13 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb)
-            {
-                return eval / adancime;
-            }
-            if( adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
             {
                 return eval;
             }
             else
             {
+                double origAlpha = alpha;
                 long hashUpdatat = hash;
                 double newAlpha = double.MinValue;
                 int ctPieseEvaluate = 0;
@@ -841,35 +838,23 @@ namespace ProiectVolovici
 
                                 if (beta <= alpha)
                                 {
-                                    if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
-                                    {
-                                        if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
-                                        {
-                                            _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
-                                    }
-                                    return alpha;
+                                    goto ValoareFinala;
                                 }
                             }
                         }
                     }
                 }
             ValoareFinala:
-
-                if (_tabelTranspozitie.Tabel.ContainsKey(hash))
+                if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                 {
-                    if (_tabelTranspozitie.Tabel[hash].Adancime < adancime)
+                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
                     {
-                        _tabelTranspozitie.Tabel[hash] = new IntrareTabelTranspozitie(adancime, alpha, alpha);
+                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
                     }
                 }
                 else
                 {
-                    _tabelTranspozitie.AdaugaIntrare(hash, new IntrareTabelTranspozitie(adancime, alpha, alpha));
+                    _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
                 }
                 return alpha;
             }
@@ -894,11 +879,7 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb)
-            {
-                return eval / adancime;
-            }
-            if (adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
             {
                 return eval;
             }
@@ -956,35 +937,23 @@ namespace ProiectVolovici
                                 matrice[mutPos.Linie][mutPos.Coloana] = piesaLuata;
 
                                 if (beta <= alpha)
-                                {
-                                    if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
-                                    {
-                                        if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
-                                        {
-                                            _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
-                                    }
-                                    return beta;
+                                { goto ValoareFinala;
                                 }
                             }
                         }
                     }
                 }
-            ValoareFinala:
-                if (_tabelTranspozitie.Tabel.ContainsKey(hash))
+                ValoareFinala:
+                if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                 {
-                    if (_tabelTranspozitie.Tabel[hash].Adancime < adancime)
+                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
                     {
-                        _tabelTranspozitie.Tabel[hash] = new IntrareTabelTranspozitie(adancime, beta, beta);
+                        _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
                     }
                 }
                 else
                 {
-                    _tabelTranspozitie.AdaugaIntrare(hash, new IntrareTabelTranspozitie(adancime, beta, beta));
+                    _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
                 }
                 return beta;
             }

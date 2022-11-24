@@ -705,11 +705,11 @@ namespace ProiectVolovici
             }
             if (tipSah == TipSah.SahPersistentLaAlb)
             {
-                TerminaMeciul(TipSah.SahPersistentLaAlb);
+              //  TerminaMeciul(TipSah.SahPersistentLaAlb);
             }
             else if (tipSah == TipSah.SahPersistentLaAlbastru)
             {
-                TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+               // TerminaMeciul(TipSah.SahPersistentLaAlbastru);
             }
         }
 
