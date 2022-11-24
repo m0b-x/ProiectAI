@@ -24,7 +24,7 @@
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceJaggedCoduriPiese);
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
 
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }

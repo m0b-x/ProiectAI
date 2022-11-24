@@ -176,12 +176,12 @@ namespace ProiectVolovici
                 {
                     if (ArrayCadrane[linie][coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
-                        List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
+                        List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
                         foreach (var mutare in mutari)
                         {
-                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                            if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
                                 return ConstantaTabla.SahLaRegeAlb;
-                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                            if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
                                 return ConstantaTabla.SahLaRegerAlbastru;
                         }
                     }
@@ -271,7 +271,7 @@ namespace ProiectVolovici
                         if (EsteMutareaPosibila(pozitie))
                         {
                             AscundePiesaSelectata(PiesaSelectata);
-                            if (MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }

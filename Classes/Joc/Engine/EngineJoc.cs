@@ -85,7 +85,7 @@ namespace ProiectVolovici
             set { _labelAsteptare = value; }
         }
 
-        public int[][] MatriceJaggedCoduriPiese
+        public int[][] MatriceCoduriPiese
         {
             get
             {

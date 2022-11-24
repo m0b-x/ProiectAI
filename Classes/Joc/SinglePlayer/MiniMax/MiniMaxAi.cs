@@ -1,18 +1,17 @@
 ﻿using ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
 
 namespace ProiectVolovici
 {
     public class MiniMaxAI : Jucator
     {
-        private static Random GeneratorRandom = new Random();
+        private static Random GeneratorRandom = new();
 
         private EngineMiniMax _engine;
         private int _adancime;
-        private TabelTranspozitie _tabelTranspozitie = new TabelTranspozitie();
+        private TabelTranspozitie _tabelTranspozitie = new();
+
         public int Adancime
         {
             get { return _adancime; }
@@ -39,12 +38,11 @@ namespace ProiectVolovici
 
         public MiniMaxAI(Culoare culoare, EngineMiniMax engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
         {
-            this._engine = engine;
+            _engine = engine;
             _culoare = culoare;
             _adancime = adancime;
             AdaugaOpeningsInCache();
         }
-
 
         public class DuplicateKeyComparerDesc<TKey>
                 :
@@ -57,15 +55,20 @@ namespace ProiectVolovici
                 int result = y.CompareTo(x);
 
                 if (result == 0)
+                {
                     return 1;
+                }
                 else
+                {
                     return result;
+                }
             }
 
             #endregion IComparer<TKey> Members
         }
 
-        Dictionary<long, (Pozitie, Pozitie)> _cacheDeschideri = new();
+        private Dictionary<long, (Pozitie, Pozitie)> _cacheDeschideri = new();
+
         public void AdaugaOpeningsInCache()
         {
             /*
@@ -82,15 +85,12 @@ namespace ProiectVolovici
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
             };
-            
+
             hash = ZobristHash.HashuiesteTabla(initiala);
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 0)));
              */
             long hash;
-
-
-
 
             int[][] tunAlbAtac1 = new int[10][]
             {
@@ -110,8 +110,6 @@ namespace ProiectVolovici
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
 
-
-
             int[][] tunAlbAtac2 = new int[10][]
             {
                 new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
@@ -129,12 +127,6 @@ namespace ProiectVolovici
             hash = ZobristHash.HashuiesteTabla(tunAlbAtac2);
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
-
-
-
-
-
-
 
             int[][] tunAlbastruAtac1 = new int[10][]
             {
@@ -154,8 +146,6 @@ namespace ProiectVolovici
 
             _cacheDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 2)));
 
-
-
             int[][] tunAlbastruAtac2 = new int[10][]
             {
                 new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
@@ -173,7 +163,6 @@ namespace ProiectVolovici
             hash = ZobristHash.HashuiesteTabla(tunAlbastruAtac2);
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(7, 6)));
-
 
             int[][] tunAlbMijloc1 = new int[10][]
             {
@@ -193,8 +182,6 @@ namespace ProiectVolovici
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
 
-
-
             int[][] tunAlbMijloc2 = new int[10][]
             {
                 new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
@@ -209,12 +196,9 @@ namespace ProiectVolovici
                 new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
             };
 
-
-
             hash = ZobristHash.HashuiesteTabla(tunAlbMijloc2);
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
-
 
             int[][] tunAlbastruMijloc1 = new int[10][]
 {
@@ -233,8 +217,6 @@ namespace ProiectVolovici
             hash = ZobristHash.HashuiesteTabla(tunAlbastruMijloc1);
 
             _cacheDeschideri.Add(hash, (new Pozitie(9, 7), new Pozitie(7, 6)));
-
-
 
             int[][] tunAlbastruMijloc2 = new int[10][]
             {
@@ -272,7 +254,6 @@ namespace ProiectVolovici
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 0)));
 
-
             int[][] atacTunAlbLaGardianDreapta = new int[10][]
                 {
                 new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
@@ -286,7 +267,6 @@ namespace ProiectVolovici
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
                 };
-
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbLaGardianDreapta);
 
@@ -380,7 +360,6 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruStanga);
 
-
             _cacheDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(0, 7)));
 
             int[][] atacTunAlbastruDreapta = new int[10][]
@@ -400,36 +379,33 @@ namespace ProiectVolovici
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruDreapta);
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
-
         }
-
 
         public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI()
         {
             SortedList<double, Tuple<Pozitie, Pozitie>> tupluMutariSiMatriciPosibile = new(new DuplicateKeyComparerDesc<double>());
-            double evaluareInitiala = EvalueazaMatricea(_engine.MatriceJaggedCoduriPiese);
-            var copieMatrice = _engine.MatriceJaggedCoduriPiese;
+            double evaluareInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             for (int linie = 0; linie < ConstantaTabla.NrLinii; ++linie)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; ++coloana)
                 {
-                    if ((_engine.MatriceJaggedCoduriPiese[linie][coloana] - 1) % 2 == 1)
+                    if ((_engine.MatriceCoduriPiese[linie][coloana] - 1) % 2 == 1)
                     {
-                        _pieseVirtuale[_engine.MatriceJaggedCoduriPiese[linie][coloana]].Pozitie = new Pozitie(linie, coloana);
-                        var mutari = _pieseVirtuale[_engine.MatriceJaggedCoduriPiese[linie][coloana]].ReturneazaMutariPosibile(_engine.MatriceJaggedCoduriPiese);
-                        foreach (var mut in mutari)
+                        _pieseVirtuale[_engine.MatriceCoduriPiese[linie][coloana]].Pozitie = new Pozitie(linie, coloana);
+                        List<Pozitie> mutari = _pieseVirtuale[_engine.MatriceCoduriPiese[linie][coloana]].ReturneazaMutariPosibile(_engine.MatriceCoduriPiese);
+                        foreach (Pozitie mut in mutari)
                         {
-                            int piesaLuata = copieMatrice[mut.Linie][mut.Coloana];
-                            int piesaCareIa = _engine.MatriceJaggedCoduriPiese[linie][coloana];
+                            int piesaLuata = _engine.MatriceCoduriPiese[mut.Linie][mut.Coloana];
+                            int piesaCareIa = _engine.MatriceCoduriPiese[linie][coloana];
 
-                            copieMatrice[mut.Linie][mut.Coloana] = piesaCareIa;
-                            copieMatrice[linie][coloana] = (int)CodPiesa.Gol;
+                            _engine.MatriceCoduriPiese[mut.Linie][mut.Coloana] = piesaCareIa;
+                            _engine.MatriceCoduriPiese[linie][coloana] = (int)CodPiesa.Gol;
 
                             tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata)
                                 , new(new(linie, coloana), mut));
 
-                            copieMatrice[mut.Linie][mut.Coloana] = piesaLuata;
-                            copieMatrice[linie][coloana] = piesaCareIa;
+                            _engine.MatriceCoduriPiese[mut.Linie][mut.Coloana] = piesaLuata;
+                            _engine.MatriceCoduriPiese[linie][coloana] = piesaCareIa;
                         }
                     }
                 }
@@ -440,20 +416,18 @@ namespace ProiectVolovici
         //TODO:adauga pozitia initiala
         public Tuple<Tuple<Pozitie, Pozitie>, double> IncepeEvaluareaMiniMax(SortedList<double, Tuple<Pozitie, Pozitie>> mutariPodsibile)
         {
-
-
             //ADAUGA AICI CACHE OPENINGS
-            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceJaggedCoduriPiese);
+            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             Tuple<Pozitie, Pozitie> mutareOptima = mutariPodsibile.Values[0];
 
-            var matriceInitiala = _engine.MatriceJaggedCoduriPiese;
+            int[][] matriceInitiala = _engine.MatriceCoduriPiese;
             long hashInitial = ZobristHash.HashuiesteTabla(matriceInitiala);
 
             if (_engine.NrMutari <= 1)
             {
                 if (_cacheDeschideri.ContainsKey(hashInitial))
                 {
-                    var item = _cacheDeschideri[hashInitial];
+                    (Pozitie, Pozitie) item = _cacheDeschideri[hashInitial];
                     return new(new Tuple<Pozitie, Pozitie>(item.Item1, item.Item2), double.MaxValue);
                 }
             }
@@ -466,7 +440,7 @@ namespace ProiectVolovici
             int nrPieseAlbe = _engine.ListaPieseAlbe.Count;
             int nrPieseAlbastre = _engine.ListaPieseAlbastre.Count;
 
-            
+
             double scorMutareOptima = Minimax_PieseAlbe(
                     evaluareMatriceInitiala,
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
@@ -474,14 +448,16 @@ namespace ProiectVolovici
 
             for (int i = 0; i < mutariPodsibile.Count; i++)
             {
-                codPiesaLuata = _engine.MatriceJaggedCoduriPiese[
+                codPiesaLuata = _engine.MatriceCoduriPiese[
                     mutariPodsibile.Values[i].Item2.Linie][
                     mutariPodsibile.Values[i].Item2.Coloana];
 
                 if (codPiesaLuata == (int)CodPiesa.RegeAlb)
+                {
                     return new(mutareOptima, double.MaxValue);
+                }
 
-                codPiesaCareIa = _engine.MatriceJaggedCoduriPiese[
+                codPiesaCareIa = _engine.MatriceCoduriPiese[
                     mutariPodsibile.Values[i].Item1.Linie][
                     mutariPodsibile.Values[i].Item1.Coloana];
 
@@ -504,7 +480,9 @@ namespace ProiectVolovici
 
                 nrPieseAlbe = _engine.ListaPieseAlbe.Count;
                 if (EstePiesa(codPiesaLuata))
+                {
                     nrPieseAlbe--;
+                }
 
                 double scorMutare = Minimax_PieseAlbe(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
@@ -556,13 +534,13 @@ namespace ProiectVolovici
             return scor;
         }
 
-        public double Minimax_PieseAlbastre(double eval, int[][] matrice, double alpha, 
+        public double Minimax_PieseAlbastre(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, long hash,
             int nrPieseAlbastre, int nrPieseAlbe)
         {
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
-                var elementTabel = _tabelTranspozitie.Tabel[hash];
+                IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
 
                 if (elementTabel.Alpha <= alpha)
                 {
@@ -582,16 +560,16 @@ namespace ProiectVolovici
             }
             else
             {
-                long hashUpdatat = -1;
+                long hashUpdatat = hash;
                 double newAlpha = double.MinValue;
                 int ctPieseEvaluate = 0;
-                for (int linie = ConstantaTabla.NrLinii -1; linie >= 0; linie--)
+                for (int linie = ConstantaTabla.NrLinii - 1; linie >= 0; linie--)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                     {
                         if (EstePiesaAlbastra(matrice[linie][coloana]))
                         {
-                            if(ctPieseEvaluate == nrPieseAlbastre)
+                            if (ctPieseEvaluate == nrPieseAlbastre)
                             {
                                 goto ValoareFinala;
                             }
@@ -599,12 +577,12 @@ namespace ProiectVolovici
                             int piesaCareIa = matrice[linie][coloana];
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
-                            var mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
-                            foreach (var mutarePosibila in mutariPosibile)
+                            List<Pozitie> mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
+                            foreach (Pozitie mutarePosibila in mutariPosibile)
                             {
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
 
-                                var piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
+                                int piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
                                 matrice[linie][coloana] = (int)CodPiesa.Gol;
                                 matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = matrice[linie][coloana];
 
@@ -618,7 +596,9 @@ namespace ProiectVolovici
                                     piesaCareIa: piesaCareIa);
 
                                 if (EstePiesa(piesaLuata))
+                                {
                                     nrPieseAlbe--;
+                                }
 
                                 newAlpha = Math.Max(newAlpha, Minimax_PieseAlbe(eval + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
@@ -632,7 +612,9 @@ namespace ProiectVolovici
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
                                         if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                                        {
                                             _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
+                                        }
                                     }
                                     else
                                     {
@@ -655,14 +637,13 @@ namespace ProiectVolovici
             return (codPiesa - 1) % 2 == 1;
         }
 
-
         public double Minimax_PieseAlbe(double eval, int[][] matrice,
             double alpha, double beta, int adancime, int piesaCapturata,
             long hash, int nrPieseAlbastre, int nrPieseAlbe)
         {
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
-                var elementTabel = _tabelTranspozitie.Tabel[hash];
+                IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
                 if (elementTabel.Beta >= beta)
                 {
                     if (elementTabel.Adancime >= adancime)
@@ -682,7 +663,7 @@ namespace ProiectVolovici
             else
             {
                 double newBeta = double.MaxValue;
-                long hashUpdatat = -1;
+                long hashUpdatat = hash;
 
                 int ctPieseEvaluate = 0;
                 for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
@@ -699,11 +680,11 @@ namespace ProiectVolovici
                             int piesaCareIa = matrice[linie][coloana];
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
-                            var mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
-                            foreach (var mutarePosibila in mutariPosibile)
+                            List<Pozitie> mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
+                            foreach (Pozitie mutarePosibila in mutariPosibile)
                             {
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
-                                var piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
+                                int piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
 
                                 matrice[linie][coloana] = (int)CodPiesa.Gol;
                                 matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = matrice[linie][coloana];
@@ -718,11 +699,13 @@ namespace ProiectVolovici
                                     piesaCareIa: piesaCareIa);
 
                                 if (EstePiesa(piesaLuata))
+                                {
                                     nrPieseAlbastre--;
+                                }
 
                                 newBeta = Math.Min(newBeta, Minimax_PieseAlbastre(eval - _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
                                     matrice, alpha, beta, adancime - 1,
-                                    piesaLuata, hashUpdatat,nrPieseAlbastre, nrPieseAlbe));
+                                    piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
 
                                 beta = Math.Min(newBeta, beta);
 
@@ -734,7 +717,9 @@ namespace ProiectVolovici
                                     if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                                     {
                                         if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                                        {
                                             _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
+                                        }
                                     }
                                     else
                                     {
@@ -759,7 +744,10 @@ namespace ProiectVolovici
         private static bool EstePiesa(int codPiesa)
         {
             if (codPiesa == 0)
+            {
                 return false;
+            }
+
             return true;
         }
     }

@@ -168,7 +168,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             _nrMutari++;
             var tipSah = base.VerificaSahulPersistent();
-            var piesaLuata = MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana];
+            var piesaLuata = MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana];
             base.RealizeazaMutareaLocal(piesa, pozitie);
             TerminaMeciulDacaEsteSahDirect(tipSah, piesaLuata);
         }
@@ -216,7 +216,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
-                            if (MatriceJaggedCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
+                            if (MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
                                 ConstantaSunet.SunetPiesaLuata.Play();
                             }
@@ -279,15 +279,15 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 {
                     if (ArrayCadrane[linie][coloana].PiesaCadran != ConstantaTabla.PiesaNula)
                     {
-                        List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceJaggedCoduriPiese);
+                        List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
                         foreach (Pozitie mutare in mutari)
                         {
-                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
+                            if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
                             {
                                 return ConstantaTabla.SahLaRegeAlb;
                             }
 
-                            if (MatriceJaggedCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
+                            if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
                             {
                                 return ConstantaTabla.SahLaRegerAlbastru;
                             }
