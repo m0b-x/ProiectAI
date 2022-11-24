@@ -90,7 +90,200 @@ namespace ProiectVolovici
 
             _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 0)));
              */
+
+
             long hash;
+
+
+            int[][] pionAlbMij = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 0, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 2, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlbMij);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 4)));
+
+
+
+            int[][] pionAlbastruMij = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlbastruMij);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 4)));
+
+            int[][] atacPionAlbastru = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 0, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 2, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
+            //
+
+            int[][] atacPionAlbastru1 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 0, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 2, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru1);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
+            //
+
+            int[][] atacPionAlbastru2 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 0, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 2, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru2);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
+            //
+
+            int[][] atacPionAlbastru3 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru3);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
+
+            int[][] pionAlb1 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 0, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlb1);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 2)));
+            //
+
+            int[][] pionAlb12 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0},
+                new int[] { 1, 0, 1, 0, 1, 0, 0, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlb12);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 6)));
+
+
+            //
+
+            int[][] pionAlb3 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 1, 0, 1, 0, 1, 0, 1},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlb3);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 7)));
+            //
+
+            int[][] pionAlb4 = new int[10][]
+            {
+                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 0},
+                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
+            };
+
+            hash = ZobristHash.HashuiesteTabla(pionAlb4);
+
+            _cacheDeschideri.Add(hash, (new Pozitie(2, 8), new Pozitie(2, 7)));
 
             int[][] tunAlbAtac1 = new int[10][]
             {
@@ -401,7 +594,7 @@ namespace ProiectVolovici
                             _engine.MatriceCoduriPiese[mut.Linie][mut.Coloana] = piesaCareIa;
                             _engine.MatriceCoduriPiese[linie][coloana] = (int)CodPiesa.Gol;
 
-                            tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata)
+                            tupluMutariSiMatriciPosibile.Add(evaluareInitiala + _engine.RerturneazaScorPiesa(piesaLuata, mut.Linie, mut.Coloana)
                                 , new(new(linie, coloana), mut));
 
                             _engine.MatriceCoduriPiese[mut.Linie][mut.Coloana] = piesaLuata;
@@ -414,11 +607,11 @@ namespace ProiectVolovici
         }
 
         //TODO:adauga pozitia initiala
-        public Tuple<Tuple<Pozitie, Pozitie>, double> IncepeEvaluareaMiniMax(SortedList<double, Tuple<Pozitie, Pozitie>> mutariPodsibile)
+        public Tuple<Tuple<Pozitie, Pozitie>, double> IncepeEvaluareaMiniMax(SortedList<double, Tuple<Pozitie, Pozitie>> mutPos)
         {
             //ADAUGA AICI CACHE OPENINGS
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
-            Tuple<Pozitie, Pozitie> mutareOptima = mutariPodsibile.Values[0];
+            Tuple<Pozitie, Pozitie> mutareOptima = mutPos.Values[0];
 
             int[][] matriceInitiala = _engine.MatriceCoduriPiese;
             long hashInitial = ZobristHash.HashuiesteTabla(matriceInitiala);
@@ -446,11 +639,11 @@ namespace ProiectVolovici
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                     , _adancime, _engine.CodPiesaLuata, hashInitial, nrPieseAlbastre, nrPieseAlbe);
 
-            for (int i = 0; i < mutariPodsibile.Count; i++)
+            for (int i = 0; i < mutPos.Count; i++)
             {
                 codPiesaLuata = _engine.MatriceCoduriPiese[
-                    mutariPodsibile.Values[i].Item2.Linie][
-                    mutariPodsibile.Values[i].Item2.Coloana];
+                    mutPos.Values[i].Item2.Linie][
+                    mutPos.Values[i].Item2.Coloana];
 
                 if (codPiesaLuata == (int)CodPiesa.RegeAlb)
                 {
@@ -458,24 +651,24 @@ namespace ProiectVolovici
                 }
 
                 codPiesaCareIa = _engine.MatriceCoduriPiese[
-                    mutariPodsibile.Values[i].Item1.Linie][
-                    mutariPodsibile.Values[i].Item1.Coloana];
+                    mutPos.Values[i].Item1.Linie][
+                    mutPos.Values[i].Item1.Coloana];
 
                 matriceInitiala[
-                    mutariPodsibile.Values[i].Item1.Linie][
-                    mutariPodsibile.Values[i].Item1.Coloana] = 0;
+                    mutPos.Values[i].Item1.Linie][
+                    mutPos.Values[i].Item1.Coloana] = 0;
 
                 matriceInitiala[
-                    mutariPodsibile.Values[i].Item2.Linie][
-                    mutariPodsibile.Values[i].Item2.Coloana] = codPiesaCareIa;
+                    mutPos.Values[i].Item2.Linie][
+                    mutPos.Values[i].Item2.Coloana] = codPiesaCareIa;
 
                 hashUpdatat = ZobristHash.UpdateazaHash(
                     hashInitial: hashInitial,
-                    linieInitiala: mutariPodsibile.Values[0].Item1.Linie,
-                    coloanaInitiala: mutariPodsibile.Values[0].Item1.Coloana,
+                    linieInitiala: mutPos.Values[0].Item1.Linie,
+                    coloanaInitiala: mutPos.Values[0].Item1.Coloana,
                     piesaLuata: codPiesaLuata,
-                    linieFinala: mutariPodsibile.Values[0].Item2.Linie,
-                    coloanaFinala: mutariPodsibile.Values[0].Item2.Coloana,
+                    linieFinala: mutPos.Values[0].Item2.Linie,
+                    coloanaFinala: mutPos.Values[0].Item2.Coloana,
                     piesaCareIa: codPiesaCareIa);
 
                 nrPieseAlbe = _engine.ListaPieseAlbe.Count;
@@ -485,24 +678,24 @@ namespace ProiectVolovici
                 }
 
                 double scorMutare = Minimax_PieseAlbe(
-                    evaluareMatriceInitiala + _engine.ReturneazaScorPiese((CodPiesa)codPiesaLuata),
+                    evaluareMatriceInitiala + _engine.RerturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                     , _adancime, codPiesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe);
 
                 matriceInitiala[
-                    mutariPodsibile.Values[i].Item1.Linie][
-                    mutariPodsibile.Values[i].Item1.Coloana] = codPiesaCareIa;
+                    mutPos.Values[i].Item1.Linie][
+                    mutPos.Values[i].Item1.Coloana] = codPiesaCareIa;
 
                 matriceInitiala[
-                    mutariPodsibile.Values[i].Item2.Linie][
-                    mutariPodsibile.Values[i].Item2.Coloana] = codPiesaLuata;
+                    mutPos.Values[i].Item2.Linie][
+                    mutPos.Values[i].Item2.Coloana] = codPiesaLuata;
 
                 //Debug.WriteLine(tupluMutariSiMatriciPosibile[i].Item1.Item1.Linie + "," + tupluMutariSiMatriciPosibile[i].Item1.Item1.Coloana + "->"+
                 //    tupluMutariSiMatriciPosibile[i].Item1.Item2.Linie + "," + tupluMutariSiMatriciPosibile[i].Item1.Item2.Coloana+" "+ scorMutare);
 
                 if (scorMutare >= scorMutareOptima)
                 {
-                    mutareOptima = mutariPodsibile.Values[i];
+                    mutareOptima = mutPos.Values[i];
                     scorMutareOptima = scorMutare;
                 }
                 //Debug.WriteLine(scorMutareOptima);
@@ -522,11 +715,13 @@ namespace ProiectVolovici
                     {
                         if ((matrice[linie][coloana] - 1) % 2 != 0)
                         {
-                            scor -= _engine.ReturneazaScorPiese((CodPiesa)matrice[linie][coloana]);
+                            var valoarePiesaLuata = _engine.RerturneazaScorPiesa(matrice[linie][coloana], linie, coloana);
+                            scor -= valoarePiesaLuata; 
                         }
                         else
                         {
-                            scor += _engine.ReturneazaScorPiese((CodPiesa)matrice[linie][coloana]);
+                            var valoarePiesaLuata = _engine.RerturneazaScorPiesa(matrice[linie][coloana], linie, coloana);
+                            scor += valoarePiesaLuata;
                         }
                     }
                 }
@@ -553,8 +748,11 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb ||
-                adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb)
+            {
+                return eval / adancime;
+            }
+            if( adancime == 0)
             {
                 return eval;
             }
@@ -578,21 +776,21 @@ namespace ProiectVolovici
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
                             List<Pozitie> mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
-                            foreach (Pozitie mutarePosibila in mutariPosibile)
+                            foreach (Pozitie mutPos in mutariPosibile)
                             {
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
 
-                                int piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
+                                int piesaLuata = matrice[mutPos.Linie][mutPos.Coloana];
                                 matrice[linie][coloana] = (int)CodPiesa.Gol;
-                                matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = matrice[linie][coloana];
+                                matrice[mutPos.Linie][mutPos.Coloana] = matrice[linie][coloana];
 
                                 hashUpdatat = ZobristHash.UpdateazaHash(
                                     hashInitial: hash,
                                     linieInitiala: linie,
                                     coloanaInitiala: coloana,
                                     piesaLuata: piesaLuata,
-                                    linieFinala: mutarePosibila.Linie,
-                                    coloanaFinala: mutarePosibila.Coloana,
+                                    linieFinala: mutPos.Linie,
+                                    coloanaFinala: mutPos.Coloana,
                                     piesaCareIa: piesaCareIa);
 
                                 if (EstePiesa(piesaLuata))
@@ -600,12 +798,15 @@ namespace ProiectVolovici
                                     nrPieseAlbe--;
                                 }
 
-                                newAlpha = Math.Max(newAlpha, Minimax_PieseAlbe(eval + _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+
+                                var valoarePiesaLuata = _engine.RerturneazaScorPiesa(piesaLuata, mutPos.Linie, mutPos.Coloana);
+
+                                newAlpha = Math.Max(newAlpha, Minimax_PieseAlbe(eval + valoarePiesaLuata,
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
                                 alpha = Math.Max(newAlpha, alpha);
 
                                 matrice[linie][coloana] = piesaCareIa;
-                                matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = piesaLuata;
+                                matrice[mutPos.Linie][mutPos.Coloana] = piesaLuata;
 
                                 if (beta <= alpha)
                                 {
@@ -655,8 +856,11 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb ||
-                adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb)
+            {
+                return eval / adancime;
+            }
+            if (adancime == 0)
             {
                 return eval;
             }
@@ -681,21 +885,21 @@ namespace ProiectVolovici
                             _pieseVirtuale[piesaCareIa].Pozitie = new Pozitie(linie, coloana);
 
                             List<Pozitie> mutariPosibile = _pieseVirtuale[piesaCareIa].ReturneazaMutariPosibile(matrice);
-                            foreach (Pozitie mutarePosibila in mutariPosibile)
+                            foreach (Pozitie mutPos in mutariPosibile)
                             {
                                 //Debug.WriteLine(linie + "," + coloana + "->"+mutarePosibila.Linie + "," + mutarePosibila.Coloana);
-                                int piesaLuata = matrice[mutarePosibila.Linie][mutarePosibila.Coloana];
+                                int piesaLuata = matrice[mutPos.Linie][mutPos.Coloana];
 
                                 matrice[linie][coloana] = (int)CodPiesa.Gol;
-                                matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = matrice[linie][coloana];
+                                matrice[mutPos.Linie][mutPos.Coloana] = matrice[linie][coloana];
 
                                 hashUpdatat = ZobristHash.UpdateazaHash(
                                     hashInitial: hash,
                                     linieInitiala: linie,
                                     coloanaInitiala: coloana,
                                     piesaLuata: piesaLuata,
-                                    linieFinala: mutarePosibila.Linie,
-                                    coloanaFinala: mutarePosibila.Coloana,
+                                    linieFinala: mutPos.Linie,
+                                    coloanaFinala: mutPos.Coloana,
                                     piesaCareIa: piesaCareIa);
 
                                 if (EstePiesa(piesaLuata))
@@ -703,14 +907,15 @@ namespace ProiectVolovici
                                     nrPieseAlbastre--;
                                 }
 
-                                newBeta = Math.Min(newBeta, Minimax_PieseAlbastre(eval - _engine.ReturneazaScorPiese((CodPiesa)piesaLuata),
+                                var valoarePiesaLuata = _engine.RerturneazaScorPiesa(piesaLuata, mutPos.Linie, mutPos.Coloana);
+                                newBeta = Math.Min(newBeta, Minimax_PieseAlbastre(eval - valoarePiesaLuata,
                                     matrice, alpha, beta, adancime - 1,
                                     piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
 
                                 beta = Math.Min(newBeta, beta);
 
                                 matrice[linie][coloana] = piesaCareIa;
-                                matrice[mutarePosibila.Linie][mutarePosibila.Coloana] = piesaLuata;
+                                matrice[mutPos.Linie][mutPos.Coloana] = piesaLuata;
 
                                 if (beta <= alpha)
                                 {

@@ -628,8 +628,18 @@ namespace ProiectVolovici
             ConstantaPiese.ValoareRege
         };
 
-        public double ReturneazaScorPiese(CodPiesa codPiesa)
+        public double RerturneazaScorPiesa(int codPiesa, int linie, int coloana)
         {
+            if(codPiesa == (int)CodPiesa.PionAlb)
+            {
+                if (linie <= ConstantaTabla.PragRau)
+                    return ConstantaPiese.ValoarePionDupaRau;
+            }
+            if (codPiesa == (int)CodPiesa.PionAlbastru)
+            {
+                if (linie > ConstantaTabla.PragRau)
+                    return ConstantaPiese.ValoarePionDupaRau;
+            }
             return _arrayScorPiese[(int)codPiesa];
         }
 
