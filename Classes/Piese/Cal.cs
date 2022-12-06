@@ -4,21 +4,38 @@ namespace ProiectVolovici
 {
     internal class Cal : Piesa
     {
-        public Cal(Culoare culoare)
+        public Cal(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareCal;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.bhorse;
-                this.Cod = CodPiesa.CalAbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bhorse;
+                    this.Cod = CodPiesa.CalAbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.whorse;
+                    this.Cod = CodPiesa.CalAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.whorse;
-                this.Cod = CodPiesa.CalAlb;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bhorse;
+                    this.Cod = CodPiesa.CalAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.whorse;
+                    this.Cod = CodPiesa.CalAbastru;
+                }
             }
         }
 

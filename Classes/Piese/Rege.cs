@@ -4,21 +4,39 @@ namespace ProiectVolovici
 {
     internal class Rege : Piesa
     {
-        public Rege(Culoare culoare)
+        public Rege(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareRege;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.bking;
-                this.Cod = CodPiesa.RegeAlbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bking;
+                    this.Cod = CodPiesa.RegeAlbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wking;
+                    this.Cod = CodPiesa.RegeAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.wking;
-                this.Cod = CodPiesa.RegeAlb;
+
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bking;
+                    this.Cod = CodPiesa.RegeAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wking;
+                    this.Cod = CodPiesa.RegeAlbastru;
+                }
             }
         }
 

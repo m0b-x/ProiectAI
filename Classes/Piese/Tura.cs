@@ -4,21 +4,38 @@
 
     internal class Tura : Piesa
     {
-        public Tura(Culoare culoare)
+        public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTura;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.brook;
-                this.Cod = CodPiesa.TuraAlbastra;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.brook;
+                    this.Cod = CodPiesa.TuraAlbastra;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wrook;
+                    this.Cod = CodPiesa.TuraAlba;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.wrook;
-                this.Cod = CodPiesa.TuraAlba;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.brook;
+                    this.Cod = CodPiesa.TuraAlba;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wrook;
+                    this.Cod = CodPiesa.TuraAlbastra;
+                }
             }
         }
 

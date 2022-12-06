@@ -4,21 +4,38 @@ namespace ProiectVolovici
 {
     internal class Pion : Piesa
     {
-        public Pion(Culoare culoare)
+        public Pion(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoarePion;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.bpawn;
-                this.Cod = CodPiesa.PionAlbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bpawn;
+                    this.Cod = CodPiesa.PionAlbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wpawn;
+                    this.Cod = CodPiesa.PionAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.wpawn;
-                this.Cod = CodPiesa.PionAlb;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bpawn;
+                    this.Cod = CodPiesa.PionAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wpawn;
+                    this.Cod = CodPiesa.PionAlbastru;
+                }
             }
         }
 

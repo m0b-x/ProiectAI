@@ -19,7 +19,7 @@ namespace ProiectVolovici
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.Alb), new Om(Culoare.Albastru));
 
             formPrincipal = this;
-            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1);
+            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal);
             jocSah.AdaugaPieselePrestabilite();
         }
     }

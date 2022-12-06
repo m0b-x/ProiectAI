@@ -42,7 +42,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator) : base(parentForm)
+        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect) : base(parentForm, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
@@ -54,7 +54,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             EsteRandulTau();
         }
 
-        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator) : base(parentForm, matriceTabla)
+        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator, Aspect aspect) : base(parentForm, matriceTabla, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();

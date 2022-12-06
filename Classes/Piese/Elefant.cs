@@ -4,21 +4,38 @@ namespace ProiectVolovici
 {
     internal class Elefant : Piesa
     {
-        public Elefant(Culoare culoare)
+        public Elefant(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareElefant;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.belephantrev2;
-                this.Cod = CodPiesa.ElefantAlbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.belephantrev2;
+                    this.Cod = CodPiesa.ElefantAlbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.welephantrev2;
+                    this.Cod = CodPiesa.ElefantAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.welephantrev2;
-                this.Cod = CodPiesa.ElefantAlb;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.belephantrev2;
+                    this.Cod = CodPiesa.ElefantAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.welephantrev2;
+                    this.Cod = CodPiesa.ElefantAlbastru;
+                }
             }
         }
 

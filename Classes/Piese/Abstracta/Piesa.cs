@@ -7,6 +7,7 @@ namespace ProiectVolovici
     public abstract class Piesa : IDisposable
     {
         protected Culoare _culoarePiesa;
+        protected Aspect _aspectPiesa;
         protected Pozitie _pozitiePiesa;
         protected Image _imaginePiesa;
 
@@ -16,6 +17,11 @@ namespace ProiectVolovici
         protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
+        public Aspect Aspect
+        {
+            get { return _aspectPiesa; }
+            set { _aspectPiesa = value; }
+        }
         public Culoare Culoare
         {
             get { return _culoarePiesa; }

@@ -4,21 +4,37 @@ namespace ProiectVolovici
 {
     internal class Tun : Piesa
     {
-        public Tun(Culoare culoare)
+        public Tun(Culoare culoare,Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTun;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.bcannon;
-                this.Cod = CodPiesa.TunAlbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bcannon;
+                    this.Cod = CodPiesa.TunAlbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wcannon;
+                    this.Cod = CodPiesa.TunAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.wcannon;
-                this.Cod = CodPiesa.TunAlb;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.bcannon;
+                    this.Cod = CodPiesa.TunAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wcannon;
+                    this.Cod = CodPiesa.TunAlbastru;
+                }
             }
         }
 

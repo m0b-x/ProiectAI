@@ -4,21 +4,38 @@ namespace ProiectVolovici
 {
     internal class Gardian : Piesa
     {
-        public Gardian(Culoare culoare)
+        public Gardian(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
             this.ValoarePiesa = ConstantaPiese.ValoareGardian;
             this.Culoare = culoare;
             this.PusaPeTabla = false;
             this.Selectata = false;
-            if (culoare == Culoare.Albastru)
+
+            if (aspect == Aspect.Normal)
             {
-                this.Imagine = Properties.Resources.benvoy;
-                this.Cod = CodPiesa.GardianAlbastru;
+                if (culoare == Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.benvoy;
+                    this.Cod = CodPiesa.GardianAlbastru;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wenvoy;
+                    this.Cod = CodPiesa.GardianAlb;
+                }
             }
             else
             {
-                this.Imagine = Properties.Resources.wenvoy;
-                this.Cod = CodPiesa.GardianAlb;
+                if (culoare != Culoare.Albastru)
+                {
+                    this.Imagine = Properties.Resources.benvoy;
+                    this.Cod = CodPiesa.GardianAlb;
+                }
+                else
+                {
+                    this.Imagine = Properties.Resources.wenvoy;
+                    this.Cod = CodPiesa.GardianAlbastru;
+                }
             }
         }
 
