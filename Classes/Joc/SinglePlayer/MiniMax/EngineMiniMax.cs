@@ -10,7 +10,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
     public class EngineMiniMax : EngineJoc
     {
         private int _nrMutari = 0;
-
         protected Om _jucatorOm;
         protected MiniMaxAI _miniMaxAI;
 
@@ -31,7 +30,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             get { return _jucatorOm; }
         }
 
-        public bool RandulTau
+        public bool RandulOmului
         {
             get { return _randulOmului; }
         }
@@ -42,25 +41,25 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect) : base(parentForm, aspect)
+        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect, bool incepeOmul = true) : base(parentForm, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
             _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
 
-            _randulOmului = true;
+            _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
             EsteRandulTau();
         }
 
-        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator, Aspect aspect) : base(parentForm, matriceTabla, aspect)
+        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator, Aspect aspect, bool incepeOmul = true) : base(parentForm, matriceTabla, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
             _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
-            _randulOmului = false;
+            _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
         }
 
@@ -233,7 +232,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             {
                                 await Task.Run(() =>
                                 {
-                                    RealizeazaMutareaAI(); ;
+                                    RealizeazaMutareaAI(moveOrdering : true);
                                 });
                             }
                         }
@@ -250,21 +249,44 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             }
         }
 
-        public void RealizeazaMutareaAI()
+        public void DeschideJocul(int ms = 1000)
+        {
+            if (_randulOmului == false)
+            {
+                System.Timers.Timer _timerMutare = new()
+                {
+                    Interval = ms,
+                    Enabled = false,
+                    AutoReset = false
+                };
+                _timerMutare.Elapsed += new ElapsedEventHandler(DeschideCuMutareaAI);
+                _timerMutare.Start();
+            }
+            else
+            {
+                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "Este randul tau.");
+            }
+
+        }
+        private void DeschideCuMutareaAI(object source, ElapsedEventArgs e)
+        {
+            RealizeazaMutareaAI(true);
+        }
+        public void RealizeazaMutareaAI(bool moveOrdering = false)
         {
             Stopwatch cronometru = new();
             cronometru.Start();
 
-            var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
+            var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI(moveOrdering: moveOrdering);
 
             var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile);
 
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
-            Piesa piesaLuata = GetPiesaCuPozitia(mutareaOptima.Item1.Item2);
-            OpresteTimerAsteptareAI();
             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             RealizeazaMutareaLocal(piesa, pozitie);
+
+            OpresteTimerAsteptareAI();
             _miniMaxAI.UltimaPozitie = pozitie;
             EsteRandulTau();
             Debug.WriteLine(cronometru.Elapsed);

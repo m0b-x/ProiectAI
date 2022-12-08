@@ -21,6 +21,7 @@ namespace ProiectVolovici
             formPrincipal = this;
             jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal);
             jocSah.AdaugaPieselePrestabilite();
+            jocSah.DeschideJocul();
         }
     }
 }

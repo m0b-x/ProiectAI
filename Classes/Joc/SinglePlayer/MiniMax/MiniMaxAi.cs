@@ -265,7 +265,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlb3);
 
-            _cacheDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 7)));
+            _cacheDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2,2)));
             //
 
             int[][] pionAlb4 = new int[10][]
@@ -575,9 +575,13 @@ namespace ProiectVolovici
             _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
         }
 
-        public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI()
+        public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI(bool moveOrdering = false)
         {
-            SortedList<double, Tuple<Pozitie, Pozitie>> mutPos = new(new DuplicateKeyComparerDesc<double>());
+            SortedList<double, Tuple<Pozitie, Pozitie>> mutPos;
+            if (moveOrdering == false)
+                mutPos = new();
+            else
+                mutPos = new(new DuplicateKeyComparerDesc<double>());
             double evaluareInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             for (int linie = 0; linie < ConstantaTabla.NrLinii; ++linie)
             {
@@ -659,7 +663,7 @@ namespace ProiectVolovici
             if (EstePiesa(codPiesaLuata))
                 nrPieseAlbe--;
 
-            double scorMutareOptima = Minimax_PieseAlbe(
+            double scorMutareOptima = MinimaxMin(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                     , _adancime, codPiesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe);
@@ -711,7 +715,7 @@ namespace ProiectVolovici
                     nrPieseAlbe--;
                 }
 
-                double scorMutare = Minimax_PieseAlbe(
+                double scorMutare = MinimaxMin(
                     evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
                     matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                     , _adancime, codPiesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe);
@@ -763,7 +767,7 @@ namespace ProiectVolovici
             return scor;
         }
 
-        public double Minimax_PieseAlbastre(double eval, int[][] matrice, double alpha,
+        public double MiniMaxMax(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, long hash,
             int nrPieseAlbastre, int nrPieseAlbe)
         {
@@ -777,7 +781,8 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb ||
+                adancime == 0)
             {
                 return eval;
             }
@@ -829,7 +834,7 @@ namespace ProiectVolovici
 
                                 var valoarePiesaLuata = _engine.ReturneazaScorPiesa(piesaLuata, mutPos.Linie, mutPos.Coloana);
 
-                                newAlpha = Math.Max(newAlpha, Minimax_PieseAlbe(eval + valoarePiesaLuata,
+                                newAlpha = Math.Max(newAlpha, MinimaxMin(eval + valoarePiesaLuata,
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
                                 alpha = Math.Max(newAlpha, alpha);
 
@@ -847,12 +852,12 @@ namespace ProiectVolovici
             ValoareFinala:
                 if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                 {
-                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime && _tabelTranspozitie.Tabel[hashUpdatat].Alpha >= beta)
                     {
                         _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, alpha, _tabelTranspozitie.Tabel[hashUpdatat].Beta);
                     }
                 }
-                else
+                else if (alpha >= beta)
                 {
                     _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
                 }
@@ -865,7 +870,7 @@ namespace ProiectVolovici
             return (codPiesa - 1) % 2 == 1;
         }
 
-        public double Minimax_PieseAlbe(double eval, int[][] matrice,
+        public double MinimaxMin(double eval, int[][] matrice,
             double alpha, double beta, int adancime, int piesaCapturata,
             long hash, int nrPieseAlbastre, int nrPieseAlbe)
         {
@@ -879,7 +884,8 @@ namespace ProiectVolovici
             }
             //_engine.AfiseazaMatriceDebug(matrice,adancime,eval);
             if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb || adancime == 0)
+                piesaCapturata == (int)CodPiesa.RegeAlb ||
+                adancime == 0)
             {
                 return eval;
             }
@@ -927,7 +933,7 @@ namespace ProiectVolovici
                                 }
 
                                 var valoarePiesaLuata = _engine.ReturneazaScorPiesa(piesaLuata, mutPos.Linie, mutPos.Coloana);
-                                newBeta = Math.Min(newBeta, Minimax_PieseAlbastre(eval - valoarePiesaLuata,
+                                newBeta = Math.Min(newBeta, MiniMaxMax(eval - valoarePiesaLuata,
                                     matrice, alpha, beta, adancime - 1,
                                     piesaLuata, hashUpdatat, nrPieseAlbastre, nrPieseAlbe));
 
@@ -937,7 +943,8 @@ namespace ProiectVolovici
                                 matrice[mutPos.Linie][mutPos.Coloana] = piesaLuata;
 
                                 if (beta <= alpha)
-                                { goto ValoareFinala;
+                                {
+                                    goto ValoareFinala;
                                 }
                             }
                         }
@@ -946,12 +953,12 @@ namespace ProiectVolovici
                 ValoareFinala:
                 if (_tabelTranspozitie.Tabel.ContainsKey(hashUpdatat))
                 {
-                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime)
+                    if (_tabelTranspozitie.Tabel[hashUpdatat].Adancime < adancime && _tabelTranspozitie.Tabel[hashUpdatat].Beta <= alpha)
                     {
                         _tabelTranspozitie.Tabel[hashUpdatat] = new IntrareTabelTranspozitie(adancime, _tabelTranspozitie.Tabel[hashUpdatat].Alpha, beta);
                     }
                 }
-                else
+                else if(alpha >= beta)
                 {
                     _tabelTranspozitie.AdaugaIntrare(hashUpdatat, new IntrareTabelTranspozitie(adancime, alpha, beta));
                 }

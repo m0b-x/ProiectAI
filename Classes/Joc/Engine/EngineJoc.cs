@@ -34,6 +34,11 @@ namespace ProiectVolovici
         protected bool _sahPersistentLaAlb = false;
         protected bool _sahPersistentLaAlbastru = false;
 
+        public Aspect AspectJoc
+        {
+            get { return _aspectJoc; }
+            set { _aspectJoc = value; }
+        }
         public List<Pozitie> PozitiiMutariPosibile
         {
             get { return _pozitiiMutariPosibile; }
