@@ -73,5 +73,13 @@ namespace ProiectVolovici
         public abstract void ArataMutariPosibile(EngineJoc joc);
 
         public abstract List<Pozitie> ReturneazaMutariPosibile(int[][] matrice);
+
+        public override bool Equals(object obj)
+        {
+            return obj is Piesa piesa &&
+                   _culoarePiesa == piesa._culoarePiesa &&
+                   EqualityComparer<Pozitie>.Default.Equals(_pozitiePiesa, piesa._pozitiePiesa) &&
+                   _codPiesa == piesa._codPiesa;
+        }
     }
 }

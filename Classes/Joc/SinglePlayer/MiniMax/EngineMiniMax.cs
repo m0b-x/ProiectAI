@@ -213,6 +213,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
                     if (PiesaSelectata.Pozitie != pozitie)
                     {
+                        //aici se muta
                         if (EsteMutareaPosibila(pozitie))
                         {
                             if (MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
