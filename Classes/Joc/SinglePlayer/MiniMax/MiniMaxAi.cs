@@ -762,12 +762,21 @@ namespace ProiectVolovici
                 indexPozLuata = StergePozitieDinVector((mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
                                         pozitiiAlbe);
             }
+            double scorMutareOptima = double.MinValue, scorMutare;
+            for (int adanc = 0; adanc <= Adancime; adanc++)
+            {
 
-            double scorMutareOptima = MiniMaxAlb(
-                    evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
-                    matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                    , _adancime, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre);
+                scorMutare = MiniMaxAlb(
+                        evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
+                        matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
+                        , adanc, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre);
 
+                if (scorMutare >= scorMutareOptima)
+                {
+                    mutareOptima = mutPos.Values[0];
+                    scorMutareOptima = scorMutare;
+                }
+            }
             SchimbaPozitiaDinVector(indexPozCareIa,
                 pozitiiAlbastre,
                 (mutPos.Values[0].Item1.Linie, mutPos.Values[0].Item1.Coloana));
@@ -784,6 +793,7 @@ namespace ProiectVolovici
                 mutPos.Values[0].Item2.Coloana] = codPiesaLuata;
 
             Stopwatch timerAsteptareMaxima = new Stopwatch();
+            timerAsteptareMaxima.Reset();
             timerAsteptareMaxima.Start();
 
             bool loopTerminat = false;
@@ -798,6 +808,7 @@ namespace ProiectVolovici
 
                     if (codPiesaLuata == (int)CodPiesa.RegeAlb)
                     {
+                        timerAsteptareMaxima.Stop();
                         return new(mutareOptima, double.MaxValue);
                     }
 
@@ -835,11 +846,19 @@ namespace ProiectVolovici
                     }
 
 
-                    double scorMutare = MiniMaxAlb(
+                    for (int adanc = 0; adanc <= Adancime; adanc++)
+                    {
+                        scorMutare = MiniMaxAlb(
                         evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
                         matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                        , _adancime, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre);
+                        , adanc, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre);
 
+                        if (scorMutare >= scorMutareOptima)
+                        {
+                            mutareOptima = mutPos.Values[i];
+                            scorMutareOptima = scorMutare;
+                        }
+                    }
 
                     SchimbaPozitiaDinVector(indexPozCareIa,
                         pozitiiAlbastre,
@@ -859,14 +878,11 @@ namespace ProiectVolovici
                         mutPos.Values[i].Item2.Coloana] = codPiesaLuata;
 
 
-                    if (scorMutare >= scorMutareOptima)
-                    {
-                        mutareOptima = mutPos.Values[i];
-                        scorMutareOptima = scorMutare;
-                    }
                     loopTerminat = true;
                 }
             }
+
+            timerAsteptareMaxima.Stop();
             return new(mutareOptima, scorMutareOptima);
         }
 
