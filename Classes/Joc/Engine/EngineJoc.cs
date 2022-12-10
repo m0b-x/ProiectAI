@@ -26,7 +26,6 @@ namespace ProiectVolovici
         private Piesa _piesaSelectata;
 
         private Tuple<Pozitie, Pozitie> _ultimaMutare;
-        private int _codPiesaLuata;
 
         protected bool _esteGataMeciul;
         protected int _nrSahuriLaAlb = 0;
@@ -63,10 +62,6 @@ namespace ProiectVolovici
             set { _listaPieseAlbastre = value; }
         }
 
-        public int CodPiesaLuata
-        {
-            get { return _codPiesaLuata; }
-        }
         public Form ParentForm
         {
             get { return _parentForm; }
@@ -271,6 +266,7 @@ namespace ProiectVolovici
             //piese albastre
 
             AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 0));
+            
             AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 2));
             AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 4));
             AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 6));
@@ -290,13 +286,13 @@ namespace ProiectVolovici
 
             AdaugaPiesa(new Gardian(Culoare.Albastru, _aspectJoc), new Pozitie(0, 3));
             AdaugaPiesa(new Gardian(Culoare.Albastru, _aspectJoc), new Pozitie(0, 5));
-
+            
             AdaugaPiesa(new Rege(Culoare.Albastru, _aspectJoc), new Pozitie(0, 4));
 
             //piese albe
 
             AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 0));
-
+            
             AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 2));
             AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 4));
             AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 6));
@@ -316,7 +312,7 @@ namespace ProiectVolovici
 
             AdaugaPiesa(new Gardian(Culoare.Alb, _aspectJoc), new Pozitie(9, 3));
             AdaugaPiesa(new Gardian(Culoare.Alb, _aspectJoc), new Pozitie(9, 5));
-
+           
             AdaugaPiesa(new Rege(Culoare.Alb, _aspectJoc), new Pozitie(9, 4));
         }
 
