@@ -34,6 +34,8 @@
             this.butonOptiune2 = new System.Windows.Forms.Button();
             this.butonOptiune1 = new System.Windows.Forms.Button();
             this.butonOptiune4 = new System.Windows.Forms.Button();
+            this.textBoxIP = new System.Windows.Forms.TextBox();
+            this.labelIP = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelTitlu
@@ -91,9 +93,30 @@
             this.butonOptiune4.Name = "butonOptiune4";
             this.butonOptiune4.Size = new System.Drawing.Size(104, 39);
             this.butonOptiune4.TabIndex = 9;
-            this.butonOptiune4.Text = "Exit";
+            this.butonOptiune4.Text = "Inapoi";
             this.butonOptiune4.UseVisualStyleBackColor = true;
             this.butonOptiune4.Visible = false;
+            // 
+            // textBoxIP
+            // 
+            this.textBoxIP.Enabled = false;
+            this.textBoxIP.Location = new System.Drawing.Point(42, 148);
+            this.textBoxIP.Name = "textBoxIP";
+            this.textBoxIP.Size = new System.Drawing.Size(104, 23);
+            this.textBoxIP.TabIndex = 10;
+            this.textBoxIP.Visible = false;
+            // 
+            // labelIP
+            // 
+            this.labelIP.AutoSize = true;
+            this.labelIP.Enabled = false;
+            this.labelIP.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelIP.Location = new System.Drawing.Point(8, 148);
+            this.labelIP.Name = "labelIP";
+            this.labelIP.Size = new System.Drawing.Size(27, 19);
+            this.labelIP.TabIndex = 11;
+            this.labelIP.Text = "IP";
+            this.labelIP.Visible = false;
             // 
             // FormMeniu
             // 
@@ -102,6 +125,8 @@
             this.BackgroundImage = global::ProiectVolovici.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(442, 442);
+            this.Controls.Add(this.labelIP);
+            this.Controls.Add(this.textBoxIP);
             this.Controls.Add(this.butonOptiune4);
             this.Controls.Add(this.labelTitlu);
             this.Controls.Add(this.butonOptiune3);
@@ -124,5 +149,7 @@
         private System.Windows.Forms.Button butonOptiune2;
         private System.Windows.Forms.Button butonOptiune1;
         private System.Windows.Forms.Button butonOptiune4;
+        private System.Windows.Forms.TextBox textBoxIP;
+        private System.Windows.Forms.Label labelIP;
     }
 }

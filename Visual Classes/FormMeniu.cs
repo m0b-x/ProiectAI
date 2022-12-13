@@ -214,15 +214,134 @@ namespace ProiectVolovici
         {
         }
 
-
+        //DE AICI
         private void butonMultiPlayer_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("DA");
+            butonOptiune1.Text = "Host";
+            butonOptiune1.Click -= butonSinglePlayer_Click;
+            butonOptiune1.Click += butonHost_Click;
+
+            butonOptiune2.Text = "Connect";
+            butonOptiune2.Click -= butonMultiPlayer_Click;
+            butonOptiune1.Click += butonConnect_Click;
+
+            butonOptiune3.Text = "Inapoi";
+            butonOptiune3.Click -= butonExit_Click;
+            butonOptiune3.Click += butonInapoiDeLaMultiPlayer_Click;
             /*
             this.Hide();
             Form formMultiPlayer = new FormMultiPlayer();
             formMultiPlayer.Closed += (s, args) => this.Close();
             formMultiPlayer.Show();
+            */
+        }
+        private void butonStartHost_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void butonStartConnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void butonHost_Click(object sender, EventArgs e)
+        {
+            butonOptiune1.Text = "Start";
+            butonOptiune1.Click -= butonHost_Click;
+            butonOptiune1.Click += butonStartHost_Click;
+
+
+            butonOptiune2.Enabled = false;
+            butonOptiune2.Visible = false;
+            textBoxIP.Visible = true;
+            textBoxIP.Enabled = true;
+
+
+            butonOptiune3.Text = "Inapoi";
+            butonOptiune3.Click -= butonInapoiDeLaMultiPlayer_Click;
+            butonOptiune3.Click += butonInapoiDeLaHost_Click;
+            /*
+            this.Hide();
+            Form formMultiPlayer = new FormMultiPlayer();
+            formMultiPlayer.Closed += (s, args) => this.Close();
+            formMultiPlayer.Show();
+            */
+        }
+
+
+        private void butonInapoiDeLaConnect_Click(object sender, EventArgs e)
+        {
+            butonOptiune1.Text = "Host";
+            butonOptiune1.Click -= butonStartConnect_Click;
+            butonOptiune1.Click += butonConnect_Click;
+
+
+            butonOptiune2.Enabled = true;
+            butonOptiune2.Visible = true;
+
+
+            butonOptiune3.Text = "Inapoi";
+            butonOptiune3.Click += butonInapoiDeLaMultiPlayer_Click;
+            butonOptiune3.Click -= butonInapoiDeLaConnect_Click;
+        }
+        private void butonInapoiDeLaHost_Click(object sender, EventArgs e)
+        {
+            butonOptiune1.Text = "Host";
+            butonOptiune1.Click -= butonStartHost_Click;
+            butonOptiune1.Click += butonHost_Click;
+
+
+            butonOptiune2.Enabled = true;
+            butonOptiune2.Visible = true;
+            textBoxIP.Enabled = false;
+            textBoxIP.Visible = false;
+
+
+            butonOptiune3.Text = "Inapoi";
+            butonOptiune3.Click += butonInapoiDeLaMultiPlayer_Click;
+            butonOptiune3.Click -= butonInapoiDeLaHost_Click;
+        }
+        private void butonConnect_Click(object sender, EventArgs e)
+        {
+            butonOptiune1.Text = "Connect";
+            butonOptiune1.Click -= butonConnect_Click;
+            butonOptiune1.Click += butonStartConnect_Click;
+
+            butonOptiune2.Enabled = false;
+            butonOptiune2.Visible = false;
+            textBoxIP.Visible = true;
+            textBoxIP.Enabled = true;
+            
+            butonOptiune3.Text = "Inapoi";
+            butonOptiune3.Click -= butonInapoiDeLaMultiPlayer_Click;
+            butonOptiune3.Click += butonInapoiDeLaConnect_Click;
+
+
+            /*
+            this.Hide();
+            Form formMultiPlayer = new FormMultiPlayer();
+            formMultiPlayer.Closed += (s, args) => this.Close();
+            formMultiPlayer.Show();
+            */
+        }
+
+
+        private void butonInapoiDeLaMultiPlayer_Click(object sender, EventArgs e)
+        {
+            butonOptiune1.Text = "SinglePlayer";
+            butonOptiune1.Click += butonSinglePlayer_Click;
+
+            butonOptiune2.Text = "MultiPlayer";
+            butonOptiune2.Click += butonMultiPlayer_Click;
+
+            butonOptiune3.Text = "Exit";
+            butonOptiune3.Click -= butonInapoiDeLaMultiPlayer_Click;
+            butonOptiune3.Click += butonExit_Click;
+
+            /*
+            Form formSinglePlayer = new FormSinglePlayer(this);
+            formSinglePlayer.Closed += (s, args) => this.Close();
+            formSinglePlayer.Show();
             */
         }
 
