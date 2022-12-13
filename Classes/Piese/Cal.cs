@@ -8,7 +8,7 @@ namespace ProiectVolovici
         {
             this.ValoarePiesa = ConstantaPiese.ValoareCal;
             this.Culoare = culoare;
-            this.PusaPeTabla = false;
+            
             this.Selectata = false;
 
             if (aspect == Aspect.Normal)

@@ -30,56 +30,70 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMeniu));
             this.labelTitlu = new System.Windows.Forms.Label();
-            this.butonExit = new System.Windows.Forms.Button();
-            this.butonMultiPlayer = new System.Windows.Forms.Button();
-            this.butonSinglePlayer = new System.Windows.Forms.Button();
+            this.butonOptiune3 = new System.Windows.Forms.Button();
+            this.butonOptiune2 = new System.Windows.Forms.Button();
+            this.butonOptiune1 = new System.Windows.Forms.Button();
+            this.butonOptiune4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelTitlu
             // 
             this.labelTitlu.AutoSize = true;
             this.labelTitlu.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelTitlu.Location = new System.Drawing.Point(24, 31);
+            this.labelTitlu.Location = new System.Drawing.Point(28, 44);
             this.labelTitlu.Name = "labelTitlu";
             this.labelTitlu.Size = new System.Drawing.Size(143, 37);
             this.labelTitlu.TabIndex = 8;
             this.labelTitlu.Text = "Xiangqi";
             // 
-            // butonExit
+            // butonOptiune3
             // 
-            this.butonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonExit.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonExit.Location = new System.Drawing.Point(41, 181);
-            this.butonExit.Name = "butonExit";
-            this.butonExit.Size = new System.Drawing.Size(104, 39);
-            this.butonExit.TabIndex = 7;
-            this.butonExit.Text = "Exit";
-            this.butonExit.UseVisualStyleBackColor = true;
-            this.butonExit.Click += new System.EventHandler(this.butonExit_Click);
+            this.butonOptiune3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.butonOptiune3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.butonOptiune3.Location = new System.Drawing.Point(41, 184);
+            this.butonOptiune3.Name = "butonOptiune3";
+            this.butonOptiune3.Size = new System.Drawing.Size(104, 39);
+            this.butonOptiune3.TabIndex = 7;
+            this.butonOptiune3.Text = "Exit";
+            this.butonOptiune3.UseVisualStyleBackColor = true;
+            this.butonOptiune3.Click += new System.EventHandler(this.butonExit_Click);
             // 
-            // butonMultiPlayer
+            // butonOptiune2
             // 
-            this.butonMultiPlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonMultiPlayer.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonMultiPlayer.Location = new System.Drawing.Point(40, 136);
-            this.butonMultiPlayer.Name = "butonMultiPlayer";
-            this.butonMultiPlayer.Size = new System.Drawing.Size(105, 39);
-            this.butonMultiPlayer.TabIndex = 6;
-            this.butonMultiPlayer.Text = "MultiPlayer";
-            this.butonMultiPlayer.UseVisualStyleBackColor = true;
-            this.butonMultiPlayer.Click += new System.EventHandler(this.butonMultiPlayer_Click);
+            this.butonOptiune2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.butonOptiune2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.butonOptiune2.Location = new System.Drawing.Point(41, 139);
+            this.butonOptiune2.Name = "butonOptiune2";
+            this.butonOptiune2.Size = new System.Drawing.Size(105, 39);
+            this.butonOptiune2.TabIndex = 6;
+            this.butonOptiune2.Text = "MultiPlayer";
+            this.butonOptiune2.UseVisualStyleBackColor = true;
+            this.butonOptiune2.Click += new System.EventHandler(this.butonMultiPlayer_Click);
             // 
-            // butonSinglePlayer
+            // butonOptiune1
             // 
-            this.butonSinglePlayer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonSinglePlayer.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonSinglePlayer.Location = new System.Drawing.Point(41, 91);
-            this.butonSinglePlayer.Name = "butonSinglePlayer";
-            this.butonSinglePlayer.Size = new System.Drawing.Size(104, 39);
-            this.butonSinglePlayer.TabIndex = 5;
-            this.butonSinglePlayer.Text = "SinglePlayer";
-            this.butonSinglePlayer.UseVisualStyleBackColor = true;
-            this.butonSinglePlayer.Click += new System.EventHandler(this.butonSinglePlayer_Click);
+            this.butonOptiune1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.butonOptiune1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.butonOptiune1.Location = new System.Drawing.Point(42, 94);
+            this.butonOptiune1.Name = "butonOptiune1";
+            this.butonOptiune1.Size = new System.Drawing.Size(104, 39);
+            this.butonOptiune1.TabIndex = 5;
+            this.butonOptiune1.Text = "SinglePlayer";
+            this.butonOptiune1.UseVisualStyleBackColor = true;
+            this.butonOptiune1.Click += new System.EventHandler(this.butonSinglePlayer_Click);
+            // 
+            // butonOptiune4
+            // 
+            this.butonOptiune4.Enabled = false;
+            this.butonOptiune4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.butonOptiune4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.butonOptiune4.Location = new System.Drawing.Point(40, 229);
+            this.butonOptiune4.Name = "butonOptiune4";
+            this.butonOptiune4.Size = new System.Drawing.Size(104, 39);
+            this.butonOptiune4.TabIndex = 9;
+            this.butonOptiune4.Text = "Exit";
+            this.butonOptiune4.UseVisualStyleBackColor = true;
+            this.butonOptiune4.Visible = false;
             // 
             // FormMeniu
             // 
@@ -88,10 +102,11 @@
             this.BackgroundImage = global::ProiectVolovici.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(442, 442);
+            this.Controls.Add(this.butonOptiune4);
             this.Controls.Add(this.labelTitlu);
-            this.Controls.Add(this.butonExit);
-            this.Controls.Add(this.butonMultiPlayer);
-            this.Controls.Add(this.butonSinglePlayer);
+            this.Controls.Add(this.butonOptiune3);
+            this.Controls.Add(this.butonOptiune2);
+            this.Controls.Add(this.butonOptiune1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMeniu";
@@ -105,8 +120,9 @@
         #endregion
 
         private System.Windows.Forms.Label labelTitlu;
-        private System.Windows.Forms.Button butonExit;
-        private System.Windows.Forms.Button butonMultiPlayer;
-        private System.Windows.Forms.Button butonSinglePlayer;
+        private System.Windows.Forms.Button butonOptiune3;
+        private System.Windows.Forms.Button butonOptiune2;
+        private System.Windows.Forms.Button butonOptiune1;
+        private System.Windows.Forms.Button butonOptiune4;
     }
 }

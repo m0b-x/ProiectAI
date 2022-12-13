@@ -14,7 +14,6 @@ namespace ProiectVolovici
         protected CodPiesa _codPiesa;
 
         protected double _valoarePiesa;
-        protected bool _pusaPeTabla = false;
         protected bool _selectata;
 
         public Aspect Aspect
@@ -46,11 +45,6 @@ namespace ProiectVolovici
             set { _codPiesa = value; }
         }
 
-        public bool PusaPeTabla
-        {
-            get { return _pusaPeTabla; }
-            set { _pusaPeTabla = value; }
-        }
 
         public bool Selectata
         {

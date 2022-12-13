@@ -2,7 +2,7 @@
 {
     public enum Aspect
     {
-        Normal,
-        Invers
+        Normal = 0,
+        Invers = 1
     }
 }

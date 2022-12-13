@@ -195,7 +195,7 @@ namespace ProiectVolovici
                 String date;
                 date = _streamCitire.ReadLine();
                 _buffer = date;
-                if (date == _mesajDeconectare)
+                if (date.Equals(_mesajDeconectare))
                 {
                     Debug.WriteLine("Serverul s-a deconectat de la client`");
                 }

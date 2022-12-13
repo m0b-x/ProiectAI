@@ -8,7 +8,7 @@
         {
             this.ValoarePiesa = ConstantaPiese.ValoareTura;
             this.Culoare = culoare;
-            this.PusaPeTabla = false;
+            
             this.Selectata = false;
 
             if (aspect == Aspect.Normal)

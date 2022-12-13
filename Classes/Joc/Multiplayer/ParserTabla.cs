@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace ProiectVolovici
+namespace ProiectVolovici.Classes.Joc.Multiplayer
 {
     public class ParserTabla
     {
@@ -15,7 +15,7 @@ namespace ProiectVolovici
             _coloaneDecodificate = coloaneDecodificate;
         }
 
-        public String CodificareMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
+        public string CodificareMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
             string mutareString = "{" +
                                     pozitieInitiala.Linie + "," +
@@ -26,14 +26,14 @@ namespace ProiectVolovici
             return mutareString;
         }
 
-        public Tuple<Pozitie, Pozitie> DecodificareMutare(String mutare)
+        public Tuple<Pozitie, Pozitie> DecodificareMutare(string mutare)
         {
             mutare = mutare.Replace("{", " ");
             mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
 
-            return new Tuple<Pozitie, Pozitie>(new Pozitie(vectorPozitiiInt[0], vectorPozitiiInt[1]),
-                                               new Pozitie(vectorPozitiiInt[2], vectorPozitiiInt[3]));
+            return new Tuple<Pozitie, Pozitie>(new Pozitie(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[0], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[1]),
+                                               new Pozitie(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[2], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[3]));
         }
         static T[,] ConvertesteJaggedIn2D<T>(T[][] source)
         {
@@ -54,7 +54,7 @@ namespace ProiectVolovici
                 throw new InvalidOperationException("The given jagged array is not rectangular.");
             }
         }
-        public String CodificareTabla(int[][] matriceTabla)
+        public string CodificareTablaSiAspect(int[][] matriceTabla, Aspect aspect)
         {
             int[,] matrice2D = new int[ConstantaTabla.NrLinii, ConstantaTabla.NrColoane];
             matrice2D = ConvertesteJaggedIn2D(matriceTabla);
@@ -63,11 +63,15 @@ namespace ProiectVolovici
                                             .GroupBy(linie => linie.index / matrice2D.GetLength(1))
                                             .Select(linie => $"{{{string.Join(" ", linie.Select(linie => linie.value))}}}"));
 
-            return str;
+            
+            return $"{(int)aspect}{str}";
         }
 
-        public int[][] DecodificareTabla(String stringPrimit)
+        public int[][] DecodificareTablaSiAspect(string stringPrimit, out Aspect aspect)
         {
+            aspect = (Aspect)(stringPrimit[0] - '0');
+            stringPrimit = stringPrimit.Remove(0, 1);
+
             stringPrimit = stringPrimit.Replace("}{", " ");
 
             stringPrimit = stringPrimit.Substring(1, stringPrimit.Length - 2);
@@ -78,6 +82,9 @@ namespace ProiectVolovici
             int[][] matriceReturnata = new int[_liniiDecodificate][];
             for (int i = 0; i < _liniiDecodificate; i++)
                 matriceReturnata[i] = new int[_coloaneDecodificate];
+
+
+
             int contorElemente = 0;
             for (int linie = 0; linie < _liniiDecodificate; linie++)
             {
@@ -86,7 +93,7 @@ namespace ProiectVolovici
                     matriceReturnata[linie][coloana] = vectorAuxiliar[contorElemente++];
                 }
             }
-            return matriceReturnata;
+            return (matriceReturnata);
         }
     }
 }

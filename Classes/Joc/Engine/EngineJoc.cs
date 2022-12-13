@@ -365,15 +365,8 @@ namespace ProiectVolovici
             }
             else
             {
-                if (piesa.PusaPeTabla == true)
-                {
-                    Debug.WriteLine("Eroare:Piesa selectata este deja pusa pe tabla!");
-                }
-                else
-                {
-                    piesa.Pozitie = pozitie;
-                    SeteazaPiesaCadranului(piesa.Pozitie,piesa);
-                }
+                piesa.Pozitie = pozitie;
+                SeteazaPiesaCadranului(piesa.Pozitie,piesa);
             }
         }
 

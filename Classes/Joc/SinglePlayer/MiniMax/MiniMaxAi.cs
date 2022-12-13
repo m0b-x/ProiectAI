@@ -11,6 +11,7 @@ namespace ProiectVolovici
 
         private EngineMiniMax _engine;
         private int _adancime;
+        private TimeSpan _timpAsteptareMaxim = TimeSpan.FromSeconds(7);
         private TabelTranspozitie _tabelTranspozitie = new();
 
         public int Adancime
@@ -797,8 +798,7 @@ namespace ProiectVolovici
             timerAsteptareMaxima.Start();
 
             bool loopTerminat = false;
-            while (timerAsteptareMaxima.Elapsed < TimeSpan.FromSeconds(5)
-                && loopTerminat == false)
+            while (loopTerminat == false)
             {
                 for (int i = 1; i < mutPos.Count; i++)
                 {
@@ -848,6 +848,12 @@ namespace ProiectVolovici
 
                     for (int adanc = 0; adanc <= Adancime; adanc++)
                     {
+                        if(timerAsteptareMaxima.Elapsed > _timpAsteptareMaxim)
+                        {
+                            loopTerminat = true;
+                            timerAsteptareMaxima.Reset();
+                            break;
+                        }
                         scorMutare = MiniMaxAlb(
                         evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
                         matriceInitiala, double.NegativeInfinity, double.PositiveInfinity

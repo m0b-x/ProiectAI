@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using ProiectVolovici.Classes.Joc.Multiplayer;
 
 namespace ProiectVolovici
 {
@@ -77,16 +78,9 @@ namespace ProiectVolovici
             }
             else
             {
-                if (piesa.PusaPeTabla == false)
-                {
-                    Debug.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
-                }
-                else
-                {
-                    NuEsteRandulTau();
-                    _host.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
-                    RealizeazaMutareaLocal(piesa, pozitie);
-                }
+                NuEsteRandulTau();
+                _host.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
+                RealizeazaMutareaLocal(piesa, pozitie);
             }
         }
 
@@ -126,7 +120,7 @@ namespace ProiectVolovici
             {
                 await Task.Delay(50);
             }
-            _host.TrimiteDate(_parserTabla.CodificareTabla(this.MatriceCoduriPiese));
+            _host.TrimiteDate(_parserTabla.CodificareTablaSiAspect(this.MatriceCoduriPiese,this.AspectJoc));
             _host.TimerCitireDate.Stop();
             ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
             EsteRandulTau();

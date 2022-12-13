@@ -41,12 +41,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect, bool incepeOmul = true) : base(parentForm, aspect)
+        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect,int adancime , bool incepeOmul = true) : base(parentForm, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
+            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this, adancime);
 
             _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();

@@ -6,8 +6,10 @@ namespace ProiectVolovici
 {
     public partial class FormSinglePlayer : Form
     {
-        public FormSinglePlayer(Form form)
+        private int _adancime;
+        public FormSinglePlayer(Form form, int adancime)
         {
+            _adancime = adancime;
             InitializeComponent();
         }
 
@@ -19,7 +21,7 @@ namespace ProiectVolovici
             Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.Alb), new Om(Culoare.Albastru));
 
             formPrincipal = this;
-            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal);
+            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal, _adancime , incepeOmul: true);
             jocSah.AdaugaPieselePrestabilite();
             jocSah.DeschideJocul();
         }

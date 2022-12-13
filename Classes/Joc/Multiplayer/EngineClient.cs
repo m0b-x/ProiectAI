@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using ProiectVolovici.Classes.Joc.Multiplayer;
 
 namespace ProiectVolovici
 {
@@ -41,6 +42,7 @@ namespace ProiectVolovici
         {
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
+            _jucatorClient.Culoare = Culoare.Alb;
 
             _randulClientului = false;
 
@@ -53,7 +55,7 @@ namespace ProiectVolovici
         {
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
-
+            _jucatorClient.Culoare = Culoare.Alb;
             _randulClientului = false;
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
@@ -80,16 +82,9 @@ namespace ProiectVolovici
             }
             else
             {
-                if (piesa.PusaPeTabla == false)
-                {
-                    Debug.WriteLine("Eroare:Piesa nu este pusa pe tabla!");
-                }
-                else
-                {
-                    _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
-                    NuEsteRandulTau();
-                    RealizeazaMutareaLocal(piesa, pozitie);
-                }
+                _client.TrimiteDate(_parserTabla.CodificareMutare(piesa.Pozitie, pozitie));
+                NuEsteRandulTau();
+                RealizeazaMutareaLocal(piesa, pozitie);
             }
         }
 
@@ -132,7 +127,13 @@ namespace ProiectVolovici
             {
                 await Task.Delay(50);
             }
-            ActualizeazaIntreagaTabla(_parserTabla.DecodificareTabla(_client.Buffer));
+
+            var matrice = _parserTabla.DecodificareTablaSiAspect(_client.Buffer,out _aspectJoc);
+            if (_aspectJoc == Aspect.Invers)
+                _aspectJoc = Aspect.Normal;
+            else
+                _aspectJoc = Aspect.Invers;
+            ActualizeazaIntreagaTabla(matrice);
         }
 
         public void SincronizeazaClient(object source, ElapsedEventArgs e)
