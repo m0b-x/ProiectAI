@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
@@ -214,7 +215,7 @@ namespace ProiectVolovici
         {
         }
 
-        //DE AICI
+
         private void butonMultiPlayer_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "Host";
@@ -223,25 +224,86 @@ namespace ProiectVolovici
 
             butonOptiune2.Text = "Connect";
             butonOptiune2.Click -= butonMultiPlayer_Click;
-            butonOptiune1.Click += butonConnect_Click;
+            butonOptiune2.Click += butonConnect_Click;
 
             butonOptiune3.Text = "Inapoi";
             butonOptiune3.Click -= butonExit_Click;
             butonOptiune3.Click += butonInapoiDeLaMultiPlayer_Click;
             /*
             this.Hide();
-            Form formMultiPlayer = new FormMultiPlayer();
+            Form formMultiPlay er = new FormMultiPlayer();
             formMultiPlayer.Closed += (s, args) => this.Close();
             formMultiPlayer.Show();
             */
         }
         private void butonStartHost_Click(object sender, EventArgs e)
         {
+            int port = 3000;
+            try
+            {
+                AscundeElementeleVizuale();
+                var jucatorMP = new Om(Culoare.Alb);
 
+                HostSah jocSah = new HostSah(this, jucatorMP);
+                jocSah.AdaugaPieselePrestabilite();
+                jocSah.HosteazaJoc(port);
+
+                this.Size = new System.Drawing.Size(742, 787);
+                this.Text = "Host";
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
         private void butonStartConnect_Click(object sender, EventArgs e)
         {
+            int port = 3000;
+            try
+            {
+                var adresaIP = IPAddress.Parse(textBoxIP.Text);
+                AscundeElementeleVizuale();
 
+                var jucatorMP = new Om(Culoare.Albastru);
+                ClientSah jocSahForm2;
+                jocSahForm2 = new ClientSah(this, jucatorMP);
+                jocSahForm2.ConecteazateLaJoc(adresaIP, port);
+
+                this.Size = new System.Drawing.Size(742, 787);
+                this.Text = "Client";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Eroare Ip");
+            }
+
+        }
+
+        private void AscundeElementeleVizuale()
+        {
+            butonOptiune1.Visible = false;
+            butonOptiune2.Enabled = false;
+
+            butonOptiune2.Visible = false;
+            butonOptiune2.Enabled = false;
+
+            butonOptiune3.Visible = false;
+            butonOptiune3.Enabled = false;
+
+            butonOptiune4.Visible = false;
+            butonOptiune4.Enabled = false;
+
+            textBoxIP.Enabled = false;
+            textBoxIP.Visible = false;
+
+            labelIP.Enabled = false;
+            labelIP.Visible = false;
+
+            labelTitlu.Enabled = false;
+            labelTitlu.Visible = false;
+
+            this.BackgroundImage = null;
         }
 
         private void butonHost_Click(object sender, EventArgs e)
@@ -253,8 +315,8 @@ namespace ProiectVolovici
 
             butonOptiune2.Enabled = false;
             butonOptiune2.Visible = false;
-            textBoxIP.Visible = true;
-            textBoxIP.Enabled = true;
+           // textBoxIP.Visible = true;
+            //textBoxIP.Enabled = true;
 
 
             butonOptiune3.Text = "Inapoi";
@@ -278,7 +340,8 @@ namespace ProiectVolovici
 
             butonOptiune2.Enabled = true;
             butonOptiune2.Visible = true;
-
+            textBoxIP.Enabled = false;
+            textBoxIP.Visible = false;
 
             butonOptiune3.Text = "Inapoi";
             butonOptiune3.Click += butonInapoiDeLaMultiPlayer_Click;
@@ -304,14 +367,14 @@ namespace ProiectVolovici
         private void butonConnect_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "Connect";
-            butonOptiune1.Click -= butonConnect_Click;
+            butonOptiune1.Click -= butonHost_Click;
             butonOptiune1.Click += butonStartConnect_Click;
 
             butonOptiune2.Enabled = false;
             butonOptiune2.Visible = false;
-            textBoxIP.Visible = true;
             textBoxIP.Enabled = true;
-            
+            textBoxIP.Visible = true;
+
             butonOptiune3.Text = "Inapoi";
             butonOptiune3.Click -= butonInapoiDeLaMultiPlayer_Click;
             butonOptiune3.Click += butonInapoiDeLaConnect_Click;
@@ -330,9 +393,12 @@ namespace ProiectVolovici
         {
             butonOptiune1.Text = "SinglePlayer";
             butonOptiune1.Click += butonSinglePlayer_Click;
+            butonOptiune1.Click -= butonHost_Click;
+
 
             butonOptiune2.Text = "MultiPlayer";
             butonOptiune2.Click += butonMultiPlayer_Click;
+            butonOptiune2.Click -= butonConnect_Click;
 
             butonOptiune3.Text = "Exit";
             butonOptiune3.Click -= butonInapoiDeLaMultiPlayer_Click;

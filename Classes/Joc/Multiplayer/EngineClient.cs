@@ -100,12 +100,13 @@ namespace ProiectVolovici
 
         public override void Dispose()
         {
+
+            if (_timerJocClient != null)
+                _timerJocClient.Dispose();
             GC.SuppressFinalize(this);
             Debug.WriteLine("Dispose JocMultiplayer");
             _timerJocClientDisposed = true;
-            _timerJocClient.Stop();
             _client.TrimiteDate(_client.MesajDeconectare);
-            _timerJocClient.Dispose();
         }
 
         ~EngineClient() => Dispose();

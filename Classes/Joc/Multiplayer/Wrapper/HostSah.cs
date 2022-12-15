@@ -134,7 +134,7 @@ namespace ProiectVolovici
             _labelConexiuneLocala.Parent = this._parentForm;
             _labelConexiuneLocala.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             _labelConexiuneLocala.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _labelConexiuneLocala.Location = new System.Drawing.Point(200, 610);
+            _labelConexiuneLocala.Location = new System.Drawing.Point(200, 630);
             _labelConexiuneLocala.Name = "labelJocConectat";
             _labelConexiuneLocala.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneLocala.TabIndex = 0;

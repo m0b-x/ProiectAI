@@ -931,14 +931,12 @@ namespace ProiectVolovici
         {
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
-                IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
-                if (elementTabel.Adancime >= adancime && elementTabel.Alpha >= beta)
+                if (_tabelTranspozitie.Tabel[hash].Adancime >= adancime && _tabelTranspozitie.Tabel[hash].Alpha >= beta)
                 {
-                    return elementTabel.Alpha;
+                    return _tabelTranspozitie.Tabel[hash].Alpha;
                 }
             }
-            if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb ||
+            if (piesaCapturata >= (int)CodPiesa.RegeAlb ||
                 adancime == 0)
             {
                 return eval;
@@ -1039,14 +1037,12 @@ namespace ProiectVolovici
 
             if (_tabelTranspozitie.Tabel.ContainsKey(hash))
             {
-                IntrareTabelTranspozitie elementTabel = _tabelTranspozitie.Tabel[hash];
-                if (elementTabel.Adancime >= adancime && elementTabel.Beta <= alpha)
+                if (_tabelTranspozitie.Tabel[hash].Adancime >= adancime && _tabelTranspozitie.Tabel[hash].Beta <= alpha)
                 {
-                    return elementTabel.Beta;
+                    return _tabelTranspozitie.Tabel[hash].Beta;
                 }
             }
-            if (piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb ||
+            if (piesaCapturata >= (int)CodPiesa.RegeAlb ||
                 adancime == 0)
             {
                 return eval;
@@ -1131,11 +1127,6 @@ namespace ProiectVolovici
                 }
                 return beta;
             }
-        }
-
-        private static bool EstePiesaAlba(int codPiesa)
-        {
-            return (codPiesa - 1) % 2 == 0;
         }
 
         private static bool EstePiesa(int codPiesa)

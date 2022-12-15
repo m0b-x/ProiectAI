@@ -102,9 +102,9 @@ namespace ProiectVolovici
             Debug.WriteLine("Dispose JocMultiplayer");
 
             _timerJocHostDisposed = true;
-            _timerJocHost.Stop();
             _host.TrimiteDate(_host.MesajDeconectare);
-            _timerJocHost.Dispose();
+            if(_timerJocHost != null)
+                _timerJocHost.Dispose();
         }
 
         public virtual async void HosteazaJoc(int port)
