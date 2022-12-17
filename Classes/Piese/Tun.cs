@@ -12,7 +12,7 @@ namespace ProiectVolovici
             this.Selectata = false;
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bcannon;
                     this.Cod = CodPiesa.TunAlbastru;
@@ -25,7 +25,7 @@ namespace ProiectVolovici
             }
             else
             {
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bcannon;
                     this.Cod = CodPiesa.TunAlb;

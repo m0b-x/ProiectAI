@@ -13,7 +13,7 @@ namespace ProiectVolovici
 
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bpawn;
                     this.Cod = CodPiesa.PionAlbastru;
@@ -26,7 +26,7 @@ namespace ProiectVolovici
             }
             else
             {
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bpawn;
                     this.Cod = CodPiesa.PionAlb;
@@ -56,7 +56,7 @@ namespace ProiectVolovici
             List<Pozitie> mutariNefiltrate = new List<Pozitie>();
             List<Pozitie> mutariFiltrate = new List<Pozitie>();
 
-            if (this.Culoare == Culoare.Albastru)
+            if (this.Culoare == Culoare.AlbastruMax)
             {
                 mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
                 if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)

@@ -13,7 +13,7 @@ namespace ProiectVolovici
 
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.belephantrev2;
                     this.Cod = CodPiesa.ElefantAlbastru;
@@ -26,7 +26,7 @@ namespace ProiectVolovici
             }
             else
             {
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.belephantrev2;
                     this.Cod = CodPiesa.ElefantAlb;
@@ -69,8 +69,8 @@ namespace ProiectVolovici
                      pozitie.Coloana <= ultimaColoana &&
                      pozitie.Coloana >= primaColoana)
                 {
-                    if (pozitie.Linie > ConstantaTabla.PragRau && this.Culoare == Culoare.Alb
-                            || pozitie.Linie <= ConstantaTabla.PragRau && this.Culoare == Culoare.Albastru)
+                    if (pozitie.Linie > ConstantaTabla.PragRau && this.Culoare == Culoare.AlbMin
+                            || pozitie.Linie <= ConstantaTabla.PragRau && this.Culoare == Culoare.AlbastruMax)
                     {
                         if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
                         {

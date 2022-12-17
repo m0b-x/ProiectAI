@@ -46,7 +46,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this, adancime);
+            _miniMaxAI = new MiniMaxAI(Culoare.AlbastruMax, this, adancime);
 
             _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
@@ -58,7 +58,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.Albastru, this);
+            _miniMaxAI = new MiniMaxAI(Culoare.AlbastruMax, this);
             _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
         }
@@ -280,7 +280,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
             var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI(moveOrdering: moveOrdering);
 
-            var mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile);
+            Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile, _miniMaxAI.Adancime);
 
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;

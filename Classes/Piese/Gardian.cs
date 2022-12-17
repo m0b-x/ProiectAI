@@ -13,7 +13,7 @@ namespace ProiectVolovici
 
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.benvoy;
                     this.Cod = CodPiesa.GardianAlbastru;
@@ -26,7 +26,7 @@ namespace ProiectVolovici
             }
             else
             {
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.benvoy;
                     this.Cod = CodPiesa.GardianAlb;

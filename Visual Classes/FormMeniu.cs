@@ -242,7 +242,7 @@ namespace ProiectVolovici
             try
             {
                 AscundeElementeleVizuale();
-                var jucatorMP = new Om(Culoare.Alb);
+                var jucatorMP = new Om(Culoare.AlbMin);
 
                 HostSah jocSah = new HostSah(this, jucatorMP);
                 jocSah.AdaugaPieselePrestabilite();
@@ -265,7 +265,7 @@ namespace ProiectVolovici
                 var adresaIP = IPAddress.Parse(textBoxIP.Text);
                 AscundeElementeleVizuale();
 
-                var jucatorMP = new Om(Culoare.Albastru);
+                var jucatorMP = new Om(Culoare.AlbastruMax);
                 ClientSah jocSahForm2;
                 jocSahForm2 = new ClientSah(this, jucatorMP);
                 jocSahForm2.ConecteazateLaJoc(adresaIP, port);

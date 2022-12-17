@@ -2,8 +2,8 @@
 {
     public enum Culoare
     {
-        Alb,
-        Albastru,
+        AlbMin,
+        AlbastruMax,
         Niciuna
     }
 }

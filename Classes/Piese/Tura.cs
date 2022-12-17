@@ -13,7 +13,7 @@
 
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.brook;
                     this.Cod = CodPiesa.TuraAlbastra;
@@ -26,7 +26,7 @@
             }
             else
             {
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.brook;
                     this.Cod = CodPiesa.TuraAlba;

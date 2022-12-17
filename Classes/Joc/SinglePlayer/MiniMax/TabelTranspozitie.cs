@@ -20,9 +20,18 @@ namespace ProiectVolovici
         {
         }
 
-        public void AdaugaIntrare(long cheie, IntrareTabelTranspozitie intrare)
+        public void AdaugaIntrare(long cheie, double alpha, FlagIntrare flag, int adancime)
         {
-            _tabel.TryAdd(cheie, intrare);
+            if (_tabel.ContainsKey(cheie))
+            {
+                var item = Tabel[cheie];
+                if (adancime >= item.Adancime)
+                    _tabel[cheie] = new IntrareTabelTranspozitie(adancime,alpha,flag);
+            }
+            else
+            {
+                _tabel.Add(cheie, new IntrareTabelTranspozitie(adancime, alpha, flag));
+            }
         }
 
         public void ReseteazaTabel()

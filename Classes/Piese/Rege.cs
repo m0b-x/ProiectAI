@@ -13,7 +13,7 @@ namespace ProiectVolovici
 
             if (aspect == Aspect.Normal)
             {
-                if (culoare == Culoare.Albastru)
+                if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bking;
                     this.Cod = CodPiesa.RegeAlbastru;
@@ -27,7 +27,7 @@ namespace ProiectVolovici
             else
             {
 
-                if (culoare != Culoare.Albastru)
+                if (culoare != Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bking;
                     this.Cod = CodPiesa.RegeAlb;
@@ -84,7 +84,7 @@ namespace ProiectVolovici
             foreach (Pozitie pozitie in mutariPrimaFiltrare)
             {
                 bool okMutare = true;
-                if (this.Culoare == Culoare.Alb)
+                if (this.Culoare == Culoare.AlbMin)
                 {
                     for (int linie = this.Pozitie.Linie - 1; linie >= 0; linie--)
                     {
@@ -105,7 +105,7 @@ namespace ProiectVolovici
                     if (okMutare)
                         mutariADouaFiltrare.Add(pozitie);
                 }
-                else if (this.Culoare == Culoare.Albastru)
+                else if (this.Culoare == Culoare.AlbastruMax)
                 {
                     okMutare = true;
                     for (int linie = this.Pozitie.Linie + 1; linie <= 9; linie++)

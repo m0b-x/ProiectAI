@@ -265,55 +265,55 @@ namespace ProiectVolovici
         {
             //piese albastre
 
-            AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 0));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 0));
             
-            AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 2));
-            AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 4));
-            AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 6));
-            AdaugaPiesa(new Pion(Culoare.Albastru, _aspectJoc), new Pozitie(3, 8));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 2));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 4));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 6));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 8));
 
-            AdaugaPiesa(new Tun(Culoare.Albastru, _aspectJoc), new Pozitie(2, 1));
-            AdaugaPiesa(new Tun(Culoare.Albastru, _aspectJoc), new Pozitie(2, 7));
+            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 1));
+            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 7));
 
-            AdaugaPiesa(new Tura(Culoare.Albastru, _aspectJoc), new Pozitie(0, 0));
-            AdaugaPiesa(new Tura(Culoare.Albastru, _aspectJoc), new Pozitie(0, 8));
+            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 0));
+            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 8));
 
-            AdaugaPiesa(new Cal(Culoare.Albastru, _aspectJoc), new Pozitie(0, 1));
-            AdaugaPiesa(new Cal(Culoare.Albastru, _aspectJoc), new Pozitie(0, 7));
+            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 1));
+            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 7));
 
-            AdaugaPiesa(new Elefant(Culoare.Albastru, _aspectJoc), new Pozitie(0, 2));
-            AdaugaPiesa(new Elefant(Culoare.Albastru, _aspectJoc), new Pozitie(0, 6));
+            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 2));
+            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 6));
 
-            AdaugaPiesa(new Gardian(Culoare.Albastru, _aspectJoc), new Pozitie(0, 3));
-            AdaugaPiesa(new Gardian(Culoare.Albastru, _aspectJoc), new Pozitie(0, 5));
+            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 3));
+            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 5));
             
-            AdaugaPiesa(new Rege(Culoare.Albastru, _aspectJoc), new Pozitie(0, 4));
+            AdaugaPiesa(new Rege(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 4));
 
             //piese albe
 
-            AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 0));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 0));
             
-            AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 2));
-            AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 4));
-            AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 6));
-            AdaugaPiesa(new Pion(Culoare.Alb, _aspectJoc), new Pozitie(6, 8));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 2));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 4));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 6));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 8));
 
-            AdaugaPiesa(new Tun(Culoare.Alb, _aspectJoc), new Pozitie(7, 1));
-            AdaugaPiesa(new Tun(Culoare.Alb, _aspectJoc), new Pozitie(7, 7));
+            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), new Pozitie(7, 1));
+            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), new Pozitie(7, 7));
 
-            AdaugaPiesa(new Tura(Culoare.Alb, _aspectJoc), new Pozitie(9, 0));
-            AdaugaPiesa(new Tura(Culoare.Alb, _aspectJoc), new Pozitie(9, 8));
+            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 0));
+            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 8));
 
-            AdaugaPiesa(new Cal(Culoare.Alb, _aspectJoc), new Pozitie(9, 1));
-            AdaugaPiesa(new Cal(Culoare.Alb, _aspectJoc), new Pozitie(9, 7));
+            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 1));
+            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 7));
 
-            AdaugaPiesa(new Elefant(Culoare.Alb, _aspectJoc), new Pozitie(9, 2));
-            AdaugaPiesa(new Elefant(Culoare.Alb, _aspectJoc), new Pozitie(9, 6));
+            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 2));
+            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 6));
 
-            AdaugaPiesa(new Gardian(Culoare.Alb, _aspectJoc), new Pozitie(9, 3));
-            AdaugaPiesa(new Gardian(Culoare.Alb, _aspectJoc), new Pozitie(9, 5));
+            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 3));
+            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 5));
            
-            AdaugaPiesa(new Rege(Culoare.Alb, _aspectJoc), new Pozitie(9, 4));
+            AdaugaPiesa(new Rege(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 4));
         }
 
         public void ActualizeazaIntreagaTabla(int[][] matriceTabla)
@@ -335,20 +335,20 @@ namespace ProiectVolovici
         {
             switch (codPiesa)
             {
-                case CodPiesa.PionAlb: return new Pion(Culoare.Alb, _aspectJoc);
-                case CodPiesa.PionAlbastru: return new Pion(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.TuraAlba: return new Tura(Culoare.Alb, _aspectJoc);
-                case CodPiesa.TuraAlbastra: return new Tura(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.TunAlb: return new Tun(Culoare.Alb, _aspectJoc);
-                case CodPiesa.TunAlbastru: return new Tun(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.GardianAlb: return new Gardian(Culoare.Alb, _aspectJoc);
-                case CodPiesa.GardianAlbastru: return new Gardian(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.ElefantAlb: return new Elefant(Culoare.Alb, _aspectJoc);
-                case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.CalAlb: return new Cal(Culoare.Alb, _aspectJoc);
-                case CodPiesa.CalAbastru: return new Cal(Culoare.Albastru, _aspectJoc);
-                case CodPiesa.RegeAlb: return new Rege(Culoare.Alb, _aspectJoc);
-                case CodPiesa.RegeAlbastru: return new Rege(Culoare.Albastru, _aspectJoc);
+                case CodPiesa.PionAlb: return new Pion(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.PionAlbastru: return new Pion(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.TuraAlba: return new Tura(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.TuraAlbastra: return new Tura(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.TunAlb: return new Tun(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.TunAlbastru: return new Tun(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.GardianAlb: return new Gardian(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.GardianAlbastru: return new Gardian(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.ElefantAlb: return new Elefant(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.CalAlb: return new Cal(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.CalAbastru: return new Cal(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.RegeAlb: return new Rege(Culoare.AlbMin, _aspectJoc);
+                case CodPiesa.RegeAlbastru: return new Rege(Culoare.AlbastruMax, _aspectJoc);
                 default: return ConstantaTabla.PiesaNula;
             }
         }
@@ -457,7 +457,7 @@ namespace ProiectVolovici
                 {
                     //stergem piesa veche
                     StergePiesaDinListaDupaPoz(ref _listaPiese, pozitie);
-                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.Alb)
+                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.AlbMin)
                     {
                         StergePiesaDinListaDupaPoz(ref _listaPieseAlbe, pozitie);
                     }
@@ -468,7 +468,7 @@ namespace ProiectVolovici
                     //adaugam piesa noua
                     piesa.Pozitie = pozitie;
                     _listaPiese.Add(piesa);
-                    if (piesa.Culoare == Culoare.Alb)
+                    if (piesa.Culoare == Culoare.AlbMin)
                     {
                         _listaPieseAlbe.Add(piesa);
                     }
@@ -484,11 +484,11 @@ namespace ProiectVolovici
                 //se pune gol peste piesa=>stergem piesa veche
                 else
                 {
-                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.Alb)
+                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.AlbMin)
                     {
                         StergePiesaDinListaDupaPoz(ref _listaPieseAlbe, pozitie);
                     }
-                    else if(ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.Albastru)
+                    else if(ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran.Culoare == Culoare.AlbastruMax)
                     {
                         StergePiesaDinListaDupaPoz(ref _listaPieseAlbastre, pozitie);
                     }
@@ -505,7 +505,7 @@ namespace ProiectVolovici
                 if (piesa != ConstantaTabla.PiesaNula)
                 {
                     piesa.Pozitie = pozitie;
-                    if (piesa.Culoare == Culoare.Alb)
+                    if (piesa.Culoare == Culoare.AlbMin)
                     {
                         _listaPieseAlbe.Add(piesa);
                     }
@@ -607,9 +607,9 @@ namespace ProiectVolovici
         public Culoare ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
         {
             if ((int)codPiesa % 2 == 0)
-                return Culoare.Alb;
+                return Culoare.AlbMin;
             else
-                return Culoare.Albastru;
+                return Culoare.AlbastruMax;
         }
 
         public bool EstePiesaAlba(int codPiesa)

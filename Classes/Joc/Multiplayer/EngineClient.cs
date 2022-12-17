@@ -42,7 +42,7 @@ namespace ProiectVolovici
         {
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
-            _jucatorClient.Culoare = Culoare.Alb;
+            _jucatorClient.Culoare = Culoare.AlbMin;
 
             _randulClientului = false;
 
@@ -55,7 +55,7 @@ namespace ProiectVolovici
         {
             AdaugaEvenimentCadrane();
             _jucatorClient = jucator;
-            _jucatorClient.Culoare = Culoare.Alb;
+            _jucatorClient.Culoare = Culoare.AlbMin;
             _randulClientului = false;
 
             _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
