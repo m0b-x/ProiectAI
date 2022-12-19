@@ -26,7 +26,7 @@ namespace ProiectVolovici
             {
                 var item = Tabel[cheie];
                 if (adancime >= item.Adancime)
-                    _tabel[cheie] = new IntrareTabelTranspozitie(adancime,alpha,flag);
+                    _tabel[cheie] = new IntrareTabelTranspozitie(adancime, alpha, flag);
             }
             else
             {

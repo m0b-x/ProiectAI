@@ -48,7 +48,7 @@
 
         public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
         {
-            List<Pozitie> mutariLegale = new List<Pozitie>();
+            List<Pozitie> mutariLegale = new List<Pozitie>(90);
 
             int liniePoz = this.Pozitie.Linie + 1;
             while (liniePoz < ConstantaTabla.NrLinii)

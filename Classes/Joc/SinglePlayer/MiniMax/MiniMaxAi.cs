@@ -554,13 +554,11 @@ namespace ProiectVolovici
             _cacheDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
         }
 
-        public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI(bool moveOrdering = false)
+        public SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaPrimeleMutariAI()
         {
             SortedList<double, Tuple<Pozitie, Pozitie>> mutPos;
-            if (moveOrdering == false)
-                mutPos = new();
-            else
-                mutPos = new(new DuplicateKeyComparerDesc<double>());
+
+            mutPos = new(new DuplicateKeyComparerDesc<double>());
             double evaluareInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
             for (int linie = 0; linie < ConstantaTabla.NrLinii; ++linie)
             {
@@ -773,20 +771,22 @@ namespace ProiectVolovici
                     scorMutare = MiniMax(
                         evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
                         matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
-                        , adancime : 0, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin); ;
+                        , adancime : 1, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin); ;
 
-            for (int adancimeTemp = 1; adancimeTemp <= adancimeCeruta; adancimeTemp++)
+            for (int adancimeTemp = 2; adancimeTemp <= adancimeCeruta; adancimeTemp++)
             {
                 scorMutare = MiniMax(
                         evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[0].Item2.Linie, mutPos.Values[0].Item2.Coloana),
                         matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                         , adancimeTemp, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin);
-            }
+
             if (scorMutare >= scorMutareOptima)
                 {
                     mutareOptima = mutPos.Values[0];
                     scorMutareOptima = scorMutare;
                 }
+
+            }
             SchimbaPozitiaDinVector(indexPozCareIa,
                 pozitiiAlbastre,
                 (mutPos.Values[0].Item1.Linie, mutPos.Values[0].Item1.Coloana));
@@ -848,19 +848,19 @@ namespace ProiectVolovici
                     }
 
 
-                for (int adancimeTemp = 0; adancimeTemp <= adancimeCeruta; adancimeTemp++)
+                for (int adancimeTemp = 1; adancimeTemp <= adancimeCeruta; adancimeTemp++)
                 {
                     scorMutare = MiniMax(
                         evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
                         matriceInitiala, double.NegativeInfinity, double.PositiveInfinity
                         , adancimeTemp, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin);
-                }
-
                         if (scorMutare >= scorMutareOptima)
                         {
                             mutareOptima = mutPos.Values[i];
                             scorMutareOptima = scorMutare;
-                        }
+                    }
+                }
+
 
                     SchimbaPozitiaDinVector(indexPozCareIa,
                         pozitiiAlbastre,

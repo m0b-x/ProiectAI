@@ -46,7 +46,7 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
         {
-            List<Pozitie> mutariLegale = new List<Pozitie>();
+            List<Pozitie> mutariLegale = new List<Pozitie>(90);
 
             int liniePozitiiPosibile = this.Pozitie.Linie + 1;
             while (liniePozitiiPosibile < ConstantaTabla.NrLinii)

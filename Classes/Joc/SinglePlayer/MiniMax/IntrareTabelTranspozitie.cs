@@ -13,6 +13,7 @@ namespace ProiectVolovici
             get { return _flagIntrare; }
             set { _flagIntrare = value; }
         }
+
         public int Adancime
         {
             get { return _adancime; }
@@ -24,6 +25,7 @@ namespace ProiectVolovici
             get { return _valuare; }
             set { _valuare = value; }
         }
+
         public override bool Equals(object obj)
         {
             return obj is IntrareTabelTranspozitie transpozitie && Equals(transpozitie);
@@ -38,12 +40,12 @@ namespace ProiectVolovici
 
         public bool Equals(IntrareTabelTranspozitie other)
         {
-            return  _adancime == other._adancime && _flagIntrare == other._flagIntrare;
+            return _adancime == other._adancime && _flagIntrare == other._flagIntrare;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine( _adancime, _flagIntrare);
+            return HashCode.Combine(_adancime, _flagIntrare);
         }
 
         public static bool operator ==(IntrareTabelTranspozitie left, IntrareTabelTranspozitie right)

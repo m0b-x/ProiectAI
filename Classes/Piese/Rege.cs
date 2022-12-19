@@ -48,9 +48,9 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
         {
-            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
-            List<Pozitie> mutariPrimaFiltrare = new List<Pozitie>();
-            List<Pozitie> mutariADouaFiltrare = new List<Pozitie>();
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>(4);
+            List<Pozitie> mutariPrimaFiltrare = new List<Pozitie>(4);
+            List<Pozitie> mutariADouaFiltrare = new List<Pozitie>(4);
 
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
             mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));

@@ -53,8 +53,8 @@ namespace ProiectVolovici
             int ultimaLinie = ConstantaTabla.NrLinii - 1;
             int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
-            List<Pozitie> mutariNefiltrate = new List<Pozitie>();
-            List<Pozitie> mutariFiltrate = new List<Pozitie>();
+            List<Pozitie> mutariNefiltrate = new List<Pozitie>(2);
+            List<Pozitie> mutariFiltrate = new List<Pozitie>(2);
 
             if (this.Culoare == Culoare.AlbastruMax)
             {

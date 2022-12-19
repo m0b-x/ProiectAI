@@ -41,7 +41,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect,int adancime , bool incepeOmul = true) : base(parentForm, aspect)
+        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect, int adancime, bool incepeOmul = true) : base(parentForm, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
@@ -233,7 +233,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             {
                                 await Task.Run(() =>
                                 {
-                                    RealizeazaMutareaAI(moveOrdering : true);
+                                    RealizeazaMutareaAI(moveOrdering: true);
                                 });
                             }
                         }
@@ -267,18 +267,19 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             {
                 UtilitatiCrossThread.SeteazaProprietateaDinAltThread(LabelAsteptare, "Text", "Este randul tau.");
             }
-
         }
+
         private void DeschideCuMutareaAI(object source, ElapsedEventArgs e)
         {
             RealizeazaMutareaAI(true);
         }
+
         public void RealizeazaMutareaAI(bool moveOrdering = false)
         {
             Stopwatch cronometru = new();
             cronometru.Start();
 
-            var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI(moveOrdering: moveOrdering);
+            var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI();
 
             Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile, _miniMaxAI.Adancime);
 
