@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace ProiectVolovici
 {
@@ -37,7 +38,10 @@ namespace ProiectVolovici
                 return (Linie == cealaltaPozitie.Linie) && (Coloana == cealaltaPozitie.Coloana);
             }
         }
-
+        public override string ToString()
+        {
+            return String.Format("(Linie:{0}, Coloana:{1})", _linie, _coloana);
+        }
         public override int GetHashCode()
         {
             return HashCode.Combine(_linie, _coloana);

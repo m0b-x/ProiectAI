@@ -430,7 +430,7 @@ namespace ProiectVolovici
                 return false;
         }
 
-        protected void ActualizeazaUltimaMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
+        protected void ActualizeazaUltimaaMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
             _ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
         }
