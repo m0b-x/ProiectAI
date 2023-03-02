@@ -17,8 +17,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private string _ultimulMesajPrimitHost = NetworkServer.BufferGol;
 
-        public Dictionary<Piesa, int> _dictionarValoriPiese = new Dictionary<Piesa, int>();
-
         private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
 
@@ -297,6 +295,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private int VerificaTentativaDeSah()
         {
+
+            
             for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)

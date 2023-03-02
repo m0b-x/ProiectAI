@@ -149,10 +149,10 @@ namespace ProiectVolovici
         public EngineJoc(Form parentForm, Aspect aspect = Aspect.Normal)
         {
             _parentForm = parentForm;
-            _listaPiese = new List<Piesa>();
-            _listaPieseAlbe = new List<Piesa>();
-            _listaPieseAlbastre = new List<Piesa>();
-            _pozitiiMutariPosibile = new List<Pozitie>();
+            _listaPiese = new List<Piesa>(32);
+            _listaPieseAlbe = new List<Piesa>(16);
+            _listaPieseAlbastre = new List<Piesa>(16);
+            _pozitiiMutariPosibile = new List<Pozitie>(200);
             _aspectJoc = aspect;
 
             _tabla = new Tabla();
@@ -179,10 +179,10 @@ namespace ProiectVolovici
         public EngineJoc(Form parentForm, int[][] matriceTabla, Aspect aspect = Aspect.Normal)
         {
             _parentForm = parentForm;
-            _listaPiese = new List<Piesa>();
-            _listaPieseAlbe = new List<Piesa>();
-            _listaPieseAlbastre = new List<Piesa>();
-            _pozitiiMutariPosibile = new List<Pozitie>();
+            _listaPiese = new List<Piesa>(32);
+            _listaPieseAlbe = new List<Piesa>(16);
+            _listaPieseAlbastre = new List<Piesa>(16);
+            _pozitiiMutariPosibile = new List<Pozitie>(200);
             _aspectJoc = aspect;
 
             _tabla = new Tabla();
@@ -539,8 +539,12 @@ namespace ProiectVolovici
             PozitiiMutariPosibile.Clear();
 
         }
+		protected void ActualizeazaUltimaMutare(Pozitie pozitieInitiala, Pozitie pozitieFinala)
+		{
+			_ultimaMutare = new Tuple<Pozitie, Pozitie>(pozitieInitiala, pozitieFinala);
+		}
 
-        public Piesa GetPiesaCuPozitia(Pozitie pozitie)
+		public Piesa GetPiesaCuPozitia(Pozitie pozitie)
         {
             if (_listaPiese != null)
             {
