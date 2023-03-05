@@ -267,8 +267,7 @@ namespace ProiectVolovici
 			//piese albastre
 
 			AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 0));
-			AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 0));
-			/*
+
 			AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 2));
 			AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 4));
 			AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 6));
@@ -277,6 +276,7 @@ namespace ProiectVolovici
 			AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 1));
 			AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 7));
 
+			AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 0));
 			AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 8));
 
 			AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 1));
@@ -287,14 +287,13 @@ namespace ProiectVolovici
 
 			AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 3));
 			AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 5));
-			*/
+
 			AdaugaPiesa(new Rege(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 4));
 
 			//piese albe
 
+
 			AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 0));
-			AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 3));
-			/*
 			AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 2));
 			AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 4));
 			AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 6));
@@ -313,7 +312,8 @@ namespace ProiectVolovici
 			AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 6));
 
 			AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 5));
-			*/
+			AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 3));
+
 			AdaugaPiesa(new Rege(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 4));
 		}
 

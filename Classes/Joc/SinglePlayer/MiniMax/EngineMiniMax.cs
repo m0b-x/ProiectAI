@@ -289,6 +289,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
 			Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile, _miniMaxAI.Adancime);
 
+			Debug.WriteLine(mutareaOptima.Item2);
 			Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
 			Pozitie pozitie = mutareaOptima.Item1.Item2;
 			ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);

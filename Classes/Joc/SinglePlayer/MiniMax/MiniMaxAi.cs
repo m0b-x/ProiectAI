@@ -842,6 +842,7 @@ namespace ProiectVolovici
 						matriceInitiala, alpha, beta
 						, adancimeTemp, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin);
 
+				/*
 				if (scorMutare <= alpha || scorMutare >= beta)
 				{
 					alpha = double.NegativeInfinity;
@@ -853,6 +854,7 @@ namespace ProiectVolovici
 					alpha = scorMutare - MarimeFereastraAspiratie;
 					beta = scorMutare + MarimeFereastraAspiratie;
 				}
+				*/
 			}
 			if (scorMutare > scorMutareOptima)
 			{
@@ -923,12 +925,14 @@ namespace ProiectVolovici
 				alpha = double.NegativeInfinity;
 				beta = double.PositiveInfinity;
 
-				for (int adancimeTemp = 0; adancimeTemp <= adancimeCeruta; adancimeTemp++)
+				for (int adancimeTemp = 1; adancimeTemp <= adancimeCeruta; adancimeTemp++)
 				{
 					scorMutare = MiniMax(
 						evaluareMatriceInitiala + _engine.ReturneazaScorPiesa(codPiesaLuata, mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
 						matriceInitiala, alpha, beta
 						, adancimeTemp, codPiesaLuata, hashUpdatat, pozitiiAlbe, pozitiiAlbastre, Culoare.AlbMin);
+
+					/*
 					if (scorMutare <= alpha || scorMutare >= beta)
 					{
 						alpha = double.NegativeInfinity;
@@ -940,6 +944,7 @@ namespace ProiectVolovici
 						alpha = scorMutare - MarimeFereastraAspiratie;
 						beta = scorMutare + MarimeFereastraAspiratie;
 					}
+					*/
 				}
 				if (scorMutare > scorMutareOptima)
 				{
@@ -1008,10 +1013,6 @@ namespace ProiectVolovici
 			double beta, int adancime, int piesaCapturata, long hash,
 			(int, int)[] pozAlbe, (int, int)[] pozAlbastre, Culoare culoare)
 		{
-			if (adancime == 0)
-			{
-				return eval;
-			}
 			if (piesaCapturata == (int)CodPiesa.RegeAlb)
 			{
 				return eval * adancime;
@@ -1020,7 +1021,11 @@ namespace ProiectVolovici
 			{
 				return eval / adancime;
 			}
-
+			if (adancime == 0)
+			{
+				return eval;
+			}
+			/*
 			if (_tabelTranspozitie.Tabel.ContainsKey(hash))
 			{
 				var intrare = _tabelTranspozitie.Tabel[hash];
@@ -1036,6 +1041,7 @@ namespace ProiectVolovici
 						return intrare.Valuare;
 				}
 			}
+			*/
 			//maximizare => albastru
 			if (culoare == Culoare.AlbastruMax)
 			{

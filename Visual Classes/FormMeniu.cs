@@ -187,7 +187,7 @@ namespace ProiectVolovici
 		{
 			Debug.WriteLine("Mediu");
 			this.Hide();
-			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3);
+			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2);
 			formSinglePlayer.Closed += (s, args) => this.Close();
 			formSinglePlayer.Show();
 		}
