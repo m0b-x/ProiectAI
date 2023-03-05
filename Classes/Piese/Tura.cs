@@ -1,131 +1,131 @@
 ﻿namespace ProiectVolovici
 {
-    using System.Collections.Generic;
+	using System.Collections.Generic;
 
-    internal class Tura : Piesa
-    {
-        public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
-        {
-            this.ValoarePiesa = ConstantaPiese.ValoareTura;
-            this.Culoare = culoare;
-            
-            this.Selectata = false;
+	internal class Tura : Piesa
+	{
+		public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
+		{
+			this.ValoarePiesa = ConstantaPiese.ValoareTura;
+			this.Culoare = culoare;
 
-            if (aspect == Aspect.Normal)
-            {
-                if (culoare == Culoare.AlbastruMax)
-                {
-                    this.Imagine = Properties.Resources.brook;
-                    this.Cod = CodPiesa.TuraAlbastra;
-                }
-                else
-                {
-                    this.Imagine = Properties.Resources.wrook;
-                    this.Cod = CodPiesa.TuraAlba;
-                }
-            }
-            else
-            {
-                if (culoare != Culoare.AlbastruMax)
-                {
-                    this.Imagine = Properties.Resources.brook;
-                    this.Cod = CodPiesa.TuraAlba;
-                }
-                else
-                {
-                    this.Imagine = Properties.Resources.wrook;
-                    this.Cod = CodPiesa.TuraAlbastra;
-                }
-            }
-        }
+			this.Selectata = false;
 
-        public override void ArataMutariPosibile(EngineJoc joc)
-        {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
+			if (aspect == Aspect.Normal)
+			{
+				if (culoare == Culoare.AlbastruMax)
+				{
+					this.Imagine = Properties.Resources.brook;
+					this.Cod = CodPiesa.TuraAlbastra;
+				}
+				else
+				{
+					this.Imagine = Properties.Resources.wrook;
+					this.Cod = CodPiesa.TuraAlba;
+				}
+			}
+			else
+			{
+				if (culoare != Culoare.AlbastruMax)
+				{
+					this.Imagine = Properties.Resources.brook;
+					this.Cod = CodPiesa.TuraAlba;
+				}
+				else
+				{
+					this.Imagine = Properties.Resources.wrook;
+					this.Cod = CodPiesa.TuraAlbastra;
+				}
+			}
+		}
 
-            joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
-        }
+		public override void ArataMutariPosibile(EngineJoc joc)
+		{
+			List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
 
-        public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
-        {
-            List<Pozitie> mutariLegale = new List<Pozitie>(90);
+			joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
+		}
 
-            int liniePoz = this.Pozitie.Linie + 1;
-            while (liniePoz < ConstantaTabla.NrLinii)
-            {
-                Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
-                if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-                {
-                    mutariLegale.Add(pozitiePosibila);
-                }
-                else
-                {
-                    if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-                    {
-                        mutariLegale.Add(pozitiePosibila);
-                    }
-                    break;
-                }
-                liniePoz++;
-            }
+		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
+		{
+			List<Pozitie> mutariLegale = new List<Pozitie>(90);
 
-            liniePoz = this.Pozitie.Linie - 1;
-            while (liniePoz >= 0)
-            {
-                Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
-                if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-                {
-                    mutariLegale.Add(pozitiePosibila);
-                }
-                else
-                {
-                    if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-                    {
-                        mutariLegale.Add(pozitiePosibila);
-                    }
-                    break;
-                }
-                liniePoz--;
-            }
+			int liniePoz = this.Pozitie.Linie + 1;
+			while (liniePoz < ConstantaTabla.NrLinii)
+			{
+				Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
+				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
+				{
+					mutariLegale.Add(pozitiePosibila);
+				}
+				else
+				{
+					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
+					{
+						mutariLegale.Add(pozitiePosibila);
+					}
+					break;
+				}
+				liniePoz++;
+			}
 
-            int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
-            while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
-            {
-                Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-                {
-                    mutariLegale.Add(pozitiePosibila);
-                }
-                else
-                {
-                    if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-                    {
-                        mutariLegale.Add(pozitiePosibila);
-                    }
-                    break;
-                }
-                colonaPozitiePosibila++;
-            }
+			liniePoz = this.Pozitie.Linie - 1;
+			while (liniePoz >= 0)
+			{
+				Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
+				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
+				{
+					mutariLegale.Add(pozitiePosibila);
+				}
+				else
+				{
+					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
+					{
+						mutariLegale.Add(pozitiePosibila);
+					}
+					break;
+				}
+				liniePoz--;
+			}
 
-            colonaPozitiePosibila = this.Pozitie.Coloana - 1;
-            while (colonaPozitiePosibila >= 0)
-            {
-                Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-                if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-                {
-                    mutariLegale.Add(pozitiePosibila);
-                }
-                else
-                {
-                    if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-                    {
-                        mutariLegale.Add(pozitiePosibila);
-                    }
-                    break;
-                }
-                colonaPozitiePosibila--;
-            }
-            return mutariLegale;
-        }
-    }
+			int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
+			while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
+			{
+				Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
+				{
+					mutariLegale.Add(pozitiePosibila);
+				}
+				else
+				{
+					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
+					{
+						mutariLegale.Add(pozitiePosibila);
+					}
+					break;
+				}
+				colonaPozitiePosibila++;
+			}
+
+			colonaPozitiePosibila = this.Pozitie.Coloana - 1;
+			while (colonaPozitiePosibila >= 0)
+			{
+				Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
+				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
+				{
+					mutariLegale.Add(pozitiePosibila);
+				}
+				else
+				{
+					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
+					{
+						mutariLegale.Add(pozitiePosibila);
+					}
+					break;
+				}
+				colonaPozitiePosibila--;
+			}
+			return mutariLegale;
+		}
+	}
 }

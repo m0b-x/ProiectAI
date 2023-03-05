@@ -2,97 +2,97 @@
 
 namespace ProiectVolovici
 {
-    internal class Pion : Piesa
-    {
-        public Pion(Culoare culoare, Aspect aspect = Aspect.Normal)
-        {
-            this.ValoarePiesa = ConstantaPiese.ValoarePion;
-            this.Culoare = culoare;
-            
-            this.Selectata = false;
+	internal class Pion : Piesa
+	{
+		public Pion(Culoare culoare, Aspect aspect = Aspect.Normal)
+		{
+			this.ValoarePiesa = ConstantaPiese.ValoarePion;
+			this.Culoare = culoare;
 
-            if (aspect == Aspect.Normal)
-            {
-                if (culoare == Culoare.AlbastruMax)
-                {
-                    this.Imagine = Properties.Resources.bpawn;
-                    this.Cod = CodPiesa.PionAlbastru;
-                }
-                else
-                {
-                    this.Imagine = Properties.Resources.wpawn;
-                    this.Cod = CodPiesa.PionAlb;
-                }
-            }
-            else
-            {
-                if (culoare != Culoare.AlbastruMax)
-                {
-                    this.Imagine = Properties.Resources.bpawn;
-                    this.Cod = CodPiesa.PionAlb;
-                }
-                else
-                {
-                    this.Imagine = Properties.Resources.wpawn;
-                    this.Cod = CodPiesa.PionAlbastru;
-                }
-            }
-        }
+			this.Selectata = false;
 
-        public override void ArataMutariPosibile(EngineJoc joc)
-        {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
-            joc.ColoreazaMutariPosibile(mutariPosibile);
-        }
+			if (aspect == Aspect.Normal)
+			{
+				if (culoare == Culoare.AlbastruMax)
+				{
+					this.Imagine = Properties.Resources.bpawn;
+					this.Cod = CodPiesa.PionAlbastru;
+				}
+				else
+				{
+					this.Imagine = Properties.Resources.wpawn;
+					this.Cod = CodPiesa.PionAlb;
+				}
+			}
+			else
+			{
+				if (culoare != Culoare.AlbastruMax)
+				{
+					this.Imagine = Properties.Resources.bpawn;
+					this.Cod = CodPiesa.PionAlb;
+				}
+				else
+				{
+					this.Imagine = Properties.Resources.wpawn;
+					this.Cod = CodPiesa.PionAlbastru;
+				}
+			}
+		}
 
-        public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
-        {
-            const int primaLinie = 0;
-            const int primaColoana = 0;
+		public override void ArataMutariPosibile(EngineJoc joc)
+		{
+			List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
+			joc.ColoreazaMutariPosibile(mutariPosibile);
+		}
 
-            int ultimaLinie = ConstantaTabla.NrLinii - 1;
-            int ultimaColoana = ConstantaTabla.NrColoane - 1;
+		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
+		{
+			const int primaLinie = 0;
+			const int primaColoana = 0;
 
-            List<Pozitie> mutariNefiltrate = new List<Pozitie>(2);
-            List<Pozitie> mutariFiltrate = new List<Pozitie>(2);
+			int ultimaLinie = ConstantaTabla.NrLinii - 1;
+			int ultimaColoana = ConstantaTabla.NrColoane - 1;
 
-            if (this.Culoare == Culoare.AlbastruMax)
-            {
-                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
-                if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)
-                {
-                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
-                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
-                }
-            }
-            else
-            {
-                mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
-                if (_pozitiePiesa.Linie <= ConstantaTabla.PragRau)
-                {
-                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
-                    mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
-                }
-            }
-            foreach (Pozitie pozitie in mutariNefiltrate)
-            {
-                if (pozitie.Linie <= ultimaLinie &&
-                     pozitie.Linie >= primaLinie &&
-                     pozitie.Coloana <= ultimaColoana &&
-                     pozitie.Coloana >= primaColoana)
-                {
-                    if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
-                    {
-                        mutariFiltrate.Add(pozitie);
-                    }
-                    else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)this.Cod % 2)
-                    {
-                        mutariFiltrate.Add(pozitie);
-                    }
-                }
-            }
+			List<Pozitie> mutariNefiltrate = new List<Pozitie>(2);
+			List<Pozitie> mutariFiltrate = new List<Pozitie>(2);
 
-            return mutariFiltrate;
-        }
-    }
+			if (this.Culoare == Culoare.AlbastruMax)
+			{
+				mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
+				if (_pozitiePiesa.Linie > ConstantaTabla.PragRau)
+				{
+					mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
+					mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+				}
+			}
+			else
+			{
+				mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
+				if (_pozitiePiesa.Linie <= ConstantaTabla.PragRau)
+				{
+					mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
+					mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
+				}
+			}
+			foreach (Pozitie pozitie in mutariNefiltrate)
+			{
+				if (pozitie.Linie <= ultimaLinie &&
+					 pozitie.Linie >= primaLinie &&
+					 pozitie.Coloana <= ultimaColoana &&
+					 pozitie.Coloana >= primaColoana)
+				{
+					if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
+					{
+						mutariFiltrate.Add(pozitie);
+					}
+					else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)this.Cod % 2)
+					{
+						mutariFiltrate.Add(pozitie);
+					}
+				}
+			}
+
+			return mutariFiltrate;
+		}
+	}
 }
