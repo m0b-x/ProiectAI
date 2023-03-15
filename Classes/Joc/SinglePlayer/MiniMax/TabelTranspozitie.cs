@@ -1,42 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace ProiectVolovici
+class TabelTranspozitie
 {
-	public class TabelTranspozitie
-	{
-		private Dictionary<long, IntrareTabelTranspozitie> _tabel = new();
+    Dictionary<long, Tuple<double, int, int>> table;
 
-		public Dictionary<long, IntrareTabelTranspozitie> Tabel
-		{
-			get { return _tabel; }
-		}
+    public TabelTranspozitie(int nrIntrariEstimate)
+    {
+        table = new Dictionary<long, Tuple<double, int, int>>(nrIntrariEstimate);
+    }
 
-		public TabelTranspozitie(Dictionary<long, IntrareTabelTranspozitie> tabel)
-		{
-			_tabel = tabel;
-		}
+    public bool Contine(long hash)
+    {
+        return table.ContainsKey(hash);
+    }
 
-		public TabelTranspozitie()
-		{
-		}
+    public Tuple<double, int, int> Lookup(long hash)
+    {
+        return table[hash];
+    }
 
-		public void AdaugaIntrare(long cheie, double alpha, FlagIntrare flag, int adancime)
-		{
-			if (_tabel.ContainsKey(cheie))
-			{
-				var item = Tabel[cheie];
-				if (adancime >= item.Adancime)
-					_tabel[cheie] = new IntrareTabelTranspozitie(adancime, alpha, flag);
-			}
-			else
-			{
-				_tabel.Add(cheie, new IntrareTabelTranspozitie(adancime, alpha, flag));
-			}
-		}
-
-		public void ReseteazaTabel()
-		{
-			_tabel = new();
-		}
-	}
+    public void AdaugaIntrare(long hash, double score, int depth, int flag)
+    {
+        table[hash] = new Tuple<double, int, int>(score, depth, flag);
+    }
 }

@@ -178,7 +178,7 @@ namespace ProiectVolovici
 		{
 			Debug.WriteLine("Usor");
 			this.Hide();
-			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 0);
+			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 1);
 			formSinglePlayer.Closed += (s, args) => this.Close();
 			formSinglePlayer.Show();
 		}
@@ -187,7 +187,7 @@ namespace ProiectVolovici
 		{
 			Debug.WriteLine("Mediu");
 			this.Hide();
-			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2);
+			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3);
 			formSinglePlayer.Closed += (s, args) => this.Close();
 			formSinglePlayer.Show();
 		}
@@ -196,7 +196,7 @@ namespace ProiectVolovici
 		{
 			Debug.WriteLine("Greuu");
 			this.Hide();
-			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 5);
+			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 4);
 			formSinglePlayer.Closed += (s, args) => this.Close();
 			formSinglePlayer.Show();
 		}

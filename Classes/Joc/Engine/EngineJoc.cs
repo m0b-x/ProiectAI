@@ -609,7 +609,7 @@ namespace ProiectVolovici
 			}
 		}
 
-		public Culoare ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
+		public static Culoare ReturneazaCuloareDupaCodulPiesei(CodPiesa codPiesa)
 		{
 			if ((int)codPiesa % 2 == 0)
 				return Culoare.AlbMin;
@@ -617,17 +617,17 @@ namespace ProiectVolovici
 				return Culoare.AlbastruMax;
 		}
 
-		public bool EstePiesaAlba(int codPiesa)
+		public static bool EstePiesaAlba(int codPiesa)
 		{
 			return codPiesa % 2 == 1 ? true : false;
 		}
 
-		public bool EstePiesaAlbastra(int codPiesa)
+		public static bool EstePiesaAlbastra(int codPiesa)
 		{
 			return codPiesa % 2 == 0 ? true : false;
 		}
 
-		private double[] _arrayScorPiese = new double[]
+		private static double[] _arrayScorPiese = new double[]
 		{
 			0,
 			ConstantaPiese.ValoarePion,
@@ -646,18 +646,8 @@ namespace ProiectVolovici
 			ConstantaPiese.ValoareRege
 		};
 
-		public double ReturneazaScorPiesa(int codPiesa, int linie, int coloana)
+		public static double ReturneazaScorPiesa(int codPiesa)
 		{
-			if (codPiesa == (int)CodPiesa.PionAlb)
-			{
-				if (linie <= ConstantaTabla.PragRau)
-					return ConstantaPiese.ValoarePionDupaRau;
-			}
-			if (codPiesa == (int)CodPiesa.PionAlbastru)
-			{
-				if (linie > ConstantaTabla.PragRau)
-					return ConstantaPiese.ValoarePionDupaRau;
-			}
 			return _arrayScorPiese[(int)codPiesa];
 		}
 
@@ -794,7 +784,7 @@ namespace ProiectVolovici
 			return TipSah.NuEsteSah;
 		}
 
-		public void AfiseazaMatriceDebug(int[][] matrice, int adancime, double eval)
+		public static void AfiseazaMatriceDebug(int[][] matrice, int adancime, double eval)
 		{
 			Debug.WriteLine("------------------------------------------");
 			for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)

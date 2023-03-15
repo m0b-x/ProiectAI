@@ -1,15 +1,15 @@
 ﻿namespace ProiectVolovici
 {
-	public static class ConstantaPiese
+	//amschimbat
+    public static class ConstantaPiese
 	{
-		public static double ValoarePion = 1;
-		public static double ValoarePionDupaRau = 2;
-		public static double ValoareTun = 4.5;
-		public static double ValoareTura = 10;
-		public static double ValoareCal = 4;
-		public static double ValoareGardian = 2;
-		public static double ValoareElefant = 2.5;
-		public static double ValoareRege = 20000;
+		public static double ValoarePion = 40;
+		public static double ValoareTun = 285;
+		public static double ValoareTura = 600;
+		public static double ValoareCal = 270;
+		public static double ValoareGardian = 120;
+		public static double ValoareElefant = 120;
+		public static double ValoareRege = 6000;
 
 	}
 }

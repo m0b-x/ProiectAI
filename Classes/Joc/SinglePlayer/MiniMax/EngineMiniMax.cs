@@ -221,8 +221,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 							}
 							NuEsteRandulTau();
 							PornesteTimerAsteptareAI();
-							VerificaSahul();
 							RealizeazaMutareaLocal(PiesaSelectata, pozitie);
+							VerificaSahul();
 							ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
 							_jucatorOm.UltimaPozitie = pozitie;
 							if (_esteGataMeciul == false)
@@ -231,8 +231,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 								{
 									RealizeazaMutareaAI(moveOrdering: true);
 								});
+								VerificaSahul();
 							}
-							VerificaSahul();
 						}
 					}
 					else
@@ -285,11 +285,13 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 			Stopwatch cronometru = new();
 			cronometru.Start();
 
-			var tupluMutariPosibile = _miniMaxAI.CalculeazaPrimeleMutariAI(moveOrdering);
+			var tupluMutariPosibile = MiniMaxAI.CalculeazaMutariPosibile(MatriceCoduriPiese, _miniMaxAI.ReturneazaPozitiiAlbastre(), moveOrdering);
 
-			Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.IncepeEvaluareaMiniMax(tupluMutariPosibile, _miniMaxAI.Adancime);
-
-			Debug.WriteLine(mutareaOptima.Item2);
+			_miniMaxAI.CronometruAI.Start();
+			//evaluarea minimax primeste mutarile ai-ului ca si primul parametru
+			Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.EvalueazaPozitile(tupluMutariPosibile, _miniMaxAI.Adancime);
+			_miniMaxAI.CronometruAI.Stop();
+			_miniMaxAI.CronometruAI.Reset();
 			Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
 			Pozitie pozitie = mutareaOptima.Item1.Item2;
 			ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
@@ -302,32 +304,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 			cronometru.Stop();
 		}
 
-		private int VerificaTentativaDeSah()
-		{
-			for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
-			{
-				for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
-				{
-					if (ArrayCadrane[linie][coloana].PiesaCadran != ConstantaTabla.PiesaNula)
-					{
-						List<Pozitie> mutari = ArrayCadrane[linie][coloana].PiesaCadran.ReturneazaMutariPosibile(this.MatriceCoduriPiese);
-						foreach (Pozitie mutare in mutari)
-						{
-							if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlb)
-							{
-								return ConstantaTabla.SahLaRegeAlb;
-							}
-
-							if (MatriceCoduriPiese[mutare.Linie][mutare.Coloana] == (int)CodPiesa.RegeAlbastru)
-							{
-								return ConstantaTabla.SahLaRegerAlbastru;
-							}
-						}
-					}
-				}
-			}
-			return ConstantaTabla.NuEsteSah;
-		}
 
 		public override void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)
 		{
