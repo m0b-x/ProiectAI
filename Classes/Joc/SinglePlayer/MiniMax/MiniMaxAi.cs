@@ -24,16 +24,21 @@ namespace ProiectVolovici
 			set { _cronometru = value;  }
 		}
 
-		private static int[][] prioritatiPiese = new int[][]
-					{
-					new int[7],
-					new int[7],
-					new int[7],
-					new int[7],
-					new int[7],
-					new int[7],
-					new int[7]
-					};
+        const int pionAlb = (int)CodPiesa.PionAlb;
+        const int pionAlbastru = (int)CodPiesa.PionAlbastru;
+        const int calAlb = (int)CodPiesa.CalAlb;
+        const int calAlbastru = (int)CodPiesa.CalAbastru;
+        const int tunAlb = (int)CodPiesa.TunAlb;
+        const int tunAlbastru = (int)CodPiesa.TunAlbastru;
+        const int turaAlba = (int)CodPiesa.TuraAlba;
+        const int turaAlbastra = (int)CodPiesa.TuraAlbastra;
+        const int elefantAlb = (int)CodPiesa.ElefantAlb;
+        const int elefantAlbastru = (int)CodPiesa.ElefantAlbastru;
+        const int gardianAlb = (int)CodPiesa.GardianAlb;
+        const int gardianAlbastru = (int)CodPiesa.GardianAlbastru;
+        const int regeAlb = (int)CodPiesa.RegeAlb;
+        const int regeAlbastru = (int)CodPiesa.RegeAlbastru;
+
 
         private static int[][] TabelPionAlbastru = new int[][] {
 			new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
@@ -144,6 +149,86 @@ namespace ProiectVolovici
 			new int[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
 			new int[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
 		};
+        private static int[][] TabelGardianAlb = new int[][]
+        {
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+        };
+        private static int[][] TabelGardianAlbastru = new int[][]
+        {
+            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        };
+        //
+        private static int[][] TabelRegeAlb = new int[][]
+        {
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+        };
+        private static int[][] TabelRegeAlbastru = new int[][]
+        {
+            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        };
+		//
+        private static int[][] TabelElefantAlb = new int[][]
+        {
+			new int[] {0, 1, 0, 0, 0, -1, 0, 0, 0},
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+			new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+			new int[] {0, 0, 0, -1, 0, 1, 0, 0, 0}
+        };
+        private static int[][] TabelElefantAlbastru = new int[][]
+        {
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new int[] {0, 0, 1, 0, 0, 0, 1, 0, 0}
+        };
         public int Adancime
 		{
 			get { return _adancime; }
@@ -175,7 +260,6 @@ namespace ProiectVolovici
 			_culoare = culoare;
 			_adancime = adancime;
 			AdaugaOpeningsInCache();
-			InitializeazaListaPrioritati();
 		}
         public class DuplicateKeyComparerAsc<TKey>
                 :
@@ -221,63 +305,6 @@ namespace ProiectVolovici
 
 			#endregion IComparer<TKey> Members
 		}
-
-		//amschimbat
-		private static void InitializeazaListaPrioritati()
-		{
-			int contorPrioritate = 130 + 49;
-
-			for (int i = 6; i >= 0; i--)
-			{
-				for (int j = 0; j <= 6; j++)
-				{
-					prioritatiPiese[i][j] = contorPrioritate;
-					contorPrioritate--;
-				}
-			}
-		}
-
-		/*
-		Coduri Prioritati:
-		Rege	-0
-		Tura	-1
-		Tun 	-2
-		Cal		-3
-		Elefant	-4
-		Gardian	-5
-		Pion 	-6
-		*/
-
-		private static int ConvertesteCodPiesaInCodPrioritate(int codPiesa)
-		{
-			CodPiesa codPiesaConvertita = (CodPiesa)codPiesa;
-			switch (codPiesaConvertita)
-			{
-				case CodPiesa.RegeAlb: return 0;
-				case CodPiesa.RegeAlbastru: return 0;
-
-				case CodPiesa.TuraAlba: return 1;
-				case CodPiesa.TuraAlbastra: return 1;
-
-				case CodPiesa.TunAlb: return 2;
-				case CodPiesa.TunAlbastru: return 2;
-
-				case CodPiesa.CalAlb: return 3;
-				case CodPiesa.CalAbastru: return 3;
-
-				case CodPiesa.ElefantAlb: return 4;
-				case CodPiesa.ElefantAlbastru: return 4;
-
-				case CodPiesa.GardianAlb: return 5;
-				case CodPiesa.GardianAlbastru: return 5;
-
-				case CodPiesa.PionAlb: return 6;
-				case CodPiesa.PionAlbastru: return 6;
-
-				default: return -1;
-			}
-		}
-
 
 		public static void AdaugaOpeningsInCache()
 		{
@@ -756,15 +783,6 @@ namespace ProiectVolovici
 			//most valuable victim, least valuable agressor
 			//Piece-Square Tables
 
-			const int pionAlb = (int)CodPiesa.PionAlb;
-            const int pionAlbastru = (int)CodPiesa.PionAlbastru;
-            const int calAlb = (int)CodPiesa.CalAlb;
-            const int calAlbastru = (int)CodPiesa.CalAbastru;
-			const int tunAlb = (int)CodPiesa.TunAlb;
-			const int tunAlbastru = (int)CodPiesa.TunAlbastru;
-			const int turaAlba = (int)CodPiesa.TuraAlba;
-			const int turaAlbastra = (int)CodPiesa.TuraAlbastra;
-
             if (moveOrdering == true)
             {
                 mutPos = new(80, new DuplicateKeyComparerDesc<double>());
@@ -823,11 +841,44 @@ namespace ProiectVolovici
                                             mutPos.Add(TabelCalAlbastru[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
                                             break;
                                         }
+                                    case gardianAlb:
+                                        {
+                                            mutPos.Add(TabelGardianAlb[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
+                                    case gardianAlbastru:
+                                        {
+                                            mutPos.Add(TabelGardianAlbastru[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
+                                    case elefantAlb:
+                                        {
+                                            mutPos.Add(TabelElefantAlb[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
+                                    case elefantAlbastru:
+                                        {
+                                            mutPos.Add(TabelElefantAlbastru[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
+                                    case regeAlb:
+                                        {
+                                            mutPos.Add(TabelRegeAlb[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
+                                    case regeAlbastru:
+                                        {
+                                            mutPos.Add(TabelRegeAlbastru[mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                            break;
+                                        }
                                 }
 							}
 							else
 							{
-								mutPos.Add(prioritatiPiese[MiniMaxAI.ConvertesteCodPiesaInCodPrioritate(piesaCareIa)][MiniMaxAI.ConvertesteCodPiesaInCodPrioritate(piesaLuata)], new(new(poz.Item1, poz.Item2), mut));
+								mutPos.Add(-EngineJoc.ReturneazaScorPiesa(piesaCareIa)
+									+ -EngineJoc.ReturneazaScorPiesa(piesaLuata)
+                                    ,
+									new(new(poz.Item1, poz.Item2), mut));
 							}
 						}
 					}

@@ -178,7 +178,7 @@ namespace ProiectVolovici
 		{
 			Debug.WriteLine("Usor");
 			this.Hide();
-			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 1);
+			Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2);
 			formSinglePlayer.Closed += (s, args) => this.Close();
 			formSinglePlayer.Show();
 		}
