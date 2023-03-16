@@ -7,6 +7,8 @@ namespace ProiectVolovici
 		private int _linie;
 		private int _coloana;
 
+		public static Pozitie PozitieNula = new Pozitie(-1,-1);
+
 		public int Linie
 		{
 			get { return _linie; }

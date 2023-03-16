@@ -776,7 +776,7 @@ namespace ProiectVolovici
 			CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
 		}
 
-		public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaCapturiPosibile(int[][] matrice, (int, int)[] pozitiiPieseDeEvaluat)
+		public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
 		{
 			SortedList<double, Tuple<Pozitie, Pozitie>> capPos;
 
@@ -806,7 +806,7 @@ namespace ProiectVolovici
 		}
 
 
-        public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaMutariPosibile(int[][] matrice, (int, int)[] pozitiiPieseDeEvaluat, bool moveOrdering = false)
+        public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = false)
         {
             SortedList<double, Tuple<Pozitie, Pozitie>> mutPos;
 
@@ -935,59 +935,59 @@ namespace ProiectVolovici
             }
         }
 
-        public (int, int)[] ReturneazaPozitiiAlbe()
+        public Pozitie[] ReturneazaPozitiiAlbe()
 		{
-			(int, int)[] pozitii = new (int, int)[_engine.ListaPieseAlbe.Count];
+			Pozitie[] pozitii = new Pozitie[_engine.ListaPieseAlbe.Count];
 			int ct = 0;
 			foreach (var piesa in _engine.ListaPieseAlbe)
 			{
-				pozitii[ct] = (piesa.Pozitie.Linie, piesa.Pozitie.Coloana);
+				pozitii[ct] = piesa.Pozitie;
 				ct++;
 			}
 			return pozitii;
 		}
 
-		public (int, int)[] ReturneazaPozitiiAlbastre()
+		public Pozitie[] ReturneazaPozitiiAlbastre()
 		{
-			(int, int)[] pozitii = new (int, int)[_engine.ListaPieseAlbastre.Count];
+			Pozitie[] pozitii = new Pozitie[_engine.ListaPieseAlbastre.Count];
 			int ct = 0;
 			foreach (var piesa in _engine.ListaPieseAlbastre)
 			{
-				pozitii[ct] = (piesa.Pozitie.Linie, piesa.Pozitie.Coloana);
+				pozitii[ct] = piesa.Pozitie;
 				ct++;
 			}
 			return pozitii;
 		}
 
-		public static void StergePozitieDinVector(int index, (int, int)[] vector)
+		public static void StergePozitieDinVector(int index, Pozitie[] vector)
 		{
-			vector[index] = (-1, -1);
+			vector[index] = Pozitie.PozitieNula;
 		}
 
-		public static int StergePozitieDinVector((int, int) poz, (int, int)[] vector)
+		public static int StergePozitieDinVector(Pozitie poz, Pozitie[] vector)
 		{
 			for (int i = 0; i < vector.Length; i++)
 			{
 				if (vector[i].Item1 == poz.Item1 && vector[i].Item2 == poz.Item2)
 				{
-					vector[i] = (-1, -1);
-					return i;
+					vector[i] = Pozitie.PozitieNula;
+                    return i;
 				}
 			}
 			return -1;
 		}
 
 		public static int SchimbaPozitiaDinVector(int index,
-											(int, int)[] vector,
-											(int, int) pozFinala)
+											Pozitie[] vector,
+											Pozitie pozFinala)
 		{
 			vector[index] = pozFinala;
 			return index;
 		}
 
-		public static int SchimbaPozitiaDinVector((int, int) pozInitiala,
-											(int, int)[] vector,
-											(int, int) pozFinala)
+		public static int SchimbaPozitiaDinVector(Pozitie pozInitiala,
+											Pozitie[] vector,
+											Pozitie pozFinala)
 		{
 			for (int i = 0; i < vector.Length; i++)
 			{
@@ -1000,16 +1000,16 @@ namespace ProiectVolovici
 			return -1;
 		}
 
-		public static int SchimbaPozitiaDinVector((int, int)[] vector,
-											(int, int) pozFinala,
+		public static int SchimbaPozitiaDinVector(Pozitie[] vector,
+											Pozitie pozFinala,
 											int index)
 		{
 			vector[index] = pozFinala;
 			return index;
 		}
 
-		public static int AdaugaPoitieInVector((int, int)[] vector,
-											(int, int) pozFinala)
+		public static int AdaugaPoitieInVector(Pozitie[] vector,
+											Pozitie pozFinala)
 		{
 			for (int i = 0; i < vector.Length; i++)
 			{
@@ -1022,14 +1022,14 @@ namespace ProiectVolovici
 			return -1;
 		}
 
-		public static int AdaugaPoitieInVector(int i, (int, int)[] vector,
-											(int, int) pozFinala)
+		public static int AdaugaPoitieInVector(int i, Pozitie[] vector,
+											Pozitie pozFinala)
 		{
 			vector[i] = pozFinala;
 			return i;
 		}
         public static double MTDF(int[][] matrice, double f, int depth, double eval, int codPiesaLuata,
-			long hashUpdatat, (int, int)[] pozitiiAlbe, (int, int)[] pozitiiAlbastre, Culoare culoare)
+			long hashUpdatat, Pozitie[] pozitiiAlbe, Pozitie[] pozitiiAlbastre, Culoare culoare)
         {
             var g = f;
             double upperBound = double.MaxValue;
@@ -1130,14 +1130,14 @@ namespace ProiectVolovici
 						piesaCareIa: codPiesaCareIa);
 
 					indexPozCareIa = SchimbaPozitiaDinVector(
-						(mutPos.Values[i].Item1.Linie, mutPos.Values[i].Item1.Coloana),
+                        mutPos.Values[i].Item1,
 						pozitiiAlbastre,
-						(mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana));
+                        mutPos.Values[i].Item2);
 
 					indexPozLuata = -1;
 					if (EstePiesa(codPiesaLuata))
 					{
-						indexPozLuata = StergePozitieDinVector((mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana),
+						indexPozLuata = StergePozitieDinVector(mutPos.Values[i].Item2,
 												pozitiiAlbe);
 					}
 
@@ -1162,11 +1162,11 @@ namespace ProiectVolovici
 
 					SchimbaPozitiaDinVector(indexPozCareIa,
 						pozitiiAlbastre,
-						(mutPos.Values[i].Item1.Linie, mutPos.Values[i].Item1.Coloana));
+                        mutPos.Values[i].Item1);
 
 					if (EstePiesa(codPiesaLuata))
 					{
-						AdaugaPoitieInVector(indexPozLuata, pozitiiAlbe, (mutPos.Values[i].Item2.Linie, mutPos.Values[i].Item2.Coloana));
+						AdaugaPoitieInVector(indexPozLuata, pozitiiAlbe, mutPos.Values[i].Item2);
 					}
 
 					matriceInitiala[
@@ -1208,7 +1208,7 @@ namespace ProiectVolovici
 			return scor;
 		}
 
-		public void AfiseazaVectorDebug((int, int)[] vector)
+		public void AfiseazaVectorDebug(Pozitie[] vector)
 		{
 			foreach (var v in vector)
 			{
@@ -1220,7 +1220,7 @@ namespace ProiectVolovici
 
 		public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
 			double beta, int adancime, int piesaCapturata, long hash,
-			(int, int)[] pozAlbe, (int,int)[] pozAlbastre, Culoare culoare)
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
 		{
 
             if ( adancime == 0 )
@@ -1298,10 +1298,10 @@ namespace ProiectVolovici
 					//albastru ia alb
                     if (EstePiesa(piesaLuata))
                     {
-                        indexPiesaLuata = StergePozitieDinVector((mutPos.Item2.Linie, mutPos.Item2.Coloana),
+                        indexPiesaLuata = StergePozitieDinVector(mutPos.Item2,
                                     pozAlbe);
                     }
-                    int pozitieSchimbata = SchimbaPozitiaDinVector((mutPos.Item1.Linie, mutPos.Item1.Coloana), pozAlbastre, (mutPos.Item2.Linie, mutPos.Item2.Coloana));
+                    int pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.Item1, pozAlbastre, mutPos.Item2);
 
                     var valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
 
@@ -1309,12 +1309,12 @@ namespace ProiectVolovici
                                 matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
                     alpha = Math.Max(newAlpha, alpha);
 
-                    SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbastre, (mutPos.Item1.Linie, mutPos.Item1.Coloana));
+                    SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbastre, mutPos.Item1);
 
                     if (EstePiesa(piesaLuata))
                     {
                         AdaugaPoitieInVector(indexPiesaLuata, pozAlbe,
-                                    (mutPos.Item2.Linie, mutPos.Item2.Coloana));
+                                    mutPos.Item2);
                     }
 
                     matrice[mutPos.Item1.Linie][mutPos.Item1.Coloana] = piesaCareIa;
@@ -1376,10 +1376,10 @@ namespace ProiectVolovici
                     int indexPiesaLuata = -1;
                     if (EstePiesa(piesaLuata))
                     {
-                        indexPiesaLuata = StergePozitieDinVector((mutPos.Item2.Linie, mutPos.Item2.Coloana),
+                        indexPiesaLuata = StergePozitieDinVector(mutPos.Item2,
                                     pozAlbastre);
                     }
-                    int pozitieSchimbata = SchimbaPozitiaDinVector((mutPos.Item1.Linie, mutPos.Item1.Coloana), pozAlbe, (mutPos.Item2.Linie, mutPos.Item2.Coloana));
+                    int pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.Item1, pozAlbe, mutPos.Item2);
 
 
                     var valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
@@ -1393,10 +1393,10 @@ namespace ProiectVolovici
                     if (EstePiesa(piesaLuata))
                     {
                         AdaugaPoitieInVector(indexPiesaLuata, pozAlbastre,
-                                    (mutPos.Item2.Linie, mutPos.Item2.Coloana));
+                                   mutPos.Item2);
                     }
 
-                    SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbe, (mutPos.Item1.Linie, mutPos.Item1.Coloana));
+                    SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbe, mutPos.Item1);
 
                     matrice[mutPos.Item1.Linie][mutPos.Item1.Coloana] = piesaCareIa;
                     matrice[mutPos.Item2.Linie][mutPos.Item2.Coloana] = piesaLuata;
