@@ -776,8 +776,38 @@ namespace ProiectVolovici
 			CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
 		}
 
+		public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaCapturiPosibile(int[][] matrice, (int, int)[] pozitiiPieseDeEvaluat)
+		{
+			SortedList<double, Tuple<Pozitie, Pozitie>> capPos;
+
+			capPos = new(18, new DuplicateKeyComparerDesc<double>());
+			foreach (var poz in pozitiiPieseDeEvaluat)
+			{
+				if (poz.Item1 != -1)
+				{
+					_pieseVirtuale[matrice[poz.Item1][poz.Item2]].Pozitie = new Pozitie(poz.Item1, poz.Item2);
+					List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Item1][poz.Item2]].ReturneazaMutariPosibile(matrice);
+					foreach (Pozitie mut in mutari)
+					{
+						int piesaLuata = matrice[mut.Linie][mut.Coloana];
+						int piesaCareIa = matrice[poz.Item1][poz.Item2];
+
+						if(piesaLuata != 0)
+						{
+							capPos.Add(-EngineJoc.ReturneazaScorPiesa(piesaCareIa)
+								+ -EngineJoc.ReturneazaScorPiesa(piesaLuata)
+								,
+								new(new(poz.Item1, poz.Item2), mut));
+						}
+					}
+				}
+			}
+			return capPos;
+		}
+
+
         public static SortedList<double, Tuple<Pozitie, Pozitie>> CalculeazaMutariPosibile(int[][] matrice, (int, int)[] pozitiiPieseDeEvaluat, bool moveOrdering = false)
-        {;
+        {
             SortedList<double, Tuple<Pozitie, Pozitie>> mutPos;
 
 			//most valuable victim, least valuable agressor
@@ -1190,8 +1220,23 @@ namespace ProiectVolovici
 
 		public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
 			double beta, int adancime, int piesaCapturata, long hash,
-			(int, int)[] pozAlbe, (int, int)[] pozAlbastre, Culoare culoare)
+			(int, int)[] pozAlbe, (int,int)[] pozAlbastre, Culoare culoare)
 		{
+
+            if ( adancime == 0 )
+			{
+				return eval;
+			}
+			if(piesaCapturata == (int)CodPiesa.RegeAlbastru ||
+                piesaCapturata == (int)CodPiesa.RegeAlb
+                )
+            {
+				//var capturiAlbe = CalculeazaCapturiPosibile(matrice, pozAlbastre);
+                //1	var capturiAlbastre = CalculeazaCapturiPosibile(matrice, pozAlbe);
+
+				return eval;
+            }
+
             if (TabelTranspozitie.Contine(hash))
             {
                 var entry = TabelTranspozitie.Lookup(hash);
@@ -1217,17 +1262,8 @@ namespace ProiectVolovici
                 }
             }
 
-            if (
-                adancime == 0 ||
-                piesaCapturata == (int)CodPiesa.RegeAlbastru ||
-                piesaCapturata == (int)CodPiesa.RegeAlb
-                )
-            {
-                return eval;
-            }
-
-			//maximizare => albastru
-			if (culoare == Culoare.AlbastruMax)
+            //maximizare => albastru
+            if (culoare == Culoare.AlbastruMax)
 			{
 				double origAlpha = alpha;
 				double origBeta = beta;

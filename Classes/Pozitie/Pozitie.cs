@@ -19,7 +19,19 @@ namespace ProiectVolovici
 			set { _coloana = value; }
 		}
 
-		public Pozitie(int linie, int coloana)
+        public int Item1
+        {
+            get { return _linie; }
+            set { _linie = value; }
+        }
+
+        public int Item2
+        {
+            get { return _coloana; }
+            set { _coloana = value; }
+        }
+
+        public Pozitie(int linie, int coloana)
 		{
 			_linie = linie;
 			_coloana = coloana;
