@@ -4,6 +4,7 @@ namespace ProiectVolovici
 {
 	internal class Gardian : Piesa
 	{
+		int _paritatePiesa;
 		public Gardian(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
 			this.ValoarePiesa = ConstantaPiese.ValoareGardian;
@@ -37,6 +38,7 @@ namespace ProiectVolovici
 					this.Cod = CodPiesa.GardianAlbastru;
 				}
 			}
+			_paritatePiesa = (int)this.Cod % 2;
 		}
 
 		public override void ArataMutariPosibile(EngineJoc joc)
@@ -47,30 +49,30 @@ namespace ProiectVolovici
 
 		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
 		{
-			List<Pozitie> mutariNefiltrate = new List<Pozitie>(4);
-			List<Pozitie> mutariFiltrate = new List<Pozitie>(4);
+			List<Pozitie> pozitii = new List<Pozitie>(4);
 
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
+			pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 1));
+			pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 1));
+			pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 1));
+			pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 1));
 
-			foreach (Pozitie pozitie in mutariNefiltrate)
-			{
-				if (ConstantaTabla.PozitiiPalat.Contains(pozitie))
-				{
-					if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
-					{
-						mutariFiltrate.Add(pozitie);
-					}
-					else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)this._codPiesa % 2)
-					{
-						mutariFiltrate.Add(pozitie);
-					}
-				}
-			}
+            for (int i = pozitii.Count - 1; i >= 0; i--)
+            {
+                if (ConstantaTabla.PozitiiPalat.Contains(pozitii[i]))
+                {
+                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0)
+                    {
+                        if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
+                            pozitii.RemoveAt(i);
+                    }
+                }
+                else
+                {
+                    pozitii.RemoveAt(i);
+                }
+            }
 
-			return mutariFiltrate;
+            return pozitii;
 		}
 	}
 }

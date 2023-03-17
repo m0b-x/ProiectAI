@@ -646,7 +646,32 @@ namespace ProiectVolovici
 			ConstantaPiese.ValoareRege
 		};
 
-		public static double ReturneazaScorPiesa(int codPiesa)
+
+        public Pozitie[] ReturneazaPozitiiAlbe()
+        {
+            Pozitie[] pozitii = new Pozitie[ListaPieseAlbe.Count];
+            int ct = 0;
+            foreach (var piesa in ListaPieseAlbe)
+            {
+                pozitii[ct] = piesa.Pozitie;
+                ct++;
+            }
+            return pozitii;
+        }
+
+        public Pozitie[] ReturneazaPozitiiAlbastre()
+        {
+            Pozitie[] pozitii = new Pozitie[ListaPieseAlbastre.Count];
+            int ct = 0;
+            foreach (var piesa in ListaPieseAlbastre)
+            {
+                pozitii[ct] = piesa.Pozitie;
+                ct++;
+            }
+            return pozitii;
+        }
+
+        public static double ReturneazaScorPiesa(int codPiesa)
 		{
 			return _arrayScorPiese[(int)codPiesa];
 		}

@@ -277,19 +277,17 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
 		private void DeschideCuMutareaAI(object source, ElapsedEventArgs e)
 		{
-			RealizeazaMutareaAI(true);
+			RealizeazaMutareaAI(moveOrdering: true);
 		}
 
-		public void RealizeazaMutareaAI(bool moveOrdering = false)
+		public void RealizeazaMutareaAI(bool moveOrdering = true)
 		{
 			Stopwatch cronometru = new();
 			cronometru.Start();
 
-			var tupluMutariPosibile = MiniMaxAI.CalculeazaMutariPosibile(MatriceCoduriPiese, _miniMaxAI.ReturneazaPozitiiAlbastre(), moveOrdering);
-
 			_miniMaxAI.CronometruAI.Start();
 			//evaluarea minimax primeste mutarile ai-ului ca si primul parametru
-			Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.EvalueazaPozitile(tupluMutariPosibile, _miniMaxAI.Adancime);
+			Tuple<Tuple<Pozitie, Pozitie>, double> mutareaOptima = _miniMaxAI.ReturneazaMutareaOptima(_miniMaxAI.Adancime);
 			_miniMaxAI.CronometruAI.Stop();
 			_miniMaxAI.CronometruAI.Reset();
 			Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);

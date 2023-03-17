@@ -4,6 +4,7 @@ namespace ProiectVolovici
 {
 	internal class Elefant : Piesa
 	{
+		int _paritatePiesa;
 		public Elefant(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
 			this.ValoarePiesa = ConstantaPiese.ValoareElefant;
@@ -37,6 +38,7 @@ namespace ProiectVolovici
 					this.Cod = CodPiesa.ElefantAlbastru;
 				}
 			}
+			_paritatePiesa = (int)Cod % 2;
 		}
 
 		public override void ArataMutariPosibile(EngineJoc joc)
@@ -47,72 +49,49 @@ namespace ProiectVolovici
 
 		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
 		{
-			const int primaLinie = 0;
-			const int primaColoana = 0;
+			List<Pozitie> pozitii = new List<Pozitie>(4);
 
-			int ultimaLinie = ConstantaTabla.NrLinii - 1;
-			int ultimaColoana = ConstantaTabla.NrColoane - 1;
+			var poz1 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 2);
+			var poz2 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 2);
+			var poz3 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 2);
+			var poz4 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 2);
 
-			List<Pozitie> mutariNefiltrate = new List<Pozitie>(4);
-			List<Pozitie> mutariFiltruTabla = new List<Pozitie>(4);
-			List<Pozitie> mutariFiltruFinal = new List<Pozitie>(4);
+            if (0 <= poz1.Linie && poz1.Linie <= 9 &&
+                0 <= poz1.Coloana && poz1.Coloana <= 8)
+				if(
+				matrice[this.Pozitie.Linie+1][this.Pozitie.Coloana+1] == 0)
+                pozitii.Add(poz1);
 
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 2));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 2));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 2));
-			mutariNefiltrate.Add(new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 2));
+            if (0 <= poz2.Linie && poz2.Linie <= 9 &&
+                0 <= poz2.Coloana && poz2.Coloana <= 8)
+                if (
+                matrice[this.Pozitie.Linie + 1][this.Pozitie.Coloana - 1] == 0)
+                pozitii.Add(poz2);
 
-			foreach (Pozitie pozitie in mutariNefiltrate)
-			{
-				if (pozitie.Linie <= ultimaLinie &&
-					 pozitie.Linie >= primaLinie &&
-					 pozitie.Coloana <= ultimaColoana &&
-					 pozitie.Coloana >= primaColoana)
-				{
-					if (pozitie.Linie > ConstantaTabla.PragRau && this.Culoare == Culoare.AlbMin
-							|| pozitie.Linie <= ConstantaTabla.PragRau && this.Culoare == Culoare.AlbastruMax)
-					{
-						if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
-						{
-							mutariFiltruTabla.Add(pozitie);
-						}
-						else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)Cod % 2)
-						{
-							mutariFiltruTabla.Add(pozitie);
-						}
-					}
-				}
-			}
-			foreach (Pozitie pozitie in mutariFiltruTabla)
-			{
-				Pozitie pozitieElementMijloc = new Pozitie(0, 0);
-				if (pozitie.Linie > _pozitiePiesa.Linie)
-				{
-					pozitieElementMijloc.Linie = pozitie.Linie - 1;
-				}
-				else
-				{
-					pozitieElementMijloc.Linie = _pozitiePiesa.Linie - 1;
-				}
-				if (pozitie.Coloana > _pozitiePiesa.Coloana)
-				{
-					pozitieElementMijloc.Coloana = pozitie.Coloana - 1;
-				}
-				else
-				{
-					pozitieElementMijloc.Coloana = _pozitiePiesa.Coloana - 1;
-				}
-				if (matrice[pozitieElementMijloc.Linie][pozitieElementMijloc.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(pozitie);
-				}
-				else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)Cod % 2)
-				{
-					mutariFiltruFinal.Add(pozitie);
-				}
-			}
 
-			return mutariFiltruFinal;
+            if (0 <= poz3.Linie && poz3.Linie <= 9 &&
+                0 <= poz3.Coloana && poz3.Coloana <= 8)
+                if (
+                matrice[this.Pozitie.Linie - 1][this.Pozitie.Coloana + 1] == 0)
+                pozitii.Add(poz3);
+
+
+            if (0 <= poz4.Linie && poz4.Linie <= 9 &&
+                0 <= poz4.Coloana && poz4.Coloana <= 8)
+                if (
+                matrice[this.Pozitie.Linie - 1][this.Pozitie.Coloana - 1] == 0)
+                pozitii.Add(poz4);
+
+
+            for (int i = pozitii.Count - 1; i >= 0; i--)
+            {
+				if (matrice[pozitii[i].Linie][pozitii[i].Coloana] %2 == _paritatePiesa)
+                {
+                    pozitii.RemoveAt(i);
+                }
+            }
+
+            return pozitii;
 		}
 	}
 }

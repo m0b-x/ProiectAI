@@ -1,9 +1,11 @@
 ﻿namespace ProiectVolovici
 {
 	using System.Collections.Generic;
+    using static System.Windows.Forms.LinkLabel;
 
 	internal class Tura : Piesa
 	{
+		int _paritatePiesa;
 		public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
 			this.ValoarePiesa = ConstantaPiese.ValoareTura;
@@ -17,12 +19,12 @@
 				{
 					this.Imagine = Properties.Resources.brook;
 					this.Cod = CodPiesa.TuraAlbastra;
-				}
+                }
 				else
 				{
 					this.Imagine = Properties.Resources.wrook;
 					this.Cod = CodPiesa.TuraAlba;
-				}
+                }
 			}
 			else
 			{
@@ -30,14 +32,15 @@
 				{
 					this.Imagine = Properties.Resources.brook;
 					this.Cod = CodPiesa.TuraAlba;
-				}
+                }
 				else
 				{
 					this.Imagine = Properties.Resources.wrook;
 					this.Cod = CodPiesa.TuraAlbastra;
-				}
-			}
-		}
+                }
+            }
+            _paritatePiesa = (int)this.Cod % 2;
+        }
 
 		public override void ArataMutariPosibile(EngineJoc joc)
 		{
@@ -46,86 +49,80 @@
 			joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
 		}
 
-		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
-		{
-			List<Pozitie> mutariLegale = new List<Pozitie>(90);
+        public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
+        {
+            //10 linii + 9 coloane - 1
+            List<Pozitie> mutariLegale = new List<Pozitie>(18);
 
-			int liniePoz = this.Pozitie.Linie + 1;
-			while (liniePoz < ConstantaTabla.NrLinii)
-			{
-				Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
-				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariLegale.Add(pozitiePosibila);
-				}
-				else
-				{
-					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-					{
-						mutariLegale.Add(pozitiePosibila);
-					}
-					break;
-				}
-				liniePoz++;
-			}
+            //linie in jos
+            for (int linie = this.Pozitie.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][this.Pozitie.Coloana] == 0)
+                {
+                    mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                }
+                else
+                {
+                    if (matrice[linie][this.Pozitie.Coloana] % 2 != _paritatePiesa)
+                    {
+                        mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = this.Pozitie.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][this.Pozitie.Coloana] == 0)
+                {
+                    mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                }
+                else
+                {
+                    if (matrice[linie][this.Pozitie.Coloana] % 2 != _paritatePiesa)
+                    {
+                        mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = this.Pozitie.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[this.Pozitie.Linie][coloana] == 0)
+                {
+                    mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                }
+                else
+                {
+                    if (matrice[this.Pozitie.Linie][coloana] % 2 != _paritatePiesa)
+                    {
+                        mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                    }
+                    break;
+                }
+            }
 
-			liniePoz = this.Pozitie.Linie - 1;
-			while (liniePoz >= 0)
-			{
-				Pozitie pozitiePosibila = new Pozitie(linie: liniePoz, coloana: this.Pozitie.Coloana);
-				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariLegale.Add(pozitiePosibila);
-				}
-				else
-				{
-					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-					{
-						mutariLegale.Add(pozitiePosibila);
-					}
-					break;
-				}
-				liniePoz--;
-			}
+            //coloana in jos
 
-			int colonaPozitiePosibila = this.Pozitie.Coloana + 1;
-			while (colonaPozitiePosibila < ConstantaTabla.NrColoane)
-			{
-				Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariLegale.Add(pozitiePosibila);
-				}
-				else
-				{
-					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-					{
-						mutariLegale.Add(pozitiePosibila);
-					}
-					break;
-				}
-				colonaPozitiePosibila++;
-			}
+            for (int coloana = this.Pozitie.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[this.Pozitie.Linie][coloana] == 0)
+                {
+                    mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                }
+                else
+                {
+                    if (matrice[this.Pozitie.Linie][coloana] % 2 != _paritatePiesa)
+                    {
+                        mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                    }
+                    break;
+                }
+            }
 
-			colonaPozitiePosibila = this.Pozitie.Coloana - 1;
-			while (colonaPozitiePosibila >= 0)
-			{
-				Pozitie pozitiePosibila = new Pozitie(linie: this.Pozitie.Linie, coloana: colonaPozitiePosibila);
-				if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariLegale.Add(pozitiePosibila);
-				}
-				else
-				{
-					if (matrice[pozitiePosibila.Linie][pozitiePosibila.Coloana] % 2 != (int)this.Cod % 2)
-					{
-						mutariLegale.Add(pozitiePosibila);
-					}
-					break;
-				}
-				colonaPozitiePosibila--;
-			}
-			return mutariLegale;
-		}
-	}
+            //returnare valori
+            return mutariLegale;
+        }
+    }
 }

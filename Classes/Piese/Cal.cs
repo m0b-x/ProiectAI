@@ -4,7 +4,9 @@ namespace ProiectVolovici
 {
 	internal class Cal : Piesa
 	{
-		public Cal(Culoare culoare, Aspect aspect = Aspect.Normal)
+		int _paritatePiesa;
+
+        public Cal(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
 			this.ValoarePiesa = ConstantaPiese.ValoareCal;
 			this.Culoare = culoare;
@@ -37,7 +39,9 @@ namespace ProiectVolovici
 					this.Cod = CodPiesa.CalAbastru;
 				}
 			}
-		}
+			_paritatePiesa = (int)Cod % 2;
+
+        }
 
 		public override void ArataMutariPosibile(EngineJoc joc)
 		{
@@ -47,114 +51,98 @@ namespace ProiectVolovici
 		}
 
 		public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
-		{
-			const int primaLinie = 0;
-			const int primaColoana = 0;
+        {
+            List<Pozitie> pozitii = new List<Pozitie>(4);
 
-			int ultimaLinie = ConstantaTabla.NrLinii - 1;
-			int ultimaColoana = ConstantaTabla.NrColoane - 1;
+            var poz1 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1);
+            var poz2 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1);
+            var poz3 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1);
+            var poz4 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1);
+            var poz5 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2);
+            var poz6 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2);
+            var poz7 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2);
+            var poz8 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2);
 
-			List<Pozitie> mutariNefiltrate = new List<Pozitie>(8);
-			List<Pozitie> mutariFiltruTabla = new List<Pozitie>(8);
-			List<Pozitie> mutariFiltruFinal = new List<Pozitie>(8);
-
-			Pozitie dreaptaSusVertical = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1);
-			Pozitie dreaptaJosVertical = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1);
-			Pozitie stangaSusVertical = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1);
-			Pozitie stangaJosVertical = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1);
-
-			Pozitie dreaptaSusOrizontal = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2);
-			Pozitie dreaptaJosOrizontal = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2);
-			Pozitie stangaSusOrizontal = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2);
-			Pozitie stangaJosOrizontal = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2);
-
-			mutariNefiltrate.Add(dreaptaSusVertical);
-			mutariNefiltrate.Add(dreaptaJosVertical);
-			mutariNefiltrate.Add(stangaSusVertical);
-			mutariNefiltrate.Add(stangaJosVertical);
-
-			mutariNefiltrate.Add(dreaptaSusOrizontal);
-			mutariNefiltrate.Add(dreaptaJosOrizontal);
-			mutariNefiltrate.Add(stangaSusOrizontal);
-			mutariNefiltrate.Add(stangaJosOrizontal);
-
-			foreach (Pozitie pozitie in mutariNefiltrate)
+			if (0 <= poz1.Linie && poz1.Linie <= 9 &&
+				0 <= poz1.Coloana && poz1.Coloana <= 8)
 			{
-				if (pozitie.Linie <= ultimaLinie &&
-					 pozitie.Linie >= primaLinie &&
-					 pozitie.Coloana <= ultimaColoana &&
-					 pozitie.Coloana >= primaColoana)
+				if (matrice[this.Pozitie.Linie + 1][this.Pozitie.Coloana] == 0)
 				{
-					if (matrice[pozitie.Linie][pozitie.Coloana] == (int)CodPiesa.Gol)
-					{
-						mutariFiltruTabla.Add(pozitie);
-					}
-					else if (matrice[pozitie.Linie][pozitie.Coloana] % 2 != (int)this.Cod % 2)
-					{
-						mutariFiltruTabla.Add(pozitie);
-					}
+					pozitii.Add(poz1);
 				}
 			}
 
-			if (mutariFiltruTabla.Contains(dreaptaSusVertical))
+            if (0 <= poz2.Linie && poz2.Linie <= 9 &&
+                0 <= poz2.Coloana && poz2.Coloana <= 8)
+            {
+                if (matrice[this.Pozitie.Linie + 1][this.Pozitie.Coloana] == 0)
+                {
+                    pozitii.Add(poz2);
+                }
+            }
+			if (0 <= poz3.Linie && poz3.Linie <= 9 &&
+                0 <= poz3.Coloana && poz3.Coloana <= 8)
 			{
-				if (matrice[_pozitiePiesa.Linie - 1][_pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
+				if (matrice[this.Pozitie.Linie - 1][this.Pozitie.Coloana] == 0)
 				{
-					mutariFiltruFinal.Add(dreaptaSusVertical);
-				}
-			}
-			if (mutariFiltruTabla.Contains(stangaSusVertical))
-			{
-				if (matrice[_pozitiePiesa.Linie - 1][_pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(stangaSusVertical);
-				}
-			}
-			if (mutariFiltruTabla.Contains(dreaptaJosVertical))
-			{
-				if (matrice[_pozitiePiesa.Linie + 1][_pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(dreaptaJosVertical);
-				}
-			}
-			if (mutariFiltruTabla.Contains(stangaJosVertical))
-			{
-				if (matrice[_pozitiePiesa.Linie + 1][_pozitiePiesa.Coloana] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(stangaJosVertical);
+					pozitii.Add(poz3);
 				}
 			}
 
-			if (mutariFiltruTabla.Contains(dreaptaSusOrizontal))
+            if (0 <= poz4.Linie && poz4.Linie <= 9 &&
+                0 <= poz4.Coloana && poz4.Coloana <= 8)
+            {
+                if (matrice[this.Pozitie.Linie - 1][this.Pozitie.Coloana] == 0)
+                {
+                    pozitii.Add(poz4);
+                }
+            }
+
+			if (0 <= poz5.Linie && poz5.Linie <= 9 &&
+                0 <= poz5.Coloana && poz5.Coloana <= 8)
 			{
-				if (matrice[_pozitiePiesa.Linie][_pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+				if (matrice[this.Pozitie.Linie][this.Pozitie.Coloana + 1] == 0)
 				{
-					mutariFiltruFinal.Add(dreaptaSusOrizontal);
+					pozitii.Add(poz5);
 				}
 			}
-			if (mutariFiltruTabla.Contains(dreaptaJosOrizontal))
+            if (0 <= poz6.Linie && poz6.Linie <= 9 &&
+                0 <= poz6.Coloana && poz6.Coloana <= 8)
+            {
+                if (matrice[this.Pozitie.Linie][this.Pozitie.Coloana + 1] == 0)
+                {
+                    pozitii.Add(poz6);
+                }
+            }
+
+
+			if (0 <= poz7.Linie && poz7.Linie <= 9 &&
+                0 <= poz7.Coloana && poz7.Coloana <= 8)
 			{
-				if (matrice[_pozitiePiesa.Linie][_pozitiePiesa.Coloana + 1] == (int)CodPiesa.Gol)
+				if (matrice[this.Pozitie.Linie][this.Pozitie.Coloana - 1] == 0)
 				{
-					mutariFiltruFinal.Add(dreaptaJosOrizontal);
-				}
-			}
-			if (mutariFiltruTabla.Contains(stangaSusOrizontal))
-			{
-				if (matrice[_pozitiePiesa.Linie][_pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(stangaSusOrizontal);
-				}
-			}
-			if (mutariFiltruTabla.Contains(stangaJosOrizontal))
-			{
-				if (matrice[_pozitiePiesa.Linie][_pozitiePiesa.Coloana - 1] == (int)CodPiesa.Gol)
-				{
-					mutariFiltruFinal.Add(stangaJosOrizontal);
+					pozitii.Add(poz7);
 				}
 			}
 
-			return mutariFiltruFinal;
-		}
+            if (0 <= poz8.Linie && poz8.Linie <= 9 &&
+                0 <= poz8.Coloana && poz8.Coloana <= 8)
+            {
+                if (matrice[this.Pozitie.Linie][this.Pozitie.Coloana - 1] == 0)
+                {
+                    pozitii.Add(poz8);
+                }
+            }
+
+            for (int i = pozitii.Count - 1; i >= 0; i--)
+            {
+                if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
+                {
+                    pozitii.RemoveAt(i);
+                }
+            }
+
+            return pozitii;
+        }
 	}
 }
