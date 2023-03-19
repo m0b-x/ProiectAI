@@ -40,7 +40,6 @@
             this.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "Cadran";
             this.Size = new System.Drawing.Size(50, 50);
-            this.Load += new System.EventHandler(this.cadran_Load);
             this.ResumeLayout(false);
 
         }

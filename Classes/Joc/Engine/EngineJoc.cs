@@ -17,7 +17,7 @@ namespace ProiectVolovici
 		private List<Piesa> _listaPiese;
 		private List<Piesa> _listaPieseAlbe;
 		private List<Piesa> _listaPieseAlbastre;
-		protected List<Pozitie> _pozitiiMutariPosibile;
+		protected List<Pozitie> pozitiiMutariColorate;
 
 		private Label[] _labelColoane;
 		private Label[] _labelLinii;
@@ -41,8 +41,8 @@ namespace ProiectVolovici
 
 		public List<Pozitie> PozitiiMutariPosibile
 		{
-			get { return _pozitiiMutariPosibile; }
-			set { _pozitiiMutariPosibile = value; }
+			get { return pozitiiMutariColorate; }
+			set { pozitiiMutariColorate = value; }
 		}
 
 		public List<Piesa> ListaPiese
@@ -153,7 +153,7 @@ namespace ProiectVolovici
 			_listaPiese = new List<Piesa>(32);
 			_listaPieseAlbe = new List<Piesa>(16);
 			_listaPieseAlbastre = new List<Piesa>(16);
-			_pozitiiMutariPosibile = new List<Pozitie>(200);
+			pozitiiMutariColorate = new List<Pozitie>(200);
 			_aspectJoc = aspect;
 
 			_tabla = new Tabla();
@@ -183,7 +183,7 @@ namespace ProiectVolovici
 			_listaPiese = new List<Piesa>(32);
 			_listaPieseAlbe = new List<Piesa>(16);
 			_listaPieseAlbastre = new List<Piesa>(16);
-			_pozitiiMutariPosibile = new List<Pozitie>(200);
+			pozitiiMutariColorate = new List<Pozitie>(200);
 			_aspectJoc = aspect;
 
 			_tabla = new Tabla();
@@ -395,9 +395,9 @@ namespace ProiectVolovici
 
 		public void DecoloreazaMutariPosibile(List<Pozitie> pozitii)
 		{
-			if (_pozitiiMutariPosibile != null)
+			if (pozitiiMutariColorate != null)
 			{
-				foreach (Pozitie pozitie in _pozitiiMutariPosibile)
+				foreach (Pozitie pozitie in pozitiiMutariColorate)
 				{
 					ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackColor = _tabla.DecideCuloareaCadranului(pozitie.Linie, pozitie.Coloana);
 				}
@@ -406,7 +406,7 @@ namespace ProiectVolovici
 
 		public bool ExistaMutariPosibile()
 		{
-			if (_pozitiiMutariPosibile == null || _pozitiiMutariPosibile.Count == 0)
+			if (pozitiiMutariColorate == null || pozitiiMutariColorate.Count == 0)
 				return false;
 			return true;
 		}
@@ -418,7 +418,7 @@ namespace ProiectVolovici
 				foreach (Pozitie pozitie in pozitii)
 				{
 					ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackColor = CuloareCadranMutari;
-					_pozitiiMutariPosibile.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
+					pozitiiMutariColorate.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
 				}
 			}
 		}

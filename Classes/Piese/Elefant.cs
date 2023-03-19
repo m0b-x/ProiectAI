@@ -7,7 +7,6 @@ namespace ProiectVolovici
 		int _paritatePiesa;
 		public Elefant(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
-			this.ValoarePiesa = ConstantaPiese.ValoareElefant;
 			this.Culoare = culoare;
 
 			this.Selectata = false;
@@ -83,14 +82,28 @@ namespace ProiectVolovici
                 pozitii.Add(poz4);
 
 
-            for (int i = pozitii.Count - 1; i >= 0; i--)
+			if (Culoare == Culoare.AlbMin)
+			{
+				for (int i = pozitii.Count - 1; i >= 0; i--)
+				{
+					if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa ||
+						pozitii[i].Linie < 5)
+					{
+						pozitii.RemoveAt(i);
+					}
+				}
+			}
+			else
             {
-				if (matrice[pozitii[i].Linie][pozitii[i].Coloana] %2 == _paritatePiesa)
-                {
-                    pozitii.RemoveAt(i);
-                }
+				for (int i = pozitii.Count - 1; i >= 0; i--)
+				{
+					if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa ||
+						pozitii[i].Linie > 4)
+					{
+						pozitii.RemoveAt(i);
+					}
+				}
             }
-
             return pozitii;
 		}
 	}

@@ -7,7 +7,6 @@ namespace ProiectVolovici
 		int _paritatePiesa;
 		public Rege(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
-			this.ValoarePiesa = ConstantaPiese.ValoareRege;
 			this.Culoare = culoare;
 
 			this.Selectata = false;

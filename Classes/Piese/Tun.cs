@@ -7,7 +7,6 @@ namespace ProiectVolovici
         int _paritatePiesa;
         public Tun(Culoare culoare, Aspect aspect = Aspect.Normal)
         {
-            this.ValoarePiesa = ConstantaPiese.ValoareTun;
             this.Culoare = culoare;
 
             this.Selectata = false;

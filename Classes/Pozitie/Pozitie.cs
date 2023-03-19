@@ -2,87 +2,45 @@
 
 namespace ProiectVolovici
 {
-	public class Pozitie
-	{
-		private int _linie;
-		private int _coloana;
+    public struct Pozitie
+    {
+        public int Linie;
+        public int Coloana;
 
-		public static Pozitie PozitieNula = new Pozitie(-1,-1);
-
-		public int Linie
-		{
-			get { return _linie; }
-			set { _linie = value; }
-		}
-
-		public int Coloana
-		{
-			get { return _coloana; }
-			set { _coloana = value; }
-		}
-
-        public int Item1
+        public static Pozitie PozitieNula = new Pozitie(-1,-1);
+        public Pozitie (int linie, int coloana)
         {
-            get { return _linie; }
-            set { _linie = value; }
+            Linie = linie;
+            Coloana = coloana;
+        }
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Pozitie)) return false;
+            Pozitie other = (Pozitie)obj;
+            return Linie == other.Linie && Coloana == other.Coloana;
         }
 
-        public int Item2
+        public bool Equals(Pozitie other)
         {
-            get { return _coloana; }
-            set { _coloana = value; }
+            return Linie == other.Linie && Coloana == other.Coloana;
         }
 
-        public Pozitie(int linie, int coloana)
-		{
-			_linie = linie;
-			_coloana = coloana;
-		}
+        public static bool operator ==(Pozitie a, Pozitie b)
+        {
+            return a.Equals(b);
+        }
 
-		public override bool Equals(Object obj)
-		{
-			if ((obj == null) || !this.GetType().Equals(obj.GetType()))
-			{
-				return false;
-			}
-			else
-			{
-				Pozitie cealaltaPozitie = (Pozitie)obj;
-				return (Linie == cealaltaPozitie.Linie) && (Coloana == cealaltaPozitie.Coloana);
-			}
-		}
+        public static bool operator !=(Pozitie a, Pozitie b)
+        {
+            return !a.Equals(b);
+        }
 
-		public override string ToString()
-		{
-			return String.Format("(Linie:{0}, Coloana:{1})", _linie, _coloana);
-		}
-
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(_linie, _coloana);
-		}
-
-		public static bool operator ==(Pozitie pozitieStanga, Pozitie pozitieDreapta)
-		{
-			if (pozitieStanga is null)
-			{
-				if (pozitieDreapta is null)
-				{
-					return true;
-				}
-				return false;
-			}
-			if (pozitieDreapta is null)
-			{
-				if (pozitieStanga is null)
-				{
-					return true;
-				}
-				return false;
-			}
-			return (pozitieStanga.Linie == pozitieDreapta.Linie && pozitieStanga.Coloana == pozitieDreapta.Coloana);
-		}
-
-		public static bool operator !=(Pozitie pozitieStanga, Pozitie pozitieDreapta) => !(pozitieStanga == pozitieDreapta);
-	}
+        public override int GetHashCode()
+        {
+            int hash = 19;
+            hash = hash * 29 + Linie;
+            hash = hash * 29 + Coloana;
+            return hash;
+        }
+    }
 }

@@ -173,11 +173,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 			{
 				if (PiesaSelectata == ConstantaTabla.PiesaNula)
 				{
-					Pozitie pozitie = new(0, 0);
-					pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-					pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+					Pozitie pozitie = (sender as Cadran).PozitieCadran;
 
-					if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
+                    if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
 					{
 						Piesa piesa = GetPiesaCuPozitia(pozitie);
 
@@ -202,11 +200,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 				}
 				else
 				{
-					Pozitie pozitie = new(0, 0);
-					pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-					pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+					Pozitie pozitie = (sender as Cadran).PozitieCadran;
 
-					if (PiesaSelectata.Pozitie != pozitie)
+                    if (PiesaSelectata.Pozitie != pozitie)
 					{
 						//aici se muta
 						if (EsteMutareaPosibila(pozitie))

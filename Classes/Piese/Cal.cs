@@ -8,7 +8,6 @@ namespace ProiectVolovici
 
         public Cal(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
-			this.ValoarePiesa = ConstantaPiese.ValoareCal;
 			this.Culoare = culoare;
 
 			this.Selectata = false;

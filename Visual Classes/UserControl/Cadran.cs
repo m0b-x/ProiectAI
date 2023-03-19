@@ -51,13 +51,10 @@ namespace ProiectVolovici
 			_piesaCadran = ConstantaTabla.PiesaNula;
 		}
 
-		public void ArataPalatul()
-		{
-		}
 
 		public bool CadranEsteGol()
 		{
-			if (_piesaCadran == null)
+			if (_piesaCadran is null)
 			{
 				return true;
 			}
@@ -80,8 +77,5 @@ namespace ProiectVolovici
 			return true;
 		}
 
-		private void cadran_Load(object sender, EventArgs e)
-		{
-		}
 	}
 }

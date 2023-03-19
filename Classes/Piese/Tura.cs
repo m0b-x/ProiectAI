@@ -8,7 +8,6 @@
 		int _paritatePiesa;
 		public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
-			this.ValoarePiesa = ConstantaPiese.ValoareTura;
 			this.Culoare = culoare;
 
 			this.Selectata = false;

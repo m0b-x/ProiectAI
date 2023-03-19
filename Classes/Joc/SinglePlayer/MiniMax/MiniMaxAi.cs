@@ -849,21 +849,21 @@ namespace ProiectVolovici
             capPos = new(18, new DuplicateKeyComparerDesc<double>());
             foreach (var poz in pozitiiPieseDeEvaluat)
             {
-                if (poz.Item1 != -1)
+                if (poz.Linie != -1)
                 {
-                    _pieseVirtuale[matrice[poz.Item1][poz.Item2]].Pozitie = new Pozitie(poz.Item1, poz.Item2);
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Item1][poz.Item2]].ReturneazaMutariPosibile(matrice);
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
                     foreach (Pozitie mut in mutari)
                     {
                         int piesaLuata = matrice[mut.Linie][mut.Coloana];
-                        int piesaCareIa = matrice[poz.Item1][poz.Item2];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
 
                         if (piesaLuata != 0)
                         {
                             capPos.Add(-EngineJoc.ReturneazaScorPiesa(piesaCareIa)
                                 + -EngineJoc.ReturneazaScorPiesa(piesaLuata)
                                 ,
-                                new(new(poz.Item1, poz.Item2), mut));
+                                new(new(poz.Linie, poz.Coloana), mut));
                         }
                     }
                 }
@@ -884,22 +884,22 @@ namespace ProiectVolovici
                 mutPos = new(80, new DuplicateKeyComparerDesc<double>());
                 foreach (var poz in pozitiiPieseDeEvaluat)
                 {
-                    if (poz.Item1 != -1)
+                    if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Item1][poz.Item2]].Pozitie = new Pozitie(poz.Item1, poz.Item2);
-                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Item1][poz.Item2]].ReturneazaMutariPosibile(matrice);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
                             int piesaLuata = matrice[mut.Linie][mut.Coloana];
-                            int piesaCareIa = matrice[poz.Item1][poz.Item2];
+                            int piesaCareIa = matrice[poz.Linie][poz.Coloana];
 
                             if (piesaLuata == 0)
                             {
-                                mutPos.Add(ListaTabelePST[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Item1, poz.Item2), mut));
+                                mutPos.Add(ListaTabelePST[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
                             }
                             else
                             {
-                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Item1, poz.Item2), mut));
+                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
                             }
                         }
                     }
@@ -912,13 +912,13 @@ namespace ProiectVolovici
                 int ct = 0;
                 foreach (var poz in pozitiiPieseDeEvaluat)
                 {
-                    if (poz.Item1 != -1)
+                    if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Item1][poz.Item2]].Pozitie = new Pozitie(poz.Item1, poz.Item2);
-                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Item1][poz.Item2]].ReturneazaMutariPosibile(matrice);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
-                            mutPos.Add(ct++, new(new(poz.Item1, poz.Item2), mut));
+                            mutPos.Add(ct++, new(new(poz.Linie, poz.Coloana), mut));
                         }
                     }
                 }
@@ -934,7 +934,7 @@ namespace ProiectVolovici
         {
             for (int i = 0; i < vector.Length; i++)
             {
-                if (vector[i].Item1 == poz.Item1 && vector[i].Item2 == poz.Item2)
+                if (vector[i].Linie == poz.Linie && vector[i].Coloana == poz.Coloana)
                 {
                     vector[i] = Pozitie.PozitieNula;
                     return i;
@@ -957,7 +957,7 @@ namespace ProiectVolovici
         {
             for (int i = 0; i < vector.Length; i++)
             {
-                if (vector[i].Item1 == pozInitiala.Item1 && vector[i].Item2 == pozInitiala.Item2)
+                if (vector[i].Linie == pozInitiala.Linie && vector[i].Coloana == pozInitiala.Coloana)
                 {
                     vector[i] = pozFinala;
                     return i;
@@ -979,7 +979,7 @@ namespace ProiectVolovici
         {
             for (int i = 0; i < vector.Length; i++)
             {
-                if (vector[i].Item1 == -1)
+                if (vector[i].Linie == -1)
                 {
                     vector[i] = pozFinala;
                     return i;
@@ -1067,7 +1067,7 @@ namespace ProiectVolovici
             var pozitiiAlbe = _engine.ReturneazaPozitiiAlbe();
 
 
-            for (int adancimeTemp = 3; adancimeTemp <= adancimeCeruta &&
+            for (int adancimeTemp = 2; adancimeTemp <= adancimeCeruta &&
                 CronometruAI.ElapsedMilliseconds < 6000; adancimeTemp++)
             {
                 for (int i = 0; i < mutPos.Count; i++)

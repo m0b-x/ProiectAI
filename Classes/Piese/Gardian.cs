@@ -7,7 +7,6 @@ namespace ProiectVolovici
 		int _paritatePiesa;
 		public Gardian(Culoare culoare, Aspect aspect = Aspect.Normal)
 		{
-			this.ValoarePiesa = ConstantaPiese.ValoareGardian;
 			this.Culoare = culoare;
 
 			this.Selectata = false;

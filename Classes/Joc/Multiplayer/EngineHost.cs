@@ -224,9 +224,7 @@ namespace ProiectVolovici
 			{
 				if (PiesaSelectata == ConstantaTabla.PiesaNula)
 				{
-					Pozitie pozitie = new Pozitie(0, 0);
-					pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-					pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+					Pozitie pozitie = (sender as Cadran).PozitieCadran;
 
 					if (ArrayCadrane[pozitie.Linie][pozitie.Coloana].PiesaCadran != ConstantaTabla.PiesaNula)
 					{
@@ -253,9 +251,7 @@ namespace ProiectVolovici
 				}
 				else
 				{
-					Pozitie pozitie = new Pozitie(0, 0);
-					pozitie.Linie = (sender as Cadran).PozitieCadran.Linie;
-					pozitie.Coloana = (sender as Cadran).PozitieCadran.Coloana;
+					Pozitie pozitie = (sender as Cadran).PozitieCadran;
 
 					if (PiesaSelectata.Pozitie != pozitie)
 					{
