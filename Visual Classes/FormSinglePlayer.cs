@@ -4,27 +4,27 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
-	public partial class FormSinglePlayer : Form
-	{
-		private int _adancime;
+    public partial class FormSinglePlayer : Form
+    {
+        private int _adancime;
 
-		public FormSinglePlayer(Form form, int adancime)
-		{
-			_adancime = adancime;
-			InitializeComponent();
-		}
+        public FormSinglePlayer(Form form, int adancime)
+        {
+            _adancime = adancime;
+            InitializeComponent();
+        }
 
-		private EngineMiniMax jocSah;
-		private Form formPrincipal;
+        private EngineMiniMax jocSah;
+        private Form formPrincipal;
 
-		private void FormSinglePlayer_Load(object sender, EventArgs e)
-		{
-			Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.AlbMin), new Om(Culoare.AlbastruMax));
+        private void FormSinglePlayer_Load(object sender, EventArgs e)
+        {
+            Tuple<Om, Om> jucatori = new Tuple<Om, Om>(new Om(Culoare.AlbMin), new Om(Culoare.AlbastruMax));
 
-			formPrincipal = this;
-			jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal, _adancime, incepeOmul: true);
-			jocSah.AdaugaPieselePrestabilite();
-			jocSah.DeschideJocul();
-		}
-	}
+            formPrincipal = this;
+            jocSah = new EngineMiniMax(formPrincipal, jucatori.Item1, Aspect.Normal, _adancime, incepeOmul: true);
+            jocSah.AdaugaPieselePrestabilite();
+            jocSah.DeschideJocul();
+        }
+    }
 }

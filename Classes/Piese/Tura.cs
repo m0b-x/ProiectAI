@@ -1,52 +1,51 @@
 ﻿namespace ProiectVolovici
 {
-	using System.Collections.Generic;
-    using static System.Windows.Forms.LinkLabel;
+    using System.Collections.Generic;
 
-	internal class Tura : Piesa
-	{
-		int _paritatePiesa;
-		public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
-		{
-			this.Culoare = culoare;
+    internal class Tura : Piesa
+    {
+        int _paritatePiesa;
+        public Tura(Culoare culoare, Aspect aspect = Aspect.Normal)
+        {
+            this.Culoare = culoare;
 
-			this.Selectata = false;
+            this.Selectata = false;
 
-			if (aspect == Aspect.Normal)
-			{
-				if (culoare == Culoare.AlbastruMax)
-				{
-					this.Imagine = Properties.Resources.brook;
-					this.Cod = CodPiesa.TuraAlbastra;
+            if (aspect == Aspect.Normal)
+            {
+                if (culoare == Culoare.AlbastruMax)
+                {
+                    this.Imagine = Properties.Resources.brook;
+                    this.Cod = CodPiesa.TuraAlbastra;
                 }
-				else
-				{
-					this.Imagine = Properties.Resources.wrook;
-					this.Cod = CodPiesa.TuraAlba;
+                else
+                {
+                    this.Imagine = Properties.Resources.wrook;
+                    this.Cod = CodPiesa.TuraAlba;
                 }
-			}
-			else
-			{
-				if (culoare != Culoare.AlbastruMax)
-				{
-					this.Imagine = Properties.Resources.brook;
-					this.Cod = CodPiesa.TuraAlba;
+            }
+            else
+            {
+                if (culoare != Culoare.AlbastruMax)
+                {
+                    this.Imagine = Properties.Resources.brook;
+                    this.Cod = CodPiesa.TuraAlba;
                 }
-				else
-				{
-					this.Imagine = Properties.Resources.wrook;
-					this.Cod = CodPiesa.TuraAlbastra;
+                else
+                {
+                    this.Imagine = Properties.Resources.wrook;
+                    this.Cod = CodPiesa.TuraAlbastra;
                 }
             }
             _paritatePiesa = (int)this.Cod % 2;
         }
 
-		public override void ArataMutariPosibile(EngineJoc joc)
-		{
-			List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
+        public override void ArataMutariPosibile(EngineJoc joc)
+        {
+            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
 
-			joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
-		}
+            joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
+        }
 
         public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
         {
