@@ -22,9 +22,9 @@ namespace ProiectVolovici
             butonOptiune1.Click -= butonSinglePlayer_Click;
             butonOptiune1.Click += butonAlfaBeta_Click;
 
-            butonOptiune2.Text = "MonteCarlo";
+            butonOptiune2.Text = "MTDF";
             butonOptiune2.Click -= butonMultiPlayer_Click;
-            butonOptiune2.Click += butonMCTS_Click;
+            butonOptiune2.Click += butonMTDF_Click;
 
             butonOptiune3.Text = "Inapoi";
             butonOptiune3.Click -= butonExit_Click;
@@ -44,7 +44,7 @@ namespace ProiectVolovici
             butonOptiune1.Click += butonSinglePlayer_Click;
 
             butonOptiune2.Text = "MultiPlayer";
-            butonOptiune2.Click -= butonMCTS_Click;
+            butonOptiune2.Click -= butonMTDF_Click;
             butonOptiune2.Click += butonMultiPlayer_Click;
 
             butonOptiune3.Text = "Exit";
@@ -58,23 +58,23 @@ namespace ProiectVolovici
             */
         }
 
-        private void butonInapoiDeLaDificultateMCTS_Click(object sender, EventArgs e)
+        private void butonInapoiDeLaDificultateMTDF_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "AlfaBeta";
-            butonOptiune1.Click -= butonMCTS_Usor_Click;
+            butonOptiune1.Click -= butonMTDF_Usor_Click;
             butonOptiune1.Click += butonAlfaBeta_Click;
 
-            butonOptiune2.Text = "MonteCarlo";
-            butonOptiune2.Click -= butonMCTS_Mediu_Click;
-            butonOptiune2.Click += butonMCTS_Click;
+            butonOptiune2.Text = "MTDF";
+            butonOptiune2.Click -= butonMTDF_Mediu_Click;
+            butonOptiune2.Click += butonMTDF_Click;
 
             butonOptiune3.Text = "Inapoi";
-            butonOptiune3.Click -= butonMCTS_Greu_Click;
+            butonOptiune3.Click -= butonMTDF_Greu_Click;
             butonOptiune3.Click += butonInapoiDeLaSinglePlayer_Click;
 
             butonOptiune4.Visible = false;
             butonOptiune4.Enabled = false;
-            butonOptiune4.Click -= butonInapoiDeLaDificultateMCTS_Click;
+            butonOptiune4.Click -= butonInapoiDeLaDificultateMTDF_Click;
         }
 
         private void butonInapoiDeLaDificultateAlphaBeta_Click(object sender, EventArgs e)
@@ -83,9 +83,9 @@ namespace ProiectVolovici
             butonOptiune1.Click -= butonAlphaBeta_Usor_Click;
             butonOptiune1.Click += butonAlfaBeta_Click;
 
-            butonOptiune2.Text = "MonteCarlo";
+            butonOptiune2.Text = "MTDF";
             butonOptiune2.Click -= butonAlphaBeta_Mediu_Click;
-            butonOptiune2.Click += butonMCTS_Click;
+            butonOptiune2.Click += butonMTDF_Click;
 
             butonOptiune3.Text = "Inapoi";
             butonOptiune3.Click -= butonAlphaBeta_Greu_Click;
@@ -99,15 +99,15 @@ namespace ProiectVolovici
         private void butonInapoiDeLaAlphaBeta_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "SinglePlayer";
-            butonOptiune1.Click -= butonMCTS_Usor_Click;
+            butonOptiune1.Click -= butonMTDF_Usor_Click;
             butonOptiune1.Click += butonSinglePlayer_Click;
 
             butonOptiune2.Text = "MultiPlayer";
-            butonOptiune2.Click -= butonMCTS_Mediu_Click;
+            butonOptiune2.Click -= butonMTDF_Mediu_Click;
             butonOptiune2.Click += butonMultiPlayer_Click;
 
             butonOptiune3.Text = "Exit";
-            butonOptiune3.Click -= butonMCTS_Greu_Click;
+            butonOptiune3.Click -= butonMTDF_Greu_Click;
             butonOptiune3.Click += butonExit_Click;
 
             butonOptiune4.Visible = false;
@@ -115,23 +115,23 @@ namespace ProiectVolovici
             butonOptiune4.Click -= butonInapoiDeLaAlphaBeta_Click;
         }
 
-        private void butonInapoiDeLaMCTS_Click(object sender, EventArgs e)
+        private void butonInapoiDeLaMTDF_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "SinglePlayer";
-            butonOptiune1.Click -= butonMCTS_Usor_Click;
+            butonOptiune1.Click -= butonMTDF_Usor_Click;
             butonOptiune1.Click += butonSinglePlayer_Click;
 
             butonOptiune2.Text = "MultiPlayer";
-            butonOptiune2.Click -= butonMCTS_Mediu_Click;
+            butonOptiune2.Click -= butonMTDF_Mediu_Click;
             butonOptiune2.Click += butonMultiPlayer_Click;
 
             butonOptiune3.Text = "Exit";
-            butonOptiune3.Click -= butonMCTS_Greu_Click;
+            butonOptiune3.Click -= butonMTDF_Greu_Click;
             butonOptiune3.Click += butonExit_Click;
 
             butonOptiune4.Visible = false;
             butonOptiune4.Enabled = false;
-            butonOptiune4.Click -= butonInapoiDeLaMCTS_Click;
+            butonOptiune4.Click -= butonInapoiDeLaMTDF_Click;
         }
 
         private void butonAlfaBeta_Click(object sender, EventArgs e)
@@ -141,7 +141,7 @@ namespace ProiectVolovici
             butonOptiune1.Click += butonAlphaBeta_Usor_Click;
 
             butonOptiune2.Text = "Mediu";
-            butonOptiune2.Click -= butonMCTS_Click;
+            butonOptiune2.Click -= butonMTDF_Click;
             butonOptiune2.Click += butonAlphaBeta_Mediu_Click;
 
             butonOptiune3.Text = "Greu";
@@ -154,63 +154,72 @@ namespace ProiectVolovici
             butonOptiune4.Click += butonInapoiDeLaDificultateAlphaBeta_Click;
         }
 
-        private void butonMCTS_Click(object sender, EventArgs e)
+        private void butonMTDF_Click(object sender, EventArgs e)
         {
             butonOptiune1.Text = "Usor";
             butonOptiune1.Click -= butonAlfaBeta_Click;
-            butonOptiune1.Click += butonMCTS_Usor_Click;
+            butonOptiune1.Click += butonMTDF_Usor_Click;
 
             butonOptiune2.Text = "Mediu";
-            butonOptiune2.Click -= butonMCTS_Click;
-            butonOptiune2.Click += butonMCTS_Mediu_Click;
+            butonOptiune2.Click -= butonMTDF_Click;
+            butonOptiune2.Click += butonMTDF_Mediu_Click;
 
             butonOptiune3.Text = "Greu";
-            butonOptiune3.Click += butonMCTS_Greu_Click;
+            butonOptiune3.Click += butonMTDF_Greu_Click;
             butonOptiune3.Click -= butonInapoiDeLaSinglePlayer_Click;
 
             butonOptiune4.Text = "Inapoi";
             butonOptiune4.Visible = true;
             butonOptiune4.Enabled = true;
-            butonOptiune4.Click += butonInapoiDeLaDificultateMCTS_Click;
+            butonOptiune4.Click += butonInapoiDeLaDificultateMTDF_Click;
         }
 
         private void butonAlphaBeta_Usor_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("Usor");
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 1);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }
 
         private void butonAlphaBeta_Mediu_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("Mediu");
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }
 
         private void butonAlphaBeta_Greu_Click(object sender, EventArgs e)
         {
-            Debug.WriteLine("Greuu");
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 5);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 4, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }
 
-        private void butonMCTS_Usor_Click(object sender, EventArgs e)
+        private void butonMTDF_Usor_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2, TipAI.MTDF);
+            formSinglePlayer.Closed += (s, args) => this.Close();
+            formSinglePlayer.Show();
         }
 
-        private void butonMCTS_Mediu_Click(object sender, EventArgs e)
+        private void butonMTDF_Mediu_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3, TipAI.MTDF);
+            formSinglePlayer.Closed += (s, args) => this.Close();
+            formSinglePlayer.Show();
         }
 
-        private void butonMCTS_Greu_Click(object sender, EventArgs e)
+        private void butonMTDF_Greu_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 4, TipAI.MTDF);
+            formSinglePlayer.Closed += (s, args) => this.Close();
+            formSinglePlayer.Show();
         }
 
         private void butonMultiPlayer_Click(object sender, EventArgs e)

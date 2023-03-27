@@ -26,7 +26,6 @@ namespace ProiectVolovici
                    EqualityComparer<Pozitie>.Default.Equals(Item2, other.Item2);
         }
 
-        // Note: Not quite FNV!
         public override int GetHashCode()
         {
             unchecked 
@@ -37,6 +36,11 @@ namespace ProiectVolovici
                 hash = (hash * 16777619) ^ Item2.GetHashCode();
                 return hash;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{Item1.Linie},{Item1.Coloana} -> {Item2.Linie},{Item2.Coloana}";
         }
 
         public static bool operator ==(Mutare a, Mutare b)

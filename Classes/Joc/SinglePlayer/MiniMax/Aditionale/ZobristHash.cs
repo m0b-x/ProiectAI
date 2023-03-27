@@ -32,15 +32,17 @@ namespace ProiectVolovici
         public static long HashuiesteTabla(int[][] tabla)
         {
             long retVal = 0;
-
-            for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
+            unchecked
             {
-                for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
+                for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
                 {
-                    if (tabla[linie][coloana] != (int)CodPiesa.Gol)
+                    for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                     {
-                        int piesa = tabla[linie][coloana];
-                        retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana][piesa];
+                        if (tabla[linie][coloana] != (int)CodPiesa.Gol)
+                        {
+                            int piesa = tabla[linie][coloana];
+                            retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana][piesa];
+                        }
                     }
                 }
             }
@@ -54,12 +56,14 @@ namespace ProiectVolovici
                                   int piesaCareIa)
         {
             long hashFinal = hashInitial;
-            //Debug.WriteLine(linieInitiala * (ConstantaTabla.NrLinii - 1));
-            //Debug.WriteLine(linieFinala * (ConstantaTabla.NrLinii - 1));
-            hashFinal ^= tabeltranspozitie[linieInitiala * (ConstantaTabla.NrLinii - 1) + coloanaInitiala][piesaCareIa];
-            hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaLuata];
-            hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaCareIa];
-
+            unchecked
+            {
+                //Debug.WriteLine(linieInitiala * (ConstantaTabla.NrLinii - 1));
+                //Debug.WriteLine(linieFinala * (ConstantaTabla.NrLinii - 1));
+                hashFinal ^= tabeltranspozitie[linieInitiala * (ConstantaTabla.NrLinii - 1) + coloanaInitiala][piesaCareIa];
+                hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaLuata];
+                hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaCareIa];
+            }
             return hashFinal;
         }
     }

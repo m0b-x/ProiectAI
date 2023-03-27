@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 {
-    public class EngineMiniMax : EngineJoc
+    public class EngineSinglePlayer : EngineJoc
     {
         private int _nrMutari = 0;
         protected Om _jucatorOm;
-        protected MiniMaxAI _miniMaxAI;
+        protected AI _jucatorAI;
 
         protected bool _randulOmului;
 
@@ -38,26 +38,54 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             set { _nrMutari = value; }
         }
 
-        public EngineMiniMax(Form parentForm, Om jucator, Aspect aspect, int adancime, bool incepeOmul = true) : base(parentForm, aspect)
+        public EngineSinglePlayer(Form parentForm,
+            Om jucator,
+            Aspect aspect,
+            TipAI tip,
+            int adancime,
+            bool incepeOmul = true
+            ) : base(parentForm, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.AlbastruMax, this, adancime);
+            InitializeazaAI(tip, adancime);
 
             _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
             EsteRandulTau();
         }
 
-        public EngineMiniMax(Form parentForm, int[][] matriceTabla, Om jucator, Aspect aspect, bool incepeOmul = true) : base(parentForm, matriceTabla, aspect)
+        public EngineSinglePlayer(Form parentForm,
+            int[][] matriceTabla,
+            Om jucator,
+            Aspect aspect,
+            TipAI tip,
+            int adancime,
+            bool incepeOmul = true) : base(parentForm, matriceTabla, aspect)
         {
             InitializeazaInterfataVizuala();
             AdaugaEvenimentCadrane();
             _jucatorOm = jucator;
-            _miniMaxAI = new MiniMaxAI(Culoare.AlbastruMax, this);
+            InitializeazaAI(tip, adancime);
             _randulOmului = incepeOmul;
             InitializeazaTimerAsteptare();
+        }
+
+        private void InitializeazaAI(TipAI tip, int adancime)
+        {
+            if(tip == TipAI.MiniMax)
+            {
+                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
+            }
+            else if(tip == TipAI.AlphaBeta)
+            {
+                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
+            }
+            else
+            {
+                _jucatorAI = new MtdfAI(Culoare.AlbastruMax, this, adancime);
+            }
         }
 
         public void InitializeazaTimerAsteptare()
@@ -280,18 +308,15 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             Stopwatch cronometru = new();
             cronometru.Start();
 
-            _miniMaxAI.CronometruAI.Start();
             //evaluarea minimax primeste mutarile ai-ului ca si primul parametru
-            var mutareaOptima = _miniMaxAI.ReturneazaMutareaOptima(_miniMaxAI.Adancime);
-            _miniMaxAI.CronometruAI.Stop();
-            _miniMaxAI.CronometruAI.Reset();
+            var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
             Pozitie pozitie = mutareaOptima.Item1.Item2;
             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             RealizeazaMutareaLocal(piesa, pozitie);
 
             OpresteTimerAsteptareAI();
-            _miniMaxAI.UltimaPozitie = pozitie;
+            _jucatorAI.UltimaPozitie = pozitie;
             EsteRandulTau();
             Debug.WriteLine(cronometru.Elapsed);
             cronometru.Stop();

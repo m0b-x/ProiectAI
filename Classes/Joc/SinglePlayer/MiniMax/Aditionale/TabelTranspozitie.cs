@@ -16,13 +16,13 @@ class TabelTranspozitie
         return _tabel.ContainsKey(hash);
     }
 
-    public IntrareTabel Lookup(long hash)
+    public IntrareTabel ReturneazaIntrarea(long hash)
     {
         return _tabel[hash];
     }
 
-    public void AdaugaIntrare(long hash, double score, int depth, int flag)
+    public void AdaugaIntrare(long hash, double scor, int adancime, int flag)
     {
-        _tabel[hash] = new IntrareTabel(score, depth, flag);
+        _tabel[hash] = new IntrareTabel(scor, adancime, flag);
     }
 }
