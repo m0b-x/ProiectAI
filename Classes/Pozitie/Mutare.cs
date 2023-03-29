@@ -5,25 +5,25 @@ namespace ProiectVolovici
 {
     public struct Mutare : IEquatable<Mutare>
     {
-        public Pozitie Item1;
-        public Pozitie Item2;
+        public Pozitie MutareInitiala;
+        public Pozitie MutareFinala;
 
         public Mutare(Pozitie item1, Pozitie item2)
         {
-            Item1 = item1;
-            Item2 = item2;
+            MutareInitiala = item1;
+            MutareFinala = item2;
         }
         public override bool Equals(object obj)
         {
             if (!(obj is Mutare)) return false;
             Mutare other = (Mutare)obj;
-            return Item1 == other.Item1 && Item2 == other.Item2;
+            return MutareInitiala == other.MutareInitiala && MutareFinala == other.MutareFinala;
         }
 
         public bool Equals(Mutare other)
         {
-            return EqualityComparer<Pozitie>.Default.Equals(Item1, other.Item1) &&
-                   EqualityComparer<Pozitie>.Default.Equals(Item2, other.Item2);
+            return EqualityComparer<Pozitie>.Default.Equals(MutareInitiala, other.MutareInitiala) &&
+                   EqualityComparer<Pozitie>.Default.Equals(MutareFinala, other.MutareFinala);
         }
 
         public override int GetHashCode()
@@ -32,15 +32,15 @@ namespace ProiectVolovici
             {
                 int hash = (int)2166136261;
 
-                hash = (hash * 16777619) ^ Item1.GetHashCode();
-                hash = (hash * 16777619) ^ Item2.GetHashCode();
+                hash = (hash * 16777619) ^ MutareInitiala.GetHashCode();
+                hash = (hash * 16777619) ^ MutareFinala.GetHashCode();
                 return hash;
             }
         }
 
         public override string ToString()
         {
-            return $"{Item1.Linie},{Item1.Coloana} -> {Item2.Linie},{Item2.Coloana}";
+            return $"{MutareInitiala.Linie},{MutareInitiala.Coloana} -> {MutareFinala.Linie},{MutareFinala.Coloana}";
         }
 
         public static bool operator ==(Mutare a, Mutare b)

@@ -23,6 +23,17 @@ class TabelTranspozitie
 
     public void AdaugaIntrare(long hash, double scor, int adancime, int flag)
     {
-        _tabel[hash] = new IntrareTabel(scor, adancime, flag);
+        if (_tabel.ContainsKey(hash))
+        {
+            var item = _tabel[hash];
+            if (item.Adancime < adancime)
+            {
+                _tabel[hash] = new IntrareTabel(scor, adancime, flag);
+            }
+        }
+        else
+        {
+            _tabel.Add(hash, new IntrareTabel(scor, adancime, flag));
+        }
     }
 }

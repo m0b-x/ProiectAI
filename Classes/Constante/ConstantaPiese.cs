@@ -9,7 +9,7 @@
         public static double ValoareCal = 270;
         public static double ValoareGardian = 120;
         public static double ValoareElefant = 120;
-        public static double ValoareRege = 6000;
+        public static double ValoareRege = 10000;
 
     }
 }

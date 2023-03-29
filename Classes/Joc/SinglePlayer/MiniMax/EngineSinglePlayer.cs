@@ -310,8 +310,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
             //evaluarea minimax primeste mutarile ai-ului ca si primul parametru
             var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
-            Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.Item1);
-            Pozitie pozitie = mutareaOptima.Item1.Item2;
+            Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.MutareInitiala);
+            Pozitie pozitie = mutareaOptima.Item1.MutareFinala;
             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             RealizeazaMutareaLocal(piesa, pozitie);
 
