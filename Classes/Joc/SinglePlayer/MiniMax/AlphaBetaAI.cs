@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ProiectVolovici
 {
@@ -9,9 +11,9 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<long, (Pozitie, Pozitie)> CaceDeschideri = new();
-        private static Random GeneratorRandom = new();
-        private static double MarimeFereastraAspiratie = 0;//ConstantaPiese.ValoarePion / 2;
+        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion/4;
         private static double ValoareMaxima = 50000;
+        private static bool FerestreAspiratie = true;
 
         private EngineSinglePlayer _engine;
         private int _adancime;
@@ -1010,9 +1012,6 @@ namespace ProiectVolovici
                 }
             }
 
-            double alpha = -50000;
-            double beta = 50000;
-
             double scorMutare;
             int indexPozLuata,
                 indexPozCareIa,
@@ -1032,24 +1031,42 @@ namespace ProiectVolovici
             var mutariPosibile = CalculeazaMutariPosibile(matriceClonata, pozitiiAlbastre, moveOrdering: true);
             var valoriMutariPosibile = mutariPosibile.Values;
 
-            Mutare mutareOptima = valoriMutariPosibile[0];
-            double scorMutareOptima = evaluareMatriceInitiala
-                        + EngineJoc.ReturneazaScorPiesa(
-                        matriceClonata[
+            codPiesaLuata = matriceClonata[
                         valoriMutariPosibile[0].MutareFinala.Linie][
-                        valoriMutariPosibile[0].MutareFinala.Coloana]
-                        );
+                        valoriMutariPosibile[0].MutareFinala.Coloana];
+
+            Mutare mutareOptima = valoriMutariPosibile[0];
+            double scorMutareOptima = evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata);
             int adancimeMutareOptima = 0;
 
+            if (codPiesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                return new(mutareOptima, ValoareMaxima);
+            }
 
-            int index = 0;
+
+            double alpha = -ValoareMaxima;
+            double beta = ValoareMaxima;
+
 
 
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime &&
                 CronometruAI.ElapsedMilliseconds < 8000; adancimeIterativa++)
             {
-
-                index = 0;
+                if (FerestreAspiratie)
+                {
+                    if (scorMutareOptima <= alpha || scorMutareOptima >= beta && adancimeIterativa > 1)
+                    {
+                        alpha = -ValoareMaxima;
+                        beta = ValoareMaxima;
+                        adancimeIterativa--;
+                    }
+                    else
+                    {
+                        alpha = scorMutareOptima - MarimeFereastraAspiratie;
+                        beta = scorMutareOptima + MarimeFereastraAspiratie;
+                    }
+                }
 
                 foreach (var mutarePosibila in valoriMutariPosibile)
                 {
@@ -1060,13 +1077,6 @@ namespace ProiectVolovici
                     codPiesaCareIa = matriceClonata[
                         mutarePosibila.MutareInitiala.Linie][
                         mutarePosibila.MutareInitiala.Coloana];
-
-                    if (codPiesaLuata == (int)CodPiesa.RegeAlb)
-                    {
-                        mutareOptima = mutarePosibila;
-                        scorMutareOptima = double.MaxValue;
-                        break;
-                    }
 
                     matriceClonata[
                         mutarePosibila.MutareInitiala.Linie][
@@ -1097,21 +1107,17 @@ namespace ProiectVolovici
                         coloanaFinala: mutarePosibila.MutareFinala.Coloana,
                         piesaCareIa: codPiesaCareIa);
 
-
-
                     scorMutare = AlphaBetaCuMemorie(
-                                evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
-                                , matriceClonata
-                                , alpha
-                                , beta
-                                , adancimeIterativa
-                                , codPiesaLuata
-                                , hashUpdatat
-                                , pozitiiAlbe
-                                , pozitiiAlbastre
-                                , Culoare.AlbMin);
-
-
+                            evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
+                            , matriceClonata
+                            , alpha
+                            , beta
+                            , adancimeIterativa
+                            , codPiesaLuata
+                            , hashUpdatat
+                            , pozitiiAlbe
+                            , pozitiiAlbastre
+                            , Culoare.AlbMin);
 
 
                     //Debug.WriteLine(scorMutare + " " + adancimeTemp + " " + mutarePos);
@@ -1139,13 +1145,13 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    Debug.WriteLine($"{mutarePosibila} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
-                    index++;
-                }
+                    //Debug.WriteLine($"{mutarePosibila} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+
+                }//sf loop miscari
             }
             _cronometruAI.Stop();
             _cronometruAI.Reset();
-            Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
+            //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
             return new(mutareOptima, scorMutareOptima);
         }
         public static double EvalueazaMatricea(int[][] matrice)
@@ -1383,7 +1389,7 @@ namespace ProiectVolovici
                     flag = 1; // Lower bound
                 }
                 TabelTranspozitie.AdaugaIntrare(hash, val, adancime, flag);
-
+                
                 return val;
             }
         }

@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.Reflection;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ProiectVolovici
 {
@@ -9,7 +12,7 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<long, (Pozitie, Pozitie)> CaceDeschideri = new();
-        private static Random GeneratorRandom = new();
+        private static double ValoareMaxima = 50000;
 
         private EngineSinglePlayer _engine;
         private int _adancime;
@@ -993,50 +996,9 @@ namespace ProiectVolovici
             vector[i] = pozFinala;
             return i;
         }
-        public static double MTDF(int[][] matrice, double f, int depth, double eval, int codPiesaLuata,
-            long hashUpdatat, Pozitie[] pozitiiAlbe, Pozitie[] pozitiiAlbastre, Culoare culoare)
-        {
-            double g = f;
-            double upperBound = double.MaxValue;
-            double lowerBound = double.MinValue;
-
-            while (lowerBound < upperBound)
-            {
-                double beta = (g == lowerBound) ? g + 1 : g;
-
-
-                g = AlphaBetaCuMemorie(
-                        eval,
-                        matrice,
-                        beta - 1,
-                        beta,
-                        depth,
-                        codPiesaLuata,
-                        hashUpdatat,
-                        pozitiiAlbe,
-                        pozitiiAlbastre,
-                        culoare);
-
-
-                if (g < beta)
-                    upperBound = g;
-                else
-                    lowerBound = g;
-            }
-            return g;
-        }
-
 
         public override Tuple<Mutare, double> ReturneazaMutareaOptima()
         {
-
-            double scorMutare;
-            int indexPozLuata,
-                indexPozCareIa,
-                codPiesaCareIa,
-                codPiesaLuata;
-            long hashUpdatat;
-
             int[][] matriceClonata = _engine.MatriceCoduriPiese.Clone() as int[][];
             long hashInitial = ZobristHash.HashuiesteTabla(matriceClonata);
 
@@ -1049,146 +1011,156 @@ namespace ProiectVolovici
                 }
             }
 
+            double scorMutare;
+            int indexPozLuata,
+                indexPozCareIa,
+                codPiesaCareIa,
+                codPiesaLuata;
+            long hashUpdatat;
+
+
             _cronometruAI.Start();
 
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese);
 
-            SortedList<double, Mutare> mutPos = CalculeazaMutariPosibile(matriceClonata, _engine.ReturneazaPozitiiAlbastre(), moveOrdering: true);
-            var mutPosValues = mutPos.Values;
-
-            Mutare mutOpt = mutPosValues[0];
-            double scorMutareOptima = evaluareMatriceInitiala
-                        + EngineJoc.ReturneazaScorPiesa(
-                        matriceClonata[
-                        mutPosValues[0].MutareFinala.Linie][
-                        mutPosValues[0].MutareFinala.Coloana]
-                        );
-            int adancimeMutareOptima = 0;
 
             Pozitie[] pozitiiAlbastre = _engine.ReturneazaPozitiiAlbastre();
             Pozitie[] pozitiiAlbe = _engine.ReturneazaPozitiiAlbe();
 
-            double[] mutParaPrecedenta = new double[mutPos.Count];
-            double[] mutImparaPrecedenta = new double[mutPos.Count];
+            var mutariPosibile = CalculeazaMutariPosibile(matriceClonata, pozitiiAlbastre, moveOrdering: true);
+            var valoriMutariPosibile = mutariPosibile.Values;
 
-            bool evenply = false;
-            int index = 0;
+            codPiesaLuata = matriceClonata[
+                        valoriMutariPosibile[0].MutareFinala.Linie][
+                        valoriMutariPosibile[0].MutareFinala.Coloana];
 
+            Mutare mutareOptima = valoriMutariPosibile[0];
+            double scorMutareOptima = evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata);
+            int adancimeMutareOptima = 0;
 
-            for (int adancimeTemp = 1; adancimeTemp <= _adancime &&
-                CronometruAI.ElapsedMilliseconds < 8000; adancimeTemp++)
+            if (codPiesaLuata == (int)CodPiesa.RegeAlb)
             {
+                return new(mutareOptima, ValoareMaxima);
+            }
+            double evaluarePrecedenta = scorMutareOptima;
 
-                index = 0;
-                foreach (var mutarePos in mutPosValues)
+            bool evenply = true;
+            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime &&
+                CronometruAI.ElapsedMilliseconds < 8000; adancimeIterativa++)
+            {
+                evenply = !evenply;
+                foreach (var mutarePosibila in valoriMutariPosibile)
                 {
                     codPiesaLuata = matriceClonata[
-                        mutarePos.MutareFinala.Linie][
-                        mutarePos.MutareFinala.Coloana];
+                        mutarePosibila.MutareFinala.Linie][
+                        mutarePosibila.MutareFinala.Coloana];
 
                     codPiesaCareIa = matriceClonata[
-                        mutarePos.MutareInitiala.Linie][
-                        mutarePos.MutareInitiala.Coloana];
+                        mutarePosibila.MutareInitiala.Linie][
+                        mutarePosibila.MutareInitiala.Coloana];
 
-                    if (codPiesaLuata == (int)CodPiesa.RegeAlb)
-                    {
-                        mutOpt = mutarePos;
-                        scorMutareOptima = double.MaxValue;
-                        break;
-                    }
 
                     matriceClonata[
-                        mutarePos.MutareInitiala.Linie][
-                        mutarePos.MutareInitiala.Coloana] = 0;
+                        mutarePosibila.MutareInitiala.Linie][
+                        mutarePosibila.MutareInitiala.Coloana] = 0;
 
                     matriceClonata[
-                        mutarePos.MutareFinala.Linie][
-                        mutarePos.MutareFinala.Coloana] = codPiesaCareIa;
-
-                    hashUpdatat = ZobristHash.UpdateazaHash(
-                        hashInitial: hashInitial,
-                        linieInitiala: mutarePos.MutareInitiala.Linie,
-                        coloanaInitiala: mutarePos.MutareInitiala.Coloana,
-                        piesaLuata: codPiesaLuata,
-                        linieFinala: mutarePos.MutareFinala.Linie,
-                        coloanaFinala: mutarePos.MutareFinala.Coloana,
-                        piesaCareIa: codPiesaCareIa);
+                        mutarePosibila.MutareFinala.Linie][
+                        mutarePosibila.MutareFinala.Coloana] = codPiesaCareIa;
 
                     indexPozCareIa = SchimbaPozitiaDinVector(
-                        mutarePos.MutareInitiala,
+                        mutarePosibila.MutareInitiala,
                         pozitiiAlbastre,
-                        mutarePos.MutareFinala);
+                        mutarePosibila.MutareFinala);
 
                     indexPozLuata = -1;
                     if (EstePiesa(codPiesaLuata))
                     {
-                        indexPozLuata = StergePozitieDinVector(mutarePos.MutareFinala,
+                        indexPozLuata = StergePozitieDinVector(mutarePosibila.MutareFinala,
                                                 pozitiiAlbe);
                     }
-                    if (evenply)
-                    {
-                        //piesa albastra ia alba => maximizare
-                        scorMutare = MTDF(matriceClonata,
-                            mutParaPrecedenta[index],
-                            adancimeTemp,
-                            evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
-                            , codPiesaLuata
-                            , hashUpdatat
-                            , pozitiiAlbe
-                            , pozitiiAlbastre
-                            , Culoare.AlbMin);
-                        mutParaPrecedenta[index] = scorMutare;
-                    }
-                    else
-                    {
-                        //piesa albastra ia alba => maximizare
-                        scorMutare = MTDF(matriceClonata,
-                            mutImparaPrecedenta[index],
-                            adancimeTemp,
-                            evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
-                            , codPiesaLuata
-                            , hashUpdatat
-                            , pozitiiAlbe
-                            , pozitiiAlbastre
-                            , Culoare.AlbMin);
-                        mutImparaPrecedenta[index] = scorMutare;
-                    }
 
-                    evenply = !evenply;
+                    hashUpdatat = ZobristHash.UpdateazaHash(
+                        hashInitial: hashInitial,
+                        linieInitiala: mutarePosibila.MutareInitiala.Linie,
+                        coloanaInitiala: mutarePosibila.MutareInitiala.Coloana,
+                        piesaLuata: codPiesaLuata,
+                        linieFinala: mutarePosibila.MutareFinala.Linie,
+                        coloanaFinala: mutarePosibila.MutareFinala.Coloana,
+                        piesaCareIa: codPiesaCareIa);
+
+
+                    scorMutare = MTD(
+                                evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
+                                , matriceClonata
+                                , f: evaluarePrecedenta
+                                , adancimeIterativa
+                                , codPiesaLuata
+                                , hashUpdatat
+                                , pozitiiAlbe
+                                , pozitiiAlbastre
+                                , Culoare.AlbMin);
+
                     //Debug.WriteLine(scorMutare + " " + adancimeTemp + " " + mutarePos);
                     SchimbaPozitiaDinVector(indexPozCareIa,
                         pozitiiAlbastre,
-                        mutarePos.MutareInitiala);
+                        mutarePosibila.MutareInitiala);
 
                     if (EstePiesa(codPiesaLuata))
                     {
-                        AdaugaPozitieInVector(indexPozLuata, pozitiiAlbe, mutarePos.MutareFinala);
+                        AdaugaPozitieInVector(indexPozLuata, pozitiiAlbe, mutarePosibila.MutareFinala);
                     }
 
                     matriceClonata[
-                        mutarePos.MutareInitiala.Linie][
-                        mutarePos.MutareInitiala.Coloana] = codPiesaCareIa;
+                        mutarePosibila.MutareInitiala.Linie][
+                        mutarePosibila.MutareInitiala.Coloana] = codPiesaCareIa;
 
                     matriceClonata[
-                        mutarePos.MutareFinala.Linie][
-                        mutarePos.MutareFinala.Coloana] = codPiesaLuata;
+                        mutarePosibila.MutareFinala.Linie][
+                        mutarePosibila.MutareFinala.Coloana] = codPiesaLuata;
 
-                    if (scorMutare >= scorMutareOptima || adancimeTemp > adancimeMutareOptima)
+                    if (scorMutare >= scorMutareOptima && adancimeIterativa == adancimeMutareOptima ||
+                        adancimeIterativa > adancimeMutareOptima)
                     {
-                        mutOpt = mutarePos;
+                        mutareOptima = mutarePosibila;
                         scorMutareOptima = scorMutare;
-                        adancimeMutareOptima = adancimeTemp;
+                        adancimeMutareOptima = adancimeIterativa;
                     }
-
-                    index++;
+                    //Debug.WriteLine($"{mutarePosibila} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
                 }
+                //sf loop miscari
+                evaluarePrecedenta = scorMutareOptima;
             }
             _cronometruAI.Stop();
             _cronometruAI.Reset();
-            Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutOpt);
-            return new(mutOpt, scorMutareOptima);
+            //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
+            return new(mutareOptima, scorMutareOptima);
         }
 
+        public static double MTD(double eval, int[][] matrice, double f,
+    int adancime, int piesaCapturata, long hash,
+   Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+        {
+
+            double upperBound = ValoareMaxima;
+            double lowerBound = -ValoareMaxima;
+            double g = f;
+
+            do
+            {
+                double beta = g == lowerBound ? g + 1 : g;
+
+                g = AlphaBetaCuMemorie(eval, matrice, beta - 1, beta, adancime,
+                    piesaCapturata, hash, pozAlbe, pozAlbastre, culoare);
+
+                if (g < beta)
+                    upperBound = g;
+                else
+                    lowerBound = g;
+            }
+            while (lowerBound >= upperBound);
+            return g;
+        }
         public static double EvalueazaMatricea(int[][] matrice)
         {
             double scor = 0;
@@ -1224,8 +1196,8 @@ namespace ProiectVolovici
         }
 
         public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
-    double beta, int adancime, int piesaCapturata, long hash,
-    Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+            double beta, int adancime, int piesaCapturata, long hash,
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
 
             if (TabelTranspozitie.Contine(hash))
