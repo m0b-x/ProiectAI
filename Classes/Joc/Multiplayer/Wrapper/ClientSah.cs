@@ -69,8 +69,8 @@ namespace ProiectVolovici
         {
             InitializeazaInterfataVizuala();
             NuEsteRandulTau();
-            ActiveazaTimerRepetitiv(ref _timerClient, (uint)EngineClient.IntervalTimerPrimireDate, VerificareConexiuneCuHostul);
-            ActiveazaTimerRepetitiv(ref _timerStatusServer, TimpTimerVizual, DeconecteazaServerulVizual);
+            ActiveazaTimerRepetitiv( _timerClient, (uint)EngineClient.IntervalTimerPrimireDate, VerificareConexiuneCuHostul);
+            ActiveazaTimerRepetitiv( _timerStatusServer, TimpTimerVizual, DeconecteazaServerulVizual);
             base.ConecteazateLaJoc(adresaIP, port);
         }
 
@@ -114,7 +114,7 @@ namespace ProiectVolovici
 
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
-            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
+            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.MutareInitiala.Linie, (char)('A' + UltimaMutare.MutareInitiala.Coloana), UltimaMutare.MutareFinala.Linie, (char)('A' + UltimaMutare.MutareFinala.Coloana));
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 

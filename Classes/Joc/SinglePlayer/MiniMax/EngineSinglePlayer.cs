@@ -16,8 +16,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private string _ultimulMesajPrimitHost = NetworkServer.BufferGol;
 
-        private RichTextBox _textBoxMutariAlb;
         private RichTextBox _textBoxMutariAlbastru;
+        private RichTextBox _textBoxMutariAlb;
 
         protected System.Timers.Timer _timerAsteptareAI;
         protected short _valoareTimerAsteptare;
@@ -158,33 +158,33 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         public void InitializeazaInterfataVizuala()
         {
-            _textBoxMutariAlb = new RichTextBox();
-            _textBoxMutariAlb.ReadOnly = true;
-            _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _textBoxMutariAlb.Location = new System.Drawing.Point(536, 82);
-            _textBoxMutariAlb.Name = "textBoxMutariAlb";
-            _textBoxMutariAlb.Size = new System.Drawing.Size(155, 210);
-            _textBoxMutariAlb.TabIndex = 0;
-            _textBoxMutariAlb.RightToLeft = RightToLeft.No;
-            _textBoxMutariAlb.Text = "Mutari Jucator:\n";
-
             _textBoxMutariAlbastru = new RichTextBox();
             _textBoxMutariAlbastru.ReadOnly = true;
             _textBoxMutariAlbastru.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 344);
-            _textBoxMutariAlbastru.Name = "textBoxMutariAlbastru";
+            _textBoxMutariAlbastru.Location = new System.Drawing.Point(536, 82);
+            _textBoxMutariAlbastru.Name = "textBoxMutariAlb";
             _textBoxMutariAlbastru.Size = new System.Drawing.Size(155, 210);
-            _textBoxMutariAlbastru.TabIndex = 1;
+            _textBoxMutariAlbastru.TabIndex = 0;
             _textBoxMutariAlbastru.RightToLeft = RightToLeft.No;
             _textBoxMutariAlbastru.Text = "Mutari AI:\n";
 
-            ParentForm.Controls.Add(_textBoxMutariAlb);
+            _textBoxMutariAlb = new RichTextBox();
+            _textBoxMutariAlb.ReadOnly = true;
+            _textBoxMutariAlb.Font = new System.Drawing.Font(ConstantaTabla.FontPrincipal, 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            _textBoxMutariAlb.Location = new System.Drawing.Point(536, 344);
+            _textBoxMutariAlb.Name = "textBoxMutariAlbastru";
+            _textBoxMutariAlb.Size = new System.Drawing.Size(155, 210);
+            _textBoxMutariAlb.TabIndex = 1;
+            _textBoxMutariAlb.RightToLeft = RightToLeft.No;
+            _textBoxMutariAlb.Text = "Mutari Jucator:\n";
+
             ParentForm.Controls.Add(_textBoxMutariAlbastru);
+            ParentForm.Controls.Add(_textBoxMutariAlb);
         }
 
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
-            string ultimaMutareString = string.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.Item1.Linie, (char)('A' + UltimaMutare.Item1.Coloana), UltimaMutare.Item2.Linie, (char)('A' + UltimaMutare.Item2.Coloana));
+            string ultimaMutareString = string.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.MutareInitiala.Linie, (char)('A' + UltimaMutare.MutareInitiala.Coloana), UltimaMutare.MutareFinala.Linie, (char)('A' + UltimaMutare.MutareFinala.Coloana));
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 
@@ -231,7 +231,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
                     if (PiesaSelectata.Pozitie != pozitie)
                     {
-                        //aici se muta
                         if (EsteMutareaPosibila(pozitie))
                         {
                             if (MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
@@ -245,8 +244,9 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                             NuEsteRandulTau();
                             PornesteTimerAsteptareAI();
                             RealizeazaMutareaLocal(PiesaSelectata, pozitie);
-                            VerificaSahul();
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
+
+                            VerificaSahul();
                             _jucatorOm.UltimaPozitie = pozitie;
                             if (_esteGataMeciul == false)
                             {
@@ -256,6 +256,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                 });
                                 VerificaSahul();
                             }
+                            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                         }
                     }
                     else
@@ -312,7 +313,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
             Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.MutareInitiala);
             Pozitie pozitie = mutareaOptima.Item1.MutareFinala;
-            ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             RealizeazaMutareaLocal(piesa, pozitie);
 
             OpresteTimerAsteptareAI();

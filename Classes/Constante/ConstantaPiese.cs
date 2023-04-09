@@ -1,6 +1,5 @@
 ﻿namespace ProiectVolovici
 {
-    //amschimbat
     public static class ConstantaPiese
     {
         public static double ValoarePion = 40;

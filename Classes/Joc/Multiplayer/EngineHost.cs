@@ -121,7 +121,7 @@ namespace ProiectVolovici
             }
             _host.TrimiteDate(_parserTabla.CodificareTablaSiAspect(this.MatriceCoduriPiese, this.AspectJoc));
             _host.TimerCitireDate.Stop();
-            ActiveazaTimerRepetitiv(ref _timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
+            ActiveazaTimerRepetitiv(_timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
             EsteRandulTau();
         }
 

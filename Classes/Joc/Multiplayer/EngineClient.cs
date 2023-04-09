@@ -115,7 +115,7 @@ namespace ProiectVolovici
             await _client.PornesteCerereaDeConectare();
             await PrimesteTablaAsincron();
             _client.TimerCitireDate.Stop();
-            ActiveazaTimerRepetitiv(ref _timerJocClient, (uint)IntervalTimerPrimireDate, SincronizeazaClient);
+            ActiveazaTimerRepetitiv(_timerJocClient, (uint)IntervalTimerPrimireDate, SincronizeazaClient);
             _client.Buffer = NetworkClient.BufferGol;
             NuEsteRandulTau();
         }
