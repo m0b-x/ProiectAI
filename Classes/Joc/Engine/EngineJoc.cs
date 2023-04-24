@@ -20,7 +20,7 @@ namespace ProiectVolovici
         private List<Piesa> _listaPieseAlbastre;
         protected List<Pozitie> pozitiiMutariColorate;
         private Stack<Mutare> _stivaMutari = new Stack<Mutare>(120);
-        private Queue<Mutare> _coadaMutari = new Queue<Mutare>(120);
+        private Stack<int> _stivaCodPiese = new Stack<int>(120);
 
         private Label[] _labelColoane;
         private Label[] _labelLinii;
@@ -532,38 +532,47 @@ namespace ProiectVolovici
                 ListaPieseAlbe.Add(piesa);
         }
 
-        protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitiaFinala)
+        protected virtual void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitieFinala, bool logMove = true)
         {
+
             Pozitie pozitieInitiala = piesa.Pozitie;
+            if(logMove == true)
+                AdaugaMutareaInListe(pozitieInitiala, pozitieFinala);
             AscundePiesaSelectata(piesa);
             PunePiesaPeTabla(pozitieInitiala, ConstantaTabla.PiesaNula);
-            PunePiesaPeTabla(pozitiaFinala, piesa);
+            PunePiesaPeTabla(pozitieFinala, piesa);
 
             DecoloreazaMutariPosibile();
 
             PiesaSelectata = ConstantaTabla.PiesaNula;
             PozitiiMutariPosibile.Clear();
-            AdaugaMutare(pozitiaFinala, pozitieInitiala);
+
         }
-        private void StergeUltimaMutare()
+        public void StergeUltimaMutare()
         {
-            if(_stivaMutari.Count() != 0)
+            if(_stivaMutari.Count() > 0)
             {
-                var item = _stivaMutari.Pop();
-                _coadaMutari.Enqueue(item);
-            }
-        }
-        private void AdaugaMutare(Pozitie pozitiaFinala, Pozitie pozitieInitiala)
-        {
-            var item = new Mutare(pozitieInitiala, pozitiaFinala);
-            _stivaMutari.Push(item);
-            if (_coadaMutari.Count() != 0)
-            {
-                if (_coadaMutari.Peek() != item)
+                var mutare = _stivaMutari.Pop();
+                var codPiesa = _stivaCodPiese.Pop();
+
+
+                RealizeazaMutareaLocal(GetPiesaCuPozitia(mutare.PozitieFinala), mutare.PozitieInitiala);
+                if(codPiesa != 0)
                 {
-                    _coadaMutari.Clear();
+                    AdaugaPiesa(ConvertesteCodPiesaInObiect((CodPiesa)codPiesa), mutare.PozitieFinala);
                 }
+                _stivaMutari.Pop();
+                _stivaCodPiese.Pop();
+                
+
             }
+
+        }
+        private void AdaugaMutareaInListe(Pozitie pozitieInitiala, Pozitie pozitieFinala)
+        {
+            var mutare = new Mutare(pozitieInitiala, pozitieFinala);
+            _stivaMutari.Push(mutare);
+            _stivaCodPiese.Push(MatriceCoduriPiese[pozitieFinala.Linie][pozitieFinala.Coloana]);
         }
 
         public Piesa GetPiesaCuPozitia(Pozitie pozitie)
@@ -694,7 +703,7 @@ namespace ProiectVolovici
 
         public static double ReturneazaScorPiesa(int codPiesa)
         {
-            return _arrayScorPiese[(int)codPiesa];
+            return _arrayScorPiese[codPiesa];
         }
 
         public virtual void TerminaMeciul(TipSah tipSah = TipSah.Nespecificat)

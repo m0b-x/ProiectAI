@@ -29,21 +29,34 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSinglePlayer));
-            this.SuspendLayout();
+            buttonReverse = new System.Windows.Forms.Button();
+            SuspendLayout();
+            // 
+            // buttonReverse
+            // 
+            buttonReverse.Location = new System.Drawing.Point(555, 566);
+            buttonReverse.Name = "buttonReverse";
+            buttonReverse.Size = new System.Drawing.Size(118, 23);
+            buttonReverse.TabIndex = 0;
+            buttonReverse.Text = "Inverseaza Mutarea";
+            buttonReverse.UseVisualStyleBackColor = true;
+            buttonReverse.Click += buttonReverse_Click;
             // 
             // FormSinglePlayer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(726, 748);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormSinglePlayer";
-            this.Text = "FormSinglePlayer";
-            this.Load += new System.EventHandler(this.FormSinglePlayer_Load);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(726, 748);
+            Controls.Add(buttonReverse);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Name = "FormSinglePlayer";
+            Text = "FormSinglePlayer";
+            Load += FormSinglePlayer_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private System.Windows.Forms.Button buttonReverse;
     }
 }

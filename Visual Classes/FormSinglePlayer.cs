@@ -28,5 +28,14 @@ namespace ProiectVolovici
             jocSah.AdaugaPieselePrestabilite();
             jocSah.DeschideJocul();
         }
+
+        private void buttonReverse_Click(object sender, EventArgs e)
+        {
+            jocSah.StergeUltimaMutare();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

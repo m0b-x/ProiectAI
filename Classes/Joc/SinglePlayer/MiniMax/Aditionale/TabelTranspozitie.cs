@@ -4,24 +4,24 @@ using System.Collections.Generic;
 
 class TabelTranspozitie
 {
-    Dictionary<long, IntrareTabel> _tabel;
+    Dictionary<ulong, IntrareTabel> _tabel;
 
     public TabelTranspozitie(int nrIntrariEstimate)
     {
-        _tabel = new Dictionary<long, IntrareTabel>(nrIntrariEstimate);
+        _tabel = new Dictionary<ulong, IntrareTabel>(nrIntrariEstimate);
     }
 
-    public bool Contine(long hash)
+    public bool Contine(ulong hash)
     {
         return _tabel.ContainsKey(hash);
     }
 
-    public IntrareTabel ReturneazaIntrarea(long hash)
+    public IntrareTabel ReturneazaIntrarea(ulong hash)
     {
         return _tabel[hash];
     }
 
-    public void AdaugaIntrare(long hash, double scor, int adancime, int flag)
+    public void AdaugaIntrare(ulong hash, double scor, int adancime, int flag)
     {
         if (_tabel.ContainsKey(hash))
         {

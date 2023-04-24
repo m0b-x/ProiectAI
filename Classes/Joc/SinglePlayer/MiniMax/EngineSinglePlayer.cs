@@ -74,11 +74,11 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private void InitializeazaAI(TipAI tip, int adancime)
         {
-            if(tip == TipAI.MiniMax)
+            if (tip == TipAI.MiniMax)
             {
                 _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
             }
-            else if(tip == TipAI.AlphaBeta)
+            else if (tip == TipAI.AlphaBeta)
             {
                 _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
             }
@@ -184,11 +184,11 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
-            string ultimaMutareString = string.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.MutareInitiala.Linie, (char)('A' + UltimaMutare.MutareInitiala.Coloana), UltimaMutare.MutareFinala.Linie, (char)('A' + UltimaMutare.MutareFinala.Coloana));
+            string ultimaMutareString = string.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.PozitieInitiala.Linie, (char)('A' + UltimaMutare.PozitieInitiala.Coloana), UltimaMutare.PozitieFinala.Linie, (char)('A' + UltimaMutare.PozitieFinala.Coloana));
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 
-        protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
+        protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie, bool logMove = true)
         {
             _nrMutari++;
             base.RealizeazaMutareaLocal(piesa, pozitie);
@@ -310,14 +310,18 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             cronometru.Start();
 
             //evaluarea minimax primeste mutarile ai-ului ca si primul parametru
-            var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
-            Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.MutareInitiala);
-            Pozitie pozitie = mutareaOptima.Item1.MutareFinala;
-            RealizeazaMutareaLocal(piesa, pozitie);
+            unchecked
+            {
+                var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
 
-            OpresteTimerAsteptareAI();
-            _jucatorAI.UltimaPozitie = pozitie;
-            EsteRandulTau();
+                Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.PozitieInitiala);
+                Pozitie pozitie = mutareaOptima.Item1.PozitieFinala;
+                RealizeazaMutareaLocal(piesa, pozitie);
+
+                OpresteTimerAsteptareAI();
+                _jucatorAI.UltimaPozitie = pozitie;
+                EsteRandulTau();
+            }
             Debug.WriteLine(cronometru.Elapsed);
             cronometru.Stop();
         }

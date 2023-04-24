@@ -6,39 +6,51 @@ namespace ProiectVolovici
     {
         private static int NrPiese = Enum.GetNames(typeof(CodPiesa)).Length;
         private static int MarimeTabla = ConstantaTabla.NrColoane * ConstantaTabla.NrLinii;
+        private static ulong ULongMin = 0;
+        private static ulong ULongMax = ulong.MaxValue;
 
-        private static readonly long[][] tabeltranspozitie;
+        private static Random randomGen = new Random(DateTime.Now.Ticks.GetHashCode());
+
+        private static readonly ulong[][] tabeltranspozitie;
 
         static ZobristHash()
         {
-            Random rnd;
-
-            rnd = new Random(0);
-            tabeltranspozitie = new long[MarimeTabla][];
+            tabeltranspozitie = new ulong[MarimeTabla][];
             for (int i = 0; i < MarimeTabla; i++)
             {
-                tabeltranspozitie[i] = new long[NrPiese];
+                tabeltranspozitie[i] = new ulong[NrPiese];
             }
             for (int i = 0; i < MarimeTabla; i++)
             {
                 for (int j = 1; j < NrPiese; j++)
                 {
-                    long valRandom = rnd.NextInt64();
+                    ulong valRandom = NextRandomUlong(randomGen);
                     tabeltranspozitie[i][j] = valRandom;
                 }
             }
         }
 
-        public static long HashuiesteTabla(int[][] tabla)
+        private static ulong NextRandomUlong(Random random)
         {
-            long retVal = 0;
+
+            byte[] buffer = new byte[sizeof(ulong)];
+            random.NextBytes(buffer);
+            ulong value = BitConverter.ToUInt64(buffer, 0);
+
+            value = value % (ULongMax - ULongMin) + ULongMin;
+            return value;
+        }
+
+        public static ulong HashuiesteTabla(int[][] tabla)
+        {
+            ulong retVal = 0;
             unchecked
             {
                 for (int linie = 0; linie < ConstantaTabla.NrLinii; linie++)
                 {
                     for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                     {
-                        if (tabla[linie][coloana] != (int)CodPiesa.Gol)
+                        if (tabla[linie][coloana] != 0)
                         {
                             int piesa = tabla[linie][coloana];
                             retVal ^= tabeltranspozitie[linie * (ConstantaTabla.NrLinii - 1) + coloana][piesa];
@@ -49,17 +61,15 @@ namespace ProiectVolovici
             return retVal;
         }
 
-        public static long UpdateazaHash(long hashInitial,
+        public static ulong UpdateazaHash(ulong hashInitial,
                                   int linieInitiala, int coloanaInitiala,
                                   int piesaLuata,
                                   int linieFinala, int coloanaFinala,
                                   int piesaCareIa)
         {
-            long hashFinal = hashInitial;
+            ulong hashFinal = hashInitial;
             unchecked
             {
-                //Debug.WriteLine(linieInitiala * (ConstantaTabla.NrLinii - 1));
-                //Debug.WriteLine(linieFinala * (ConstantaTabla.NrLinii - 1));
                 hashFinal ^= tabeltranspozitie[linieInitiala * (ConstantaTabla.NrLinii - 1) + coloanaInitiala][piesaCareIa];
                 hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaLuata];
                 hashFinal ^= tabeltranspozitie[linieFinala * (ConstantaTabla.NrLinii - 1) + coloanaFinala][piesaCareIa];

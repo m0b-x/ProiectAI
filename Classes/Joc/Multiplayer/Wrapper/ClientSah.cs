@@ -99,7 +99,7 @@ namespace ProiectVolovici
             base.NuEsteRandulTau();
         }
 
-        protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie)
+        protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie, bool logMove = true)
         {
             base.RealizeazaMutareaLocal(piesa, pozitie);
             if (RandulTau == true)
@@ -114,7 +114,7 @@ namespace ProiectVolovici
 
         private void ScrieUltimaMutareInTextBox(RichTextBox textBox)
         {
-            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.MutareInitiala.Linie, (char)('A' + UltimaMutare.MutareInitiala.Coloana), UltimaMutare.MutareFinala.Linie, (char)('A' + UltimaMutare.MutareFinala.Coloana));
+            String ultimaMutareString = String.Format("    ({0},{1}) -> ({2},{3})", UltimaMutare.PozitieInitiala.Linie, (char)('A' + UltimaMutare.PozitieInitiala.Coloana), UltimaMutare.PozitieFinala.Linie, (char)('A' + UltimaMutare.PozitieFinala.Coloana));
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(textBox, "Text", $"{UtilitatiCrossThread.PrimesteTextulDinAltThread(textBox)}{Environment.NewLine}{ultimaMutareString}");
         }
 
