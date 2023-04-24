@@ -16,6 +16,8 @@ namespace ProiectVolovici
         private static Dictionary<(int,Pozitie), int> HistoryTable = new(13*90);
         private static Mutare[][] KillerMoves;
 
+        private static double ProcentajMaterial = 0.8;
+        private static double ProcentajPST = 0.2;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -874,64 +876,6 @@ namespace ProiectVolovici
             CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
         }
 
-        public static SortedList<double, Mutare> CalculeazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
-        {
-            SortedList<double, Mutare> capPos;
-
-            capPos = new(18, new DuplicateKeyComparerDesc<double>());
-            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
-            {
-                if (poz.Linie != -1)
-                {
-                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
-                    foreach (Pozitie mut in mutari)
-                    {
-                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
-                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
-
-                        if (piesaLuata != 0)
-                        {
-                            capPos.Add(-EngineJoc.ReturneazaScorPiesa(piesaCareIa)
-                                + -EngineJoc.ReturneazaScorPiesa(piesaLuata)
-                                ,
-                                new(new(poz.Linie, poz.Coloana), mut));
-                        }
-                    }
-                }
-            }
-            return capPos;
-        }
-
-        public static SortedList<double, Mutare> GenereazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
-        {
-            SortedList<double, Mutare> mutPos;
-
-            //most valuable victim, least valuable agressor
-            //Piece-Square Tables
-
-            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
-            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
-            {
-                if (poz.Linie != -1)
-                {
-                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
-                    foreach (Pozitie mut in mutari)
-                    {
-                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
-                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
-
-                        if (piesaLuata != 0)
-                        {
-                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
-                        }
-                    }
-                }
-            }
-            return mutPos;
-
-        }
 		public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true,int adancime = 0)
         {
             SortedList<double, Mutare> mutPos;
@@ -1119,10 +1063,19 @@ namespace ProiectVolovici
             codPiesaLuata = matriceClonata[
                     valoriMutariPosibile[0].PozitieFinala.Linie][
                     valoriMutariPosibile[0].PozitieFinala.Coloana];
+            codPiesaCareIa = matriceClonata[
+					valoriMutariPosibile[0].PozitieInitiala.Linie][
+					valoriMutariPosibile[0].PozitieInitiala.Coloana];
 
-            Mutare mutareOptima = valoriMutariPosibile[0];
-            double scorMutareOptima = evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata);
-            int adancimeMutareOptima = 0;
+			Mutare mutareOptima = valoriMutariPosibile[0];
+
+			var valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(codPiesaLuata) * ProcentajMaterial +
+					ProcentajPST * ListaTabelePST[codPiesaCareIa][valoriMutariPosibile[0].PozitieFinala.Linie][valoriMutariPosibile[0].PozitieFinala.Coloana];
+
+
+            double scorMutareOptima = evaluareMatriceInitiala + valoarePiesaLuata;
+
+			int adancimeMutareOptima = 0;
 
             if (codPiesaLuata == (int)CodPiesa.RegeAlb)
             {
@@ -1192,9 +1145,13 @@ namespace ProiectVolovici
                         coloanaFinala: mutarePosibila.PozitieFinala.Coloana,
                         piesaCareIa: codPiesaCareIa);
 
-                    scorMutare = AlphaBetaCuMemorie(
-                            evaluareMatriceInitiala + EngineJoc.ReturneazaScorPiesa(codPiesaLuata)
-                            , matriceClonata
+			            valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(codPiesaLuata) * ProcentajMaterial +
+				                ProcentajPST * ListaTabelePST[codPiesaCareIa][mutarePosibila.PozitieFinala.Linie][mutarePosibila.PozitieFinala.Coloana]; 
+
+
+					scorMutare = AlphaBetaCuMemorie(
+                            evaluareMatriceInitiala + valoarePiesaLuata
+							, matriceClonata
                             , alpha
                             , beta
                             , adancimeIterativa
@@ -1240,19 +1197,29 @@ namespace ProiectVolovici
         }
         public static double EvalueazaMatricea(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre)
         {
-            double scor = 0;
+            double material = 0;
+            double pst = 0;
 
             foreach(var poz in pozAlbe)
             {
-                if(poz.Linie != -1)
-                scor -= matrice[poz.Linie][poz.Coloana];
-            }
+                if (poz.Linie != -1)
+                {
+                    var piesaCareIa = matrice[poz.Linie][poz.Coloana];
+                    material -= piesaCareIa;
+					pst -= ListaTabelePST[piesaCareIa][poz.Linie][poz.Coloana];
+                }
+
+			}
             foreach (var poz in pozAlbastre)
 			{
 				if (poz.Linie != -1)
-					scor += matrice[poz.Linie][poz.Coloana];
-            }
-            return scor;
+				{
+					var piesaCareIa = matrice[poz.Linie][poz.Coloana];
+					material += piesaCareIa;
+					pst += ListaTabelePST[piesaCareIa][poz.Linie][poz.Coloana];
+				}
+			}
+            return material* ProcentajMaterial + pst* ProcentajPST;
         }
 
         public void AfiseazaVectorDebug(Pozitie[] vector)
@@ -1329,6 +1296,7 @@ namespace ProiectVolovici
                     double valoarePiesaLuata;
 
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoarePiesaLuata);
+
 
                     val = Math.Max(val, AlphaBetaCuMemorie(eval + valoarePiesaLuata,
                                 matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
@@ -1470,7 +1438,8 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
-            valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
+            valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata)*ProcentajMaterial +
+                ProcentajPST* ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
         }
 
         private static void RefaMutareaAlb(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
@@ -1512,8 +1481,10 @@ namespace ProiectVolovici
                             pozAlbe);
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
-            valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
-        }
+
+			valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+				ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+		}
 
         private static bool EstePiesa(int codPiesa)
         {
