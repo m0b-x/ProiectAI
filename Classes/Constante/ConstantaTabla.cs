@@ -42,56 +42,56 @@ namespace ProiectVolovici
 
         public static List<Pozitie> PozitiiPalat = new()
         {
-            Pozitie.AcceseazaElementStatic(0, 3),
-            Pozitie.AcceseazaElementStatic(0, 4),
-            Pozitie.AcceseazaElementStatic(0, 5),
+            new Pozitie(0, 3),
+            new Pozitie(0, 4),
+            new Pozitie(0, 5),
 
-            Pozitie.AcceseazaElementStatic(1, 3),
-            Pozitie.AcceseazaElementStatic(1, 4),
-            Pozitie.AcceseazaElementStatic(1, 5),
+            new Pozitie(1, 3),
+            new Pozitie(1, 4),
+            new Pozitie(1, 5),
 
-            Pozitie.AcceseazaElementStatic(2, 3),
-            Pozitie.AcceseazaElementStatic(2, 4),
-            Pozitie.AcceseazaElementStatic(2, 5),
+            new Pozitie(2, 3),
+            new Pozitie(2, 4),
+            new Pozitie(2, 5),
 
-            Pozitie.AcceseazaElementStatic(7, 3),
-            Pozitie.AcceseazaElementStatic(7, 4),
-            Pozitie.AcceseazaElementStatic(7, 5),
+            new Pozitie(7, 3),
+            new Pozitie(7, 4),
+            new Pozitie(7, 5),
 
-            Pozitie.AcceseazaElementStatic(8, 3),
-            Pozitie.AcceseazaElementStatic(8, 4),
-            Pozitie.AcceseazaElementStatic(8, 5),
+            new Pozitie(8, 3),
+            new Pozitie(8, 4),
+            new Pozitie(8, 5),
 
-            Pozitie.AcceseazaElementStatic(9, 3),
-            Pozitie.AcceseazaElementStatic(9, 4),
-            Pozitie.AcceseazaElementStatic(9, 5)
+            new Pozitie(9, 3),
+            new Pozitie(9, 4),
+            new Pozitie(9, 5)
         };
 
         public static void InitializeazaPolitiiPalat(ref List<Pozitie> _pozitiiPalat)
         {
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(0, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(0, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(0, 5));
+            _pozitiiPalat.Add(new Pozitie(0, 3));
+            _pozitiiPalat.Add(new Pozitie(0, 4));
+            _pozitiiPalat.Add(new Pozitie(0, 5));
 
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(1, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(1, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(1, 5));
+            _pozitiiPalat.Add(new Pozitie(1, 3));
+            _pozitiiPalat.Add(new Pozitie(1, 4));
+            _pozitiiPalat.Add(new Pozitie(1, 5));
 
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(2, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(2, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(2, 5));
+            _pozitiiPalat.Add(new Pozitie(2, 3));
+            _pozitiiPalat.Add(new Pozitie(2, 4));
+            _pozitiiPalat.Add(new Pozitie(2, 5));
 
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(7, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(7, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(7, 5));
+            _pozitiiPalat.Add(new Pozitie(7, 3));
+            _pozitiiPalat.Add(new Pozitie(7, 4));
+            _pozitiiPalat.Add(new Pozitie(7, 5));
 
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(8, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(8, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(8, 5));
+            _pozitiiPalat.Add(new Pozitie(8, 3));
+            _pozitiiPalat.Add(new Pozitie(8, 4));
+            _pozitiiPalat.Add(new Pozitie(8, 5));
 
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(9, 3));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(9, 4));
-            _pozitiiPalat.Add(Pozitie.AcceseazaElementStatic(9, 5));
+            _pozitiiPalat.Add(new Pozitie(9, 3));
+            _pozitiiPalat.Add(new Pozitie(9, 4));
+            _pozitiiPalat.Add(new Pozitie(9, 5));
         }
     }
 }

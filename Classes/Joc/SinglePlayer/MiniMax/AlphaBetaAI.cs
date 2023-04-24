@@ -10,7 +10,7 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
-        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion/2;
+        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion/4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
         private static Dictionary<(int,Pozitie), int> HistoryTable = new(13*90);
@@ -903,8 +903,36 @@ namespace ProiectVolovici
             return capPos;
         }
 
+        public static SortedList<double, Mutare> GenereazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
+        {
+            SortedList<double, Mutare> mutPos;
 
-        public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true,int adancime = 0)
+            //most valuable victim, least valuable agressor
+            //Piece-Square Tables
+
+            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+                        if (piesaLuata != 0)
+                        {
+                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                        }
+                    }
+                }
+            }
+            return mutPos;
+
+        }
+		public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true,int adancime = 0)
         {
             SortedList<double, Mutare> mutPos;
 
@@ -1393,7 +1421,16 @@ namespace ProiectVolovici
             }
         }
 
-        private static void RefaMutareaAlbastru(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
+
+
+
+
+
+
+
+
+
+		private static void RefaMutareaAlbastru(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
         {
             if (EstePiesa(piesaLuata))
             {
