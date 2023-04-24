@@ -177,7 +177,7 @@ namespace ProiectVolovici
         private void butonAlphaBeta_Usor_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 2, TipAI.AlphaBeta);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }
@@ -185,7 +185,7 @@ namespace ProiectVolovici
         private void butonAlphaBeta_Mediu_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 3, TipAI.AlphaBeta);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 4, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }
@@ -193,7 +193,7 @@ namespace ProiectVolovici
         private void butonAlphaBeta_Greu_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 4, TipAI.AlphaBeta);
+            Form formSinglePlayer = new FormSinglePlayer(this, adancime: 5, TipAI.AlphaBeta);
             formSinglePlayer.Closed += (s, args) => this.Close();
             formSinglePlayer.Show();
         }

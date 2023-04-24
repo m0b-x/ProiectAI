@@ -135,9 +135,9 @@ namespace ProiectVolovici
 
             for (int i = pozitii.Count - 1; i >= 0; i--)
             {
-                if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
-                {
-                    pozitii.RemoveAt(i);
+				if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 && matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
+				{
+					pozitii.RemoveAt(i);
                 }
             }
 

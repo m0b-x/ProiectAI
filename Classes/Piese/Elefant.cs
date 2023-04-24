@@ -86,7 +86,9 @@ namespace ProiectVolovici
             {
                 for (int i = pozitii.Count - 1; i >= 0; i--)
                 {
-                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa ||
+                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+                        matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa
+                        ||
                         pozitii[i].Linie < 5)
                     {
                         pozitii.RemoveAt(i);
@@ -97,8 +99,10 @@ namespace ProiectVolovici
             {
                 for (int i = pozitii.Count - 1; i >= 0; i--)
                 {
-                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa ||
-                        pozitii[i].Linie > 4)
+                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+						matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa ||
+
+						pozitii[i].Linie > 4)
                     {
                         pozitii.RemoveAt(i);
                     }

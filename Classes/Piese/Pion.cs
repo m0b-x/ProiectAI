@@ -80,7 +80,8 @@ namespace ProiectVolovici
             {
                 if (0 > pozitii[i].Linie || pozitii[i].Linie > 9 ||
                     0 > pozitii[i].Coloana || pozitii[i].Coloana > 8 ||
-                    matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
+					matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+						matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
                 {
                     pozitii.RemoveAt(i);
                 }

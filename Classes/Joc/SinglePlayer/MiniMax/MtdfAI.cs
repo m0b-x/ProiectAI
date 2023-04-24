@@ -352,7 +352,7 @@ namespace ProiectVolovici
         private void InitializeazaKillerMoves()
         {
             KillerMoves = new Mutare[_adancime + 1][];
-            for (int i = 1; i <= _adancime; i++)
+            for (int i = 0; i <= _adancime; i++)
             {
                 KillerMoves[i] = new Mutare[2];
             }
@@ -889,7 +889,7 @@ namespace ProiectVolovici
                 {
                     if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie =  poz;
                         List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
@@ -910,7 +910,7 @@ namespace ProiectVolovici
                                 else
                                 if (HistoryTable[(piesaCareIa, mut)] > 0)
                                 {
-                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)] / 100, new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)] , new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 {
