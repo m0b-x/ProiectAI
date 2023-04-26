@@ -18,8 +18,8 @@ namespace ProiectVolovici
         private static Dictionary<(int,Pozitie), int> HistoryTable = new(14*90);
         private static Mutare[][] KillerMoves;
 
-        private static double ProcentajMaterial = 0.9;
-        private static double ProcentajPST = 0.1;
+        private static double ProcentajMaterial = 1.0;
+        private static double ProcentajPST = 0.0;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -1231,7 +1231,7 @@ namespace ProiectVolovici
 					pst += ListaTabelePST[piesa][poz.Linie][poz.Coloana];
 				}
 			}
-            return material* ProcentajMaterial ;
+            return material* ProcentajMaterial + pst* ProcentajPST;
         }
 
         public void AfiseazaVectorDebug(Pozitie[] vector)
@@ -1287,7 +1287,7 @@ namespace ProiectVolovici
                             break;
                     }
 
-                    if (beta <= alpha)
+                    if (beta <= alpha) 
                     {
                         return entry.Scor;
                     }
@@ -1295,13 +1295,18 @@ namespace ProiectVolovici
             }
             if (adancime <= 0)
             {
-                return eval;
+                if (culoare == Culoare.AlbastruMax && eval >= beta)
+                    return eval;
+
+                if (culoare == Culoare.AlbMin && eval < alpha)
+                    return eval;
+                return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
             }
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
                 )
             {
-                return QSC(eval,matrice,alpha,beta,adancime,piesaCapturata,pozAlbe,pozAlbastre,culoare);
+                return eval;
             }
 
 
@@ -1429,7 +1434,7 @@ namespace ProiectVolovici
 
 
         public static double QSC(double eval, int[][] matrice, double alpha,
-    double beta, int adancime, int piesaCapturata,
+    double beta, int piesaCapturata,
     Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
 
@@ -1439,7 +1444,6 @@ namespace ProiectVolovici
             {
                 return eval;
             }
-
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
@@ -1464,12 +1468,12 @@ namespace ProiectVolovici
                     FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     val = Math.Max(val, QSC(eval + valoareMutare,
-                                matrice, alpha, beta, adancime - 1, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                                matrice, alpha, beta, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
                     alpha = Math.Max(val, alpha);
 
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val >= beta)
+                    if (val > beta)
                     {
                         goto ValoareFinala;
                     }
@@ -1481,6 +1485,7 @@ namespace ProiectVolovici
             //minimizare => alb
             else
             {
+
                 var origBeta = beta;
                 int piesaLuata;
                 int piesaCareIa;
@@ -1501,14 +1506,14 @@ namespace ProiectVolovici
                     FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     val = Math.Min(val, QSC(eval - valoareMutare,
-                        matrice, alpha, beta, adancime - 1,
+                        matrice, alpha, beta,
                         piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
                     beta = Math.Min(val, beta);
 
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val <= alpha)
+                    if (val < alpha)
                     { 
                         goto ValoareFinala;
                     }
@@ -1517,6 +1522,8 @@ namespace ProiectVolovici
                 return val;
             }
         }
+
+
 
 
 
