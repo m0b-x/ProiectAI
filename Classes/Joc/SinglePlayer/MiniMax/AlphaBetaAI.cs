@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Security.Policy;
-using System.Windows.Forms;
-using static System.Formats.Asn1.AsnWriter;
+using System.Drawing;
 
 namespace ProiectVolovici
 {
@@ -19,7 +16,7 @@ namespace ProiectVolovici
         private static Dictionary<(int,Pozitie), int> HistoryTable = new(14*90);
         private static Mutare[][] KillerMoves;
 
-        private static double ProcentajMaterial = 1.0;
+        private static double ProcentajMaterial = 1.00;
         private static double ProcentajPST = 0.0;
         private EngineSinglePlayer _engine;
         private int _adancime;
@@ -94,211 +91,211 @@ namespace ProiectVolovici
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
 		}
-        private static int[][] TabelNul = new int[][] {
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
+        private static double[][] TabelNul = new double[][] {
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
         };
 
 
-		private static int[][] TabelPionAlbastru = new int[][] {
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
-            new int[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
-            new int[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
-            new int[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
-            new int[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
-            new int[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
-            new int[] {0,  3,  6,  9,  12,  9,  6,  3,  0}
+        private static double[][] TabelPionAlbastru = new double[][] {
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
+            new double[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
+            new double[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
+            new double[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
+            new double[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
+            new double[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
+            new double[] {0,  3,  6,  9,  12,  9,  6,  3,  0}
         };
 
-        private static int[][] TabelPionAlb = new int[][] {
+        private static double[][] TabelPionAlb = new double[][] {
 
-            new int[] {0,  3,  6,  9,  12,  9,  6,  3,  0},
-            new int[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
-            new int[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
-            new int[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
-            new int[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
-            new int[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
-            new int[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
+            new double[] {0,  3,  6,  9,  12,  9,  6,  3,  0},
+            new double[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
+            new double[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
+            new double[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
+            new double[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
+            new double[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
+            new double[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
 			//
         };
 
 
-        private static int[][] TabelCalAlbastru = new int[][]
+        private static double[][] TabelCalAlbastru = new double[][]
         {
-            new int[] {0, -4, 0, 0, 0, 0, 0, -4, 0},
-            new int[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new int[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new int[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new int[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new int[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new int[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new int[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new int[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new int[] {4, 8, 16, 12, 4, 12, 16, 8, 4}
+            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0},
+            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
+            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
+            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
+            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
+            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
+            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
+            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
+            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
+            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4}
         };
 
-        private static int[][] TabelCalAlb = new int[][]
+        private static double[][] TabelCalAlb = new double[][]
         {
-            new int[] {4, 8, 16, 12, 4, 12, 16, 8, 4},
-            new int[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new int[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new int[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new int[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new int[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new int[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new int[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new int[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new int[] {0, -4, 0, 0, 0, 0, 0, -4, 0}
+            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4},
+            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
+            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
+            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
+            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
+            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
+            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
+            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
+            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
+            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0}
         };
 
-        private static int[][] TabelTunAlbastru = new int[][]
+        private static double[][] TabelTunAlbastru = new double[][]
         {
-            new int[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
-            new int[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
-            new int[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
-            new int[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
-            new int[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
-            new int[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
-            new int[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
-            new int[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
-            new int[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
-            new int[] {6, 4, 0, -10, -12, -10, 0, 4, 6}
+            new double[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
+            new double[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
+            new double[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
+            new double[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
+            new double[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
+            new double[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
+            new double[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
+            new double[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
+            new double[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
+            new double[] {6, 4, 0, -10, -12, -10, 0, 4, 6}
         };
-        private static int[][] TabelTunAlb = new int[][]
+        private static double[][] TabelTunAlb = new double[][]
         {
-            new int[] {6, 4, 0, -10, -12, -10, 0, 4, 6},
-            new int[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
-            new int[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
-            new int[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
-            new int[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
-            new int[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
-            new int[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
-            new int[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
-            new int[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
-            new int[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
+            new double[] {6, 4, 0, -10, -12, -10, 0, 4, 6},
+            new double[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
+            new double[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
+            new double[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
+            new double[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
+            new double[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
+            new double[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
+            new double[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
+            new double[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
+            new double[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
         };
 
-        private static int[][] TabelTuraAlbastra = new int[][]
+        private static double[][] TabelTuraAlbastra = new double[][]
         {
-            new int[] {-2, 10, 6, 14, 12, 14, 6, 10, -2},
-            new int[] {8, 4, 8, 16, 8, 16, 8, 4, 8},
-            new int[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new int[] {6, 10, 8, 14, 14, 14, 8, 10, 6},
-            new int[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new int[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new int[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new int[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new int[] {16, 20, 18, 24, 26, 24, 18, 20, 16},
-            new int[] {14, 14, 12, 18, 16, 18, 12, 14, 14}
+            new double[] {-2, 10, 6, 14, 12, 14, 6, 10, -2},
+            new double[] {8, 4, 8, 16, 8, 16, 8, 4, 8},
+            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
+            new double[] {6, 10, 8, 14, 14, 14, 8, 10, 6},
+            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
+            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
+            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
+            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
+            new double[] {16, 20, 18, 24, 26, 24, 18, 20, 16},
+            new double[] {14, 14, 12, 18, 16, 18, 12, 14, 14}
         };
-        private static int[][] TabelTuraAlba = new int[][]
+        private static double[][] TabelTuraAlba = new double[][]
         {
-            new int[] {-14, -14, -16, -18, -20, -18, -14, -14, -14},
-            new int[] {14, 12, 18, 18, 18, 12, 14, 14, 14},
-            new int[] {12, 18, 24, 26, 24, 18, 16, 20, 16},
-            new int[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new int[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new int[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new int[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new int[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new int[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
-            new int[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
+            new double[] {-14, -14, -16, -18, -20, -18, -14, -14, -14},
+            new double[] {14, 12, 18, 18, 18, 12, 14, 14, 14},
+            new double[] {12, 18, 24, 26, 24, 18, 16, 20, 16},
+            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
+            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
+            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
+            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
+            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
+            new double[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
+            new double[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
         };
-        private static int[][] TabelGardianAlb = new int[][]
+        private static double[][] TabelGardianAlb = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
         };
-        private static int[][] TabelGardianAlbastru = new int[][]
+        private static double[][] TabelGardianAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
         //
-        private static int[][] TabelRegeAlb = new int[][]
+        private static double[][] TabelRegeAlb = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
         };
-        private static int[][] TabelRegeAlbastru = new int[][]
+        private static double[][] TabelRegeAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
         //
-        private static int[][] TabelElefantAlb = new int[][]
+        private static double[][] TabelElefantAlb = new double[][]
         {
-            new int[] {0, 1, 0, 0, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, 1, 0, 0, 0}
+            new double[] {0, 1, 0, 0, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, 1, 0, 0, 0}
         };
-        private static int[][] TabelElefantAlbastru = new int[][]
+        private static double[][] TabelElefantAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 1, 0, 0, 0, 1, 0, 0}
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 1, 0, 0, 0, 1, 0, 0}
         };
-        private static List<int[][]> ListaTabelePST = new List<int[][]>()
+        private static List<double[][]> TabelPSTMoveOrdering = new List<double[][]>()
         {
 			TabelNul,
             TabelPionAlb,
@@ -944,7 +941,7 @@ namespace ProiectVolovici
                                 }
                                 else
                                 {
-                                    mutPos.Add(ListaTabelePST[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                             }
                             else
@@ -1078,11 +1075,45 @@ namespace ProiectVolovici
         }
 
 
+        public static T[][] CloneazaMatricea<T>(T[][] arr)
+        {
+            int linie = arr.Length;
+            T[][] arrClona = new T[linie][];
+
+            for (int i = 0; i < linie; i++)
+            {
+                int coloana = arr[i].Length;
+                arrClona[i] = new T[coloana];
+                Array.Copy(arr[i], arrClona[i], coloana);
+            }
+
+            return arrClona;
+        }
+
+        public static bool AreJaggedArraysEqual<T>(T[][] arr1, T[][] arr2)
+        {
+            if (arr1.Length != arr2.Length)
+                return false;
+
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                if (arr1[i].Length != arr2[i].Length)
+                    return false;
+
+                for (int j = 0; j < arr1[i].Length; j++)
+                {
+                    if (!EqualityComparer<T>.Default.Equals(arr1[i][j], arr2[i][j]))
+                        return false;
+                }
+            }
+
+            return true;
+        }
 
 
         public override Tuple<Mutare, double> ReturneazaMutareaOptima()
         {
-            int[][] matriceClonata = _engine.MatriceCoduriPiese.Clone() as int[][];
+            int[][] matriceClonata = CloneazaMatricea(_engine.MatriceCoduriPiese);
             ulong hashInitial = ZobristHash.HashuiesteTabla(matriceClonata);
 
             if (_engine.NrMutari <= 1)
@@ -1125,13 +1156,18 @@ namespace ProiectVolovici
 					valoriMutariPosibile[0].PozitieInitiala.Linie][
 					valoriMutariPosibile[0].PozitieInitiala.Coloana];
 
-			Mutare mutareOptima = valoriMutariPosibile[0];
+            int pozitieSchimbata;
+            double valoareMutare;
 
-			var valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-					ProcentajPST * ListaTabelePST[piesaCareIa][valoriMutariPosibile[0].PozitieFinala.Linie][valoriMutariPosibile[0].PozitieFinala.Coloana];
+            FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
+                out piesaLuata, out piesaCareIa, valoriMutariPosibile[0], out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
 
+            Mutare mutareOptima = valoriMutariPosibile[0];
             double scorMutareOptima = evaluareMatriceInitiala + valoareMutare;
+
+
+            RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, valoriMutariPosibile[0], indexPiesaLuata, pozitieSchimbata);
 
 			int adancimeMutareOptima = 0;
 
@@ -1147,7 +1183,7 @@ namespace ProiectVolovici
 
             StergeHistoryHeuristics();
 
-			for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+			for (int adancimeIterativa = 0; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 if (FerestreAspiratie && adancimeIterativa >= 3)
                 {
@@ -1172,12 +1208,12 @@ namespace ProiectVolovici
 
                 foreach (var mutPos in valoriMutariPosibile)
                 {
-                    int pozitieSchimbata;
-
 					FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
                         out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-					scorMutare = AlphaBetaCuMemorie(
+                    //AFISAREDEBUG Debug.WriteLine(EvalueazaMatricea(matriceClonata,pozAlbe,pozAlbastre)+" "+(evaluareMatriceInitiala + valoareMutare));
+
+                    scorMutare = AlphaBetaCuMemorie(
                             evaluareMatriceInitiala + valoareMutare
 							, matriceClonata
                             , alpha
@@ -1188,6 +1224,7 @@ namespace ProiectVolovici
                             , pozAlbe
                             , pozAlbastre
 					, Culoare.AlbMin);
+
 
 					RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
@@ -1218,7 +1255,7 @@ namespace ProiectVolovici
                 {
                     var piesa = matrice[poz.Linie][poz.Coloana];
                     material -= EngineJoc.ReturneazaScorPiesa(piesa);
-					pst -= ListaTabelePST[piesa][poz.Linie][poz.Coloana];
+					pst -= TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
                 }
 			}
             //Debug.WriteLine("POZ ALBASTRE");
@@ -1229,7 +1266,7 @@ namespace ProiectVolovici
                     //AFISAREDEBUG Debug.WriteLine(poz);
                     var piesa = matrice[poz.Linie][poz.Coloana];
 					material += EngineJoc.ReturneazaScorPiesa(piesa);
-					pst += ListaTabelePST[piesa][poz.Linie][poz.Coloana];
+					pst += TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
 				}
 			}
             return material* ProcentajMaterial + pst* ProcentajPST;
@@ -1294,15 +1331,6 @@ namespace ProiectVolovici
                     }
                 }
             }
-            if (adancime <= 0)
-            {
-                if (culoare == Culoare.AlbastruMax && eval >= beta)
-                    return eval;
-
-                if (culoare == Culoare.AlbMin && eval < alpha)
-                    return eval;
-                return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
-            }
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
                 )
@@ -1310,6 +1338,11 @@ namespace ProiectVolovici
                 return eval;
             }
 
+            if (adancime <= 0)
+            {
+                var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
+                return val;
+            }
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
@@ -1330,7 +1363,7 @@ namespace ProiectVolovici
                 var mutSortateValues = mutariSortate.Values;
 
                 foreach (Mutare mutPos in mutSortateValues)
-                {
+                {  
                     int indexPiesaLuata, pozitieSchimbata;
                     double valoareMutare;
 
@@ -1433,11 +1466,11 @@ namespace ProiectVolovici
 
 
 
-
         public static double QSC(double eval, int[][] matrice, double alpha,
     double beta, int piesaCapturata,
     Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
+
 
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
@@ -1446,19 +1479,19 @@ namespace ProiectVolovici
                 return eval;
             }
 
-            double stand_pat = eval;
-            if (stand_pat >= beta)
-                return beta;
-            if (alpha < stand_pat)
-                alpha = stand_pat;
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
+                if (eval >= beta)
+                    return eval;
+
+                var origAlpha = alpha;
                 int piesaLuata;
                 int piesaCareIa;
 
                 double val = -ValoareMaxima;
+
 
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
 
@@ -1474,23 +1507,26 @@ namespace ProiectVolovici
 
                     FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = -QSC(eval + valoareMutare,
-                                matrice, -beta, -alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin);
+                    val = Math.Max(val, QSC(eval + valoareMutare,
+                                matrice, alpha, beta, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                    alpha = Math.Max(val, alpha);
 
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val >= beta)
-                        return beta;
-                    if (val > alpha)
-                        alpha = val;
+                    {
+                        goto ValoareFinala;
+                    }
                 }
+            ValoareFinala:
 
-                return alpha;
+                return val;
             }
             //minimizare => alb
             else
             {
-
+                if (alpha >= eval)
+                    return eval;
                 var origBeta = beta;
                 int piesaLuata;
                 int piesaCareIa;
@@ -1510,33 +1546,24 @@ namespace ProiectVolovici
 
                     FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = QSC(eval - valoareMutare,
-                                matrice, -beta, -alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin);
+                    val = Math.Min(val, QSC(eval - valoareMutare,
+                        matrice, alpha, beta,
+                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
                     beta = Math.Min(val, beta);
 
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val >= beta)
-                        return beta;
-                    if (val > alpha)
-                        alpha = val;
+                    if (val <= alpha)
+                    {
+                        goto ValoareFinala;
+                    }
                 }
-                return alpha;
+            ValoareFinala:
+
+                return val;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1562,11 +1589,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -1587,11 +1615,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
         private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
@@ -1620,11 +1649,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
-			valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-				ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -1654,11 +1684,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
