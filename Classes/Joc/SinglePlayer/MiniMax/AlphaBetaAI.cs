@@ -13,13 +13,13 @@ namespace ProiectVolovici
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
         private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion/4;
         private static double ValoareMaxima = 50000;
-        private static bool FerestreAspiratie = true;
+        private static bool FerestreAspiratie = false;
         private static Dictionary<(int,Pozitie), int> HistoryTable = new(14*90);
         private static Mutare[][] KillerMoves;
         private static bool EsteSahLaAI = false;
 
         private static double ProcentajMaterial = 1.00;
-        private static double ProcentajPST = 0.0;
+        private static double ProcentajPST = 0.2;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -1219,7 +1219,7 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    //AFISAREDEBUG Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                     Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
                 valoriMutariPosibile.Clear();
@@ -1524,6 +1524,8 @@ namespace ProiectVolovici
             {
                 if (eval >= beta)
                     return eval;
+                if (eval + ConstantaPiese.ValoareTura < beta)
+                    return eval;
 
                 var origAlpha = alpha;
                 int piesaLuata;
@@ -1565,6 +1567,8 @@ namespace ProiectVolovici
             else
             {
                 if (alpha >= eval)
+                    return eval;
+                if (alpha < eval - ConstantaPiese.ValoareTura)
                     return eval;
                 var origBeta = beta;
                 int piesaLuata;
