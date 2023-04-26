@@ -1234,14 +1234,21 @@ namespace ProiectVolovici
 
         private static void SeteazaFlagulDeSah(int[][] matriceClonata, Pozitie[] pozAlbe)
         {
-            var mutari = GenereazaCapturiPosibile(matriceClonata, pozAlbe);
-            if (matriceClonata[mutari.First().Value.PozitieFinala.Linie][mutari.First().Value.PozitieFinala.Coloana] == (int)CodPiesa.RegeAlbastru)
+            var capturi = GenereazaCapturiPosibile(matriceClonata, pozAlbe);
+            if (capturi.Count == 0)
             {
-                EsteSahLaAI = true;
+                EsteSahLaAI = false;
             }
             else
             {
-                EsteSahLaAI = false;
+                if (matriceClonata[capturi.First().Value.PozitieFinala.Linie][capturi.First().Value.PozitieFinala.Coloana] == (int)CodPiesa.RegeAlbastru)
+                {
+                    EsteSahLaAI = true;
+                }
+                else
+                {
+                    EsteSahLaAI = false;
+                }
             }
         }
 
