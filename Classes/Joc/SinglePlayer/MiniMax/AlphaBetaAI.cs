@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Security.Policy;
 using System.Windows.Forms;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ProiectVolovici
 {
@@ -1445,6 +1446,12 @@ namespace ProiectVolovici
                 return eval;
             }
 
+            double stand_pat = eval;
+            if (stand_pat >= beta)
+                return beta;
+            if (alpha < stand_pat)
+                alpha = stand_pat;
+
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
@@ -1467,20 +1474,18 @@ namespace ProiectVolovici
 
                     FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Max(val, QSC(eval + valoareMutare,
-                                matrice, alpha, beta, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
-                    alpha = Math.Max(val, alpha);
+                    val = -QSC(eval + valoareMutare,
+                                matrice, -beta, -alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin);
 
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val > beta)
-                    {
-                        goto ValoareFinala;
-                    }
+                    if (val >= beta)
+                        return beta;
+                    if (val > alpha)
+                        alpha = val;
                 }
-            ValoareFinala:
 
-                return val;
+                return alpha;
             }
             //minimizare => alb
             else
@@ -1505,21 +1510,19 @@ namespace ProiectVolovici
 
                     FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Min(val, QSC(eval - valoareMutare,
-                        matrice, alpha, beta,
-                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+                    val = QSC(eval - valoareMutare,
+                                matrice, -beta, -alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin);
 
                     beta = Math.Min(val, beta);
 
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val < alpha)
-                    { 
-                        goto ValoareFinala;
-                    }
+                    if (val >= beta)
+                        return beta;
+                    if (val > alpha)
+                        alpha = val;
                 }
-            ValoareFinala:
-                return val;
+                return alpha;
             }
         }
 
