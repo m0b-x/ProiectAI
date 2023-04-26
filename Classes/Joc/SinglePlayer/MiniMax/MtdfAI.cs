@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
+using System.Security.Policy;
+using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
@@ -10,15 +13,12 @@ namespace ProiectVolovici
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
         private static double ValoareMaxima = 50000;
-
-        private static Dictionary<(int, Pozitie), int> HistoryTable = new(13 * 90);
-
+        private static Dictionary<(int, Pozitie), int> HistoryTable = new(14 * 90);
         private static Mutare[][] KillerMoves;
 
-		private static double ProcentajMaterial = 0.7;
-		private static double ProcentajPST = 0.3;
-
-		private EngineSinglePlayer _engine;
+        private static double ProcentajMaterial = 1.00;
+        private static double ProcentajPST = 0.00;
+        private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
 
@@ -84,13 +84,26 @@ namespace ProiectVolovici
             for (int piesaCareIa = 1; piesaCareIa <= 14; piesaCareIa++)
                 for (int piesaCapturata = 1; piesaCapturata <= 14; piesaCapturata++)
                 {
-                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = 200 + ConstantaPiese.ValoareRege
+                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = 250 + ConstantaPiese.ValoareRege
                         + EngineSinglePlayer.ReturneazaScorPiesa(piesaCapturata)
                         - EngineSinglePlayer.ReturneazaScorPiesa(piesaCareIa);
                     //explicatie: 200 - o valoare ca sa puna capturile peste tabelele de pst
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
         }
+        private static int[][] TabelNul = new int[][] {
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
+        };
+
 
         private static int[][] TabelPionAlbastru = new int[][] {
             new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
@@ -284,7 +297,7 @@ namespace ProiectVolovici
         };
         private static List<int[][]> ListaTabelePST = new List<int[][]>()
         {
-            null,
+            TabelNul,
             TabelPionAlb,
             TabelPionAlbastru,
             TabelTuraAlba,
@@ -334,11 +347,19 @@ namespace ProiectVolovici
             AdaugaOpeningsInCache();
             InitializeazaTabelCapturiPiese();
             InitializeazaKillerMoves();
-            InitializeazaHistoryHeuristics();
-
+            InitializeazaHistoryHerusticis();
         }
 
-        private static void InitializeazaHistoryHeuristics()
+        private void InitializeazaKillerMoves()
+        {
+            KillerMoves = new Mutare[_adancime + 1][];
+            for (int i = 0; i <= _adancime; i++)
+            {
+                KillerMoves[i] = new Mutare[2];
+            }
+        }
+
+        private static void InitializeazaHistoryHerusticis()
         {
             for (int i = 1; i <= 14; i++)
             {
@@ -352,15 +373,19 @@ namespace ProiectVolovici
             }
         }
 
-        private void InitializeazaKillerMoves()
+        private static void StergeHistoryHeuristics()
         {
-            KillerMoves = new Mutare[_adancime + 1][];
-            for (int i = 0; i <= _adancime; i++)
+            for (int i = 1; i <= 14; i++)
             {
-                KillerMoves[i] = new Mutare[2];
+                for (int linie = 0; linie < 10; linie++)
+                {
+                    for (int coloana = 0; coloana < 9; coloana++)
+                    {
+                        HistoryTable[(i, new Pozitie(linie, coloana))] = 0;
+                    }
+                }
             }
         }
-
         public class DuplicateKeyComparerAsc<TKey>
                 :
              IComparer<TKey> where TKey : IComparable
@@ -405,7 +430,7 @@ namespace ProiectVolovici
 
             #endregion IComparer<TKey> Members
         }
-        //200 + valoarePiesaLuata/10 - valoarePiesaCareCaptureaza/100 totul aproximat prin adaos(exceptie pion
+        //200 + valoareLuata/10 - valoarePiesaCareCaptureaza/100 totul aproximat prin adaos(exceptie pion
 
         public static void AdaugaOpeningsInCache()
         {
@@ -877,7 +902,6 @@ namespace ProiectVolovici
             CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
         }
 
-
         public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true, int adancime = 0)
         {
             SortedList<double, Mutare> mutPos;
@@ -892,8 +916,8 @@ namespace ProiectVolovici
                 {
                     if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie =  poz;
-                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
                             int piesaLuata = matrice[mut.Linie][mut.Coloana];
@@ -913,7 +937,7 @@ namespace ProiectVolovici
                                 else
                                 if (HistoryTable[(piesaCareIa, mut)] > 0)
                                 {
-                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)] , new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 {
@@ -938,7 +962,7 @@ namespace ProiectVolovici
                     if (poz.Linie != -1)
                     {
                         _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
-                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaMutariPosibile(matrice);
+                        List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
                             mutPos.Add(ct++, new(new(poz.Linie, poz.Coloana), mut));
@@ -948,6 +972,10 @@ namespace ProiectVolovici
                 return mutPos;
             }
         }
+
+
+
+
         public static void StergePozitieDinVector(int index, Pozitie[] vector)
         {
             vector[index] = Pozitie.PozitieNula;
@@ -1018,6 +1046,9 @@ namespace ProiectVolovici
             return i;
         }
 
+
+
+
         public override Tuple<Mutare, double> ReturneazaMutareaOptima()
         {
             int[][] matriceClonata = _engine.MatriceCoduriPiese.Clone() as int[][];
@@ -1033,10 +1064,9 @@ namespace ProiectVolovici
             }
 
             double scorMutare;
-            int indexPozLuata,
-                indexPozCareIa,
-                codPiesaCareIa,
-                codPiesaLuata;
+            int indexPiesaLuata,
+                piesaCareIa,
+                piesaLuata;
             ulong hashUpdatat;
 
 
@@ -1044,123 +1074,79 @@ namespace ProiectVolovici
 
 
 
-            Pozitie[] pozitiiAlbastre = _engine.ReturneazaPozitiiAlbastre();
-            Pozitie[] pozitiiAlbe = _engine.ReturneazaPozitiiAlbe();
+            Pozitie[] pozAlbastre = _engine.ReturneazaPozitiiAlbastre();
+            Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
 
-            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozitiiAlbe,pozitiiAlbastre);
+            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
 
-            var mutariPosibile = GenereazaMutariPosibile(matriceClonata, pozitiiAlbastre, moveOrdering: true, adancime : 0);
-
-			var valoriMutariPosibile = mutariPosibile.Values;
-
-			codPiesaLuata = matriceClonata[
-					valoriMutariPosibile[0].PozitieFinala.Linie][
-					valoriMutariPosibile[0].PozitieFinala.Coloana];
-			codPiesaCareIa = matriceClonata[
-					valoriMutariPosibile[0].PozitieInitiala.Linie][
-					valoriMutariPosibile[0].PozitieInitiala.Coloana];
-
-			Mutare mutareOptima = valoriMutariPosibile[0];
-
-			var valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(codPiesaLuata) * ProcentajMaterial +
-					ProcentajPST * ListaTabelePST[codPiesaCareIa][valoriMutariPosibile[0].PozitieFinala.Linie][valoriMutariPosibile[0].PozitieFinala.Coloana];
+            EngineJoc.AfiseazaMatriceDebug(matriceClonata, 0, 0);
+            Debug.WriteLine("Evaluare initiala:" + evaluareMatriceInitiala);
+            var mutariPosibile = GenereazaMutariPosibile(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
 
 
-			double scorMutareOptima = evaluareMatriceInitiala + valoarePiesaLuata;
 
-			int adancimeMutareOptima = 0;
+            var valoriMutariPosibile = mutariPosibile.Values;
 
-			if (codPiesaLuata == (int)CodPiesa.RegeAlb)
-			{
-				return new(mutareOptima, ValoareMaxima);
-			}
+            piesaLuata = matriceClonata[
+                    valoriMutariPosibile[0].PozitieFinala.Linie][
+                    valoriMutariPosibile[0].PozitieFinala.Coloana];
+            piesaCareIa = matriceClonata[
+                    valoriMutariPosibile[0].PozitieInitiala.Linie][
+                    valoriMutariPosibile[0].PozitieInitiala.Coloana];
 
-			double evaluarePrecedenta = scorMutareOptima;
+            Mutare mutareOptima = valoriMutariPosibile[0];
 
+            var valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+                    ProcentajPST * ListaTabelePST[piesaCareIa][valoriMutariPosibile[0].PozitieFinala.Linie][valoriMutariPosibile[0].PozitieFinala.Coloana];
+
+
+            double scorMutareOptima = evaluareMatriceInitiala + valoareMutare;
+
+            int adancimeMutareOptima = 0;
+
+            if (piesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                return new(mutareOptima, ValoareMaxima);
+            }
+
+
+            double alpha = -ValoareMaxima;
+            double beta = ValoareMaxima;
+
+
+            StergeHistoryHeuristics();
+            double evaluarePrecedenta = 0;
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
-                foreach (var mutarePosibila in valoriMutariPosibile)
+                foreach (var mutPos in valoriMutariPosibile)
                 {
-                    codPiesaLuata = matriceClonata[
-                        mutarePosibila.PozitieFinala.Linie][
-                        mutarePosibila.PozitieFinala.Coloana];
+                    int pozitieSchimbata;
 
-                    codPiesaCareIa = matriceClonata[
-                        mutarePosibila.PozitieInitiala.Linie][
-                        mutarePosibila.PozitieInitiala.Coloana];
+                    FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
+                        out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-
-                    matriceClonata[
-                        mutarePosibila.PozitieInitiala.Linie][
-                        mutarePosibila.PozitieInitiala.Coloana] = 0;
-
-                    matriceClonata[
-                        mutarePosibila.PozitieFinala.Linie][
-                        mutarePosibila.PozitieFinala.Coloana] = codPiesaCareIa;
-
-                    indexPozCareIa = SchimbaPozitiaDinVector(
-                        mutarePosibila.PozitieInitiala,
-                        pozitiiAlbastre,
-                        mutarePosibila.PozitieFinala);
-
-                    indexPozLuata = -1;
-                    if (EstePiesa(codPiesaLuata))
-                    {
-                        indexPozLuata = StergePozitieDinVector(mutarePosibila.PozitieFinala,
-                                                pozitiiAlbe);
-                    }
-
-                    hashUpdatat = ZobristHash.UpdateazaHash(
-                        hashInitial: hashInitial,
-                        linieInitiala: mutarePosibila.PozitieInitiala.Linie,
-                        coloanaInitiala: mutarePosibila.PozitieInitiala.Coloana,
-                        piesaLuata: codPiesaLuata,
-                        linieFinala: mutarePosibila.PozitieFinala.Linie,
-                        coloanaFinala: mutarePosibila.PozitieFinala.Coloana,
-                        piesaCareIa: codPiesaCareIa);
-
-
-					valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(codPiesaLuata) * ProcentajMaterial +
-							ProcentajPST * ListaTabelePST[codPiesaCareIa][mutarePosibila.PozitieFinala.Linie][mutarePosibila.PozitieFinala.Coloana];
-
-					scorMutare = MTD(
-                                evaluareMatriceInitiala + valoarePiesaLuata
-								, matriceClonata
+                    scorMutare = MTD(
+                                evaluareMatriceInitiala + valoareMutare
+                                , matriceClonata
                                 , f: evaluarePrecedenta
                                 , adancimeIterativa
-                                , codPiesaLuata
+                                , piesaLuata
                                 , hashUpdatat
-                                , pozitiiAlbe
-                                , pozitiiAlbastre
+                                , pozAlbe
+                                , pozAlbastre
                                 , Culoare.AlbMin);
 
-                    //Debug.WriteLine(scorMutare + " " + adancimeTemp + " " + mutarePos);
-                    SchimbaPozitiaDinVector(indexPozCareIa,
-                        pozitiiAlbastre,
-                        mutarePosibila.PozitieInitiala);
+                    RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (EstePiesa(codPiesaLuata))
+                    if (scorMutare > scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
                     {
-                        AdaugaPozitieInVector(indexPozLuata, pozitiiAlbe, mutarePosibila.PozitieFinala);
-                    }
-
-                    matriceClonata[
-                        mutarePosibila.PozitieInitiala.Linie][
-                        mutarePosibila.PozitieInitiala.Coloana] = codPiesaCareIa;
-
-                    matriceClonata[
-                        mutarePosibila.PozitieFinala.Linie][
-                        mutarePosibila.PozitieFinala.Coloana] = codPiesaLuata;
-
-                    if (scorMutare >= scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
-                    {
-                        mutareOptima = mutarePosibila;
+                        mutareOptima = mutPos;
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    //Debug.WriteLine($"{mutarePosibila} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
-                }
-                //sf loop miscari
+                    Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+
+                }//sf loop miscari
                 evaluarePrecedenta = scorMutareOptima;
             }
             _cronometruAI.Stop();
@@ -1168,6 +1154,76 @@ namespace ProiectVolovici
             //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
             return new(mutareOptima, scorMutareOptima);
         }
+        public static double EvalueazaMatricea(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre)
+        {
+            double material = 0;
+            double pst = 0;
+
+            //Debug.WriteLine("POZ ALBE");
+            foreach (var poz in pozAlbe)
+            {
+                if (poz.Linie != -1)
+                {
+                    var piesa = matrice[poz.Linie][poz.Coloana];
+                    material -= EngineJoc.ReturneazaScorPiesa(piesa);
+                    pst -= ListaTabelePST[piesa][poz.Linie][poz.Coloana];
+                }
+            }
+            //Debug.WriteLine("POZ ALBASTRE");
+            foreach (var poz in pozAlbastre)
+            {
+                if (poz.Linie != -1)
+                {
+                    Debug.WriteLine(poz);
+                    var piesa = matrice[poz.Linie][poz.Coloana];
+                    material += EngineJoc.ReturneazaScorPiesa(piesa);
+                    pst += ListaTabelePST[piesa][poz.Linie][poz.Coloana];
+                }
+            }
+            return material * ProcentajMaterial;
+        }
+
+        public void AfiseazaVectorDebug(Pozitie[] vector)
+        {
+            foreach (Pozitie v in vector)
+            {
+                Debug.Write(v + " ");
+            }
+            Debug.WriteLine("");
+        }
+
+        public static bool IsCheck(int[][] matrice, Pozitie[] poziti)
+        {
+            foreach (var poz in poziti)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (var mut in mutari)
+                    {
+                        if (matrice[mut.Linie][mut.Coloana] == regeAlb ||
+                            matrice[mut.Linie][mut.Coloana] == regeAlbastru)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static double MTD(double eval, int[][] matrice, double f,
     int adancime, int piesaCapturata, ulong hash,
@@ -1193,42 +1249,14 @@ namespace ProiectVolovici
             while (lowerBound >= upperBound);
             return g;
         }
-		public static double EvalueazaMatricea(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre)
-		{
-			double material = 0;
-			double pst = 0;
-
-			foreach (var poz in pozAlbe)
-			{
-				if (poz.Linie != -1)
-				{
-					var piesaCareIa = matrice[poz.Linie][poz.Coloana];
-					material -= piesaCareIa;
-					pst -= ListaTabelePST[piesaCareIa][poz.Linie][poz.Coloana];
-				}
-
-			}
-			foreach (var poz in pozAlbastre)
-			{
-				if (poz.Linie != -1)
-				{
-					var piesaCareIa = matrice[poz.Linie][poz.Coloana];
-					material += piesaCareIa;
-					pst += ListaTabelePST[piesaCareIa][poz.Linie][poz.Coloana];
-				}
-			}
-			return material * ProcentajMaterial + pst * ProcentajPST;
-		}
 
 
-		public void AfiseazaVectorDebug(Pozitie[] vector)
-        {
-            foreach (Pozitie v in vector)
-            {
-                Debug.Write(v + " ");
-            }
-            Debug.WriteLine("");
-        }
+
+
+
+
+
+
 
         public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, ulong hash,
@@ -1261,7 +1289,7 @@ namespace ProiectVolovici
             }
             if (adancime <= 0)
             {
-                return eval;
+                return QSC(eval, matrice, alpha, beta, adancime, piesaCapturata, pozAlbe, pozAlbastre, culoare);
             }
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
@@ -1279,22 +1307,24 @@ namespace ProiectVolovici
                 int piesaLuata;
                 int piesaCareIa;
 
+                double val = -ValoareMaxima;
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime : adancime);
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
 
                 var mutSortateValues = mutariSortate.Values;
 
-                double val = -ValoareMaxima;
                 foreach (Mutare mutPos in mutSortateValues)
                 {
                     int indexPiesaLuata, pozitieSchimbata;
-                    double valoarePiesaLuata;
-                    FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoarePiesaLuata);
+                    double valoareMutare;
 
-                    val = Math.Max(val, AlphaBetaCuMemorie(eval + valoarePiesaLuata,
+                    FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                 matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
                     alpha = Math.Max(val, alpha);
 
@@ -1302,7 +1332,7 @@ namespace ProiectVolovici
 
                     if (val >= beta)
                     {
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)]++;
+                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime*adancime/10;
                         if (piesaLuata == 0)
                         {
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
@@ -1335,21 +1365,22 @@ namespace ProiectVolovici
                 int piesaLuata;
                 int piesaCareIa;
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime : adancime);
+                double val = ValoareMaxima;
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
 
-                double val = ValoareMaxima;
                 var mutSortateValues = mutariSortate.Values;
                 foreach (Mutare mutPos in mutSortateValues)
                 {
                     int indexPiesaLuata, pozitieSchimbata;
-                    double valoarePiesaLuata;
+                    double valoareMutare;
 
-                    FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoarePiesaLuata);
+                    FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Min(val, AlphaBetaCuMemorie(eval - valoarePiesaLuata,
+                    val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                         matrice, alpha, beta, adancime - 1,
                         piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
@@ -1359,7 +1390,7 @@ namespace ProiectVolovici
 
                     if (val <= alpha)
                     {
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)]++;
+                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)]= adancime*adancime/10;
                         if (piesaLuata == 0)
                         {
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
@@ -1380,26 +1411,142 @@ namespace ProiectVolovici
                     flag = 1; // Lower bound
                 }
                 TabelTranspozitie.AdaugaIntrare(hash, val, adancime, flag);
-
                 return val;
             }
         }
 
-        private static void RefaMutareaAlbastru(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
+
+
+
+
+        public static SortedList<double, Mutare> GenereazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
         {
-            SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbastre, mutPos.PozitieInitiala);
+            SortedList<double, Mutare> mutPos;
 
-            if (EstePiesa(piesaLuata))
+            //most valuable victim, least valuable agressor
+            //Piece-Square Tables
+
+            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
             {
-                AdaugaPozitieInVector(indexPiesaLuata, pozAlbe,
-                            mutPos.PozitieFinala);
-            }
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
 
-            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = piesaCareIa;
-            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
+                        if (piesaLuata != 0)
+                        {
+                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                        }
+                    }
+                }
+            }
+            return mutPos;
         }
 
-        private static void FaMutareaAlbastru(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoarePiesaLuata)
+
+
+
+        public static double QSC(double eval, int[][] matrice, double alpha,
+    double beta, int adancime, int piesaCapturata,
+    Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+        {
+
+            if (piesaCapturata == (int)CodPiesa.RegeAlb ||
+                piesaCapturata == (int)CodPiesa.RegeAlbastru
+                )
+            {
+                return eval;
+            }
+
+
+            //maximizare => albastru
+            if (culoare == Culoare.AlbastruMax)
+            {
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = -ValoareMaxima;
+
+                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Max(val, QSC(eval + valoareMutare,
+                                matrice, alpha, beta, adancime - 1, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                    alpha = Math.Max(val, alpha);
+
+                    RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val >= beta)
+                    {
+                        goto ValoareFinala;
+                    }
+                }
+            ValoareFinala:
+
+                return val;
+            }
+            //minimizare => alb
+            else
+            {
+                var origBeta = beta;
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = ValoareMaxima;
+
+                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Min(val, QSC(eval - valoareMutare,
+                        matrice, alpha, beta, adancime - 1,
+                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+
+                    beta = Math.Min(val, beta);
+
+                    RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val <= alpha)
+                    {
+                        goto ValoareFinala;
+                    }
+                }
+            ValoareFinala:
+                return val;
+            }
+        }
+
+
+
+
+
+
+        private static void FaMutareaAlbQSC(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
         {
             piesaLuata = matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
             piesaCareIa = matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana];
@@ -1407,14 +1554,30 @@ namespace ProiectVolovici
             matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
             matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaCareIa;
 
-            hashUpdatat = ZobristHash.UpdateazaHash(
-                hashInitial: hash,
-                linieInitiala: mutPos.PozitieInitiala.Linie,
-                coloanaInitiala: mutPos.PozitieInitiala.Coloana,
-                piesaLuata: piesaLuata,
-                linieFinala: mutPos.PozitieFinala.Linie,
-                coloanaFinala: mutPos.PozitieFinala.Coloana,
-                piesaCareIa: piesaCareIa);
+            //alb ia albastru
+            indexPiesaLuata = -1;
+            if (EstePiesa(piesaLuata))
+            {
+                indexPiesaLuata = StergePozitieDinVector(mutPos.PozitieFinala,
+                            pozAlbastre);
+            }
+            pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            valoareMutare = valoareMutare
+                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+        }
+
+
+        private static void FaMutareaAlbastruQSC(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
+        {
+            piesaLuata = matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            piesaCareIa = matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana];
+
+            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
+            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaCareIa;
 
             indexPiesaLuata = -1;
             //albastru ia alb
@@ -1425,25 +1588,14 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
-			valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-				ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-		}
-
-        private static void RefaMutareaAlb(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
-        {
-            if (EstePiesa(piesaLuata))
-            {
-                AdaugaPozitieInVector(indexPiesaLuata, pozAlbastre,
-                           mutPos.PozitieFinala);
-            }
-
-            SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbe, mutPos.PozitieInitiala);
-
-            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = piesaCareIa;
-            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            valoareMutare = valoareMutare
+                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
         }
 
-        private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoarePiesaLuata)
+        private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
         {
             piesaLuata = matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
             piesaCareIa = matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana];
@@ -1469,10 +1621,84 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            valoareMutare = valoareMutare
+                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+        }
 
-			valoarePiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-				ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-		}
+
+        private static void FaMutareaAlbastru(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
+        {
+            piesaLuata = matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            piesaCareIa = matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana];
+
+            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
+            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaCareIa;
+
+            hashUpdatat = ZobristHash.UpdateazaHash(
+                hashInitial: hash,
+                linieInitiala: mutPos.PozitieInitiala.Linie,
+                coloanaInitiala: mutPos.PozitieInitiala.Coloana,
+                piesaLuata: piesaLuata,
+                linieFinala: mutPos.PozitieFinala.Linie,
+                coloanaFinala: mutPos.PozitieFinala.Coloana,
+                piesaCareIa: piesaCareIa);
+
+            indexPiesaLuata = -1;
+            //albastru ia alb
+            if (EstePiesa(piesaLuata))
+            {
+                indexPiesaLuata = StergePozitieDinVector(mutPos.PozitieFinala,
+                            pozAlbe);
+            }
+            pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
+                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+            valoareMutare = valoareMutare
+                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+        }
+
+
+
+        private static void RefaMutareaAlb(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
+        {
+            if (EstePiesa(piesaLuata))
+            {
+                AdaugaPozitieInVector(indexPiesaLuata, pozAlbastre,
+                           mutPos.PozitieFinala);
+            }
+
+            SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbe, mutPos.PozitieInitiala);
+
+            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = piesaCareIa;
+            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
+        }
+
+        private static void RefaMutareaAlbastru(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, int piesaLuata, int piesaCareIa, Mutare mutPos, int indexPiesaLuata, int pozitieSchimbata)
+        {
+            SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbastre, mutPos.PozitieInitiala);
+
+            if (EstePiesa(piesaLuata))
+            {
+                AdaugaPozitieInVector(indexPiesaLuata, pozAlbe,
+                            mutPos.PozitieFinala);
+            }
+
+            matrice[mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana] = piesaCareIa;
+            matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
+        }
+
+
+
+
+
+
+
+
 
         private static bool EstePiesa(int codPiesa)
         {

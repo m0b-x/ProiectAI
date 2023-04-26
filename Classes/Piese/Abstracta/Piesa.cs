@@ -59,7 +59,7 @@ namespace ProiectVolovici
 
         public abstract void ArataMutariPosibile(EngineJoc joc);
 
-        public abstract List<Pozitie> ReturneazaMutariPosibile(int[][] matrice);
+        public abstract List<Pozitie> ReturneazaPozitiiPosibile(int[][] matrice);
 
         public override bool Equals(object obj)
         {

@@ -42,11 +42,11 @@ namespace ProiectVolovici
 
         public override void ArataMutariPosibile(EngineJoc joc)
         {
-            List<Pozitie> mutariPosibile = ReturneazaMutariPosibile(joc.MatriceCoduriPiese);
+            List<Pozitie> mutariPosibile = ReturneazaPozitiiPosibile(joc.MatriceCoduriPiese);
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaMutariPosibile(int[][] matrice)
+        public override List<Pozitie> ReturneazaPozitiiPosibile(int[][] matrice)
         {
             List<Pozitie> pozitii = new List<Pozitie>(4);
 

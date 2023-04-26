@@ -771,7 +771,7 @@ namespace ProiectVolovici
                 {
                     regeAlbPrezent = true;
                 }
-                List<Pozitie> mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                List<Pozitie> mutariPosibile = piesa.ReturneazaPozitiiPosibile(_matriceCodPiese);
                 contorMutariAlb += mutariPosibile.Count;
                 foreach (Pozitie mutare in mutariPosibile)
                 {
@@ -808,7 +808,7 @@ namespace ProiectVolovici
                 {
                     regeAlbastruPrezent = true;
                 }
-                List<Pozitie> mutariPosibile = piesa.ReturneazaMutariPosibile(_matriceCodPiese);
+                List<Pozitie> mutariPosibile = piesa.ReturneazaPozitiiPosibile(_matriceCodPiese);
                 contorMutariAlbastru += mutariPosibile.Count;
                 foreach (Pozitie mutare in mutariPosibile)
                 {
