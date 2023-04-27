@@ -1226,12 +1226,20 @@ namespace ProiectVolovici
                 valoriMutariPosibile.AddRange(listaAuxiliara.Values);
                 listaAuxiliara.Clear();
             }
+            ScadeAdancimeaDacaEsteNecesar();
             _cronometruAI.Stop();
             _cronometruAI.Reset();
             //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
             return new(mutareOptima, scorMutareOptima);
         }
 
+        private void ScadeAdancimeaDacaEsteNecesar()
+        {
+            if (EsteSahLaAI)
+            {
+                _adancime--;
+            }
+        }
         private void CresteAdancimeaDacaEsteNecesar()
         {
             if (EsteSahLaAI)
