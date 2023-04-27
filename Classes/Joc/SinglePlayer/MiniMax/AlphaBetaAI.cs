@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace ProiectVolovici
 {
@@ -19,7 +20,7 @@ namespace ProiectVolovici
         private static bool EsteSahLaAI = false;
 
         private static double ProcentajMaterial = 1.00;
-        private static double ProcentajPST = 0.2;
+        private static double ProcentajPST = 0.0;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -1153,13 +1154,6 @@ namespace ProiectVolovici
 
             var valoriMutariPosibile = mutariPosibile.Values.ToList();
 
-            piesaLuata = matriceClonata[
-                    valoriMutariPosibile[0].PozitieFinala.Linie][
-                    valoriMutariPosibile[0].PozitieFinala.Coloana];
-            piesaCareIa = matriceClonata[
-                    valoriMutariPosibile[0].PozitieInitiala.Linie][
-                    valoriMutariPosibile[0].PozitieInitiala.Coloana];
-
             int pozitieSchimbata;
             double valoareMutare;
 
@@ -1185,7 +1179,7 @@ namespace ProiectVolovici
             double beta = ValoareMaxima;
 
 
-            StergeHistoryHeuristics();
+            //StergeHistoryHeuristics();
 
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
@@ -1213,13 +1207,13 @@ namespace ProiectVolovici
 
                     RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (scorMutare > scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
+                    if (scorMutare >= scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
                     {
                         mutareOptima = mutPos;
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                     Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                     //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
                 valoriMutariPosibile.Clear();
@@ -1374,7 +1368,21 @@ namespace ProiectVolovici
             {
                 if (EsteSahLaAI == false)
                 {
+
                     var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
+
+                    int flag = 0; // Exact value
+                    if (val <= alpha)
+                    {
+                        flag = 2; // Upper bound
+                    }
+                    else if (val >= beta)
+                    {
+                        flag = 1; // Lower bound
+                    }
+                    TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
+
+
                     return val;
                 }
                 else
@@ -1509,29 +1517,23 @@ namespace ProiectVolovici
     double beta, int piesaCapturata,
     Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
+            double bestValue = eval;
 
+            alpha = Math.Max(alpha, bestValue);
 
-            if (piesaCapturata == (int)CodPiesa.RegeAlb ||
-                piesaCapturata == (int)CodPiesa.RegeAlbastru
-                )
+            if (alpha >= beta)
             {
-                return eval;
+                return bestValue;
             }
-
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
-                if (eval >= beta)
-                    return eval;
-                if (eval + ConstantaPiese.ValoareTura < beta)
-                    return eval;
-
                 var origAlpha = alpha;
                 int piesaLuata;
                 int piesaCareIa;
 
-                double val = -ValoareMaxima;
+                double value = -ValoareMaxima;
 
 
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
@@ -1548,33 +1550,31 @@ namespace ProiectVolovici
 
                     FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Max(val, QSC(eval + valoareMutare,
-                                matrice, alpha, beta, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
-                    alpha = Math.Max(val, alpha);
+                    value = QSC(eval + valoareMutare, matrice, beta, alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin);
 
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val >= beta)
+                    bestValue = Math.Max(bestValue, value);
+
+                    alpha = Math.Max(alpha, bestValue);
+
+
+                    if (alpha >= beta)
                     {
-                        goto ValoareFinala;
+                        break;
                     }
                 }
-            ValoareFinala:
 
-                return val;
+                return bestValue;
             }
             //minimizare => alb
             else
             {
-                if (alpha >= eval)
-                    return eval;
-                if (alpha < eval - ConstantaPiese.ValoareTura)
-                    return eval;
                 var origBeta = beta;
                 int piesaLuata;
                 int piesaCareIa;
 
-                double val = ValoareMaxima;
+                double value = ValoareMaxima;
 
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
 
@@ -1589,22 +1589,20 @@ namespace ProiectVolovici
 
                     FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Min(val, QSC(eval - valoareMutare,
-                        matrice, alpha, beta,
-                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+                    value = QSC(eval - valoareMutare, matrice, beta, alpha, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax);
 
-                    beta = Math.Min(val, beta);
 
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
-                    if (val <= alpha)
+                    bestValue = Math.Max(bestValue, value);
+
+                    alpha = Math.Max(alpha, bestValue);
+                    if (alpha >= beta)
                     {
-                        goto ValoareFinala;
+                        break;
                     }
                 }
-            ValoareFinala:
-
-                return val;
+                return bestValue;
             }
         }
 
