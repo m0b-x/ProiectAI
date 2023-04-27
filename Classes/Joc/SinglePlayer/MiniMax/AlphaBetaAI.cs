@@ -13,15 +13,16 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
-        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion/4;
+        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = false;
-        private static Dictionary<(int,Pozitie), int> HistoryTable = new(14*90);
+        private static Dictionary<(int, Pozitie), int> HistoryTable = new(14 * 90);
         private static Mutare[][] KillerMoves;
         private static bool EsteSahLaAI = false;
+        private static int MarimeKillerMoves = 64;
 
         private static double ProcentajMaterial = 1.00;
-        private static double ProcentajPST = 0.0;
+        private static double ProcentajPST = 0.00;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -94,7 +95,7 @@ namespace ProiectVolovici
                     //explicatie: 200 - o valoare ca sa puna capturile peste tabelele de pst
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
-		}
+        }
         private static double[][] TabelNul = new double[][] {
             new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
             new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
@@ -301,7 +302,7 @@ namespace ProiectVolovici
         };
         private static List<double[][]> TabelPSTMoveOrdering = new List<double[][]>()
         {
-			TabelNul,
+            TabelNul,
             TabelPionAlb,
             TabelPionAlbastru,
             TabelTuraAlba,
@@ -356,8 +357,8 @@ namespace ProiectVolovici
 
         private void InitializeazaKillerMoves()
         {
-            KillerMoves = new Mutare[_adancime + 1][];
-            for (int i = 0; i <= _adancime; i++)
+            KillerMoves = new Mutare[MarimeKillerMoves + 1][];
+            for (int i = 0; i <= MarimeKillerMoves; i++)
             {
                 KillerMoves[i] = new Mutare[2];
             }
@@ -377,20 +378,20 @@ namespace ProiectVolovici
             }
         }
 
-		private static void StergeHistoryHeuristics()
-		{
-			for (int i = 1; i <= 14; i++)
-			{
-				for (int linie = 0; linie < 10; linie++)
-				{
-					for (int coloana = 0; coloana < 9; coloana++)
-					{
-						HistoryTable[(i, new Pozitie(linie, coloana))] = 0;
-					}
-				}
-			}
-		}
-		public class DuplicateKeyComparerAsc<TKey>
+        private static void StergeHistoryHeuristics()
+        {
+            for (int i = 1; i <= 14; i++)
+            {
+                for (int linie = 0; linie < 10; linie++)
+                {
+                    for (int coloana = 0; coloana < 9; coloana++)
+                    {
+                        HistoryTable[(i, new Pozitie(linie, coloana))] = 0;
+                    }
+                }
+            }
+        }
+        public class DuplicateKeyComparerAsc<TKey>
                 :
              IComparer<TKey> where TKey : IComparable
         {
@@ -906,7 +907,7 @@ namespace ProiectVolovici
             CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
         }
 
-		public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true,int adancime = 0)
+        public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true, int adancime = 0)
         {
             SortedList<double, Mutare> mutPos;
 
@@ -939,7 +940,7 @@ namespace ProiectVolovici
                                     mutPos.Add(230, new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
-                                if(HistoryTable[(piesaCareIa, mut)] > 0)
+                                if (HistoryTable[(piesaCareIa, mut)] > 0)
                                 {
                                     mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)], new(new(poz.Linie, poz.Coloana), mut));
                                 }
@@ -1184,9 +1185,8 @@ namespace ProiectVolovici
             double alpha = -ValoareMaxima;
             double beta = ValoareMaxima;
 
-
-            //StergeHistoryHeuristics();
-
+            StergeHistoryHeuristics();
+            CresteAdancimeaDacaEsteNecesar();
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 SeteazaFereastraDeAspiratie(scorMutareOptima, ref alpha, ref beta, ref adancimeIterativa);
@@ -1203,7 +1203,7 @@ namespace ProiectVolovici
                             , matriceClonata
                             , alpha
                             , beta
-                            , 0
+                            , adancimeIterativa
                             , piesaLuata
                             , hashUpdatat
                             , pozAlbe
@@ -1219,7 +1219,7 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                     Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
                 valoriMutariPosibile.Clear();
@@ -1230,6 +1230,14 @@ namespace ProiectVolovici
             _cronometruAI.Reset();
             //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
             return new(mutareOptima, scorMutareOptima);
+        }
+
+        private void CresteAdancimeaDacaEsteNecesar()
+        {
+            if (EsteSahLaAI)
+            {
+                _adancime++;
+            }
         }
 
         private static void SeteazaFlagulDeSah(int[][] matriceClonata, Pozitie[] pozAlbe)
@@ -1281,28 +1289,28 @@ namespace ProiectVolovici
             double material = 0;
             double pst = 0;
 
-			//Debug.WriteLine("POZ ALBE");
-			foreach (var poz in pozAlbe)
+            //Debug.WriteLine("POZ ALBE");
+            foreach (var poz in pozAlbe)
             {
                 if (poz.Linie != -1)
                 {
                     var piesa = matrice[poz.Linie][poz.Coloana];
                     material -= EngineJoc.ReturneazaScorPiesa(piesa);
-					pst -= TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                    pst -= TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
                 }
-			}
+            }
             //Debug.WriteLine("POZ ALBASTRE");
             foreach (var poz in pozAlbastre)
-			{
-				if (poz.Linie != -1)
-				{
+            {
+                if (poz.Linie != -1)
+                {
                     //AFISAREDEBUG Debug.WriteLine(poz);
                     var piesa = matrice[poz.Linie][poz.Coloana];
-					material += EngineJoc.ReturneazaScorPiesa(piesa);
-					pst += TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
-				}
-			}
-            return material* ProcentajMaterial + pst* ProcentajPST;
+                    material += EngineJoc.ReturneazaScorPiesa(piesa);
+                    pst += TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                }
+            }
+            return material * ProcentajMaterial + pst * ProcentajPST;
         }
 
         public void AfiseazaVectorDebug(Pozitie[] vector)
@@ -1316,21 +1324,21 @@ namespace ProiectVolovici
 
         public static bool IsCheck(int[][] matrice, Pozitie[] poziti)
         {
-            foreach(var poz in poziti)
+            foreach (var poz in poziti)
             {
-                if(poz.Linie != -1)
-				{
-					_pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
-					List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
-                    foreach(var mut in mutari)
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (var mut in mutari)
                     {
                         if (matrice[mut.Linie][mut.Coloana] == regeAlb ||
-							matrice[mut.Linie][mut.Coloana] == regeAlbastru)
+                            matrice[mut.Linie][mut.Coloana] == regeAlbastru)
                         {
                             return true;
                         }
                     }
-				}
+                }
             }
             return false;
         }
@@ -1339,7 +1347,6 @@ namespace ProiectVolovici
             double beta, int adancime, int piesaCapturata, ulong hash,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
-
             if (TabelTranspozitie.Contine(hash))
             {
                 IntrareTabel entry = TabelTranspozitie.ReturneazaIntrarea(hash);
@@ -1349,7 +1356,7 @@ namespace ProiectVolovici
                     switch (entry.Flag)
                     {
                         case 0: // Exact value
-                           return entry.Scor;
+                            return entry.Scor;
                         case 1: // Lower bound
                             alpha = Math.Max(alpha, entry.Scor);
                             break;
@@ -1358,12 +1365,13 @@ namespace ProiectVolovici
                             break;
                     }
 
-                    if (beta <= alpha) 
+                    if (beta <= alpha)
                     {
                         return entry.Scor;
                     }
                 }
             }
+
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
                 )
@@ -1375,7 +1383,7 @@ namespace ProiectVolovici
             {
                 if (EsteSahLaAI == false)
                 {
-                    return ReturneazaQSCDacaENecesar(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
+                    return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
                 }
                 else
                 {
@@ -1394,7 +1402,7 @@ namespace ProiectVolovici
                 double val = -ValoareMaxima;
 
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime : adancime);
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -1402,13 +1410,13 @@ namespace ProiectVolovici
                 var mutSortateValues = mutariSortate.Values;
 
                 foreach (Mutare mutPos in mutSortateValues)
-                {  
+                {
                     int indexPiesaLuata, pozitieSchimbata;
                     double valoareMutare;
 
                     FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-					val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
+                    val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                 matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
                     alpha = Math.Max(val, alpha);
 
@@ -1416,7 +1424,7 @@ namespace ProiectVolovici
 
                     if (val >= beta)
                     {
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime/10;
+                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime / 10;
                         if (piesaLuata == 0)
                         {
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
@@ -1451,7 +1459,7 @@ namespace ProiectVolovici
 
                 double val = ValoareMaxima;
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime : adancime);
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -1464,7 +1472,7 @@ namespace ProiectVolovici
 
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-					val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
+                    val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                         matrice, alpha, beta, adancime - 1,
                         piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
@@ -1499,22 +1507,6 @@ namespace ProiectVolovici
             }
         }
 
-        private static double ReturneazaQSCDacaENecesar(double eval, int[][] matrice, double alpha, double beta, int piesaCapturata, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
-        {
-            if (culoare == Culoare.AlbastruMax && eval >= beta)
-            {
-                return eval;
-            }
-            if (culoare == Culoare.AlbMin && alpha >= eval)
-            {
-                return eval;
-            }
-            else
-            {
-                return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
-            }
-        }
-
         public static double QSC(double eval, int[][] matrice, double alpha,
             double beta, int piesaCapturata,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
@@ -1529,7 +1521,7 @@ namespace ProiectVolovici
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
-                if(eval >= beta)
+                if (eval >= beta)
                 {
                     return eval;
                 }
