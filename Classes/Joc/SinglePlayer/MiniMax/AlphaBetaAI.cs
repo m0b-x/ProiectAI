@@ -27,7 +27,7 @@ namespace ProiectVolovici
 
 
         private static double ProcentajMaterial = 0.95;
-        private static double ProcentajPST = 0.00;
+        private static double ProcentajPST = 0.0;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -1438,6 +1438,8 @@ namespace ProiectVolovici
                     //Pv Check
                     if (val < beta && val > origAlpha)
                     {
+                        Debug.WriteLine(origAlpha + " " + beta); ;
+                        nodPV = true;;
                     }
                 }
             ValoareFinala:
@@ -1521,6 +1523,7 @@ namespace ProiectVolovici
                     //Pv Check
                     if (val < origBeta && val > alpha)
                     {
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
