@@ -21,7 +21,6 @@ namespace ProiectVolovici
         private static Mutare[][] KillerMoves;
         private static int MarimeKillerMoves = 64;
         private static int NoduriEvaluate = 0; 
-        private static bool EsteSahLaAI = false;
         const int FullDepthMoves = 4;
         const int ReductionLimit = 3;
 
@@ -1159,7 +1158,6 @@ namespace ProiectVolovici
             Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
 
             //Debug.WriteLine("Poz Rege: "+ ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata) + EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata)));
-            SeteazaFlagulDeSah(matriceClonata, pozAlbe);
 
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
 
@@ -1239,26 +1237,6 @@ namespace ProiectVolovici
             _cronometruAI.Stop();
             _cronometruAI.Reset();
             return new(mutareOptima, scorMutareOptima);
-        }
-
-        private static void SeteazaFlagulDeSah(int[][] matriceClonata, Pozitie[] pozAlbe)
-        {
-            var capturi = GenereazaCapturiPosibile(matriceClonata, pozAlbe);
-            if (capturi.Count == 0)
-            {
-                EsteSahLaAI = false;
-            }
-            else
-            {
-                if (matriceClonata[capturi.First().Value.PozitieFinala.Linie][capturi.First().Value.PozitieFinala.Coloana] == (int)CodPiesa.RegeAlbastru)
-                {
-                    EsteSahLaAI = true;
-                }
-                else
-                {
-                    EsteSahLaAI = false;
-                }
-            }
         }
 
         private static void SeteazaFereastraDeAspiratie(double scorMutareOptima, ref double alpha, ref double beta, ref int adancimeIterativa)
@@ -1687,8 +1665,10 @@ namespace ProiectVolovici
             double beta, int adancime, int piesaCapturata, ulong hash,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
+            // pv search
             bool nodPV = false;
             NoduriEvaluate++;
+            //tabel de transpozitie
             if (TabelTranspozitie.Contine(hash))
             {
                 IntrareTabel entry = TabelTranspozitie.ReturneazaIntrarea(hash);
@@ -1717,12 +1697,14 @@ namespace ProiectVolovici
             if (adancime <= 0)
             {
                 NoduriEvaluate--;
+                //quiescence search
                 return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
             }
 
             if (piesaCapturata == regeAlbastru ||
                 piesaCapturata == regeAlb)
             {
+                //nod final
                 return eval;
             }
 
@@ -1734,11 +1716,12 @@ namespace ProiectVolovici
 
                 if (esteSahLaAlbastru)
                 {
+                    //check extension
                     adancime++;
                 }
                 else
                 {
-                    //null move
+                    //null move pruning
                     if (adancime >= 3  && eval >= beta)
                     {
                         var evalCurenta = AlphaBetaCuMemorie(eval,
@@ -1748,6 +1731,7 @@ namespace ProiectVolovici
                             return evalCurenta;
                     }
                 }
+
                 var origAlpha = alpha;
                 ulong hashUpdatat;
                 int piesaLuata;
@@ -1770,12 +1754,13 @@ namespace ProiectVolovici
 
                     FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    ////////////////////////////////Principal Variation ///////////////////////////////
+                    //principal variation search
                     if (nodPV == true)
                     {
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                     matrice, alpha, alpha + 1, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
 
+                        //outside bounds check
                         if (val > alpha && val < beta)
                         {
                             val = -ValoareMaxima;
@@ -1785,17 +1770,18 @@ namespace ProiectVolovici
                     }
                     else
                     {
-
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
                     }
-                    ////////////////////////////////////////////////////////////////////////////////////
+                    //
                     alpha = Math.Max(val, alpha);
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val >= beta)
                     {
+                        //history heuristics
                         HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime / 10;
+                        //killer moves
                         if (piesaLuata == 0)
                         {
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
@@ -1803,10 +1789,9 @@ namespace ProiectVolovici
                         }
                         goto ValoareFinala;
                     }
-                    //Pv Check
-                    if (val < beta && val > origAlpha)
+                    //principal variation check
+                    if (eval > alpha && eval < beta)
                     {
-                        nodPV = true;
                     }
                 }
             ValoareFinala:
@@ -1825,18 +1810,18 @@ namespace ProiectVolovici
 
                 return val;
             }
-            //minimizare => alb
-            else
+            else// if (culoare == Culoare.AlbMin)
             {
-
                 bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
 
                 if (esteSahLaAlb)
                 {
+                    //check extension
                     adancime++;
                 }
                 else
                 {
+                    //null move pruning
                     if(adancime >= 3 && alpha >= eval)
                     {
                         var evalCurenta = AlphaBetaCuMemorie(eval,
@@ -1867,7 +1852,7 @@ namespace ProiectVolovici
 
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
                     
-                    ////////////////////////////////Principal Variation ///////////////////////////////
+                    //principal variation search
                     if (nodPV == true)
                     {
                         val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
@@ -1889,13 +1874,15 @@ namespace ProiectVolovici
                             piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
                     }
-                    //////////////////////////////////////////////////////////////////////////////////////
+                    //
                     beta = Math.Min(val, beta);
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val <= alpha)
                     {
+                        //history heuristics
                         HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime / 10;
+                        //killer moves
                         if (piesaLuata == 0)
                         {
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
@@ -1903,14 +1890,14 @@ namespace ProiectVolovici
                         }
                         goto ValoareFinala;
                     }
-                    //Pv Check
-                    if (val < origBeta && val > alpha)
+                    //principal variation check
+                    if (val > alpha && val < origBeta)
                     {
-                        nodPV = true;
                     }
                 }
             ValoareFinala:
 
+                //transposition table
                 int flag = 0; // Exact value
                 if (val <= alpha)
                 {
@@ -1951,15 +1938,12 @@ namespace ProiectVolovici
             {
                 return eval;
             }
-            //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
                 if (eval >= beta)
-                {
                     return eval;
-                }
-
-                if (eval + ConstantaPiese.ValoareTura < alpha)
+                //delta pruning
+                if (eval + ConstantaPiese.ValoareTura + 300 < alpha)
                 {
                     return eval;
                 }
@@ -1972,7 +1956,18 @@ namespace ProiectVolovici
                 double val = -ValoareMaxima;
 
 
-                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
+
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+
+                SortedList<double, Mutare> mutariSortate;
+                if (esteSahLaAlbastru)
+                {
+                    mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre);
+                }
+                else
+                {
+                    mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
+                }
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -2001,15 +1996,12 @@ namespace ProiectVolovici
 
                 return val;
             }
-            //minimizare => alb
-            else
+            else// if (culoare == Culoare.AlbMin)
             {
                 if (alpha >= eval)
-                {
                     return eval;
-                }
-
-                if (eval - ConstantaPiese.ValoareTura > beta)
+                //delta pruning
+                if (eval - ConstantaPiese.ValoareTura - 300 > beta)
                 {
                     return eval;
                 }
@@ -2020,7 +2012,18 @@ namespace ProiectVolovici
 
                 double val = ValoareMaxima;
 
-                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
+
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
+                SortedList<double, Mutare> mutariSortate;
+                if (esteSahLaAlb)
+                {
+                    mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe);
+                }
+                else
+                {
+                    mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
+                }
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -2047,7 +2050,6 @@ namespace ProiectVolovici
                     }
                 }
             ValoareFinala:
-
                 return val;
             }
         }
