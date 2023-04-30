@@ -51,7 +51,7 @@ namespace ProiectVolovici
 
         public override List<Pozitie> ReturneazaPozitiiPosibile(int[][] matrice)
         {
-            List<Pozitie> pozitii = new List<Pozitie>(4);
+            List<Pozitie> pozitii = new List<Pozitie>(8);
 
             Pozitie poz1 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1);
             Pozitie poz2 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1);

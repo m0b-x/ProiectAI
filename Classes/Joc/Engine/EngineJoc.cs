@@ -756,7 +756,24 @@ namespace ProiectVolovici
             }
         }
 
-
+        public Pozitie ReturneazaPozitieRegeAlb()
+        {
+            foreach(var piesa in _listaPieseAlbe)
+            {
+                if (piesa.Cod == CodPiesa.RegeAlb)
+                    return piesa.Pozitie;
+            }
+            return new Pozitie(-1,-1);
+        }
+        public Pozitie ReturneazaPozitieRegeAlbastru()
+        {
+            foreach (var piesa in _listaPieseAlbastre)
+            {
+                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                    return piesa.Pozitie;
+            }
+            return new Pozitie(-1, -1);
+        }
         protected TipSah VerificaSahurile()
         {
             int codRegeAlb = (int)CodPiesa.RegeAlb;

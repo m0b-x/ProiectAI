@@ -383,20 +383,6 @@ namespace ProiectVolovici
                 }
             }
         }
-
-        private static void StergeHistoryHeuristics()
-        {
-            for (int i = 1; i <= 14; i++)
-            {
-                for (int linie = 0; linie < 10; linie++)
-                {
-                    for (int coloana = 0; coloana < 9; coloana++)
-                    {
-                        HistoryTable[(i, new Pozitie(linie, coloana))] = 0;
-                    }
-                }
-            }
-        }
         public class DuplicateKeyComparerAsc<TKey>
                 :
              IComparer<TKey> where TKey : IComparable
@@ -946,18 +932,14 @@ namespace ProiectVolovici
                                     mutPos.Add(230, new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
-                                if (HistoryTable[(piesaCareIa, mut)] > 0)
-                                {
-                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)], new(new(poz.Linie, poz.Coloana), mut));
-                                }
-                                else
                                 {
                                     mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                             }
                             else
                             {
-                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata] + HistoryTable[(piesaCareIa, mut)]
+                                    , new(new(poz.Linie, poz.Coloana), mut));
                             }
                         }
                     }
@@ -1122,6 +1104,32 @@ namespace ProiectVolovici
         }
 
 
+
+        public static Pozitie ReturneazaPozitieRegeAlbastruInMatrice(int[][] matrice)
+        {
+            for (int i = 0; i <= 2;i++)
+            {
+                for(int j = 3;j<=5;j++)
+                {
+                    if (matrice[i][j] == regeAlbastru)
+                        return new Pozitie(i, j);
+                }
+            }
+            return new Pozitie(-1, -1);
+        }
+        public static Pozitie ReturneazaPozitieRegeAlbInMatrice(int[][] matrice)
+        {
+            for (int i = 7; i <= 9; i++)
+            {
+                for (int j = 3; j <= 5; j++)
+                {
+                    if (matrice[i][j] == regeAlb)
+                        return new Pozitie(i, j);
+                }
+            }
+            return new Pozitie(-1, -1);
+        }
+
         public override Tuple<Mutare, double> ReturneazaMutareaOptima()
         {
             int[][] matriceClonata = CloneazaMatricea(_engine.MatriceCoduriPiese);
@@ -1150,6 +1158,7 @@ namespace ProiectVolovici
             Pozitie[] pozAlbastre = _engine.ReturneazaPozitiiAlbastre();
             Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
 
+            //Debug.WriteLine("Poz Rege: "+ ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata) + EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata)));
             SeteazaFlagulDeSah(matriceClonata, pozAlbe);
 
             double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
@@ -1186,7 +1195,6 @@ namespace ProiectVolovici
             double beta = ValoareMaxima;
 
             NoduriEvaluate = 0;
-            //StergeHistoryHeuristics();
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 SeteazaFereastraDeAspiratie(scorMutareOptima, ref alpha, ref beta, ref adancimeIterativa);
@@ -1245,7 +1253,6 @@ namespace ProiectVolovici
                 if (matriceClonata[capturi.First().Value.PozitieFinala.Linie][capturi.First().Value.PozitieFinala.Coloana] == (int)CodPiesa.RegeAlbastru)
                 {
                     EsteSahLaAI = true;
-                    Debug.WriteLine("SAH");
                 }
                 else
                 {
@@ -1315,26 +1322,366 @@ namespace ProiectVolovici
             Debug.WriteLine("");
         }
 
-        public static bool IsCheck(int[][] matrice, Pozitie[] poziti)
+
+        public static bool EsteSahLaAlbastru(int[][] matrice, Pozitie pozRegeAlbastru)
         {
-            foreach (var poz in poziti)
+            //Sah La Pioni
+            if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana] == pionAlb ||
+                matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana - 1] == pionAlb ||
+                matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana + 1] == pionAlb)
             {
-                if (poz.Linie != -1)
+                return true;
+            }
+
+            //Sah la tun si tura in linie +
+            for (int linie = pozRegeAlbastru.Linie + 1; linie <= 9; linie++)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
                 {
-                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
-                    foreach (var mut in mutari)
+                    return true;
+                }
+                else if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    for (int linieTun = linie + 1; linieTun <= 9; linieTun++)
                     {
-                        if (matrice[mut.Linie][mut.Coloana] == regeAlb ||
-                            matrice[mut.Linie][mut.Coloana] == regeAlbastru)
+                        if (matrice[linieTun][pozRegeAlbastru.Coloana] != 0)
                         {
-                            return true;
+                            if (matrice[linieTun][pozRegeAlbastru.Coloana] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitLinieP;
+                            }
                         }
                     }
                 }
             }
+        SfarsitLinieP:
+            //Sah la tun si tura in linie -
+            for (int linie = pozRegeAlbastru.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
+                {
+                    return true;
+                }
+                else if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    for (int linieTun = linie - 1; linieTun >= 0; linieTun--)
+                    {
+                        if (matrice[linieTun][pozRegeAlbastru.Coloana] != 0)
+                        {
+                            if (matrice[linieTun][pozRegeAlbastru.Coloana] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitLinieN;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitLinieN:
+
+            //Sah la tun si tura in coloana -
+            for (int coloana = pozRegeAlbastru.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
+                {
+                    return true;
+                }
+                else if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    for (int coloanaTun = coloana - 1; coloanaTun >= 0; coloanaTun--)
+                    {
+                        if (matrice[pozRegeAlbastru.Linie][coloanaTun] != 0)
+                        {
+                            if (matrice[pozRegeAlbastru.Linie][coloanaTun] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitColoanaN;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitColoanaN:
+
+            //Sah la tun si tura in coloana +
+            for (int coloana = pozRegeAlbastru.Coloana + 1; coloana <= 8; coloana++)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
+                {
+                    return true;
+                }
+                else if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    for (int coloanaTun = coloana + 1; coloanaTun <= 8;coloanaTun++)
+                    {
+                        if (matrice[pozRegeAlbastru.Linie][coloanaTun] != 0)
+                        {
+                            if (matrice[pozRegeAlbastru.Linie][coloanaTun] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitColoanaP;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitColoanaP:
+
+            //Sah La cal
+            if (matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana - 1] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana - 2] == calAlb)
+                {
+
+                }
+
+                if (pozRegeAlbastru.Linie > 1)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana - 2] == calAlb)
+                    {
+
+                    }
+                }
+            }
+            if (matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana + 1] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana + 2] == calAlb)
+                {
+
+                }
+
+                if (pozRegeAlbastru.Linie > 1)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana + 2] == calAlb)
+                    {
+
+                    }
+                }
+            }
+            if (pozRegeAlbastru.Linie > 2)
+            {
+                if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana] == 0)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 2][pozRegeAlbastru.Coloana + 1] == calAlb)
+                    {
+
+                    }
+                    if (matrice[pozRegeAlbastru.Linie - 2][pozRegeAlbastru.Coloana - 1] == calAlb)
+                    {
+
+                    }
+                }
+            }
+            if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 2][pozRegeAlbastru.Coloana + 1] == calAlb)
+                {
+
+                }
+                if (matrice[pozRegeAlbastru.Linie + 2][pozRegeAlbastru.Coloana - 1] == calAlb)
+                {
+
+                }
+            }
+
             return false;
         }
+        public static bool EsteSahLaAlb(int[][] matrice, Pozitie pozRegeAlb)
+        {
+            //Sah La Pioni
+            if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana] == pionAlbastru ||
+                matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana - 1] == pionAlbastru ||
+                matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana + 1] == pionAlbastru)
+            {
+                return true;
+            }
+
+            //Sah la tun si tura in linie +
+            for (int linie = pozRegeAlb.Linie + 1; linie <= 9; linie++)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
+                {
+                    return true;
+                }
+                else if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieTun = linie + 1; linieTun <= 9; linieTun++)
+                    {
+                        if (matrice[linieTun][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieTun][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitLinieP;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitLinieP:
+            //Sah la tun si tura in linie -
+            for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
+                {
+                    return true;
+                }
+                else if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieTun = linie - 1; linieTun >= 0; linieTun--)
+                    {
+                        if (matrice[linieTun][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieTun][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitLinieN;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitLinieN:
+
+            //Sah la tun si tura in coloana -
+            for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
+            { 
+                if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
+                {
+                    return true;
+                }
+                else if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    for (int coloanaTun = coloana - 1; coloanaTun >= 0; coloanaTun--)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaTun] != 0)
+                        {
+                            if (matrice[pozRegeAlb.Linie][coloanaTun] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitColoanaN;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitColoanaN:
+
+            //Sah la tun si tura in coloana +
+            for (int coloana = pozRegeAlb.Coloana + 1; coloana <= 8; coloana++)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
+                {
+                    return true;
+                }
+                else if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    for (int coloanaTun = coloana + 1; coloanaTun <= 8; coloanaTun++)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaTun] != 0)
+                        {
+                            if (
+                            matrice[pozRegeAlb.Linie][coloanaTun] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                goto SfarsitColoanaP;
+                            }
+                        }
+                    }
+                }
+            }
+        SfarsitColoanaP:
+
+            //Sah La cal
+            if (matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana - 1] == 0)
+            {
+                if (pozRegeAlb.Linie < 9)
+                {
+                    if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana - 2] == calAlbastru)
+                    {
+
+                    }
+                }
+                if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana - 2] == calAlbastru)
+                {
+
+                }
+            }
+            if (matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana + 1] == 0)
+            {
+                if (pozRegeAlb.Linie < 9)
+                {
+                    if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana + 2] == calAlbastru)
+                    {
+
+                    }
+                }
+                if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana + 2] == calAlbastru)
+                {
+
+                }
+            }
+            if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana] == 0)
+            {
+                if (matrice[pozRegeAlb.Linie - 2][pozRegeAlb.Coloana + 1] == calAlbastru)
+                {
+
+                }
+                if (matrice[pozRegeAlb.Linie - 2][pozRegeAlb.Coloana - 1] == calAlbastru)
+                {
+
+                }
+            }
+            if (pozRegeAlb.Linie < 9)
+            {
+                if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana] == 0)
+                {
+                    if (pozRegeAlb.Linie < 8)
+                    {
+                        if (matrice[pozRegeAlb.Linie + 2][pozRegeAlb.Coloana + 1] == calAlbastru)
+                        {
+
+                        }
+                        if (matrice[pozRegeAlb.Linie + 2][pozRegeAlb.Coloana - 1] == calAlbastru)
+                        {
+
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+
+
+
 
         public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, ulong hash,
@@ -1373,12 +1720,33 @@ namespace ProiectVolovici
                 return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
             }
 
+            if (piesaCapturata == regeAlbastru ||
+                piesaCapturata == regeAlb)
+            {
+                return eval;
+            }
+
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
-                if(piesaCapturata == (int)CodPiesa.RegeAlb)
+
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+
+                if (esteSahLaAlbastru)
                 {
-                    return eval;
+                    adancime++;
+                }
+                else
+                {
+                    //null move
+                    if (adancime >= 3  && eval >= beta)
+                    {
+                        var evalCurenta = AlphaBetaCuMemorie(eval,
+                                    matrice, eval, beta, adancime - 3,
+                                    0, hash, pozAlbe, pozAlbastre, Culoare.AlbMin);
+                        if (evalCurenta >= beta)
+                            return evalCurenta;
+                    }
                 }
                 var origAlpha = alpha;
                 ulong hashUpdatat;
@@ -1410,7 +1778,7 @@ namespace ProiectVolovici
 
                         if (val > alpha && val < beta)
                         {
-
+                            val = -ValoareMaxima;
                             val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                         matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
                         }
@@ -1438,8 +1806,7 @@ namespace ProiectVolovici
                     //Pv Check
                     if (val < beta && val > origAlpha)
                     {
-                        Debug.WriteLine(origAlpha + " " + beta); ;
-                        nodPV = true;;
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
@@ -1461,10 +1828,25 @@ namespace ProiectVolovici
             //minimizare => alb
             else
             {
-                if (piesaCapturata == (int)CodPiesa.RegeAlbastru)
+
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
+                if (esteSahLaAlb)
                 {
-                    return eval;
+                    adancime++;
                 }
+                else
+                {
+                    if(adancime >= 3 && alpha >= eval)
+                    {
+                        var evalCurenta = AlphaBetaCuMemorie(eval,
+                                matrice, alpha, eval, adancime - 3,
+                                0, hash, pozAlbe, pozAlbastre, Culoare.AlbastruMax);
+                        if (alpha >= evalCurenta)
+                            return evalCurenta;
+                    }
+                }
+
                 var origBeta = beta;
                 ulong hashUpdatat;
                 int piesaLuata;
@@ -1494,6 +1876,7 @@ namespace ProiectVolovici
 
                         if (val > alpha && val < beta)
                         {
+                            val = ValoareMaxima;
                             val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                                 matrice, alpha, beta, adancime - 1,
                                 piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
