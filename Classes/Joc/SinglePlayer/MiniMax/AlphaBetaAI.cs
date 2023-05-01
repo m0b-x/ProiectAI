@@ -1661,6 +1661,11 @@ namespace ProiectVolovici
 
 
 
+
+
+
+
+
         public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, ulong hash,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
@@ -1698,7 +1703,21 @@ namespace ProiectVolovici
             {
                 NoduriEvaluate--;
                 //quiescence search
-                return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
+                var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare);
+
+
+                //transposition table
+                int flag = 0; // Exact value
+                if (val <= alpha)
+                {
+                    flag = 2; // Upper bound
+                }
+                else if (val >= beta)
+                {
+                    flag = 1; // Lower bound
+                }
+                TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
+
             }
 
             if (piesaCapturata == regeAlbastru ||
@@ -1792,6 +1811,7 @@ namespace ProiectVolovici
                     //principal variation check
                     if (eval > alpha && eval < beta)
                     {
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
@@ -1893,6 +1913,7 @@ namespace ProiectVolovici
                     //principal variation check
                     if (val > alpha && val < origBeta)
                     {
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
@@ -2218,5 +2239,247 @@ namespace ProiectVolovici
 
             return true;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static double MiniMax(double eval, int[][] matrice, int adancime, int piesaCapturata, ulong hash,
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+        {
+            // pv search
+
+            NoduriEvaluate++;
+
+            if (adancime <= 0)
+            {
+                NoduriEvaluate--;
+                //quiescence search
+                return eval;
+            }
+
+            if (piesaCapturata == regeAlbastru ||
+                piesaCapturata == regeAlb)
+            {
+                //nod final
+                return eval;
+            }
+
+            //maximizare => albastru
+            if (culoare == Culoare.AlbastruMax)
+            {
+                ulong hashUpdatat;
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = -ValoareMaxima;
+
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Max(val, MiniMax(eval + valoareMutare,
+                                matrice, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
+
+                    //
+                    RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                }
+
+                return val;
+            }
+            else// if (culoare == Culoare.AlbMin)
+            {
+
+                ulong hashUpdatat;
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = ValoareMaxima;
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Min(val, MiniMax(eval - valoareMutare,
+                        matrice, adancime - 1,
+                        piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+
+
+                    //
+                    RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                }
+                return val;
+            }
+        }
+
+
+
+        public static double AlphaBeta(double eval, int[][] matrice, double alpha,
+            double beta, int adancime, int piesaCapturata, ulong hash,
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+        {
+            // pv search
+
+            NoduriEvaluate++;
+
+            if (adancime <= 0)
+            {
+                NoduriEvaluate--;
+                //quiescence search
+                return eval;
+            }
+
+            if (piesaCapturata == regeAlbastru ||
+                piesaCapturata == regeAlb)
+            {
+                //nod final
+                return eval;
+            }
+
+            //maximizare => albastru
+            if (culoare == Culoare.AlbastruMax)
+            {
+
+
+                var origAlpha = alpha;
+                ulong hashUpdatat;
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = -ValoareMaxima;
+
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Max(val, AlphaBeta(eval + valoareMutare,
+                                matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
+
+                    //
+                    alpha = Math.Max(val, alpha);
+                    RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val >= beta)
+                    {
+                        goto ValoareFinala;
+                    }
+                }
+            ValoareFinala:
+
+
+                return val;
+            }
+            else// if (culoare == Culoare.AlbMin)
+            {
+
+                var origBeta = beta;
+                ulong hashUpdatat;
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = ValoareMaxima;
+
+                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Min(val, AlphaBeta(eval - valoareMutare,
+                        matrice, alpha, beta, adancime - 1,
+                        piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+
+                    
+                    //
+                    beta = Math.Min(val, beta);
+                    RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val <= alpha)
+                    {
+                        goto ValoareFinala;
+                    }
+                }
+            ValoareFinala:
+                return val;
+            }
+        }
+
+
+
+
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
