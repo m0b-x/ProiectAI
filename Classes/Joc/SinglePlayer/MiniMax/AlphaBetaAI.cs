@@ -17,10 +17,14 @@ namespace ProiectVolovici
         private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
-        private static Dictionary<(int, Pozitie), int> HistoryTable = new(14 * 90);
+        private static Dictionary<(int, Pozitie), double> HistoryTable = new(14 * 90);
         private static Mutare[][] KillerMoves;
         private static int MarimeKillerMoves = 64;
-        private static int NoduriEvaluate = 0; 
+        private static int NoduriEvaluate = 0;
+
+        private static double OffsetMVVLVA = 200;
+        private static double OffsetKillerMoves = 400;
+        private static double OffsetHistoryTable = 200;
         const int FullDepthMoves = 4;
         const int ReductionLimit = 3;
 
@@ -94,10 +98,10 @@ namespace ProiectVolovici
             for (int piesaCareIa = 1; piesaCareIa <= 14; piesaCareIa++)
                 for (int piesaCapturata = 1; piesaCapturata <= 14; piesaCapturata++)
                 {
-                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = 250 + ConstantaPiese.ValoareRege
+                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = OffsetMVVLVA + ConstantaPiese.ValoareRege
                         + EngineSinglePlayer.ReturneazaScorPiesa(piesaCapturata)
                         - EngineSinglePlayer.ReturneazaScorPiesa(piesaCareIa);
-                    //explicatie: 200 - o valoare ca sa puna capturile peste tabelele de pst
+                    //explicatie: 500 - o valoare ca sa puna capturile peste tabelele de pst
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
         }
@@ -923,12 +927,16 @@ namespace ProiectVolovici
                             {
                                 if (KillerMoves[adancime][0].PozitieInitiala == poz && KillerMoves[adancime][0].PozitieFinala == mut)
                                 {
-                                    mutPos.Add(250, new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetKillerMoves, new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 if (KillerMoves[adancime][1].PozitieInitiala == poz && KillerMoves[adancime][1].PozitieFinala == mut)
                                 {
-                                    mutPos.Add(230, new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetKillerMoves - 1, new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else if (HistoryTable[(piesaCareIa, mut)] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[(piesaCareIa, mut)], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 {
@@ -937,8 +945,7 @@ namespace ProiectVolovici
                             }
                             else
                             {
-                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata] + HistoryTable[(piesaCareIa, mut)]
-                                    , new(new(poz.Linie, poz.Coloana), mut));
+                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
                             }
                         }
                     }
@@ -1232,6 +1239,8 @@ namespace ProiectVolovici
                 valoriMutariPosibile.AddRange(listaAuxiliara.Values);
                 listaAuxiliara.Clear();
                 Debug.WriteLine($"Noduri Evaluate: {NoduriEvaluate} la adancimea {adancimeIterativa}");
+
+                adancimeIterativa = ScadeAdancimeaPentruFerestreAspiratie(scorMutareOptima, alpha, beta, adancimeIterativa);
             }
             Debug.WriteLine($"{evaluareMatriceInitiala}\n\n");
             _cronometruAI.Stop();
@@ -1239,12 +1248,23 @@ namespace ProiectVolovici
             return new(mutareOptima, scorMutareOptima);
         }
 
+        private static int ScadeAdancimeaPentruFerestreAspiratie(double scorMutareOptima, double alpha, double beta, int adancimeIterativa)
+        {
+            if (scorMutareOptima > beta || scorMutareOptima < alpha)
+            {
+                adancimeIterativa--;
+            }
+
+            return adancimeIterativa;
+        }
+
         private static void SeteazaFereastraDeAspiratie(double scorMutareOptima, ref double alpha, ref double beta, ref int adancimeIterativa)
         {
             if (FerestreAspiratie && adancimeIterativa >= 3)
             {
                 if (scorMutareOptima > beta)
-                {
+                    if (scorMutareOptima < alpha)
+                    {
                     beta = ValoareMaxima;
                     adancimeIterativa--;
                 }
@@ -1717,7 +1737,7 @@ namespace ProiectVolovici
                     flag = 1; // Lower bound
                 }
                 TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
-
+                return val;
             }
 
             if (piesaCapturata == regeAlbastru ||
@@ -1798,13 +1818,13 @@ namespace ProiectVolovici
 
                     if (val >= beta)
                     {
-                        //history heuristics
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime / 10;
-                        //killer moves
                         if (piesaLuata == 0)
                         {
+                            //killer moves
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
                             KillerMoves[adancime][0] = mutPos;
+                            //hiistory heuristics
+                            HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] += (double) adancime * adancime;
                         }
                         goto ValoareFinala;
                     }
@@ -1900,13 +1920,13 @@ namespace ProiectVolovici
 
                     if (val <= alpha)
                     {
-                        //history heuristics
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime * adancime / 10;
-                        //killer moves
                         if (piesaLuata == 0)
                         {
+                            //killer moves
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
                             KillerMoves[adancime][0] = mutPos;
+                            //history heuristics
+                            HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = (double)adancime * adancime ;
                         }
                         goto ValoareFinala;
                     }
