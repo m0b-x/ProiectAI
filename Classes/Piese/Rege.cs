@@ -75,43 +75,7 @@ namespace ProiectVolovici
                     pozitii.RemoveAt(i);
                 }
             }
-
-
-            for (int i = pozitii.Count - 1; i >= 0; i--)
-            {
-                if (this.Culoare == Culoare.AlbastruMax)
-                {
-                    for (int linie = this.Pozitie.Linie + 1; linie <= ultimaLinie; linie++)
-                    {
-                        if (matrice[linie][this.Pozitie.Coloana] != 0)
-                        {
-                            if (matrice[linie][this.Pozitie.Coloana] == (int)CodPiesa.RegeAlb)
-                            {
-                                pozitii.RemoveAt(i);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int linie = this.Pozitie.Linie - 1; linie >= 0; linie--)
-                    {
-                        if (matrice[linie][this.Pozitie.Coloana] == (int)CodPiesa.RegeAlbastru)
-                        {
-                            pozitii.RemoveAt(i);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-
+            
 
             return pozitii;
         }

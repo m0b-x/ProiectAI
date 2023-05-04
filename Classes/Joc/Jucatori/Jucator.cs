@@ -13,7 +13,7 @@ namespace ProiectVolovici
         public Jucator(Culoare culoare)
         {
             _culoare = culoare;
-            _ultimaPozitie = Pozitie.PozitieNula;
+            _ultimaPozitie = Pozitie.PozitieInvalida;
         }
 
         public Pozitie UltimaPozitie

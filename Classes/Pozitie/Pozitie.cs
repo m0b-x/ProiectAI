@@ -1,11 +1,13 @@
-﻿namespace ProiectVolovici
+﻿using System.Collections.Generic;
+
+namespace ProiectVolovici
 {
     public struct Pozitie
     {
         public int Linie;
         public int Coloana;
 
-        public static Pozitie PozitieNula = new Pozitie(-1, -1);
+        public static Pozitie PozitieInvalida = new Pozitie(-1, -1);
         public Pozitie(int linie, int coloana)
         {
             Linie = linie;
@@ -37,7 +39,6 @@
         {
             return unchecked(Linie ^ Coloana);
         }
-
         static Pozitie[][] ListaPozitii =
         {
             new Pozitie[] { new Pozitie(0, 0),new Pozitie(0, 1),new Pozitie(0, 2),new Pozitie(0, 3),new Pozitie(0, 4),new Pozitie(0, 5),new Pozitie(0, 6),new Pozitie(0, 7),new Pozitie(0, 8) },
@@ -56,6 +57,16 @@
         {
             return ListaPozitii[linie][coloana];
         }
+        public static Pozitie AcceseazaElementStaticSafe(int linie, int coloana)
+        {
+            if (linie < 0 || linie > 9
+                || coloana < 0 || coloana > 8)
+                return Pozitie.PozitieInvalida;
+
+            return ListaPozitii[linie][coloana];
+        }
+
+
         public static bool EstePozitieValida(int linie, int coloana)
         {
             if (0 <= linie && linie <= 9 &&
@@ -66,9 +77,9 @@
             return false;
         }
 
-		public override string ToString()
-		{
-			return $"({Linie},{Coloana})";
-		}
-	}
+        public override string ToString()
+        {
+            return $"({Linie},{Coloana})";
+        }
+    }
 }

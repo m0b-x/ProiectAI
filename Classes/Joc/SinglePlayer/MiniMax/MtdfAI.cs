@@ -978,7 +978,7 @@ namespace ProiectVolovici
 
         public static void StergePozitieDinVector(int index, Pozitie[] vector)
         {
-            vector[index] = Pozitie.PozitieNula;
+            vector[index] = Pozitie.PozitieInvalida;
         }
 
         public static int StergePozitieDinVector(Pozitie poz, Pozitie[] vector)
@@ -987,7 +987,7 @@ namespace ProiectVolovici
             {
                 if (vector[i].Linie == poz.Linie && vector[i].Coloana == poz.Coloana)
                 {
-                    vector[i] = Pozitie.PozitieNula;
+                    vector[i] = Pozitie.PozitieInvalida;
                     return i;
                 }
             }
