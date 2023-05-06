@@ -1232,7 +1232,7 @@ namespace ProiectVolovici
 
 
 			NoduriEvaluate = 0;
-
+			Debug.WriteLine(EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata)));
 			for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
 			{
 				foreach (var mutPos in valoriMutariPosibile)
@@ -1467,7 +1467,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
 				{
-					if (matrice[linie][pozRegeAlbastru.Coloana] == tunAlb)
+					if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
 					{
 						return true;
 					}
@@ -1479,7 +1479,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
 				{
-					if (matrice[linie][pozRegeAlbastru.Coloana] == tunAlb)
+					if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
 					{
 						return true;
 					}
@@ -1491,7 +1491,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
 				{
-					if (matrice[pozRegeAlbastru.Linie][coloana] == tunAlb)
+					if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
 					{
 						return true;
 					}
@@ -1505,7 +1505,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
 				{
-					if (matrice[pozRegeAlbastru.Linie][coloana] == tunAlb)
+					if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
 					{
 						return true;
 					}
@@ -1587,101 +1587,97 @@ namespace ProiectVolovici
 			}
 
 			//Sah La Tun
+			
+            //linie in jos
+            for (int linie = pozRegeAlb.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieSec = linie + 1; linieSec < 10; linieSec++)
+                    {
+                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
+                    {
+                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = pozRegeAlb.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
 
-			//linie in jos
-			for (int linie = pozRegeAlb.Linie + 1; linie < 10; linie++)
-			{
-				if (matrice[linie][pozRegeAlb.Coloana] != 0)
-				{
-					for (int linieSec = linie + 1; linieSec < 10; linieSec++)
-					{
-						if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
-						{
-							if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
-							{
-								return true;
-								break;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-			//linie in sus
-			for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
-			{
-				if (matrice[linie][pozRegeAlb.Coloana] != 0)
-				{
-					for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
-					{
-						if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
-						{
-							if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
-							{
-								return true;
-								break;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-			//coloana in sus
-			for (int coloana = pozRegeAlb.Coloana + 1; coloana < 9; coloana++)
-			{
-				if (matrice[pozRegeAlb.Linie][coloana] != 0)
-				{
-					for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
-					{
-						if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
-						{
-							if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
-							{
-								return true;
-								break;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
+            //coloana in jos
 
-			//coloana in jos
-
-			for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
-			{
-				if (matrice[pozRegeAlb.Linie][coloana] != 0)
+            for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
 				{
-					for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
-					{
-						if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
-						{
-							if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
-							{
-								return true;
-								break;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
+                    for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
 
 
 
@@ -1691,7 +1687,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[linie][pozRegeAlb.Coloana] != 0)
 				{
-					if (matrice[linie][pozRegeAlb.Coloana] == tunAlbastru)
+					if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
 					{
 						return true;
 					}
@@ -1703,7 +1699,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[linie][pozRegeAlb.Coloana] != 0)
 				{
-					if (matrice[linie][pozRegeAlb.Coloana] == tunAlbastru)
+					if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
 					{
 						return true;
 					}
@@ -1715,7 +1711,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[pozRegeAlb.Linie][coloana] != 0)
 				{
-					if (matrice[pozRegeAlb.Linie][coloana] == tunAlbastru)
+					if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
 					{
 						return true;
 					}
@@ -1729,7 +1725,7 @@ namespace ProiectVolovici
 			{
 				if (matrice[pozRegeAlb.Linie][coloana] != 0)
 				{
-					if (matrice[pozRegeAlb.Linie][coloana] == tunAlbastru)
+					if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
 					{
 						return true;
 					}
@@ -1843,6 +1839,8 @@ namespace ProiectVolovici
 
 			if (adancime <= 0)
 			{
+				//adaugat 
+				return eval;
 				NoduriEvaluate--;
 				//quiescence search
 				var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, AdancimeQuiescence);
@@ -1898,7 +1896,7 @@ namespace ProiectVolovici
 					//check extensions
 					adancime++;
 					//Check Evasions
-					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre);
+					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
 				}
 
 				var origAlpha = alpha;
@@ -2006,7 +2004,7 @@ namespace ProiectVolovici
 					//check extensions
 					adancime++;
 					//Check Evasions
-					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbe);
+					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
 				}
 
 				var origBeta = beta;
@@ -2240,10 +2238,10 @@ namespace ProiectVolovici
 			}
 		}
 
-		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlb(int[][] matrice, Pozitie[] pozAlbe)
+		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlb(int[][] matrice, Pozitie[] pozAlbe, bool moveOrdering = true, int adancime = 0)
 		{
 			SortedList<double, Mutare> mutariSortate;
-			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbe);
+			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
 			mutariSortate = new SortedList<double, Mutare>(new DuplicateKeyComparerDesc<double>());
 
 			int piesaLuata;
@@ -2269,10 +2267,10 @@ namespace ProiectVolovici
 			return mutariSortate;
 		}
 
-		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastru(int[][] matrice, Pozitie[] pozAlbastre)
+		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastru(int[][] matrice, Pozitie[] pozAlbastre, bool moveOrdering = true, int adancime = 0)
 		{
 			SortedList<double, Mutare> mutariSortate;
-			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbastre);
+			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
 			mutariSortate = new SortedList<double, Mutare>(new DuplicateKeyComparerDesc<double>());
 
 			int piesaLuata;
