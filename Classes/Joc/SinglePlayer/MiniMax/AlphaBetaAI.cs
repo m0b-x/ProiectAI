@@ -18,7 +18,7 @@ namespace ProiectVolovici
         private static Dictionary<(Mutare, int), double> scoruriIterative = new(50 * 25 * 6);
         private static int AdancimeNMP = 3;
         private static int ScadereNMP = 2;
-        private static int AdancimeQuiescence;
+        private static int AdancimeQuiescence = 6;
         private static bool LimitareQuiescence;
         private static Mutare[][] KillerMoves;
         private static int MarimeKillerMoves = 64;
@@ -370,14 +370,13 @@ namespace ProiectVolovici
 
         private static void SeteazaAdancimeaQuiescence(int adancime)
         {
-            if (adancime <= 3)
+            if (adancime <= 4)
             {
                 LimitareQuiescence = false;
             }
             else
             {
                 LimitareQuiescence = true;
-                AdancimeQuiescence = 5;
             }
         }
 
@@ -1304,7 +1303,7 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
                 valoriMutariPosibile.Clear();
@@ -1794,7 +1793,7 @@ namespace ProiectVolovici
                 if (!esteSahLaAlbastru)
                 {
                     //null move pruning
-                    if (adancime >= AdancimeNMP)
+                    if (adancime >= AdancimeNMP && eval >= beta)
                     {
                         var evalMin = AlphaBetaCuMemorie(eval,
                                     matrice, beta, beta + 1, adancime - ScadereNMP,
@@ -1810,6 +1809,8 @@ namespace ProiectVolovici
                 }
                 else
                 {
+                    //check extensions
+                    adancime++;
                     //Check Evasions
                     mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre);
                 }
@@ -1900,7 +1901,7 @@ namespace ProiectVolovici
                 if (!esteSahLaAlb)
                 {
                     //null move pruning
-                    if (adancime >= AdancimeNMP)
+                    if (adancime >= AdancimeNMP && alpha >= eval)
                     {
                         var evalMax = AlphaBetaCuMemorie(eval,
                                 matrice, alpha - 1, alpha, adancime - ScadereNMP,
@@ -1916,6 +1917,8 @@ namespace ProiectVolovici
                 }
                 else
                 {
+                    //check extensions
+                    adancime++;
                     //Check Evasions
                     mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbe);
                 }
@@ -2022,6 +2025,7 @@ namespace ProiectVolovici
             NoduriEvaluate++;
             if(LimitareQuiescence == true && adancime <= 0)
             {
+                Debug.WriteLine("DA");
                 return eval;
             }
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
@@ -2158,7 +2162,6 @@ namespace ProiectVolovici
 
             int piesaLuata;
             int piesaCareIa;
-            var pozRege = ReturneazaPozitieRegeAlbInMatrice(matrice);
             foreach (var mutPos in mutariCuPosibilSah)
             {
                 piesaLuata = matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana];
@@ -2174,6 +2177,7 @@ namespace ProiectVolovici
                 matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
                 matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
 
+                var pozRege = ReturneazaPozitieRegeAlbInMatrice(matrice);
                 if (!EsteSahLaAlb(matrice, pozRege))
                 {
                     mutariSortate.Add(mutPos.Key,mutPos.Value);
@@ -2194,7 +2198,6 @@ namespace ProiectVolovici
 
             int piesaLuata;
             int piesaCareIa;
-            var pozRege = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
             foreach (var mutPos in mutariCuPosibilSah)
             {
                 piesaLuata = matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana];
@@ -2209,6 +2212,7 @@ namespace ProiectVolovici
                 matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
                 matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
 
+                var pozRege = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
                 if (!EsteSahLaAlbastru(matrice, pozRege))
                 {
                     mutariSortate.Add(mutPos.Key, mutPos.Value);
