@@ -563,7 +563,7 @@ namespace ProiectVolovici
                 }
                 _stivaMutari.Pop();
                 _stivaCodPiese.Pop();
-                
+                DecoloreazaMutariPosibile();
 
             }
 

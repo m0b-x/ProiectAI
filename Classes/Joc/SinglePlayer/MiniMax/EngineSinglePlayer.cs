@@ -313,7 +313,8 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             unchecked
             {
                 var mutareaOptima = _jucatorAI.ReturneazaMutareaOptima();
-
+                if (mutareaOptima == null)
+                    return;
                 Piesa piesa = GetPiesaCuPozitia(mutareaOptima.Item1.PozitieInitiala);
                 Pozitie pozitie = mutareaOptima.Item1.PozitieFinala;
                 RealizeazaMutareaLocal(piesa, pozitie);
