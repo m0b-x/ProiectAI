@@ -2210,14 +2210,14 @@ namespace ProiectVolovici
 
                 SortedList<double, Mutare> mutariSortate;
 
-                //delta pruning
-                if (eval + ConstantaPiese.ValoareTura < alpha)
-                {
-                    return eval;
-                }
 
                 if (!esteSahLaAlbastru)
                 {
+                    //delta pruning
+                    if (eval + ConstantaPiese.ValoareTura < alpha)
+                    {
+                        return eval;
+                    }
                     // stand pat
                     if (eval >= beta)
                     {
@@ -2281,13 +2281,13 @@ namespace ProiectVolovici
                 SortedList<double, Mutare> mutariSortate;
 
 
-                //delta pruning
-                if (eval - ConstantaPiese.ValoareTura > beta)
-                {
-                    return eval;
-                }
                 if (!esteSahLaAlb)
                 {
+                    //delta pruning
+                    if (eval - ConstantaPiese.ValoareTura > beta)
+                    {
+                        return eval;
+                    }
                     //stand pat
                     if (alpha >= eval)
                     {
