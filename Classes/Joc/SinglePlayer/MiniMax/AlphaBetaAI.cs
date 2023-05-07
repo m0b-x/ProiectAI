@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Net.Http.Headers;
 using static System.Windows.Forms.LinkLabel;
@@ -1232,7 +1233,6 @@ namespace ProiectVolovici
 
 
 			NoduriEvaluate = 0;
-			Debug.WriteLine(EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata)));
 			for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
 			{
 				foreach (var mutPos in valoriMutariPosibile)
@@ -1358,7 +1358,7 @@ namespace ProiectVolovici
 		}
 
 
-		public static bool EsteSahLaAlbastru(int[][] matrice, Pozitie pozRegeAlbastru)
+		public static bool EsteSahLaAlbastru(int[][] matrice, Pozitie pozRegeAlbastru, Pozitie[] pozAlbe)
 		{
 			//Sah La Pioni
 			if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana] == pionAlb ||
@@ -1368,102 +1368,22 @@ namespace ProiectVolovici
 				return true;
 			}
 
-			//Sah la Tun
-			//linie in jos
-			for (int linie = pozRegeAlbastru.Linie + 1; linie < 10; linie++)
-			{
-				if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
-				{
-					for (int linieSec = linie + 1; linieSec < 10; linieSec++)
-					{
-						if (matrice[linieSec][pozRegeAlbastru.Coloana] != 0)
-						{
-							if (matrice[linieSec][pozRegeAlbastru.Coloana] == tunAlb)
-							{
-								return true;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-			//linie in sus
-			for (int linie = pozRegeAlbastru.Linie - 1; linie >= 0; linie--)
-			{
-				if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
-				{
-					for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
-					{
-						if (matrice[linieSec][pozRegeAlbastru.Coloana] != 0)
-						{
-							if (matrice[linieSec][pozRegeAlbastru.Coloana] == tunAlb)
-							{
-								return true;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-			//coloana in sus
-			for (int coloana = pozRegeAlbastru.Coloana + 1; coloana < 9; coloana++)
-			{
-				if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
-				{
-					for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
-					{
-						if (matrice[pozRegeAlbastru.Linie][coloanaSec] != 0)
-						{
-							if (matrice[pozRegeAlbastru.Linie][coloanaSec] == tunAlb)
-							{
-								return true;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
+            //Sah La Tun
+            foreach (var poz in pozAlbe)
+            {
+				if(poz.Linie != -1)
+                if (matrice[poz.Linie][poz.Coloana] == tunAlb)
+                {
+                    if (_pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice).Contains(pozRegeAlbastru))
+                    {
+                        return true;
+                    }
+                }
+            }
 
-			//coloana in jos
-
-			for (int coloana = pozRegeAlbastru.Coloana - 1; coloana >= 0; coloana--)
-			{
-				if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
-				{
-					for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
-					{
-						if (matrice[pozRegeAlbastru.Linie][coloanaSec] != 0)
-						{
-							if (matrice[pozRegeAlbastru.Linie][coloanaSec] == tunAlb)
-							{
-								return true;
-							}
-							else
-							{
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-
-
-			//Sah La Tura
-			//linie in jos
-			for (int linie = pozRegeAlbastru.Linie + 1; linie < 10; linie++)
+            //Sah La Tura
+            //linie in jos
+            for (int linie = pozRegeAlbastru.Linie + 1; linie < 10; linie++)
 			{
 				if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
 				{
@@ -1576,7 +1496,7 @@ namespace ProiectVolovici
 
 
 
-		public static bool EsteSahLaAlb(int[][] matrice, Pozitie pozRegeAlb)
+		public static bool EsteSahLaAlb(int[][] matrice, Pozitie pozRegeAlb, Pozitie[] pozAlbastre)
 		{
 			//Sah La Pioni
 			if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana] == pionAlbastru ||
@@ -1587,98 +1507,17 @@ namespace ProiectVolovici
 			}
 
 			//Sah La Tun
-			
-            //linie in jos
-            for (int linie = pozRegeAlb.Linie + 1; linie < 10; linie++)
+			foreach( var poz in pozAlbastre)
             {
-                if (matrice[linie][pozRegeAlb.Coloana] != 0)
-                {
-                    for (int linieSec = linie + 1; linieSec < 10; linieSec++)
-                    {
-                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
-                        {
-                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            //linie in sus
-            for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
-            {
-                if (matrice[linie][pozRegeAlb.Coloana] != 0)
-                {
-                    for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
-                    {
-                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
-                        {
-                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            //coloana in sus
-            for (int coloana = pozRegeAlb.Coloana + 1; coloana < 9; coloana++)
-            {
-                if (matrice[pozRegeAlb.Linie][coloana] != 0)
-                {
-                    for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
-                    {
-                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
-                        {
-                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-
-            //coloana in jos
-
-            for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
-            {
-                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                if (poz.Linie != -1)
+                if (matrice[poz.Linie][poz.Coloana] == turaAlbastra)
 				{
-                    for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
-                    {
-                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
-                        {
-                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    break;
+                    if(_pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice).Contains(pozRegeAlb))
+					{
+						return true;
+					}
                 }
-            }
-
+			}
 
 
 			//Sah La Tura
@@ -1870,7 +1709,7 @@ namespace ProiectVolovici
 			if (culoare == Culoare.AlbastruMax)
 			{
 
-				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice), pozAlbe);
 				SortedList<double, Mutare> mutariSortate;
 
 				if (!esteSahLaAlbastru)
@@ -1895,7 +1734,7 @@ namespace ProiectVolovici
 					//check extensions
 					adancime++;
 					//Check Evasions
-					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
+					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre, pozAlbe, moveOrdering: true, adancime: adancime);
 				}
 
 				var origAlpha = alpha;
@@ -1978,7 +1817,7 @@ namespace ProiectVolovici
 			}
 			else// if (culoare == Culoare.AlbMin)
 			{
-				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice), pozAlbastre);
 				SortedList<double, Mutare> mutariSortate;
 
 				if (!esteSahLaAlb)
@@ -2003,7 +1842,7 @@ namespace ProiectVolovici
 					//check extensions
 					adancime++;
 					//Check Evasions
-					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
+					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbastre, pozAlbe, moveOrdering: true, adancime: adancime);
 				}
 
 				var origBeta = beta;
@@ -2118,7 +1957,7 @@ namespace ProiectVolovici
 			}
 			if (culoare == Culoare.AlbastruMax)
 			{
-				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice), pozAlbe);
 
 
 				var origAlpha = alpha;
@@ -2148,7 +1987,7 @@ namespace ProiectVolovici
 				else
 				{
 					//Check Evasions
-					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre);
+					mutariSortate = GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre, pozAlbe);
 				}
 
 				if (mutariSortate.Count == 0)
@@ -2178,7 +2017,7 @@ namespace ProiectVolovici
 			}
 			else// if (culoare == Culoare.AlbMin)
 			{
-				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice), pozAlbastre);
 
 				var origBeta = beta;
 				int piesaLuata;
@@ -2205,7 +2044,7 @@ namespace ProiectVolovici
 				else
 				{
 					//Generare Mutari fara sah la alb
-					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbe);
+					mutariSortate = GenereazaCheckEvasionsAlb(matrice, pozAlbastre, pozAlbe);
 				}
 
 				if (mutariSortate.Count == 0)
@@ -2238,7 +2077,7 @@ namespace ProiectVolovici
 
 
 
-		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlb(int[][] matrice, Pozitie[] pozAlbe, bool moveOrdering = true, int adancime = 0)
+		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlb(int[][] matrice, Pozitie[] pozAlbastre, Pozitie[] pozAlbe, bool moveOrdering = true, int adancime = 0)
 		{
 			SortedList<double, Mutare> mutariSortate;
 			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: moveOrdering, adancime: adancime);
@@ -2255,7 +2094,7 @@ namespace ProiectVolovici
 				matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
 
 				var pozRege = ReturneazaPozitieRegeAlbInMatrice(matrice);
-				if (!EsteSahLaAlb(matrice, pozRege))
+				if (!EsteSahLaAlb(matrice, pozRege, pozAlbastre))
 				{
 					mutariSortate.Add(mutPos.Key, mutPos.Value);
 				}
@@ -2271,7 +2110,7 @@ namespace ProiectVolovici
 			return mutariSortate;
 		}
 
-		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastru(int[][] matrice, Pozitie[] pozAlbastre, bool moveOrdering = true, int adancime = 0)
+		private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastru(int[][] matrice, Pozitie[] pozAlbastre,Pozitie[] pozAlbe,  bool moveOrdering = true, int adancime = 0)
 		{
 			SortedList<double, Mutare> mutariSortate;
 			var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: moveOrdering, adancime: adancime);
@@ -2289,7 +2128,7 @@ namespace ProiectVolovici
 				matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
 
 				var pozRege = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
-				if (!EsteSahLaAlbastru(matrice, pozRege))
+				if (!EsteSahLaAlbastru(matrice, pozRege, pozAlbe))
 				{
 					mutariSortate.Add(mutPos.Key, mutPos.Value);
 				}
