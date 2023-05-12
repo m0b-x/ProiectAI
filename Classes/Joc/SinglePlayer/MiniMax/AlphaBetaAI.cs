@@ -1946,11 +1946,6 @@ namespace ProiectVolovici
 
             if (adancime <= 0)
             {
-                if (culoare == Culoare.AlbMin && alpha >= eval ||
-                    culoare == Culoare.AlbastruMax && eval >= beta)
-                {
-                    return eval;
-                }
                 NoduriEvaluate--;
                 //quiescence search
                 var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
@@ -2225,7 +2220,7 @@ namespace ProiectVolovici
                     }
                 }
 
-                mutariSortate = (adancime <= AdancimeQuiescence) ? GenereazaCapturiSiChecksAlbastru(matrice, pozAlbastre) : GenereazaCapturiPosibile(matrice, pozAlbastre);
+                mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -2278,7 +2273,7 @@ namespace ProiectVolovici
                     }
                 }
 
-                mutariSortate = (adancime <= AdancimeQuiescence) ? GenereazaCapturiSiChecksAlb(matrice, pozAlbe) : GenereazaCapturiPosibile(matrice, pozAlbe);
+                mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
 
 
                 if (mutariSortate.Count == 0)
