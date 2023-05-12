@@ -11,7 +11,7 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
-        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 3;
+        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
         private static Dictionary<int, double> HistoryTable = new(1260);
@@ -1343,7 +1343,8 @@ namespace ProiectVolovici
 
 
             NoduriEvaluate = 0;
-            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+            //adaugat
+            for (int adancimeIterativa = 1; adancimeIterativa <= 5; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
                 {
@@ -1944,8 +1945,32 @@ namespace ProiectVolovici
                 }
             }
 
+            if (piesaCapturata == regeAlbastru ||
+                piesaCapturata == regeAlb)
+            {
+                //nod final
+                return eval;
+            }
+
             if (adancime <= 0)
             {
+                //check extension
+                if(culoare == Culoare.AlbMin)
+                {
+                    if(EsteSahLaAlb(matrice,ReturneazaPozitieRegeAlbInMatrice(matrice)))
+                    {
+                        return AlphaBetaCuMemorie(eval, matrice, alpha, beta,adancime: 1, piesaCapturata, hash, pozAlbe, pozAlbastre, culoare);
+                    }
+                }
+                else
+                {
+                    if (EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice)))
+                    {
+                        return AlphaBetaCuMemorie(eval, matrice, alpha, beta, adancime: 1, piesaCapturata, hash, pozAlbe, pozAlbastre, culoare);
+                    }
+                }
+
+
                 NoduriEvaluate--;
                 //quiescence search
                 var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
@@ -1963,13 +1988,6 @@ namespace ProiectVolovici
                 }
                 TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
                 return val;
-            }
-
-            if (piesaCapturata == regeAlbastru ||
-                piesaCapturata == regeAlb)
-            {
-                //nod final
-                return eval;
             }
 
             //maximizare => albastru
