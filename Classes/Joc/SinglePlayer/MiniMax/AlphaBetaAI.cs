@@ -366,18 +366,18 @@ namespace ProiectVolovici
 
         private static void SetareLimiteQuiescence(int adancime)
         {
-            if (adancime >= 6)
+            if (adancime <= 2)
+            {
+                AdancimeQuiescence = 4;
+            }
+            else
+            if (adancime ==  3)
             {
                 AdancimeQuiescence = 2;
             }
             else
-            if (adancime >= 4)
             {
-                AdancimeQuiescence = 3;
-            }
-            else
-            {
-                AdancimeQuiescence = 5;
+                AdancimeQuiescence = 1;
             }
         }
 
@@ -1038,7 +1038,15 @@ namespace ProiectVolovici
                             if (EsteSahLaAlbastru(matrice, pozRegeAlbastru))
                             {
                                 //gives check
-                                mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][poz.Linie][poz.Coloana], new Mutare(poz, mut));
+                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
+                                if (HistoryTable[indexHH] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else
+                                {
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                }
                             }
 
                             matrice[poz.Linie][poz.Coloana] = piesaCareIa;
@@ -1087,7 +1095,15 @@ namespace ProiectVolovici
                             if (EsteSahLaAlb(matrice, pozRegeAlb))
                             {
                                 //gives check
-                                mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][poz.Linie][poz.Coloana], new Mutare(poz, mut));
+                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
+                                if (HistoryTable[indexHH] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else
+                                {
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                }
                             }
 
                             matrice[poz.Linie][poz.Coloana] = piesaCareIa;
@@ -1317,8 +1333,6 @@ namespace ProiectVolovici
                 _engine.TerminaMeciul(TipSah.SahPersistentLaAlbastru);
                 return null;
             }
-            SortedList<double, Mutare> listaAuxiliara = new(mutariPosibile.Count, new DuplicateKeyComparerDesc<double>());
-
 
             var valoriMutariPosibile = mutariPosibile.Values.ToList();
 
@@ -1344,7 +1358,7 @@ namespace ProiectVolovici
 
             NoduriEvaluate = 0;
             //adaugat
-            for (int adancimeIterativa = 1; adancimeIterativa <= 5; adancimeIterativa++)
+            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
                 {
@@ -1404,9 +1418,6 @@ namespace ProiectVolovici
                     }
                     //
 
-
-                    listaAuxiliara.Add(scorMutare, mutPos);
-
                     RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (scorMutare > scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
@@ -1418,9 +1429,6 @@ namespace ProiectVolovici
                     //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
-                valoriMutariPosibile.Clear();
-                valoriMutariPosibile.AddRange(listaAuxiliara.Values);
-                listaAuxiliara.Clear();
                 Debug.WriteLine($"Noduri Evaluate: {NoduriEvaluate} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
 
             }
@@ -2194,10 +2202,6 @@ namespace ProiectVolovici
 
 
 
-
-
-
-
         public static double QSC(double eval, int[][] matrice, double alpha,
             double beta, int piesaCapturata,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
@@ -2238,7 +2242,9 @@ namespace ProiectVolovici
                     }
                 }
 
-                mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
+                mutariSortate =  (adancime <= AdancimeQuiescence) ?
+                        GenereazaCapturiSiChecksAlbastru(matrice,pozAlbastre) :
+                        GenereazaCapturiPosibile(matrice, pozAlbastre);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -2291,7 +2297,11 @@ namespace ProiectVolovici
                     }
                 }
 
-                mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
+
+                mutariSortate = (adancime <= AdancimeQuiescence) ?
+                        GenereazaCapturiSiChecksAlb(matrice, pozAlbe) :
+                        GenereazaCapturiPosibile(matrice, pozAlbe);
+
 
 
                 if (mutariSortate.Count == 0)
