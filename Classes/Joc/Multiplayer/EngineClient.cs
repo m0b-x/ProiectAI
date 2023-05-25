@@ -288,6 +288,14 @@ namespace ProiectVolovici
                             RealizeazaMutareaOnline(PiesaSelectata, pozitie);
                         }
                     }
+                    else
+                    {
+                        AscundePiesaSelectata(PiesaSelectata);
+                        Pozitie pozitieInitiala = PiesaSelectata.Pozitie;
+                        DecoloreazaMutariPosibile();
+                        PiesaSelectata = ConstantaTabla.PiesaNula;
+                        PozitiiMutariPosibile.Clear();
+                    }
                 }
             }
         }
