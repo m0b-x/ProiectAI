@@ -111,11 +111,11 @@ namespace ProiectVolovici
             try
             {
                 _streamScriere.WriteLine(date);
-                Debug.WriteLine("Date trimise catre client: {0}", date);
+                Debug.WriteLine($"Date trimise catre client: {date}");
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie server TrimiteDate: {0}", exceptie.ToString());
+                Debug.WriteLine($"Exceptie functie server TrimiteDate: {exceptie.ToString()}");
             }
         }
         public async Task PrimesteClientAsync()
@@ -132,7 +132,7 @@ namespace ProiectVolovici
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie AcceptaConexiune: {0}", exceptie.ToString());
+                Debug.WriteLine($"Exceptie functie AcceptaConexiune: {exceptie.ToString()}");
             }
         }
 

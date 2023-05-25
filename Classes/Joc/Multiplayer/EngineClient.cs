@@ -3,15 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
     public class EngineClient : EngineJoc
     {
-        public static int IntervalTimerPrimireDate = 50;
 
         protected Om _jucatorClient;
 
@@ -20,14 +19,17 @@ namespace ProiectVolovici
 
         private Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaClient;
 
-        protected System.Timers.Timer _timerJocClient;
+        private ManualResetEvent _tablaPrimita = new ManualResetEvent(false);
 
         protected bool _randulClientului;
 
-        protected bool _timerJocClientDisposed;
+        protected bool _clientDisposed;
 
-        private String _ultimulMesajPrimitClient = NetworkClient.BufferGol;
 
+        public ManualResetEvent TablaPrimita
+        {
+            get { return _tablaPrimita; }
+        }
         public Om Jucator
         {
             get { return _jucatorClient; }
@@ -100,11 +102,13 @@ namespace ProiectVolovici
 
         public override void Dispose()
         {
-            _timerJocClient?.Dispose();
-            GC.SuppressFinalize(this);
+            if (_client.StreamScriere != null)
+            {
+                _client.TrimiteDate(_client.MesajDeconectare);
+            }
             Debug.WriteLine("Dispose JocMultiplayer");
-            _timerJocClientDisposed = true;
-            _client.TrimiteDate(_client.MesajDeconectare);
+            _clientDisposed = true;
+            base.Dispose();
         }
 
         ~EngineClient() => Dispose();
@@ -113,42 +117,44 @@ namespace ProiectVolovici
         {
             _client = new NetworkClient(adresaIP, port);
             await _client.PornesteCerereaDeConectare();
-            await PrimesteTablaAsincron();
-            _client.TimerCitireDate.Stop();
-            ActiveazaTimerRepetitiv(_timerJocClient, (uint)IntervalTimerPrimireDate, SincronizeazaClient);
-            _client.Buffer = NetworkClient.BufferGol;
-            NuEsteRandulTau();
+            if (_client.Conectat == true)
+            {
+                await PrimesteTablaAsincron();
+                SincronizeazaClient();
+            }
         }
 
         protected virtual async Task PrimesteTablaAsincron()
         {
-            while (_client.Buffer.Equals(NetworkClient.BufferGol))
-            {
-                await Task.Delay(50);
-            }
 
-            int[][] matrice = _parserTabla.DecodificareTablaSiAspect(_client.Buffer, out _aspectJoc);
+            String tablaPrimita = await _client.StreamCitire.ReadLineAsync();
+
+            int[][] matrice = _parserTabla.DecodificareTablaSiAspect(tablaPrimita, out _aspectJoc);
+            SeteazaAspectulJocului();
+            ActualizeazaIntreagaTabla(matrice);
+            _tablaPrimita.Set();
+            NuEsteRandulTau();
+        }
+
+        private void SeteazaAspectulJocului()
+        {
             if (_aspectJoc == Aspect.Invers)
                 _aspectJoc = Aspect.Normal;
             else
                 _aspectJoc = Aspect.Invers;
-            ActualizeazaIntreagaTabla(matrice);
         }
 
-        public void SincronizeazaClient(object source, ElapsedEventArgs e)
+        public async void SincronizeazaClient()
         {
-            if (_timerJocClientDisposed == false)
+            while (!_clientDisposed)
             {
-                if (_ultimulMesajPrimitClient.Equals(_client.Buffer))
+                String mesajPrimit = await _client.StreamCitire.ReadLineAsync();
+
+                if (mesajPrimit != null)
                 {
-                    _client.PrimesteDate();
-                }
-                if (_client.Buffer != NetworkClient.BufferGol)
-                {
-                    _ultimulMesajPrimitClient = _client.Buffer;
-                    if (!_ultimulMesajPrimitClient.Equals(_client.MesajDeconectare))
+                    if (!mesajPrimit.Equals(_client.MesajDeconectare))
                     {
-                        _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(_ultimulMesajPrimitClient);
+                        _ultimaMutarePrimitaClient = _parserTabla.DecodificareMutare(mesajPrimit);
                         VerificaSahul(_ultimaMutarePrimitaClient.Item2);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaClient.Item1), _ultimaMutarePrimitaClient.Item2);
                         EsteRandulTau();
@@ -156,15 +162,19 @@ namespace ProiectVolovici
                     }
                     else
                     {
-                        _timerJocClientDisposed = true;
-                        _timerJocClient.Stop();
-                        MessageBox.Show("Server Deconectat(Cod 3)", "Server s-a deconectat");
-                        if (_esteGataMeciul == false)
-                        {
-                            VerificaSahurile();
-                        }
+                        NotificaClientDeIesireaServerului();
                     }
                 }
+            }
+        }
+
+        protected virtual void NotificaClientDeIesireaServerului()
+        {
+            _clientDisposed = true;
+            MessageBox.Show("Server Deconectat (Cod 3)", "Server s-a deconectat");
+            if (!_esteGataMeciul)
+            {
+                VerificaSahurile();
             }
         }
 
@@ -212,7 +222,6 @@ namespace ProiectVolovici
         {
             _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();
-            _timerJocClient.Stop();
             _client.TrimiteDate(_client.MesajDeconectare);
         }
 

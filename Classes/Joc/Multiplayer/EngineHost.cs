@@ -116,12 +116,13 @@ namespace ProiectVolovici
             EsteRandulTau();
         }
 
-        public void SincronizeazaHost()
+        public async void SincronizeazaHost()
         {
-            while (_hostDisposed == false)
+            while (!_hostDisposed)
             {
-                string mesajPrimitHost;
-                if ((mesajPrimitHost =_host.StreamCitire.ReadLine()) != null)
+                string mesajPrimitHost = await _host.StreamCitire.ReadLineAsync();
+
+                if (mesajPrimitHost != null)
                 {
                     if (!mesajPrimitHost.Equals(_host.MesajDeconectare))
                     {
