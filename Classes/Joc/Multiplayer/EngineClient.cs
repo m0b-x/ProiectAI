@@ -291,7 +291,6 @@ namespace ProiectVolovici
                     else
                     {
                         AscundePiesaSelectata(PiesaSelectata);
-                        Pozitie pozitieInitiala = PiesaSelectata.Pozitie;
                         DecoloreazaMutariPosibile();
                         PiesaSelectata = ConstantaTabla.PiesaNula;
                         PozitiiMutariPosibile.Clear();

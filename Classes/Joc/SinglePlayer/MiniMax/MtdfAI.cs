@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Security.Policy;
-using System.Windows.Forms;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 
 namespace ProiectVolovici
 {
@@ -12,17 +11,31 @@ namespace ProiectVolovici
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
         private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
+        private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
-        private static Dictionary<(int, Pozitie), int> HistoryTable = new(14 * 90);
+        private static bool FerestreAspiratie = true;
+        private static Dictionary<int, double> HistoryTable = new(1260);
+        Dictionary<(Mutare, int), double> scoruriIterative = new(50 * 25 * 6);
         private static Mutare[][] KillerMoves;
+        private static int MarimeKillerMoves = 64;
+        private static int NoduriEvaluate = 0;
 
-        private static double ProcentajMaterial = 1.00;
+        private static double OffsetMVVLVA = 200;
+        private static double OffsetKillerMoves = 400;
+        private static double OffsetHistoryTable = 200;
+        const int AdancimeNMP = 3;
+        const int ReducereNMP = 2;
+        static int AdancimeQuiescence;
+
+
+        private static double ProcentajMaterial = 0.95;
         private static double ProcentajPST = 0.00;
         private EngineSinglePlayer _engine;
         private int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
 
         private Stopwatch _cronometru = new();
+
 
         public Stopwatch CronometruAI
         {
@@ -84,218 +97,218 @@ namespace ProiectVolovici
             for (int piesaCareIa = 1; piesaCareIa <= 14; piesaCareIa++)
                 for (int piesaCapturata = 1; piesaCapturata <= 14; piesaCapturata++)
                 {
-                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = 250 + ConstantaPiese.ValoareRege
+                    TabelCapturiPiese[piesaCareIa][piesaCapturata] = OffsetMVVLVA + ConstantaPiese.ValoareRege
                         + EngineSinglePlayer.ReturneazaScorPiesa(piesaCapturata)
                         - EngineSinglePlayer.ReturneazaScorPiesa(piesaCareIa);
-                    //explicatie: 200 - o valoare ca sa puna capturile peste tabelele de pst
+                    //explicatie: 500 - o valoare ca sa puna capturile peste tabelele de pst
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
         }
-        private static int[][] TabelNul = new int[][] {
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
+        private static double[][] TabelNul = new double[][] {
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
         };
 
 
-        private static int[][] TabelPionAlbastru = new int[][] {
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
-            new int[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
-            new int[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
-            new int[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
-            new int[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
-            new int[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
-            new int[] {0,  3,  6,  9,  12,  9,  6,  3,  0}
+        private static double[][] TabelPionAlbastru = new double[][] {
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
+            new double[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
+            new double[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
+            new double[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
+            new double[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
+            new double[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
+            new double[] {0,  3,  6,  9,  12,  9,  6,  3,  0}
         };
 
-        private static int[][] TabelPionAlb = new int[][] {
+        private static double[][] TabelPionAlb = new double[][] {
 
-            new int[] {0,  3,  6,  9,  12,  9,  6,  3,  0},
-            new int[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
-            new int[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
-            new int[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
-            new int[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
-            new int[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
-            new int[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
-            new int[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
+            new double[] {0,  3,  6,  9,  12,  9,  6,  3,  0},
+            new double[] {18, 36, 56, 80, 120, 80, 56, 36, 18},
+            new double[] {14, 26, 42, 60, 80, 60, 42, 26, 14},
+            new double[] {10, 20, 30, 34, 40, 34, 30, 20, 10},
+            new double[] {6,  12, 18, 18, 20, 18, 18, 12, 6},
+            new double[] {2,  0,  8,  0,  8,  0,  8,  0,  2},
+            new double[] {0,  0, -2,  0,  4,  0, -2,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
+            new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0}
 			//
         };
 
 
-        private static int[][] TabelCalAlbastru = new int[][]
+        private static double[][] TabelCalAlbastru = new double[][]
         {
-            new int[] {0, -4, 0, 0, 0, 0, 0, -4, 0},
-            new int[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new int[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new int[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new int[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new int[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new int[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new int[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new int[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new int[] {4, 8, 16, 12, 4, 12, 16, 8, 4}
+            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0},
+            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
+            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
+            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
+            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
+            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
+            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
+            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
+            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
+            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4}
         };
 
-        private static int[][] TabelCalAlb = new int[][]
+        private static double[][] TabelCalAlb = new double[][]
         {
-            new int[] {4, 8, 16, 12, 4, 12, 16, 8, 4},
-            new int[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new int[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new int[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new int[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new int[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new int[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new int[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new int[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new int[] {0, -4, 0, 0, 0, 0, 0, -4, 0}
+            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4},
+            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
+            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
+            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
+            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
+            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
+            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
+            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
+            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
+            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0}
         };
 
-        private static int[][] TabelTunAlbastru = new int[][]
+        private static double[][] TabelTunAlbastru = new double[][]
         {
-            new int[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
-            new int[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
-            new int[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
-            new int[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
-            new int[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
-            new int[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
-            new int[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
-            new int[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
-            new int[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
-            new int[] {6, 4, 0, -10, -12, -10, 0, 4, 6}
+            new double[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
+            new double[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
+            new double[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
+            new double[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
+            new double[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
+            new double[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
+            new double[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
+            new double[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
+            new double[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
+            new double[] {6, 4, 0, -10, -12, -10, 0, 4, 6}
         };
-        private static int[][] TabelTunAlb = new int[][]
+        private static double[][] TabelTunAlb = new double[][]
         {
-            new int[] {6, 4, 0, -10, -12, -10, 0, 4, 6},
-            new int[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
-            new int[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
-            new int[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
-            new int[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
-            new int[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
-            new int[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
-            new int[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
-            new int[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
-            new int[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
+            new double[] {6, 4, 0, -10, -12, -10, 0, 4, 6},
+            new double[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
+            new double[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
+            new double[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
+            new double[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
+            new double[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
+            new double[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
+            new double[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
+            new double[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
+            new double[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
         };
 
-        private static int[][] TabelTuraAlbastra = new int[][]
+        private static double[][] TabelTuraAlbastra = new double[][]
         {
-            new int[] {-2, 10, 6, 14, 12, 14, 6, 10, -2},
-            new int[] {8, 4, 8, 16, 8, 16, 8, 4, 8},
-            new int[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new int[] {6, 10, 8, 14, 14, 14, 8, 10, 6},
-            new int[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new int[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new int[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new int[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new int[] {16, 20, 18, 24, 26, 24, 18, 20, 16},
-            new int[] {14, 14, 12, 18, 16, 18, 12, 14, 14}
+            new double[] {-2, 10, 6, 14, 12, 14, 6, 10, -2},
+            new double[] {8, 4, 8, 16, 8, 16, 8, 4, 8},
+            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
+            new double[] {6, 10, 8, 14, 14, 14, 8, 10, 6},
+            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
+            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
+            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
+            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
+            new double[] {16, 20, 18, 24, 26, 24, 18, 20, 16},
+            new double[] {14, 14, 12, 18, 16, 18, 12, 14, 14}
         };
-        private static int[][] TabelTuraAlba = new int[][]
+        private static double[][] TabelTuraAlba = new double[][]
         {
-            new int[] {-14, -14, -16, -18, -20, -18, -14, -14, -14},
-            new int[] {14, 12, 18, 18, 18, 12, 14, 14, 14},
-            new int[] {12, 18, 24, 26, 24, 18, 16, 20, 16},
-            new int[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new int[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new int[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new int[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new int[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new int[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
-            new int[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
+            new double[] {-14, -14, -16, -18, -20, -18, -14, -14, -14},
+            new double[] {14, 12, 18, 18, 18, 12, 14, 14, 14},
+            new double[] {12, 18, 24, 26, 24, 18, 16, 20, 16},
+            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
+            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
+            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
+            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
+            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
+            new double[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
+            new double[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
         };
-        private static int[][] TabelGardianAlb = new int[][]
+        private static double[][] TabelGardianAlb = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
         };
-        private static int[][] TabelGardianAlbastru = new int[][]
+        private static double[][] TabelGardianAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 1, 0, 1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 3, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
         //
-        private static int[][] TabelRegeAlb = new int[][]
+        private static double[][] TabelRegeAlb = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
         };
-        private static int[][] TabelRegeAlbastru = new int[][]
+        private static double[][] TabelRegeAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
         //
-        private static int[][] TabelElefantAlb = new int[][]
+        private static double[][] TabelElefantAlb = new double[][]
         {
-            new int[] {0, 1, 0, 0, 0, -1, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, -1, 0, 1, 0, 0, 0}
+            new double[] {0, 1, 0, 0, 0, -1, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, -1, 0, 1, 0, 0, 0}
         };
-        private static int[][] TabelElefantAlbastru = new int[][]
+        private static double[][] TabelElefantAlbastru = new double[][]
         {
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
-            new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new int[] {0, 0, 1, 0, 0, 0, 1, 0, 0}
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, -1, 0, 0, 0, -1, 0, 0},
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {-2, 0, 0, 0, 3, 0, 0, 0, -2 },
+            new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            new double[] {0, 0, 1, 0, 0, 0, 1, 0, 0}
         };
-        private static List<int[][]> ListaTabelePST = new List<int[][]>()
+        private static List<double[][]> TabelPSTMoveOrdering = new List<double[][]>()
         {
             TabelNul,
             TabelPionAlb,
@@ -350,10 +363,11 @@ namespace ProiectVolovici
             InitializeazaHistoryHerusticis();
         }
 
+
         private void InitializeazaKillerMoves()
         {
-            KillerMoves = new Mutare[_adancime + 1][];
-            for (int i = 0; i <= _adancime; i++)
+            KillerMoves = new Mutare[MarimeKillerMoves + 1][];
+            for (int i = 0; i <= MarimeKillerMoves; i++)
             {
                 KillerMoves[i] = new Mutare[2];
             }
@@ -361,30 +375,25 @@ namespace ProiectVolovici
 
         private static void InitializeazaHistoryHerusticis()
         {
-            for (int i = 1; i <= 14; i++)
+            for (int piesa = 1; piesa <= 14; piesa++)
             {
                 for (int linie = 0; linie < 10; linie++)
                 {
                     for (int coloana = 0; coloana < 9; coloana++)
                     {
-                        HistoryTable.Add((i, new Pozitie(linie, coloana)), 0);
+                        HistoryTable.Add(ReturneazaIndexHH(piesa, new Pozitie(linie, coloana)), 0);
                     }
                 }
             }
         }
 
-        private static void StergeHistoryHeuristics()
+        public static int ReturneazaIndexHH(int piesa, Pozitie poz)
         {
-            for (int i = 1; i <= 14; i++)
-            {
-                for (int linie = 0; linie < 10; linie++)
-                {
-                    for (int coloana = 0; coloana < 9; coloana++)
-                    {
-                        HistoryTable[(i, new Pozitie(linie, coloana))] = 0;
-                    }
-                }
-            }
+            return (poz.Coloana * 15 * 10) + (poz.Linie * 15) + piesa;
+        }
+        public static int ReturneazaIndexHH(int piesa, int linie, int coloana)
+        {
+            return (coloana * 14 * 9) + (linie * 14) + piesa;
         }
         public class DuplicateKeyComparerAsc<TKey>
                 :
@@ -863,7 +872,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbDreapta);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 9), new Pozitie(9, 8)));
+            CaceDeschideri.Add(hash, (new Pozitie(9, 8), new Pozitie(9, 7)));
 
             int[][] atacTunAlbastruStanga = new int[10][]
             {
@@ -925,23 +934,23 @@ namespace ProiectVolovici
 
                             if (piesaLuata == 0)
                             {
+                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
                                 if (KillerMoves[adancime][0].PozitieInitiala == poz && KillerMoves[adancime][0].PozitieFinala == mut)
                                 {
-                                    mutPos.Add(250, new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetKillerMoves, new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 if (KillerMoves[adancime][1].PozitieInitiala == poz && KillerMoves[adancime][1].PozitieFinala == mut)
                                 {
-                                    mutPos.Add(230, new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetKillerMoves - 1, new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else if (HistoryTable[indexHH] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
-                                if (HistoryTable[(piesaCareIa, mut)] > 0)
                                 {
-                                    mutPos.Add(200 + HistoryTable[(piesaCareIa, mut)], new(new(poz.Linie, poz.Coloana), mut));
-                                }
-                                else
-                                {
-                                    mutPos.Add(ListaTabelePST[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                             }
                             else
@@ -975,6 +984,150 @@ namespace ProiectVolovici
 
 
 
+
+        public static SortedList<double, Mutare> GenereazaCapturiSiChecksAlb(int[][] matrice, Pozitie[] pozAlbe)
+        {
+            SortedList<double, Mutare> mutPos;
+
+            //most valuable victim, least valuable agressor
+            //Piece-Square Tables
+
+            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozAlbe)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+                        if (piesaLuata != 0)
+                        {
+                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                        }
+                        else
+                        {
+                            piesaLuata = matrice[mut.Linie][mut.Coloana];
+                            piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+
+                            matrice[poz.Linie][poz.Coloana] = (int)CodPiesa.Gol;
+                            matrice[mut.Linie][mut.Coloana] = piesaCareIa;
+
+                            var pozRegeAlbastru = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
+                            if (EsteSahLaAlbastru(matrice, pozRegeAlbastru))
+                            {
+                                //gives check
+                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
+                                if (HistoryTable[indexHH] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else
+                                {
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                            }
+
+                            matrice[poz.Linie][poz.Coloana] = piesaCareIa;
+                            matrice[mut.Linie][mut.Coloana] = piesaLuata;
+                        }
+
+                    }
+                }
+            }
+            return mutPos;
+        }
+
+        public static SortedList<double, Mutare> GenereazaCapturiSiChecksAlbastru(int[][] matrice, Pozitie[] pozAlbastre)
+        {
+            SortedList<double, Mutare> mutPos;
+
+            //most valuable victim, least valuable agressor
+            //Piece-Square Tables
+
+            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozAlbastre)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+                        if (piesaLuata != 0)
+                        {
+                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                        }
+                        else
+                        {
+                            piesaLuata = matrice[mut.Linie][mut.Coloana];
+                            piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+
+                            matrice[poz.Linie][poz.Coloana] = (int)CodPiesa.Gol;
+                            matrice[mut.Linie][mut.Coloana] = piesaCareIa;
+
+                            var pozRegeAlb = ReturneazaPozitieRegeAlbInMatrice(matrice);
+                            if (EsteSahLaAlb(matrice, pozRegeAlb))
+                            {
+                                //gives check
+                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
+                                if (HistoryTable[indexHH] > 0)
+                                {
+                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                                else
+                                {
+                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                }
+                            }
+
+                            matrice[poz.Linie][poz.Coloana] = piesaCareIa;
+                            matrice[mut.Linie][mut.Coloana] = piesaLuata;
+                        }
+
+                    }
+                }
+            }
+            return mutPos;
+        }
+
+        public static SortedList<double, Mutare> GenereazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
+        {
+            SortedList<double, Mutare> mutPos;
+
+            //most valuable victim, least valuable agressor
+            //Piece-Square Tables
+
+            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+                        if (piesaLuata != 0)
+                        {
+                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                        }
+
+                    }
+                }
+            }
+            return mutPos;
+        }
 
         public static void StergePozitieDinVector(int index, Pozitie[] vector)
         {
@@ -1047,175 +1200,67 @@ namespace ProiectVolovici
         }
 
 
-
-
-        public override Tuple<Mutare, double> ReturneazaMutareaOptima()
+        public static T[][] CloneazaMatricea<T>(T[][] arr)
         {
-            int[][] matriceClonata = _engine.MatriceCoduriPiese.Clone() as int[][];
-            ulong hashInitial = ZobristHash.HashuiesteTabla(matriceClonata);
+            int linie = arr.Length;
+            T[][] arrClona = new T[linie][];
 
-            if (_engine.NrMutari <= 1)
+            for (int i = 0; i < linie; i++)
             {
-                if (CaceDeschideri.ContainsKey(hashInitial))
-                {
-                    (Pozitie, Pozitie) item = CaceDeschideri[hashInitial];
-                    return new(new Mutare(item.Item1, item.Item2), double.MinValue);
-                }
+                int coloana = arr[i].Length;
+                arrClona[i] = new T[coloana];
+                Array.Copy(arr[i], arrClona[i], coloana);
             }
 
-            double scorMutare;
-            int indexPiesaLuata,
-                piesaCareIa,
-                piesaLuata;
-            ulong hashUpdatat;
-
-
-            _cronometruAI.Start();
-
-
-
-            Pozitie[] pozAlbastre = _engine.ReturneazaPozitiiAlbastre();
-            Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
-
-            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
-
-            EngineJoc.AfiseazaMatriceDebug(matriceClonata, 0, 0);
-            Debug.WriteLine("Evaluare initiala:" + evaluareMatriceInitiala);
-            var mutariPosibile = GenereazaMutariPosibile(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
-
-
-
-            var valoriMutariPosibile = mutariPosibile.Values;
-
-            piesaLuata = matriceClonata[
-                    valoriMutariPosibile[0].PozitieFinala.Linie][
-                    valoriMutariPosibile[0].PozitieFinala.Coloana];
-            piesaCareIa = matriceClonata[
-                    valoriMutariPosibile[0].PozitieInitiala.Linie][
-                    valoriMutariPosibile[0].PozitieInitiala.Coloana];
-
-            Mutare mutareOptima = valoriMutariPosibile[0];
-
-            var valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                    ProcentajPST * ListaTabelePST[piesaCareIa][valoriMutariPosibile[0].PozitieFinala.Linie][valoriMutariPosibile[0].PozitieFinala.Coloana];
-
-
-            double scorMutareOptima = evaluareMatriceInitiala + valoareMutare;
-
-            int adancimeMutareOptima = 0;
-
-            if (piesaLuata == (int)CodPiesa.RegeAlb)
-            {
-                return new(mutareOptima, ValoareMaxima);
-            }
-
-
-            double alpha = -ValoareMaxima;
-            double beta = ValoareMaxima;
-
-
-            StergeHistoryHeuristics();
-            double evaluarePrecedenta = 0;
-            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
-            {
-                foreach (var mutPos in valoriMutariPosibile)
-                {
-                    int pozitieSchimbata;
-
-                    FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
-                        out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
-
-                    scorMutare = MTD(
-                                evaluareMatriceInitiala + valoareMutare
-                                , matriceClonata
-                                , f: evaluarePrecedenta
-                                , adancimeIterativa
-                                , piesaLuata
-                                , hashUpdatat
-                                , pozAlbe
-                                , pozAlbastre
-                                , Culoare.AlbMin);
-
-                    RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
-
-                    if (scorMutare > scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
-                    {
-                        mutareOptima = mutPos;
-                        scorMutareOptima = scorMutare;
-                        adancimeMutareOptima = adancimeIterativa;
-                    }
-                    Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
-
-                }//sf loop miscari
-                evaluarePrecedenta = scorMutareOptima;
-            }
-            _cronometruAI.Stop();
-            _cronometruAI.Reset();
-            //Debug.WriteLine(scorMutareOptima + " " + adancimeMutareOptima + " " + mutareOptima);
-            return new(mutareOptima, scorMutareOptima);
-        }
-        public static double EvalueazaMatricea(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre)
-        {
-            double material = 0;
-            double pst = 0;
-
-            //Debug.WriteLine("POZ ALBE");
-            foreach (var poz in pozAlbe)
-            {
-                if (poz.Linie != -1)
-                {
-                    var piesa = matrice[poz.Linie][poz.Coloana];
-                    material -= EngineJoc.ReturneazaScorPiesa(piesa);
-                    pst -= ListaTabelePST[piesa][poz.Linie][poz.Coloana];
-                }
-            }
-            //Debug.WriteLine("POZ ALBASTRE");
-            foreach (var poz in pozAlbastre)
-            {
-                if (poz.Linie != -1)
-                {
-                    Debug.WriteLine(poz);
-                    var piesa = matrice[poz.Linie][poz.Coloana];
-                    material += EngineJoc.ReturneazaScorPiesa(piesa);
-                    pst += ListaTabelePST[piesa][poz.Linie][poz.Coloana];
-                }
-            }
-            return material * ProcentajMaterial;
+            return arrClona;
         }
 
-        public void AfiseazaVectorDebug(Pozitie[] vector)
+        public static bool AreJaggedArraysEqual<T>(T[][] arr1, T[][] arr2)
         {
-            foreach (Pozitie v in vector)
-            {
-                Debug.Write(v + " ");
-            }
-            Debug.WriteLine("");
-        }
+            if (arr1.Length != arr2.Length)
+                return false;
 
-        public static bool IsCheck(int[][] matrice, Pozitie[] poziti)
-        {
-            foreach (var poz in poziti)
+            for (int i = 0; i < arr1.Length; i++)
             {
-                if (poz.Linie != -1)
+                if (arr1[i].Length != arr2[i].Length)
+                    return false;
+
+                for (int j = 0; j < arr1[i].Length; j++)
                 {
-                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
-                    foreach (var mut in mutari)
-                    {
-                        if (matrice[mut.Linie][mut.Coloana] == regeAlb ||
-                            matrice[mut.Linie][mut.Coloana] == regeAlbastru)
-                        {
-                            return true;
-                        }
-                    }
+                    if (!EqualityComparer<T>.Default.Equals(arr1[i][j], arr2[i][j]))
+                        return false;
                 }
             }
-            return false;
+
+            return true;
         }
 
 
 
-
+        public static Pozitie ReturneazaPozitieRegeAlbastruInMatrice(int[][] matrice)
+        {
+            for (int i = 0; i <= 2; i++)
+            {
+                for (int j = 3; j <= 5; j++)
+                {
+                    if (matrice[i][j] == regeAlbastru)
+                        return new Pozitie(i, j);
+                }
+            }
+            return new Pozitie(-1, -1);
+        }
+        public static Pozitie ReturneazaPozitieRegeAlbInMatrice(int[][] matrice)
+        {
+            for (int i = 7; i <= 9; i++)
+            {
+                for (int j = 3; j <= 5; j++)
+                {
+                    if (matrice[i][j] == regeAlb)
+                        return new Pozitie(i, j);
+                }
+            }
+            return new Pozitie(-1, -1);
+        }
 
 
 
@@ -1252,6 +1297,632 @@ namespace ProiectVolovici
 
 
 
+        public override Tuple<Mutare, double> ReturneazaMutareaOptima()
+        {
+
+
+            int[][] matriceClonata = CloneazaMatricea(_engine.MatriceCoduriPiese);
+            ulong hashInitial = ZobristHash.HashuiesteTabla(matriceClonata);
+
+            if (_engine.NrMutari <= 1)
+            {
+                if (CaceDeschideri.ContainsKey(hashInitial))
+                {
+                    (Pozitie, Pozitie) item = CaceDeschideri[hashInitial];
+                    return new(new Mutare(item.Item1, item.Item2), double.MinValue);
+                }
+            }
+
+            Debug.WriteLine(EsteSahLaAlb(matriceClonata, ReturneazaPozitieRegeAlbInMatrice(matriceClonata)));
+
+            double scorMutare;
+            int indexPiesaLuata,
+                piesaCareIa,
+                piesaLuata;
+            ulong hashUpdatat;
+
+
+            _cronometruAI.Start();
+            Pozitie[] pozAlbastre = _engine.ReturneazaPozitiiAlbastre();
+            Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
+
+            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
+
+            SortedList<double, Mutare> mutariPosibile;
+            if (EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata)))
+            {
+                mutariPosibile = GenereazaCheckEvasionsAlbastru(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
+            }
+            else
+            {
+                mutariPosibile = GenereazaMutariPosibile(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
+            }
+
+            if (mutariPosibile.Count == 0)
+            {
+                _engine.TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+                return null;
+            }
+
+            var valoriMutariPosibile = mutariPosibile.Values.ToList();
+
+
+            int pozitieSchimbata;
+            double valoareMutare;
+
+            Mutare mutareOptima = valoriMutariPosibile[0];
+            double scorMutareOptima = -ValoareMaxima;
+
+            int adancimeMutareOptima = 0;
+            piesaLuata = matriceClonata[mutareOptima.PozitieFinala.Linie][mutareOptima.PozitieFinala.Coloana];
+
+            if (piesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                return new(mutareOptima, ValoareMaxima);
+            }
+
+
+            double alpha = -ValoareMaxima;
+            double beta = ValoareMaxima;
+
+
+            NoduriEvaluate = 0;
+            //adaugat
+            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+            {
+                foreach (var mutPos in valoriMutariPosibile)
+                {
+
+                    FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
+                        out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+
+                    //Aspiration Windows 
+                    if (FerestreAspiratie && adancimeIterativa >= 3)
+                    {
+                        alpha = scoruriIterative[(mutPos, adancimeIterativa - 1)] - MarimeFereastraAspiratie * (adancimeIterativa - 2);
+                        beta = scoruriIterative[(mutPos, adancimeIterativa - 1)] + MarimeFereastraAspiratie * (adancimeIterativa - 2);
+                    }
+                //
+
+                Research:
+                    scorMutare = MTD(
+                            evaluareMatriceInitiala + valoareMutare
+                            , matriceClonata
+                            , (adancimeIterativa > 1)? scoruriIterative[(mutPos, adancimeIterativa - 1)] : 0
+                            , adancimeIterativa
+                            , piesaLuata
+                            , hashUpdatat
+                            , pozAlbe
+                            , pozAlbastre
+                    , Culoare.AlbMin);
+
+                    //Aspiration Windows
+                    if (FerestreAspiratie && adancimeIterativa >= 3)
+                    {
+                        bool conditieResearch = false;
+                        if (scorMutare <= alpha)
+                        {
+                            alpha = -ValoareMaxima;
+                            conditieResearch = true;
+                        }
+                        if (scorMutare >= beta)
+                        {
+                            beta = ValoareMaxima; ;
+                            conditieResearch = true;
+                        }
+                        if (conditieResearch == true)
+                        {
+                            goto Research;
+                        }
+                    }
+                    var item = (mutPos, adancimeIterativa);
+                    if (scoruriIterative.ContainsKey(item))
+                    {
+                        scoruriIterative[item] = scorMutare;
+                    }
+                    else
+                    {
+                        scoruriIterative.Add((mutPos, adancimeIterativa), scorMutare);
+                    }
+                    //
+
+                    RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (scorMutare > scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
+                    {
+                        mutareOptima = mutPos;
+                        scorMutareOptima = scorMutare;
+                        adancimeMutareOptima = adancimeIterativa;
+                    }
+                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+
+                }//sf loop miscari
+                Debug.WriteLine($"Noduri Evaluate: {NoduriEvaluate} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
+
+            }
+            Debug.WriteLine($"{evaluareMatriceInitiala}\n\n");
+            _cronometruAI.Stop();
+            _cronometruAI.Reset();
+            return new(mutareOptima, scorMutareOptima);
+        }
+
+
+
+
+
+        public static double EvalueazaMatricea(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre)
+        {
+            double material = 0;
+            double pst = 0;
+
+            //Debug.WriteLine("POZ ALBE");
+            foreach (var poz in pozAlbe)
+            {
+                if (poz.Linie != -1)
+                {
+                    var piesa = matrice[poz.Linie][poz.Coloana];
+                    material -= EngineJoc.ReturneazaScorPiesa(piesa);
+                    pst -= TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                }
+            }
+            //Debug.WriteLine("POZ ALBASTRE");
+            foreach (var poz in pozAlbastre)
+            {
+                if (poz.Linie != -1)
+                {
+                    //AFISAREDEBUG Debug.WriteLine(poz);
+                    var piesa = matrice[poz.Linie][poz.Coloana];
+                    material += EngineJoc.ReturneazaScorPiesa(piesa);
+                    pst += TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                }
+            }
+            return material * ProcentajMaterial + pst * ProcentajPST;
+        }
+
+        public void AfiseazaVectorDebug(Pozitie[] vector)
+        {
+            foreach (Pozitie v in vector)
+            {
+                Debug.Write(v + " ");
+            }
+            Debug.WriteLine("");
+        }
+
+
+
+        public static bool EsteSahLaAlbastru(int[][] matrice, Pozitie pozRegeAlbastru)
+        {
+            //Sah La Pioni
+            if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana] == pionAlb ||
+                matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana - 1] == pionAlb ||
+                matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana + 1] == pionAlb)
+            {
+                return true;
+            }
+
+            //Sah la Tun
+            //linie in jos
+            for (int linie = pozRegeAlbastru.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    for (int linieSec = linie + 1; linieSec < 10; linieSec++)
+                    {
+                        if (matrice[linieSec][pozRegeAlbastru.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlbastru.Coloana] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = pozRegeAlbastru.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
+                    {
+                        if (matrice[linieSec][pozRegeAlbastru.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlbastru.Coloana] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = pozRegeAlbastru.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
+                    {
+                        if (matrice[pozRegeAlbastru.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlbastru.Linie][coloanaSec] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            //coloana in jos
+
+            for (int coloana = pozRegeAlbastru.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
+                    {
+                        if (matrice[pozRegeAlbastru.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlbastru.Linie][coloanaSec] == tunAlb)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+
+            //Sah La Tura
+            //linie in jos
+            for (int linie = pozRegeAlbastru.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = pozRegeAlbastru.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlbastru.Coloana] != 0)
+                {
+                    if (matrice[linie][pozRegeAlbastru.Coloana] == turaAlba)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = pozRegeAlbastru.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+
+            //coloana in jos
+
+            for (int coloana = pozRegeAlbastru.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlbastru.Linie][coloana] != 0)
+                {
+                    if (matrice[pozRegeAlbastru.Linie][coloana] == turaAlba)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+
+
+            //Sah La cal
+            if (matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana - 1] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana - 2] == calAlb)
+                {
+                    return true;
+                }
+
+                if (pozRegeAlbastru.Linie > 1)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana - 2] == calAlb)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (matrice[pozRegeAlbastru.Linie][pozRegeAlbastru.Coloana + 1] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana + 2] == calAlb)
+                {
+                    return true;
+                }
+
+                if (pozRegeAlbastru.Linie > 1)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana + 2] == calAlb)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (pozRegeAlbastru.Linie > 2)
+            {
+                if (matrice[pozRegeAlbastru.Linie - 1][pozRegeAlbastru.Coloana] == 0)
+                {
+                    if (matrice[pozRegeAlbastru.Linie - 2][pozRegeAlbastru.Coloana + 1] == calAlb)
+                    {
+                        return true;
+                    }
+                    if (matrice[pozRegeAlbastru.Linie - 2][pozRegeAlbastru.Coloana - 1] == calAlb)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (matrice[pozRegeAlbastru.Linie + 1][pozRegeAlbastru.Coloana] == 0)
+            {
+                if (matrice[pozRegeAlbastru.Linie + 2][pozRegeAlbastru.Coloana + 1] == calAlb)
+                {
+                    return true;
+                }
+                if (matrice[pozRegeAlbastru.Linie + 2][pozRegeAlbastru.Coloana - 1] == calAlb)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool EsteSahLaAlb(int[][] matrice, Pozitie pozRegeAlb)
+        {
+            //Sah La Pioni
+            if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana] == pionAlbastru ||
+                matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana - 1] == pionAlbastru ||
+                matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana + 1] == pionAlbastru)
+            {
+                return true;
+            }
+
+            //Sah la Tun
+            //linie in jos
+            for (int linie = pozRegeAlb.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieSec = linie + 1; linieSec < 10; linieSec++)
+                    {
+                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    for (int linieSec = linie - 1; linieSec >= 0; linieSec--)
+                    {
+                        if (matrice[linieSec][pozRegeAlb.Coloana] != 0)
+                        {
+                            if (matrice[linieSec][pozRegeAlb.Coloana] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = pozRegeAlb.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    for (int coloanaSec = coloana + 1; coloanaSec < 9; coloanaSec++)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            //coloana in jos
+
+            for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    for (int coloanaSec = coloana - 1; coloanaSec >= 0; coloanaSec--)
+                    {
+                        if (matrice[pozRegeAlb.Linie][coloanaSec] != 0)
+                        {
+                            if (matrice[pozRegeAlb.Linie][coloanaSec] == tunAlbastru)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+
+            //Sah La Tura
+            //linie in jos
+            for (int linie = pozRegeAlb.Linie + 1; linie < 10; linie++)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            //linie in sus
+            for (int linie = pozRegeAlb.Linie - 1; linie >= 0; linie--)
+            {
+                if (matrice[linie][pozRegeAlb.Coloana] != 0)
+                {
+                    if (matrice[linie][pozRegeAlb.Coloana] == turaAlbastra)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            //coloana in sus
+            for (int coloana = pozRegeAlb.Coloana + 1; coloana < 9; coloana++)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+
+            //coloana in jos
+
+            for (int coloana = pozRegeAlb.Coloana - 1; coloana >= 0; coloana--)
+            {
+                if (matrice[pozRegeAlb.Linie][coloana] != 0)
+                {
+                    if (matrice[pozRegeAlb.Linie][coloana] == turaAlbastra)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+
+
+            //Sah La cal
+            if (matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana - 1] == 0)
+            {
+                if (pozRegeAlb.Linie < 9)
+                {
+                    if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana - 2] == calAlbastru)
+                    {
+                        return true;
+                    }
+                }
+                if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana - 2] == calAlbastru)
+                {
+                    return true;
+                }
+            }
+            if (matrice[pozRegeAlb.Linie][pozRegeAlb.Coloana + 1] == 0)
+            {
+                if (pozRegeAlb.Linie < 9)
+                {
+                    if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana + 2] == calAlbastru)
+                    {
+                        return true;
+                    }
+                }
+                if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana + 2] == calAlbastru)
+                {
+                    return true;
+                }
+            }
+            if (matrice[pozRegeAlb.Linie - 1][pozRegeAlb.Coloana] == 0)
+            {
+                if (matrice[pozRegeAlb.Linie - 2][pozRegeAlb.Coloana + 1] == calAlbastru)
+                {
+                    return true;
+                }
+                if (matrice[pozRegeAlb.Linie - 2][pozRegeAlb.Coloana - 1] == calAlbastru)
+                {
+                    return true;
+                }
+            }
+            if (pozRegeAlb.Linie < 9)
+            {
+                if (matrice[pozRegeAlb.Linie + 1][pozRegeAlb.Coloana] == 0)
+                {
+                    if (pozRegeAlb.Linie < 8)
+                    {
+                        if (matrice[pozRegeAlb.Linie + 2][pozRegeAlb.Coloana + 1] == calAlbastru)
+                        {
+                            return true;
+                        }
+                        if (matrice[pozRegeAlb.Linie + 2][pozRegeAlb.Coloana - 1] == calAlbastru)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
 
 
@@ -1262,7 +1933,10 @@ namespace ProiectVolovici
             double beta, int adancime, int piesaCapturata, ulong hash,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
         {
-
+            // pv search
+            bool nodPV = false;
+            NoduriEvaluate++;
+            //tabel de transpozitie
             if (TabelTranspozitie.Contine(hash))
             {
                 IntrareTabel entry = TabelTranspozitie.ReturneazaIntrarea(hash);
@@ -1287,21 +1961,71 @@ namespace ProiectVolovici
                     }
                 }
             }
-            if (adancime <= 0)
+
+            if (piesaCapturata == regeAlbastru ||
+                piesaCapturata == regeAlb)
             {
-                return QSC(eval, matrice, alpha, beta, adancime, piesaCapturata, pozAlbe, pozAlbastre, culoare);
-            }
-            if (piesaCapturata == (int)CodPiesa.RegeAlb ||
-                piesaCapturata == (int)CodPiesa.RegeAlbastru
-                )
-            {
+                //nod final
                 return eval;
             }
 
+            if (adancime <= 0)
+            {
+                //check extension
+                if (culoare == Culoare.AlbMin)
+                {
+                    if (EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice)))
+                    {
+                        return AlphaBetaCuMemorie(eval, matrice, alpha, beta, adancime: 1, piesaCapturata, hash, pozAlbe, pozAlbastre, culoare);
+                    }
+                }
+                else
+                {
+                    if (EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice)))
+                    {
+                        return AlphaBetaCuMemorie(eval, matrice, alpha, beta, adancime: 1, piesaCapturata, hash, pozAlbe, pozAlbastre, culoare);
+                    }
+                }
+
+
+                NoduriEvaluate--;
+                //quiescence search
+                var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
+
+
+                //transposition table
+                int flag = 0; // Exact value
+                if (val <= alpha)
+                {
+                    flag = 2; // Upper bound
+                }
+                else if (val >= beta)
+                {
+                    flag = 1; // Lower bound
+                }
+                TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
+                return val;
+            }
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
+
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+
+                if (!esteSahLaAlbastru)
+                {
+                    //null move pruning
+                    if (adancime >= AdancimeNMP && eval >= beta)
+                    {
+                        var evalMin = AlphaBetaCuMemorie(eval,
+                                    matrice, beta, beta + 1, adancime - ReducereNMP,
+                                    0, hash, pozAlbe, pozAlbastre, Culoare.AlbMin);
+                        if (evalMin >= beta)
+                            return beta;
+                    }
+                }
+
                 var origAlpha = alpha;
                 ulong hashUpdatat;
                 int piesaLuata;
@@ -1310,7 +2034,8 @@ namespace ProiectVolovici
                 double val = -ValoareMaxima;
 
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ? GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre, moveOrdering: true, adancime: adancime) :
+                    GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -1324,21 +2049,45 @@ namespace ProiectVolovici
 
                     FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
-                                matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
-                    alpha = Math.Max(val, alpha);
+                    //principal variation search
+                    if (nodPV == true)
+                    {
+                        val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
+                                    matrice, alpha, alpha + 1, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
 
+                        //outside bounds check
+                        if (val > alpha && val < beta)
+                        {
+                            val = -ValoareMaxima;
+                            val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
+                                        matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                        }
+                    }
+                    else
+                    {
+                        val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
+                                    matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                    }
+                    //
+                    alpha = Math.Max(val, alpha);
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val >= beta)
                     {
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)] = adancime*adancime/10;
                         if (piesaLuata == 0)
                         {
+                            //killer moves
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
                             KillerMoves[adancime][0] = mutPos;
+                            //hiistory heuristics
+                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
                         }
                         goto ValoareFinala;
+                    }
+                    //principal variation check
+                    if (eval > alpha && eval < beta)
+                    {
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
@@ -1357,9 +2106,23 @@ namespace ProiectVolovici
 
                 return val;
             }
-            //minimizare => alb
-            else
+            else// if (culoare == Culoare.AlbMin)
             {
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
+                if (!esteSahLaAlb)
+                {
+                    //null move pruning
+                    if (adancime >= AdancimeNMP && alpha >= eval)
+                    {
+                        var evalMax = AlphaBetaCuMemorie(eval,
+                                matrice, alpha - 1, alpha, adancime - ReducereNMP,
+                                0, hash, pozAlbe, pozAlbastre, Culoare.AlbastruMax);
+                        if (evalMax < alpha)
+                            return alpha;
+                    }
+                }
+
                 var origBeta = beta;
                 ulong hashUpdatat;
                 int piesaLuata;
@@ -1367,7 +2130,8 @@ namespace ProiectVolovici
 
                 double val = ValoareMaxima;
 
-                SortedList<double, Mutare> mutariSortate = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ? GenereazaCheckEvasionsAlb(matrice, pozAlbe, moveOrdering: true, adancime: adancime) :
+                    GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: true, adancime: adancime);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -1380,27 +2144,53 @@ namespace ProiectVolovici
 
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
-                    val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
-                        matrice, alpha, beta, adancime - 1,
-                        piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+                    //principal variation search
+                    if (nodPV == true)
+                    {
+                        val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
+                            matrice, beta - 1, beta, adancime - 1,
+                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
 
+                        if (val > alpha && val < beta)
+                        {
+                            val = ValoareMaxima;
+                            val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
+                                matrice, alpha, beta, adancime - 1,
+                                piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+                        }
+                    }
+                    else
+                    {
+                        val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
+                            matrice, alpha, beta, adancime - 1,
+                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+
+                    }
+                    //
                     beta = Math.Min(val, beta);
-
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val <= alpha)
                     {
-                        HistoryTable[(piesaCareIa, mutPos.PozitieFinala)]= adancime*adancime/10;
                         if (piesaLuata == 0)
                         {
+                            //killer moves
                             KillerMoves[adancime][1] = KillerMoves[adancime][0];
                             KillerMoves[adancime][0] = mutPos;
+                            //history heuristics
+                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
                         }
                         goto ValoareFinala;
+                    }
+                    //principal variation check
+                    if (val > alpha && val < origBeta)
+                    {
+                        nodPV = true;
                     }
                 }
             ValoareFinala:
 
+                //transposition table
                 int flag = 0; // Exact value
                 if (val <= alpha)
                 {
@@ -1419,43 +2209,13 @@ namespace ProiectVolovici
 
 
 
-        public static SortedList<double, Mutare> GenereazaCapturiPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat)
-        {
-            SortedList<double, Mutare> mutPos;
-
-            //most valuable victim, least valuable agressor
-            //Piece-Square Tables
-
-            mutPos = new(80, new DuplicateKeyComparerDesc<double>());
-            foreach (Pozitie poz in pozitiiPieseDeEvaluat)
-            {
-                if (poz.Linie != -1)
-                {
-                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
-                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
-                    foreach (Pozitie mut in mutari)
-                    {
-                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
-                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
-
-                        if (piesaLuata != 0)
-                        {
-                            mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
-                        }
-                    }
-                }
-            }
-            return mutPos;
-        }
-
-
 
 
         public static double QSC(double eval, int[][] matrice, double alpha,
-    double beta, int adancime, int piesaCapturata,
-    Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+            double beta, int piesaCapturata,
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
         {
-
+            NoduriEvaluate++;
             if (piesaCapturata == (int)CodPiesa.RegeAlb ||
                 piesaCapturata == (int)CodPiesa.RegeAlbastru
                 )
@@ -1463,14 +2223,33 @@ namespace ProiectVolovici
                 return eval;
             }
 
-
-            //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+
+
                 int piesaLuata;
                 int piesaCareIa;
 
                 double val = -ValoareMaxima;
+
+
+
+
+                if (!esteSahLaAlbastru)
+                {
+                    //delta pruning
+                    if (eval + ConstantaPiese.ValoareTura < alpha)
+                    {
+                        return alpha;
+                    }
+                    // stand pat
+                    if (eval >= beta)
+                    {
+                        return eval;
+                    }
+                }
+
 
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
 
@@ -1487,30 +2266,45 @@ namespace ProiectVolovici
                     FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     val = Math.Max(val, QSC(eval + valoareMutare,
-                                matrice, alpha, beta, adancime - 1, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin));
+                                matrice, alpha, beta, piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbMin, adancime + 1));
                     alpha = Math.Max(val, alpha);
 
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (val >= beta)
                     {
-                        goto ValoareFinala;
+                        break;
                     }
                 }
-            ValoareFinala:
-
                 return val;
             }
-            //minimizare => alb
-            else
+            else// if (culoare == Culoare.AlbMin)
             {
-                var origBeta = beta;
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
                 int piesaLuata;
                 int piesaCareIa;
 
                 double val = ValoareMaxima;
 
+                if (!esteSahLaAlb)
+                {
+                    //delta pruning
+                    if (eval - ConstantaPiese.ValoareTura > beta)
+                    {
+                        return beta;
+                    }
+                    //stand pat
+                    if (alpha >= eval)
+                    {
+                        return eval;
+                    }
+                }
+
+
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
+
+
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -1524,8 +2318,8 @@ namespace ProiectVolovici
                     FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     val = Math.Min(val, QSC(eval - valoareMutare,
-                        matrice, alpha, beta, adancime - 1,
-                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax));
+                        matrice, alpha, beta,
+                        piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax, adancime + 1));
 
                     beta = Math.Min(val, beta);
 
@@ -1533,16 +2327,99 @@ namespace ProiectVolovici
 
                     if (val <= alpha)
                     {
-                        goto ValoareFinala;
+                        break;
                     }
                 }
-            ValoareFinala:
                 return val;
             }
         }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private static SortedList<double, Mutare> GenereazaCheckEvasionsAlb(int[][] matrice, Pozitie[] pozAlbe, bool moveOrdering = true, int adancime = 0)
+        {
+            SortedList<double, Mutare> mutariSortate;
+            var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbe, moveOrdering: moveOrdering, adancime: adancime);
+            mutariSortate = new SortedList<double, Mutare>(new DuplicateKeyComparerDesc<double>());
+
+            int piesaLuata;
+            int piesaCareIa;
+            foreach (var mutPos in mutariCuPosibilSah)
+            {
+                piesaLuata = matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana];
+                piesaCareIa = matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana];
+
+                matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
+                matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
+
+                var pozRege = ReturneazaPozitieRegeAlbInMatrice(matrice);
+                if (!EsteSahLaAlb(matrice, pozRege) || piesaLuata == regeAlbastru)
+                {
+                    mutariSortate.Add(mutPos.Key, mutPos.Value);
+                }
+
+                matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = piesaCareIa;
+                matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaLuata;
+            }
+
+            return mutariSortate;
+        }
+
+        private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastru(int[][] matrice, Pozitie[] pozAlbastre, bool moveOrdering = true, int adancime = 0)
+        {
+            SortedList<double, Mutare> mutariSortate = new();
+            var mutariCuPosibilSah = GenereazaMutariPosibile(matrice, pozAlbastre, moveOrdering: moveOrdering, adancime: adancime);
+            mutariSortate = new SortedList<double, Mutare>(new DuplicateKeyComparerDesc<double>());
+
+            int piesaLuata;
+            int piesaCareIa;
+            foreach (var mutPos in mutariCuPosibilSah)
+            {
+                piesaLuata = matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana];
+                piesaCareIa = matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana];
+
+
+                matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = (int)CodPiesa.Gol;
+                matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaCareIa;
+
+                var pozRege = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
+                if (!EsteSahLaAlbastru(matrice, pozRege) || piesaLuata == regeAlb)
+                {
+                    mutariSortate.Add(mutPos.Key, mutPos.Value);
+                }
+
+                matrice[mutPos.Value.PozitieInitiala.Linie][mutPos.Value.PozitieInitiala.Coloana] = piesaCareIa;
+                matrice[mutPos.Value.PozitieFinala.Linie][mutPos.Value.PozitieFinala.Coloana] = piesaLuata;
+            }
+
+            return mutariSortate;
+        }
 
 
 
@@ -1563,11 +2440,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -1588,11 +2466,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
         private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
@@ -1621,11 +2500,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbe, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -1655,11 +2535,12 @@ namespace ProiectVolovici
             }
             pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
-            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial +
-                ProcentajPST * ListaTabelePST[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
-            valoareMutare = valoareMutare
-                          - ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                          + ProcentajPST * ListaTabelePST[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana];
+
+            valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
+                + ProcentajPST * (
+                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -1692,14 +2573,6 @@ namespace ProiectVolovici
             matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
         }
 
-
-
-
-
-
-
-
-
         private static bool EstePiesa(int codPiesa)
         {
             if (codPiesa == 0)
@@ -1709,5 +2582,25 @@ namespace ProiectVolovici
 
             return true;
         }
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

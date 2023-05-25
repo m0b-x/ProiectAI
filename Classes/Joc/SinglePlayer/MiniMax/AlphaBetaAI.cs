@@ -25,7 +25,6 @@ namespace ProiectVolovici
         private static double OffsetHistoryTable = 200;
         const int AdancimeNMP = 3;
         const int ReducereNMP = 2;
-        static int AdancimeQuiescence;
 
 
         private static double ProcentajMaterial = 0.95;
@@ -357,29 +356,12 @@ namespace ProiectVolovici
             _engine = engine;
             _culoare = culoare;
             _adancime = adancime;
-            SetareLimiteQuiescence(adancime);
             AdaugaOpeningsInCache();
             InitializeazaTabelCapturiPiese();
             InitializeazaKillerMoves();
             InitializeazaHistoryHerusticis();
         }
 
-        private static void SetareLimiteQuiescence(int adancime)
-        {
-            if (adancime <= 2)
-            {
-                AdancimeQuiescence = 4;
-            }
-            else
-            if (adancime ==  3)
-            {
-                AdancimeQuiescence = 2;
-            }
-            else
-            {
-                AdancimeQuiescence = 1;
-            }
-        }
 
         private void InitializeazaKillerMoves()
         {
@@ -2225,8 +2207,6 @@ namespace ProiectVolovici
                 double val = -ValoareMaxima;
 
 
-                SortedList<double, Mutare> mutariSortate;
-
 
                 if (!esteSahLaAlbastru)
                 {
@@ -2242,9 +2222,7 @@ namespace ProiectVolovici
                     }
                 }
 
-                mutariSortate =  (adancime <= AdancimeQuiescence) ?
-                        GenereazaCapturiSiChecksAlbastru(matrice,pozAlbastre) :
-                        GenereazaCapturiPosibile(matrice, pozAlbastre);
+                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
 
                 if (mutariSortate.Count == 0)
                     return eval;
@@ -2280,7 +2258,6 @@ namespace ProiectVolovici
 
                 double val = ValoareMaxima;
 
-                SortedList<double, Mutare> mutariSortate;
 
 
                 if (!esteSahLaAlb)
@@ -2298,9 +2275,7 @@ namespace ProiectVolovici
                 }
 
 
-                mutariSortate = (adancime <= AdancimeQuiescence) ?
-                        GenereazaCapturiSiChecksAlb(matrice, pozAlbe) :
-                        GenereazaCapturiPosibile(matrice, pozAlbe);
+                SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
 
 
 
