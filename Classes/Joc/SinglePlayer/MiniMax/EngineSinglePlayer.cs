@@ -14,8 +14,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         protected bool _randulOmului;
 
-        private string _ultimulMesajPrimitHost = NetworkServer.BufferGol;
-
         private RichTextBox _textBoxMutariAlbastru;
         private RichTextBox _textBoxMutariAlb;
 

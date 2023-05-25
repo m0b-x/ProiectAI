@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
     public class HostSah : EngineHost
     {
-        public static uint IntervalTimerVizual = 50;
 
         private Label _labelConexiuneLocala;
         private Label _labelConexiuneSocket;
@@ -20,8 +20,6 @@ namespace ProiectVolovici
 
         private Form _parentForm;
 
-        private System.Timers.Timer _timerHost;
-        private System.Timers.Timer _timerStatusClient;
 
         public HostSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
@@ -58,7 +56,6 @@ namespace ProiectVolovici
             _textBoxMutariAlb.Dispose();
             _textBoxMutariAlbastru.Dispose();
             _labelRand.Dispose();
-            _timerStatusClient.Dispose();
             base.Dispose();
         }
 
@@ -70,23 +67,17 @@ namespace ProiectVolovici
         public override void HosteazaJoc(int port)
         {
             InitializeazaInterfataVizuala();
-            EsteRandulTau();
-            ActiveazaTimerRepetitiv( _timerHost, (uint)EngineHost.IntervalTimerPrimireDate, VerificaPrimireHost);
-            ActiveazaTimerRepetitiv( _timerStatusClient, IntervalTimerVizual, DeconecteazaClientulVizual);
             base.HosteazaJoc(port);
+            Task.Factory.StartNew(() => VerificaPrimireHost());
         }
 
-        public void DeconecteazaClientulVizual(object source, System.Timers.ElapsedEventArgs e)
+        public override void NotificaServerulDeIesireaClientului()
         {
-            if (_timerJocHostDisposed == true)
-            {
-                _timerStatusClient.Dispose();
-                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
-                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
-                UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
-            }
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client Deconectat");
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
+            base.NotificaServerulDeIesireaClientului();
         }
-
         protected override void NuEsteRandulTau()
         {
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelRand, "BackColor", Color.DarkRed);
@@ -120,12 +111,12 @@ namespace ProiectVolovici
             base.EsteRandulTau();
         }
 
-        public void VerificaPrimireHost(object source, System.Timers.ElapsedEventArgs e)
+        public void VerificaPrimireHost()
         {
+            _host.ClientPrimitEvent.WaitOne();
+            EsteRandulTau();
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.Green);
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Client primit");
-            _timerHost.Dispose();
-            _timerStatusClient.Start();
         }
 
         public void InitializeazaInterfataVizuala()
@@ -139,6 +130,7 @@ namespace ProiectVolovici
             _labelConexiuneLocala.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneLocala.TabIndex = 0;
             _labelConexiuneLocala.Text = "Server pornit";
+            _labelConexiuneLocala.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             _labelConexiuneLocala.BackColor = Color.Green;
 
             _labelConexiuneSocket = new System.Windows.Forms.Label();
@@ -150,6 +142,7 @@ namespace ProiectVolovici
             _labelConexiuneSocket.Size = new System.Drawing.Size(147, 40);
             _labelConexiuneSocket.TabIndex = 1;
             _labelConexiuneSocket.Text = "Client Oprit";
+            _labelConexiuneSocket.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             _labelConexiuneSocket.BackColor = Color.DarkRed;
 
             _labelRand = new System.Windows.Forms.Label();
@@ -158,10 +151,11 @@ namespace ProiectVolovici
             _labelRand.Font = new System.Drawing.Font(ConstantaTabla.FontSecundar, 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             _labelRand.Location = new System.Drawing.Point(200, 10);
             _labelRand.Name = "labelMutare";
-            _labelRand.Size = new System.Drawing.Size(140, 35);
+            _labelRand.Size = new System.Drawing.Size(150, 35);
             _labelRand.TabIndex = 1;
-            _labelRand.Text = "Mutarea Ta";
-            _labelRand.BackColor = Color.Green;
+            _labelRand.Text = "In Asteptare.."; 
+            _labelRand.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            _labelRand.BackColor = Color.DarkRed;
 
             _textBoxMutariAlb = new RichTextBox();
             _textBoxMutariAlb.ReadOnly = true;

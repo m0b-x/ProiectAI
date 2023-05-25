@@ -3,38 +3,39 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Timers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ProiectVolovici
 {
     public class NetworkServer : IDisposable
     {
-        public static String BufferGol = System.String.Empty;
-
         private TcpListener _server;
         private IPAddress _adresaIP;
         private TcpClient _client;
-        private System.Timers.Timer _timerCitireDate;
 
         private string _mesajDeconectare;
         private bool _disposed;
         private int _port;
         private bool _clientPrimit;
-        private string _buffer;
 
         private NetworkStream _streamClient;
         private StreamReader _streamCitire;
         private StreamWriter _streamScriere;
 
+        private ManualResetEvent _clientPrimitEvent = new ManualResetEvent(false);
+
+        public StreamReader StreamCitire
+        {
+            get { return _streamCitire; }
+        }
+        public StreamWriter StreamScriere
+        {
+            get { return _streamScriere; }
+        }
         public bool Disposed
         {
             get { return _disposed; }
-        }
-
-        public System.Timers.Timer TimerCitireDate
-        {
-            get { return _timerCitireDate; }
-            set { _timerCitireDate = value; }
         }
 
         public TcpListener Server
@@ -42,6 +43,10 @@ namespace ProiectVolovici
             get { return _server; }
         }
 
+        public ManualResetEvent ClientPrimitEvent
+        {
+            get { return _clientPrimitEvent; }
+        }
         public bool ClientPrimit
         {
             get { return _clientPrimit; }
@@ -50,12 +55,6 @@ namespace ProiectVolovici
         public String MesajDeconectare
         {
             get { return _mesajDeconectare; }
-        }
-
-        public String Buffer
-        {
-            get { return _buffer; }
-            set { _buffer = value; }
         }
 
         public int Port
@@ -71,7 +70,6 @@ namespace ProiectVolovici
             _disposed = false;
             _clientPrimit = false;
 
-            _buffer = BufferGol;
 
             _mesajDeconectare = "{8,8,8,8}";
             try
@@ -87,17 +85,6 @@ namespace ProiectVolovici
 
         ~NetworkServer() => Dispose();
 
-        public void AcceptaUrmatorulClient()
-        {
-            try
-            {
-                _server.BeginAcceptTcpClient(new AsyncCallback(AcceptaConexiuneClient), _server);
-            }
-            catch (Exception exceptie)
-            {
-                Debug.WriteLine("Exceptie functie AcceptaConexiune: {0}", exceptie.ToString());
-            }
-        }
 
         public void Dispose()
         {
@@ -106,18 +93,11 @@ namespace ProiectVolovici
             {
                 _disposed = true;
                 InchideServer();
-
-                _timerCitireDate.Stop();
-                _streamClient.Dispose();
-                _streamCitire.Dispose();
-                _streamScriere.Dispose();
-                _timerCitireDate.Dispose();
-                _client.Dispose();
-                Debug.WriteLine("NetworkServer sters!");
+                Debug.WriteLine("NetworkServer inchis!");
             }
             else
             {
-                Debug.WriteLine("NetworkServer a fost deja sters!");
+                Debug.WriteLine("NetworkServer a fost deja inchis!");
             }
         }
 
@@ -128,70 +108,35 @@ namespace ProiectVolovici
                 Debug.WriteLine("Streamurile serverului nu sunt initializate! ");
             }
             else
-                try
-                {
-                    Debug.WriteLine("Date trimise catre client: {0}", date);
-                    _streamScriere.WriteLine(date);
-                }
-                catch (Exception exceptie)
-                {
-                    Debug.WriteLine("Exceptie functie server TrimiteDate: {0}", exceptie.ToString());
-                }
-        }
-
-        public String PrimesteDate()
-        {
             try
             {
-                String date;
-                date = _streamCitire.ReadLine();
-                _buffer = date;
-                if (date == _mesajDeconectare)
-                {
-                    Debug.WriteLine("Clientul s-a deconectat de la server");
-                }
-                Debug.WriteLine("Date Primite Server: {0}", date);
-                return date;
+                _streamScriere.WriteLine(date);
+                Debug.WriteLine("Date trimise catre client: {0}", date);
             }
             catch (Exception exceptie)
             {
-                Debug.WriteLine("Exceptie functie networkserver TrimiteDate: {0}", exceptie.ToString());
-                return BufferGol;
+                Debug.WriteLine("Exceptie functie server TrimiteDate: {0}", exceptie.ToString());
             }
         }
-
-        private void AcceptaConexiuneClient(IAsyncResult rezultatAsincron)
+        public async Task PrimesteClientAsync()
         {
-            TcpListener _server = (TcpListener)rezultatAsincron.AsyncState;
-            _client = _server.EndAcceptTcpClient(rezultatAsincron);
-
-            Debug.WriteLine("Serverul a primit conexiunea clientului");
-
-            _clientPrimit = true;
-            InitializeazaStreamuri();
-            AscultaPentruDate();
-        }
-
-        public void AscultaPentruDate()
-        {
-            if (_timerCitireDate == null)
+            try
             {
-                _timerCitireDate = new();
-                _timerCitireDate.Interval = 25;
-                _timerCitireDate.AutoReset = true;
-                _timerCitireDate.Enabled = true;
-                _timerCitireDate.Elapsed += new ElapsedEventHandler(AscultaDate_Tick);
-                _timerCitireDate.Start();
+                _client = await _server.AcceptTcpClientAsync();
+
+                Debug.WriteLine("Serverul a primit conexiunea clientului");
+
+                _clientPrimit = true;
+                ClientPrimitEvent.Set();
+                InitializeazaStreamuri();
+            }
+            catch (Exception exceptie)
+            {
+                Debug.WriteLine("Exceptie functie AcceptaConexiune: {0}", exceptie.ToString());
             }
         }
 
-        private void AscultaDate_Tick(object source, ElapsedEventArgs e)
-        {
-            if (_streamClient != null)
-            {
-                PrimesteDate();
-            }
-        }
+
 
         private void InitializeazaStreamuri()
         {
@@ -233,9 +178,9 @@ namespace ProiectVolovici
                 if (_server.Server.IsBound == true && _server != null)
                 {
                     _streamScriere.WriteLine(_mesajDeconectare);
+                    InchideStreamuri();
                     _server.Stop();
                     InchideSocket();
-                    InchideStreamuri();
                 }
             }
             catch (Exception exceptie)

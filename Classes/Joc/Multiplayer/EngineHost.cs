@@ -4,26 +4,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
     public class EngineHost : EngineJoc
     {
-        public static int IntervalTimerPrimireDate = 50;
 
         protected NetworkServer _host;
         protected ParserTabla _parserTabla;
         protected Om _jucatorHost;
 
         private Tuple<Pozitie, Pozitie> _ultimaMutarePrimitaHost;
-        protected System.Timers.Timer _timerJocHost;
 
         protected bool _randulHostului;
-        protected bool _timerJocHostDisposed;
+        protected bool _hostDisposed;
 
-        private String _ultimulMesajPrimitHost = NetworkServer.BufferGol;
 
         public Om Jucator
         {
@@ -101,44 +97,35 @@ namespace ProiectVolovici
             GC.SuppressFinalize(this);
             Debug.WriteLine("Dispose JocMultiplayer");
 
-            _timerJocHostDisposed = true;
+            _hostDisposed = true;
             _host.TrimiteDate(_host.MesajDeconectare);
-            _timerJocHost?.Dispose();
         }
 
         public virtual async void HosteazaJoc(int port)
         {
             _host = new NetworkServer(IPAddress.Any, port);
-            _host.AcceptaUrmatorulClient();
-            await AsteaptaComunicareaCuClientul();
+            await _host.PrimesteClientAsync();
+            AsteaptaComunicareaCuClientul();
         }
 
-        protected virtual async Task AsteaptaComunicareaCuClientul()
+        protected void AsteaptaComunicareaCuClientul()
         {
-            while (_host.ClientPrimit == false)
-            {
-                await Task.Delay(50);
-            }
+            _host.ClientPrimitEvent.WaitOne();
             _host.TrimiteDate(_parserTabla.CodificareTablaSiAspect(this.MatriceCoduriPiese, this.AspectJoc));
-            _host.TimerCitireDate.Stop();
-            ActiveazaTimerRepetitiv(_timerJocHost, (uint)IntervalTimerPrimireDate, SincronizeazaHost);
+            Task.Factory.StartNew(() => SincronizeazaHost());
             EsteRandulTau();
         }
 
-        public void SincronizeazaHost(object source, ElapsedEventArgs e)
+        public void SincronizeazaHost()
         {
-            if (_timerJocHostDisposed == false)
+            while (_hostDisposed == false)
             {
-                if (_ultimulMesajPrimitHost.Equals(_host.Buffer))
+                string mesajPrimitHost;
+                if ((mesajPrimitHost =_host.StreamCitire.ReadLine()) != null)
                 {
-                    _host.PrimesteDate();
-                }
-                if (_host.Buffer != NetworkServer.BufferGol)
-                {
-                    _ultimulMesajPrimitHost = _host.Buffer;
-                    if (!_ultimulMesajPrimitHost.Equals(_host.MesajDeconectare))
+                    if (!mesajPrimitHost.Equals(_host.MesajDeconectare))
                     {
-                        _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(_ultimulMesajPrimitHost);
+                        _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(mesajPrimitHost);
                         VerificaSahul(_ultimaMutarePrimitaHost.Item2);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
                         EsteRandulTau();
@@ -146,15 +133,19 @@ namespace ProiectVolovici
                     }
                     else
                     {
-                        _timerJocHostDisposed = true;
-                        _timerJocHost.Stop();
-                        MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
-                        if (_esteGataMeciul == false)
-                        {
-                            VerificaSahurile();
-                        }
+                        NotificaServerulDeIesireaClientului();
                     }
                 }
+            }
+        }
+
+        public virtual void NotificaServerulDeIesireaClientului()
+        {
+            _hostDisposed = true;
+            MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
+            if (_esteGataMeciul == false)
+            {
+                VerificaSahurile();
             }
         }
 
@@ -202,7 +193,6 @@ namespace ProiectVolovici
         {
             _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();
-            _timerJocHost.Stop();
             _host.TrimiteDate(_host.MesajDeconectare);
         }
 
