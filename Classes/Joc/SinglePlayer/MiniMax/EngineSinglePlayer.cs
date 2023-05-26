@@ -154,6 +154,11 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
             _randulOmului = true;
         }
 
+        public override void StergeUltimaMutare()
+        {
+            NrMutari--;
+            base.StergeUltimaMutare();
+        }
         public void InitializeazaInterfataVizuala()
         {
             _textBoxMutariAlbastru = new RichTextBox();

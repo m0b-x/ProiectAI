@@ -548,7 +548,7 @@ namespace ProiectVolovici
             PozitiiMutariPosibile.Clear();
 
         }
-        public void StergeUltimaMutare()
+        public virtual void StergeUltimaMutare()
         {
             if(_stivaMutari.Count() > 0)
             {
@@ -564,9 +564,7 @@ namespace ProiectVolovici
                 _stivaMutari.Pop();
                 _stivaCodPiese.Pop();
                 DecoloreazaMutariPosibile();
-
             }
-
         }
         private void AdaugaMutareaInListe(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
