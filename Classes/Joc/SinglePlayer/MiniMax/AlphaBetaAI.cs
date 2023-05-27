@@ -350,38 +350,18 @@ namespace ProiectVolovici
             new Rege(Culoare.AlbastruMax)
         };
 
-        private static int AdancimeChecks = 0;
+        private static int AdancimeChecks = 1;
         public AlphaBetaAI(Culoare culoare, EngineSinglePlayer engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
 		{
 			_engine = engine;
 			_culoare = culoare;
 			_adancime = adancime;
-			SeteazaAdancimeQuiescence(adancime);
 			AdaugaOpeningsInCache();
 			InitializeazaTabelCapturiPiese();
 			InitializeazaKillerMoves();
 			InitializeazaHistoryHerusticis();
 		}
 
-		private static void SeteazaAdancimeQuiescence(int adancime)
-		{
-			if (adancime > 4)
-			{
-				AdancimeChecks = 0;
-			}
-			if (adancime <= 4)
-			{
-				AdancimeChecks = 0;
-			}
-			if (adancime <= 3)
-			{
-				AdancimeChecks = 5;
-			}
-			if (adancime <= 2)
-			{
-				AdancimeChecks = 10;
-			}
-		}
 
 		private void InitializeazaKillerMoves()
         {
@@ -2016,7 +1996,7 @@ namespace ProiectVolovici
                                 matrice, beta, beta + 1, adancime - ReducereNMP,
                                 0, hash, pozAlbe, pozAlbastre, Culoare.AlbMin);
                     if (alpha < evalMin)
-                        return beta;
+                        return evalMin;
                 }
 
                 var origAlpha = alpha;
@@ -2113,7 +2093,7 @@ namespace ProiectVolovici
                             matrice, alpha - 1, alpha, adancime - ReducereNMP,
                             0, hash, pozAlbe, pozAlbastre, Culoare.AlbastruMax);
                     if (evalMax < beta)
-                        return alpha;
+                        return evalMax;
                 }
 
                 var origBeta = beta;
@@ -2238,7 +2218,7 @@ namespace ProiectVolovici
                 //delta pruning
                 if (eval + ConstantaPiese.ValoareTura <= alpha)
                 {
-                    return alpha;
+                    return eval;
                 }
 
 				SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
@@ -2291,7 +2271,7 @@ namespace ProiectVolovici
                 //delta pruning
                 if (eval - ConstantaPiese.ValoareTura >= beta)
                 {
-                    return beta;
+                    return eval;
                 }
 
 				SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
