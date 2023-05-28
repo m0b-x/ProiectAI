@@ -28,7 +28,7 @@ namespace ProiectVolovici
 
 
         private static double ProcentajMaterial = 1;
-        private static double ProcentajPST = 0;
+        private static double ProcentajPST = 0.1;
         private EngineSinglePlayer _engine;
         private static int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -103,6 +103,8 @@ namespace ProiectVolovici
                     //valoarerege ca sa nulifice in caz ca regele ia ceva
                 }
         }
+
+        //Sursa:Using AdaBoost to Implement Chinese Chess Evaluation Functions
         private static double[][] TabelNul = new double[][] {
             new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
             new double[] {0,  0,  0,  0,  0,  0,  0,  0,  0},
@@ -148,44 +150,44 @@ namespace ProiectVolovici
 
         private static double[][] TabelCalAlbastru = new double[][]
         {
-            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0},
-            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4}
+            new double[] { 0, -4, 0, 0, 0, 0, 0, -4, 0 },
+            new double[] { 0, 2, 4, 4, -2, 4, 4, 2, 0 },
+            new double[] { 4, 2, 8, 8, 4, 8, 8, 2, 4 },
+            new double[] { 2, 6, 8, 6, 10, 6, 8, 6, 2 },
+            new double[] { 4, 12, 16, 14, 12, 14, 16, 12, 4 },
+            new double[] { 6, 16, 14, 18, 116, 18, 14, 16, 6 },
+            new double[] { 8, 24, 18, 24, 20, 24, 18, 24, 8 },
+            new double[] { 12, 15, 16, 20, 18, 20, 16, 14, 12 },
+            new double[] { 4, 10, 28, 16, 8, 16, 28, 10, 4 },
+            new double[] { 4, 8, 16, 12, 4, 12, 16, 8, 4 }
         };
 
         private static double[][] TabelCalAlb = new double[][]
         {
-            new double[] {4, 8, 16, 12, 4, 12, 16, 8, 4},
-            new double[] {4, 10, 28, 16, 8, 16, 28, 10, 4},
-            new double[] {12, 14, 16, 20, 18, 20, 16, 14, 12},
-            new double[] {8, 24, 18, 24, 20, 24, 18, 24, 8},
-            new double[] {6, 16, 14, 18, 16, 18, 14, 16, 6},
-            new double[] {4, 12, 16, 14, 12, 14, 16, 12, 4},
-            new double[] {2, 6, 8, 6, 10, 6, 8, 6, 2},
-            new double[] {4, 2, 8, 8, 4, 8, 8, 2, 4},
-            new double[] {0, 2, 4, 4, -2, 4, 4, 2, 0},
-            new double[] {0, -4, 0, 0, 0, 0, 0, -4, 0}
+            new double[] { 4, 8, 16, 12, 4, 12, 16, 8, 4 },
+            new double[] { 4, 10, 28, 16, 8, 16, 28, 10, 4 },
+            new double[] { 12, 15, 16, 20, 18, 20, 16, 14, 12 },
+            new double[] { 8, 24, 18, 24, 20, 24, 18, 24, 8 },
+            new double[] { 6, 16, 14, 18, 116, 18, 14, 16, 6 },
+            new double[] { 4, 12, 16, 14, 12, 14, 16, 12, 4 },
+            new double[] { 2, 6, 8, 6, 10, 6, 8, 6, 2 },
+            new double[] { 4, 2, 8, 8, 4, 8, 8, 2, 4 },
+            new double[] { 0, 2, 4, 4, -2, 4, 4, 2, 0 },
+            new double[] { 0, -4, 0, 0, 0, 0, 0, -4, 0 }
         };
 
         private static double[][] TabelTunAlbastru = new double[][]
         {
-            new double[] {0, 0, 2, 6, 6, 6, 2, 0, 0},
-            new double[] {0, 2, 4, 6, 6, 6, 4, 2, 0},
-            new double[] {4, 0, 8, 6, 10, 6, 8, 0, 4},
-            new double[] {0, 0, 0, 2, 4, 2, 0, 0, 0},
-            new double[] {-2, 0, 4, 2, 6, 2, 4, 0, -2},
-            new double[] {0, 0, 0, 2, 8, 2, 0, 0, 0},
-            new double[] {0, 0, -2, 4, 10, 4, -2, 0, 0},
-            new double[] {2, 2, 0, -10, -8, -10, 0, 2, 2},
-            new double[] {2, 2, 0, -4, -14, -4, 0, 2, 2},
-            new double[] {6, 4, 0, -10, -12, -10, 0, 4, 6}
+            new double[] { 0, -4, 0, 0, 0, 0, 0, -4, 0 },
+            new double[] { 0, 2, 4, 4, -2, 4, 4, 2, 0 },
+            new double[] { 4, 2, 8, 8, 4, 8, 8, 2, 4 },
+            new double[] { 2, 6, 8, 6, 10, 6, 8, 6, 2 },
+            new double[] { 4, 12, 16, 14, 12, 14, 16, 12, 4 },
+            new double[] { 6, 16, 14, 18, 116, 18, 14, 16, 6 },
+            new double[] { 8, 24, 18, 24, 20, 24, 18, 24, 8 },
+            new double[] { 12, 15, 16, 20, 18, 20, 16, 14, 12 },
+            new double[] { 4, 10, 28, 16, 8, 16, 28, 10, 4 },
+            new double[] { 4, 8, 16, 12, 4, 12, 16, 8, 4 }
         };
         private static double[][] TabelTunAlb = new double[][]
         {
@@ -203,29 +205,29 @@ namespace ProiectVolovici
 
         private static double[][] TabelTuraAlbastra = new double[][]
         {
-            new double[] {-2, 10, 6, 14, 12, 14, 6, 10, -2},
-            new double[] {8, 4, 8, 16, 8, 16, 8, 4, 8},
-            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new double[] {6, 10, 8, 14, 14, 14, 8, 10, 6},
-            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new double[] {16, 20, 18, 24, 26, 24, 18, 20, 16},
-            new double[] {14, 14, 12, 18, 16, 18, 12, 14, 14}
+            new double[] { -2, 10, 6, 14, 12, 14, 6, 10, -2 },
+            new double[] { 8, 4, 8, 16, 8, 16, 8, 4, 8 },
+            new double[] { 4, 8, 6, 14, 12, 14, 6, 8, 4 },
+            new double[] { 6, 10, 8, 14, 14, 14, 8, 10, 6 },
+            new double[] { 12, 16, 14, 20, 20, 20, 14, 16, 12 },
+            new double[] { 12, 14, 12, 18, 18, 18, 12, 14, 12 },
+            new double[] { 12, 18, 16, 22, 22, 22, 16, 18, 12 },
+            new double[] { 12, 12, 12, 8, 18, 18, 12, 12, 12 },
+            new double[] { 16, 20, 18, 24, 26, 24, 18, 20, 16 },
+            new double[] { 14, 14, 12, 18, 16, 18, 12, 14, 14 }
         };
         private static double[][] TabelTuraAlba = new double[][]
         {
-            new double[] {-14, -14, -16, -18, -20, -18, -14, -14, -14},
-            new double[] {14, 12, 18, 18, 18, 12, 14, 14, 14},
-            new double[] {12, 18, 24, 26, 24, 18, 16, 20, 16},
-            new double[] {12, 12, 12, 18, 18, 18, 12, 12, 12},
-            new double[] {12, 18, 16, 22, 22, 22, 16, 18, 12},
-            new double[] {12, 14, 12, 18, 18, 18, 12, 14, 12},
-            new double[] {12, 16, 14, 20, 20, 20, 14, 16, 12},
-            new double[] {4, 8, 6, 14, 12, 14, 6, 8, 4},
-            new double[] {-8, -4, -8, -16, -8, -16, -8, -4, -8},
-            new double[] {2, -10, -6, -14, -12, -14, -6, -10, 2}
+            new double[] { 14, 14, 12, 18, 16, 18, 12, 14, 14 },
+            new double[] { 16, 20, 18, 24, 26, 24, 18, 20, 16 },
+            new double[] { 12, 12, 12, 8, 18, 18, 12, 12, 12 },
+            new double[] { 12, 18, 16, 22, 22, 22, 16, 18, 12 },
+            new double[] { 12, 14, 12, 18, 18, 18, 12, 14, 12 },
+            new double[] { 12, 16, 14, 20, 20, 20, 14, 16, 12 },
+            new double[] { 6, 10, 8, 14, 14, 14, 8, 10, 6 },
+            new double[] { 4, 8, 6, 14, 12, 14, 6, 8, 4 },
+            new double[] { 8, 4, 8, 16, 8, 16, 8, 4, 8 },
+            new double[] { -2, 10, 6, 14, 12, 14, 6, 10, -2 }
         };
         private static double[][] TabelGardianAlb = new double[][]
         {
@@ -264,13 +266,13 @@ namespace ProiectVolovici
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
             new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
         };
         private static double[][] TabelRegeAlbastru = new double[][]
         {
             new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
-            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
             new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -326,6 +328,8 @@ namespace ProiectVolovici
             TabelRegeAlbastru
 
         };
+
+
         public int Adancime
         {
             get { return _adancime; }
