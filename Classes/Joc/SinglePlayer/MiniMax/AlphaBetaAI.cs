@@ -27,8 +27,8 @@ namespace ProiectVolovici
         const int ReducereNMP = 2;
 
 
-        private static double ProcentajMaterial = 1;
-        private static double ProcentajPST = 0.1;
+        private static double ProcentajMaterial = 0.7;
+        private static double ProcentajPST = 0.3;
         private EngineSinglePlayer _engine;
         private static int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -266,13 +266,13 @@ namespace ProiectVolovici
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
-            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
             new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
         };
         private static double[][] TabelRegeAlbastru = new double[][]
         {
             new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
-            new double[] {0, 0, 0, -2, 2, -2, 0, 0, 0},
+            new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
             new double[] {0, 0, 0, -2, -2, -2, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
             new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -329,7 +329,25 @@ namespace ProiectVolovici
 
         };
 
+        private static List<double[][]> TabelPSTEvaluare = new List<double[][]>()
+        {
+            TabelNul,
+            TabelPionAlb,
+            TabelPionAlbastru,
+            TabelTuraAlba,
+            TabelTuraAlbastra,
+            TabelTunAlb,
+            TabelTunAlbastru,
+            TabelNul,
+            TabelNul,
+            TabelNul,
+            TabelNul,
+            TabelCalAlb,
+            TabelCalAlbastru,
+            TabelNul,
+            TabelNul
 
+        };
         public int Adancime
         {
             get { return _adancime; }
@@ -1444,7 +1462,7 @@ namespace ProiectVolovici
                 {
                     var piesa = matrice[poz.Linie][poz.Coloana];
                     material -= EngineJoc.ReturneazaScorPiesa(piesa);
-                    pst -= TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                    pst -= TabelPSTEvaluare[piesa][poz.Linie][poz.Coloana];
                 }
             }
             //Debug.WriteLine("POZ ALBASTRE");
@@ -1455,7 +1473,7 @@ namespace ProiectVolovici
                     //AFISAREDEBUG Debug.WriteLine(poz);
                     var piesa = matrice[poz.Linie][poz.Coloana];
                     material += EngineJoc.ReturneazaScorPiesa(piesa);
-                    pst += TabelPSTMoveOrdering[piesa][poz.Linie][poz.Coloana];
+                    pst += TabelPSTEvaluare[piesa][poz.Linie][poz.Coloana];
                 }
             }
             return material * ProcentajMaterial + pst * ProcentajPST;
@@ -2425,9 +2443,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -2451,9 +2469,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
         private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
@@ -2485,9 +2503,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -2520,9 +2538,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTMoveOrdering[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTMoveOrdering[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 

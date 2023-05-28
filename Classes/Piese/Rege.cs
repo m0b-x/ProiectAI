@@ -46,38 +46,232 @@ namespace ProiectVolovici
             joc.ColoreazaMutariPosibile(pozitii: mutariPosibile);
         }
 
-        public override List<Pozitie> ReturneazaPozitiiPosibile(int[][] matrice)
+
+
+
+        public static Dictionary<Pozitie, List<Pozitie>> dictionarMutariRegeAlbastru = new()
         {
-            List<Pozitie> pozitii = new List<Pozitie>(4);
-
-            pozitii.Add(new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana));
-            pozitii.Add(new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana));
-            pozitii.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana + 1));
-            pozitii.Add(new Pozitie(_pozitiePiesa.Linie, _pozitiePiesa.Coloana - 1));
-
-
-            int ultimaLinie = ConstantaTabla.NrLinii - 1;
-            int ultimaColoana = ConstantaTabla.NrColoane - 1;
-
-            for (int i = pozitii.Count - 1; i >= 0; i--)
             {
-                if (ConstantaTabla.PozitiiPalat.Contains(pozitii[i]))
+                Pozitie.AcceseazaElementStatic(0,3),
+                new List<Pozitie>()
                 {
-                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0)
-                    {
-                        if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
-						matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
-                            pozitii.RemoveAt(i);
-                    }
+                    new Pozitie(0, 4),
+                    new Pozitie(1, 3),
                 }
-                else
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(0,4),
+                new List<Pozitie>()
                 {
-                    pozitii.RemoveAt(i);
+                    new Pozitie(0, 3),
+                    new Pozitie(0, 5),
+                    new Pozitie(1, 4),
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(0,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(0, 4),
+                    new Pozitie(1, 5)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(1,3),
+                new List<Pozitie>()
+                {
+                    new Pozitie(0, 3),
+                    new Pozitie(2, 3),
+                    new Pozitie(1, 4),
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(1,4),
+                new List<Pozitie>()
+                {
+                    new Pozitie(1, 5),
+                    new Pozitie(1, 3),
+                    new Pozitie(0, 4),
+                    new Pozitie(2, 4)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(1,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(1, 4),
+                    new Pozitie(0, 5),
+                    new Pozitie(2, 5)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(2,3),
+                new List<Pozitie>()
+                {
+                    new Pozitie(2, 4),
+                    new Pozitie(1, 3)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(2,4),
+                new List<Pozitie>()
+                {
+                    new Pozitie(2, 3),
+                    new Pozitie(2, 5),
+                    new Pozitie(1, 4)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(2,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(2, 4),
+                    new Pozitie(1, 5)
                 }
             }
-            
+        };
 
-            return pozitii;
+
+
+
+        public static Dictionary<Pozitie, List<Pozitie>> dictionarMutariRegeAlb = new()
+        {
+            {
+                Pozitie.AcceseazaElementStatic(9,3),
+                new List<Pozitie>()
+                {
+                    new Pozitie(9, 4),
+                    new Pozitie(8, 3),
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(9,4),
+                new List<Pozitie>()
+                {
+                    new Pozitie(9, 3),
+                    new Pozitie(9, 5),
+                    new Pozitie(8, 4),
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(9,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(9, 4),
+                    new Pozitie(8, 5)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(8,3),
+                new List<Pozitie>()
+                {
+                    new Pozitie(9, 3),
+                    new Pozitie(7, 3),
+                    new Pozitie(8, 4),
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(8,4),
+                new List<Pozitie>()
+                {
+                    new Pozitie(8, 5),
+                    new Pozitie(8, 3),
+                    new Pozitie(9, 4),
+                    new Pozitie(7, 4)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(8,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(7, 4),
+                    new Pozitie(9, 5),
+                    new Pozitie(8, 5)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(7,3),
+                new List<Pozitie>()
+                {
+                    new Pozitie(7, 4),
+                    new Pozitie(8, 3)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(7,4),
+                new List<Pozitie>()
+                {
+                    new Pozitie(7, 3),
+                    new Pozitie(7, 5),
+                    new Pozitie(8, 4)
+                }
+            },
+
+            {
+                Pozitie.AcceseazaElementStatic(7,5),
+                new List<Pozitie>()
+                {
+                    new Pozitie(7, 4),
+                    new Pozitie(8, 5)
+                }
+            }
+        };
+
+        public override List<Pozitie> ReturneazaPozitiiPosibile(int[][] matrice)
+        {
+
+            if (Culoare == Culoare.AlbMin)
+            {
+                List<Pozitie> pozitii = dictionarMutariRegeAlb[Pozitie];
+                List<Pozitie> pozitiiReturnate = new(4);
+
+                for (int i = pozitii.Count - 1; i >= 0; i--)
+                {
+                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] == 0 ||
+                    (
+                    matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+                    matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 != _paritatePiesa)
+                    )
+                    {
+                        pozitiiReturnate.Add(pozitii[i]);
+                    }
+                }
+                return pozitiiReturnate;
+            }
+            else
+            {
+                List<Pozitie> pozitii = dictionarMutariRegeAlbastru[Pozitie];
+                List<Pozitie> pozitiiReturnate = new(4);
+
+                for (int i = pozitii.Count - 1; i >= 0; i--)
+                {
+                    if (matrice[pozitii[i].Linie][pozitii[i].Coloana] == 0 ||
+                    (
+                    matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+                    matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 != _paritatePiesa)
+                    )
+                    {
+                        pozitiiReturnate.Add(pozitii[i]);
+                    }
+                }
+                return pozitiiReturnate;
+            }
+        
         }
     }
 }

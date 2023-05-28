@@ -54,14 +54,6 @@ namespace ProiectVolovici
             List<Pozitie> pozitii = new List<Pozitie>(8);
 
             Pozitie poz1 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana + 1);
-            Pozitie poz2 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1);
-            Pozitie poz3 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1);
-            Pozitie poz4 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1);
-            Pozitie poz5 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2);
-            Pozitie poz6 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2);
-            Pozitie poz7 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2);
-            Pozitie poz8 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2);
-
             if (0 <= poz1.Linie && poz1.Linie <= 9 &&
                 0 <= poz1.Coloana && poz1.Coloana <= 8)
             {
@@ -71,6 +63,7 @@ namespace ProiectVolovici
                 }
             }
 
+            Pozitie poz2 = new Pozitie(_pozitiePiesa.Linie + 2, _pozitiePiesa.Coloana - 1);
             if (0 <= poz2.Linie && poz2.Linie <= 9 &&
                 0 <= poz2.Coloana && poz2.Coloana <= 8)
             {
@@ -79,6 +72,8 @@ namespace ProiectVolovici
                     pozitii.Add(poz2);
                 }
             }
+
+            Pozitie poz3 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana + 1);
             if (0 <= poz3.Linie && poz3.Linie <= 9 &&
                 0 <= poz3.Coloana && poz3.Coloana <= 8)
             {
@@ -88,6 +83,7 @@ namespace ProiectVolovici
                 }
             }
 
+            Pozitie poz4 = new Pozitie(_pozitiePiesa.Linie - 2, _pozitiePiesa.Coloana - 1);
             if (0 <= poz4.Linie && poz4.Linie <= 9 &&
                 0 <= poz4.Coloana && poz4.Coloana <= 8)
             {
@@ -97,6 +93,7 @@ namespace ProiectVolovici
                 }
             }
 
+            Pozitie poz5 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana + 2);
             if (0 <= poz5.Linie && poz5.Linie <= 9 &&
                 0 <= poz5.Coloana && poz5.Coloana <= 8)
             {
@@ -105,6 +102,8 @@ namespace ProiectVolovici
                     pozitii.Add(poz5);
                 }
             }
+
+            Pozitie poz6 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana + 2);
             if (0 <= poz6.Linie && poz6.Linie <= 9 &&
                 0 <= poz6.Coloana && poz6.Coloana <= 8)
             {
@@ -115,6 +114,7 @@ namespace ProiectVolovici
             }
 
 
+            Pozitie poz7 = new Pozitie(_pozitiePiesa.Linie + 1, _pozitiePiesa.Coloana - 2);
             if (0 <= poz7.Linie && poz7.Linie <= 9 &&
                 0 <= poz7.Coloana && poz7.Coloana <= 8)
             {
@@ -124,6 +124,7 @@ namespace ProiectVolovici
                 }
             }
 
+            Pozitie poz8 = new Pozitie(_pozitiePiesa.Linie - 1, _pozitiePiesa.Coloana - 2);
             if (0 <= poz8.Linie && poz8.Linie <= 9 &&
                 0 <= poz8.Coloana && poz8.Coloana <= 8)
             {
