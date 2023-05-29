@@ -23,12 +23,13 @@ namespace ProiectVolovici
         private static double OffsetMVVLVA = 200;
         private static double OffsetKillerMoves = 400;
         private static double OffsetHistoryTable = 200;
+        //adaugat
         const int AdancimeNMP = 3;
         const int ReducereNMP = 2;
 
 
         private static double ProcentajMaterial = 1.0;
-        private static double ProcentajPST = 0.2;
+        private static double ProcentajPST = 0.25;
         private EngineSinglePlayer _engine;
         private static int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -338,14 +339,15 @@ namespace ProiectVolovici
             TabelTuraAlbastra,
             TabelTunAlb,
             TabelTunAlbastru,
-            TabelNul,
-            TabelNul,
-            TabelNul,
-            TabelNul,
+            TabelGardianAlb,
+            TabelGardianAlbastru,
+            TabelElefantAlb,
+            TabelElefantAlbastru,
             TabelCalAlb,
             TabelCalAlbastru,
-            TabelNul,
-            TabelNul
+            TabelRegeAlb,
+            TabelRegeAlbastru
+
 
         };
         public int Adancime
@@ -1393,7 +1395,8 @@ namespace ProiectVolovici
                             , pozAlbe
                             , pozAlbastre
                             , Culoare.AlbMin
-                            , nullMove: false);
+                            , nullMove: false
+                            , nodPV : true);
 
                     //Aspiration Windows
                     if (FerestreAspiratie && adancimeIterativa >= 3)
@@ -1930,7 +1933,8 @@ namespace ProiectVolovici
 
         public static double AlphaBetaCuMemorie(double eval, int[][] matrice, double alpha,
             double beta, int adancime, int piesaCapturata, ulong hash,
-            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, bool nullMove)
+            Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare,
+            bool nullMove, bool nodPV = true)
         {
 
             // pv search
@@ -2018,13 +2022,13 @@ namespace ProiectVolovici
                 bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
 
                 //null move pruning
-                if (!esteSahLaAlbastru && adancime >= AdancimeNMP && eval >= beta && nullMove == false)
+                if (!esteSahLaAlbastru && nodPV == false && adancime >= AdancimeNMP && eval >= beta && nullMove == false)
                 {
                     var evalMin = AlphaBetaCuMemorie(eval,
                                 matrice, beta, beta + 1, adancime - ReducereNMP,
                                 0, hash, pozAlbe, pozAlbastre, Culoare.AlbMin,
-                                nullMove: true);
-                    if (alpha < evalMin)
+                                nullMove: true, nodPV : false);
+                    if (alpha >= evalMin)
                         return evalMin;
                 }
 
@@ -2057,7 +2061,7 @@ namespace ProiectVolovici
                     {
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                     matrice, alpha, alpha + 1, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
-                                    Culoare.AlbMin, nullMove));
+                                    Culoare.AlbMin, nullMove, nodPV : false));
 
                         //outside bounds check
                         if (val > alpha && val < beta)
@@ -2065,14 +2069,14 @@ namespace ProiectVolovici
                             val = -ValoareMaxima;
                             val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                         matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
-                                        Culoare.AlbMin, nullMove));
+                                        Culoare.AlbMin, nullMove, nodPV : false));
                         }
                     }
                     else
                     {
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
-                                    Culoare.AlbMin, nullMove));
+                                    Culoare.AlbMin, nullMove, nodPV: true));
                     }
                     //
                     alpha = Math.Max(val, alpha);
@@ -2091,7 +2095,7 @@ namespace ProiectVolovici
                         goto ValoareFinala;
                     }
                     //principal variation check
-                    if (eval > alpha && eval < beta)
+                    if (eval > alpha)
                     {
                         gasitNodPV = true;
                     }
@@ -2116,13 +2120,13 @@ namespace ProiectVolovici
             {
                 bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
                 //null move pruning
-                if (!esteSahLaAlb && adancime >= AdancimeNMP && alpha >= eval && nullMove == false)
+                if (!esteSahLaAlb && nodPV == false && adancime >= AdancimeNMP && alpha >= eval && nullMove == false)
                 {
                     var evalMax = AlphaBetaCuMemorie(eval,
                             matrice, alpha - 1, alpha, adancime - ReducereNMP,
                             0, hash, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
-                            nullMove: true);
-                    if (evalMax < beta)
+                            nullMove: true, nodPV : false);
+                    if (evalMax >= beta)
                         return evalMax;
                 }
 
@@ -2153,21 +2157,24 @@ namespace ProiectVolovici
                     {
                         val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                             matrice, beta - 1, beta, adancime - 1,
-                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax, nullMove));
+                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
+                            nullMove, nodPV : false));
 
                         if (val > alpha && val < beta)
                         {
                             val = ValoareMaxima;
                             val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                                 matrice, alpha, beta, adancime - 1,
-                                piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax, nullMove));
+                                piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
+                                nullMove, nodPV: false));
                         }
                     }
                     else
                     {
                         val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                             matrice, alpha, beta, adancime - 1,
-                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax, nullMove));
+                            piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
+                            nullMove, nodPV: true));
 
                     }
                     //
@@ -2187,7 +2194,7 @@ namespace ProiectVolovici
                         goto ValoareFinala;
                     }
                     //principal variation check
-                    if (val > alpha && val < origBeta)
+                    if (val > beta)
                     {
                         gasitNodPV = true;
                     }
@@ -2244,16 +2251,16 @@ namespace ProiectVolovici
 
                 if (!esteSahLaAlbastru)
                 {
-                    // stand pat
+                    //stand pat
                     if (eval >= beta)
                     {
                         return eval;
                     }
-                }
-                //delta pruning
-                if (eval + ConstantaPiese.ValoareTura <= alpha)
-                {
-                    return eval;
+                    //delta pruning
+                    if (eval + ConstantaPiese.ValoareTura < beta)
+                    {
+                        return eval;
+                    }
                 }
 
                 SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
@@ -2302,12 +2309,13 @@ namespace ProiectVolovici
                     {
                         return eval;
                     }
+                    //delta pruning
+                    if (alpha < eval - ConstantaPiese.ValoareTura )
+                    {
+                        return eval;
+                    }
                 }
-                //delta pruning
-                if (eval - ConstantaPiese.ValoareTura >= beta)
-                {
-                    return eval;
-                }
+                
 
                 SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
                     GenereazaCheckEvasionsAlb(matrice, pozAlbe) :
@@ -2451,9 +2459,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    +TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -2477,9 +2485,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    +TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
         private static void FaMutareaAlb(int[][] matrice, ulong hash, Pozitie[] pozAlbe, Pozitie[] pozAlbastre, out ulong hashUpdatat, out int piesaLuata, out int piesaCareIa, Mutare mutPos, out int indexPiesaLuata, out int pozitieSchimbata, out double valoareMutare)
@@ -2511,9 +2519,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    +TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
@@ -2546,9 +2554,9 @@ namespace ProiectVolovici
 
             valoareMutare = EngineJoc.ReturneazaScorPiesa(piesaLuata) * ProcentajMaterial
                 + ProcentajPST * (
-                    -TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
-                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
-                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
+                    +TabelPSTEvaluare[piesaLuata][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]
+                    + TabelPSTEvaluare[piesaCareIa][mutPos.PozitieInitiala.Linie][mutPos.PozitieInitiala.Coloana]
+                    - TabelPSTEvaluare[piesaCareIa][mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana]);
         }
 
 
