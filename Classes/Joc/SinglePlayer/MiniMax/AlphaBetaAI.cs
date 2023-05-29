@@ -27,8 +27,8 @@ namespace ProiectVolovici
         const int ReducereNMP = 2;
 
 
-        private static double ProcentajMaterial = 0.7;
-        private static double ProcentajPST = 0.3;
+        private static double ProcentajMaterial = 1.0;
+        private static double ProcentajPST = 0.2;
         private EngineSinglePlayer _engine;
         private static int _adancime;
         private Stopwatch _cronometruAI = new Stopwatch();
@@ -374,18 +374,18 @@ namespace ProiectVolovici
 
         private static int AdancimeChecks = 1;
         public AlphaBetaAI(Culoare culoare, EngineSinglePlayer engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
-		{
-			_engine = engine;
-			_culoare = culoare;
-			_adancime = adancime;
-			AdaugaOpeningsInCache();
-			InitializeazaTabelCapturiPiese();
-			InitializeazaKillerMoves();
-			InitializeazaHistoryHerusticis();
-		}
+        {
+            _engine = engine;
+            _culoare = culoare;
+            _adancime = adancime;
+            AdaugaOpeningsInCache();
+            InitializeazaTabelCapturiPiese();
+            InitializeazaKillerMoves();
+            InitializeazaHistoryHerusticis();
+        }
 
 
-		private void InitializeazaKillerMoves()
+        private void InitializeazaKillerMoves()
         {
             KillerMoves = new Mutare[MarimeKillerMoves + 1][];
             for (int i = 0; i <= MarimeKillerMoves; i++)
@@ -1393,7 +1393,7 @@ namespace ProiectVolovici
                             , pozAlbe
                             , pozAlbastre
                             , Culoare.AlbMin
-                            , nullMove : false);
+                            , nullMove: false);
 
                     //Aspiration Windows
                     if (FerestreAspiratie && adancimeIterativa >= 3)
@@ -1962,11 +1962,16 @@ namespace ProiectVolovici
                 }
             }
 
-            if (piesaCapturata == regeAlbastru ||
-                piesaCapturata == regeAlb)
+            //Check priority
+            if (piesaCapturata == regeAlbastru)
             {
                 //nod final
-                return eval;
+                return -ValoareMaxima - adancime;
+            }
+            if (piesaCapturata == regeAlb)
+            {
+                //nod final
+                return ValoareMaxima + adancime;
             }
 
 
@@ -1974,11 +1979,10 @@ namespace ProiectVolovici
 
             if (adancime <= 0)
             {
-
-                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
-                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
                 //check extension
-                if (esteSahLaAlb || esteSahLaAlbastru)
+                if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice))  ||
+                    culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice))
+                    )
                 {
                     adancime = 1;
                     goto InceputCautare;
@@ -2005,21 +2009,21 @@ namespace ProiectVolovici
                     return val;
                 }
             }
-            InceputCautare:
+        InceputCautare:
 
             //maximizare => albastru
             if (culoare == Culoare.AlbastruMax)
             {
 
-				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
 
-				//null move pruning
-				if (!esteSahLaAlbastru && adancime >= AdancimeNMP && eval >= beta && nullMove == false)
+                //null move pruning
+                if (!esteSahLaAlbastru && adancime >= AdancimeNMP && eval >= beta && nullMove == false)
                 {
                     var evalMin = AlphaBetaCuMemorie(eval,
                                 matrice, beta, beta + 1, adancime - ReducereNMP,
                                 0, hash, pozAlbe, pozAlbastre, Culoare.AlbMin,
-                                nullMove : true);
+                                nullMove: true);
                     if (alpha < evalMin)
                         return evalMin;
                 }
@@ -2109,15 +2113,15 @@ namespace ProiectVolovici
                 return val;
             }
             else// if (culoare == Culoare.AlbMin)
-			{
-				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
-				//null move pruning
-				if (!esteSahLaAlb && adancime >= AdancimeNMP && alpha >= eval && nullMove == false)
+            {
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+                //null move pruning
+                if (!esteSahLaAlb && adancime >= AdancimeNMP && alpha >= eval && nullMove == false)
                 {
                     var evalMax = AlphaBetaCuMemorie(eval,
                             matrice, alpha - 1, alpha, adancime - ReducereNMP,
                             0, hash, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
-                            nullMove : true);
+                            nullMove: true);
                     if (evalMax < beta)
                         return evalMax;
                 }
@@ -2216,13 +2220,17 @@ namespace ProiectVolovici
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
         {
             NoduriEvaluate++;
-            if (piesaCapturata == regeAlb ||
-                piesaCapturata == regeAlbastru
-                )
+            //Check priority
+            if (piesaCapturata == regeAlbastru)
             {
-                return eval;
+                //nod final
+                return -ValoareMaxima + adancime;
             }
-
+            if (piesaCapturata == regeAlb)
+            {
+                //nod final
+                return ValoareMaxima - adancime;
+            }
 
 
             if (culoare == Culoare.AlbastruMax)
@@ -2232,9 +2240,9 @@ namespace ProiectVolovici
 
                 double val = -ValoareMaxima;
 
-				bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
 
-				if (!esteSahLaAlbastru)
+                if (!esteSahLaAlbastru)
                 {
                     // stand pat
                     if (eval >= beta)
@@ -2248,11 +2256,11 @@ namespace ProiectVolovici
                     return eval;
                 }
 
-				SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
-					GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre) :
-					(adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlbastru(matrice,pozAlbastre) : GenereazaCapturiPosibile(matrice, pozAlbastre);
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
+                    GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre) :
+                    (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlbastru(matrice, pozAlbastre) : GenereazaCapturiPosibile(matrice, pozAlbastre);
 
-				if (mutariSortate.Count == 0)
+                if (mutariSortate.Count == 0)
                     return eval;
 
                 var mutSortateValues = mutariSortate.Values;
@@ -2285,9 +2293,9 @@ namespace ProiectVolovici
 
                 double val = ValoareMaxima;
 
-				bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
 
-				if (!esteSahLaAlb)
+                if (!esteSahLaAlb)
                 {
                     //stand pat
                     if (alpha >= eval)
@@ -2301,11 +2309,11 @@ namespace ProiectVolovici
                     return eval;
                 }
 
-				SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
-					GenereazaCheckEvasionsAlb(matrice, pozAlbe) :
-					(adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlb(matrice, pozAlbe) : GenereazaCapturiPosibile(matrice, pozAlbe);
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
+                    GenereazaCheckEvasionsAlb(matrice, pozAlbe) :
+                    (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlb(matrice, pozAlbe) : GenereazaCapturiPosibile(matrice, pozAlbe);
 
-				if (mutariSortate.Count == 0)
+                if (mutariSortate.Count == 0)
                     return eval;
 
                 var mutSortateValues = mutariSortate.Values;
