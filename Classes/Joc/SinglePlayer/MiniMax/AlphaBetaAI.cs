@@ -1993,7 +1993,6 @@ namespace ProiectVolovici
                 }
                 else
                 {
-
                     NoduriEvaluate--;
                     //quiescence search
                     var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
@@ -2022,7 +2021,13 @@ namespace ProiectVolovici
                 bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
 
                 //null move pruning
-                if (!esteSahLaAlbastru && nodPV == false && adancime >= AdancimeNMP && eval >= beta && nullMove == false)
+                if (
+                    !esteSahLaAlbastru &&
+                    nodPV == false &&
+                    adancime >= AdancimeNMP &&
+                    eval > beta &&
+                    nullMove == false
+                    )
                 {
                     var evalMin = AlphaBetaCuMemorie(eval,
                                 matrice, beta, beta + 1, adancime - ReducereNMP,
@@ -2057,16 +2062,17 @@ namespace ProiectVolovici
                     FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     //principal variation search
-                    if (gasitNodPV == true)
+                    if (gasitNodPV == true && nodPV == false)
                     {
+                        double origVal = val;
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                     matrice, alpha, alpha + 1, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
                                     Culoare.AlbMin, nullMove, nodPV : false));
-
-                        //outside bounds check
+                        
+                        //actual good pv?
                         if (val > alpha && val < beta)
                         {
-                            val = -ValoareMaxima;
+                            val = origVal;
                             val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                         matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
                                         Culoare.AlbMin, nullMove, nodPV : false));
@@ -2078,7 +2084,7 @@ namespace ProiectVolovici
                                     matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
                                     Culoare.AlbMin, nullMove, nodPV: true));
                     }
-                    //
+
                     alpha = Math.Max(val, alpha);
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
@@ -2095,7 +2101,7 @@ namespace ProiectVolovici
                         goto ValoareFinala;
                     }
                     //principal variation check
-                    if (eval > alpha)
+                    if (val > origAlpha)
                     {
                         gasitNodPV = true;
                     }
@@ -2119,8 +2125,15 @@ namespace ProiectVolovici
             else// if (culoare == Culoare.AlbMin)
             {
                 bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
                 //null move pruning
-                if (!esteSahLaAlb && nodPV == false && adancime >= AdancimeNMP && alpha >= eval && nullMove == false)
+                if (
+                    !esteSahLaAlb &&
+                    nodPV == false &&
+                    adancime >= AdancimeNMP &&
+                    alpha > eval &&
+                    nullMove == false
+                    )
                 {
                     var evalMax = AlphaBetaCuMemorie(eval,
                             matrice, alpha - 1, alpha, adancime - ReducereNMP,
@@ -2153,16 +2166,18 @@ namespace ProiectVolovici
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     //principal variation search
-                    if (gasitNodPV == true)
+                    if (gasitNodPV == true && nodPV == false)
                     {
+                        double origVal = val;
                         val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                             matrice, beta - 1, beta, adancime - 1,
                             piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
                             nullMove, nodPV : false));
 
+                        //actual good pv?
                         if (val > alpha && val < beta)
                         {
-                            val = ValoareMaxima;
+                            val = origVal;
                             val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                                 matrice, alpha, beta, adancime - 1,
                                 piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
@@ -2175,13 +2190,12 @@ namespace ProiectVolovici
                             matrice, alpha, beta, adancime - 1,
                             piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
                             nullMove, nodPV: true));
-
                     }
                     //
                     beta = Math.Min(val, beta);
                     RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
-
-                    if (val <= alpha)
+                    
+                    if (alpha >= val)
                     {
                         if (piesaLuata == 0)
                         {
@@ -2194,7 +2208,7 @@ namespace ProiectVolovici
                         goto ValoareFinala;
                     }
                     //principal variation check
-                    if (val > beta)
+                    if (val < origBeta)
                     {
                         gasitNodPV = true;
                     }
