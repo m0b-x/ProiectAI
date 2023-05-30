@@ -2270,8 +2270,8 @@ namespace ProiectVolovici
                     {
                         return eval;
                     }
-                    //delta pruning
-                    if (eval + ConstantaPiese.ValoareTura < beta)
+					//delta pruning
+					if (eval + ConstantaPiese.ValoareTura < alpha)
                     {
                         return eval;
                     }
@@ -2324,7 +2324,7 @@ namespace ProiectVolovici
                         return eval;
                     }
                     //delta pruning
-                    if (alpha < eval - ConstantaPiese.ValoareTura )
+                    if (eval - ConstantaPiese.ValoareTura  > beta)
                     {
                         return eval;
                     }
