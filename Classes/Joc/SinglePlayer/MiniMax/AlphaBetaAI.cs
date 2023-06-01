@@ -958,23 +958,25 @@ namespace ProiectVolovici
 
                             if (piesaLuata == 0)
                             {
-                                var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
                                 if (KillerMoves[adancime][0].PozitieInitiala == poz && KillerMoves[adancime][0].PozitieFinala == mut)
                                 {
                                     mutPos.Add(OffsetKillerMoves, new(new(poz.Linie, poz.Coloana), mut));
                                 }
-                                else
-                                if (KillerMoves[adancime][1].PozitieInitiala == poz && KillerMoves[adancime][1].PozitieFinala == mut)
+                                else if (KillerMoves[adancime][1].PozitieInitiala == poz && KillerMoves[adancime][1].PozitieFinala == mut)
                                 {
                                     mutPos.Add(OffsetKillerMoves - 1, new(new(poz.Linie, poz.Coloana), mut));
                                 }
-                                else if (HistoryTable[indexHH] > 0)
-                                {
-                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
-                                }
                                 else
                                 {
-                                    mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                    var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
+                                    if (HistoryTable[indexHH] > 0)
+                                    {
+                                        mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                    }
+                                    else
+                                    {
+                                        mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                                    }
                                 }
                             }
                             else
@@ -1368,7 +1370,7 @@ namespace ProiectVolovici
             NoduriEvaluate = 0;
             NoduriEvaluateQSC = 0;
             //adaugat
-            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+            for (int adancimeIterativa = 0; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
                 {
@@ -2287,7 +2289,7 @@ namespace ProiectVolovici
                 }
 
                 SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
-                    GenereazaCheckEvasionsAlbastru(matrice, pozAlbastre) :
+                    GenereazaCheckEvasionsAlbastruQSC(matrice, pozAlbastre) :
                     (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlbastru(matrice, pozAlbastre) : GenereazaCapturiPosibile(matrice, pozAlbastre);
 
                 if (mutariSortate.Count == 0)
@@ -2341,7 +2343,7 @@ namespace ProiectVolovici
                 
 
                 SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
-                    GenereazaCheckEvasionsAlb(matrice, pozAlbe) :
+                    GenereazaCheckEvasionsAlbQSC(matrice, pozAlbe) :
                     (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlb(matrice, pozAlbe) : GenereazaCapturiPosibile(matrice, pozAlbe);
 
                 if (mutariSortate.Count == 0)
@@ -2388,6 +2390,84 @@ namespace ProiectVolovici
 
 
 
+        private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbQSC(int[][] matrice, Pozitie[] pozAlbe)
+        {
+
+            SortedList<double, Mutare> mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozAlbe)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+
+                        matrice[poz.Linie][poz.Coloana] = (int)CodPiesa.Gol;
+                        matrice[mut.Linie][mut.Coloana] = piesaCareIa;
+
+                        var pozRege = ReturneazaPozitieRegeAlbInMatrice(matrice);
+                        if (!EsteSahLaAlb(matrice, pozRege) || piesaLuata == regeAlbastru)
+                        {
+                            if (piesaLuata == 0)
+                            {
+                                mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                            }
+                            else
+                            {
+                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                            }
+                        }
+
+                        matrice[mut.Linie][mut.Coloana] = piesaLuata;
+                        matrice[poz.Linie][poz.Coloana] = piesaCareIa;
+                    }
+                }
+            }
+            return mutPos;
+        }
+
+        private static SortedList<double, Mutare> GenereazaCheckEvasionsAlbastruQSC(int[][] matrice, Pozitie[] pozAlbastre)
+        {
+            SortedList<double, Mutare> mutPos = new(80, new DuplicateKeyComparerDesc<double>());
+            foreach (Pozitie poz in pozAlbastre)
+            {
+                if (poz.Linie != -1)
+                {
+                    _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = poz;
+                    List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
+                    foreach (Pozitie mut in mutari)
+                    {
+                        int piesaLuata = matrice[mut.Linie][mut.Coloana];
+                        int piesaCareIa = matrice[poz.Linie][poz.Coloana];
+
+
+                        matrice[poz.Linie][poz.Coloana] = (int)CodPiesa.Gol;
+                        matrice[mut.Linie][mut.Coloana] = piesaCareIa;
+
+                        var pozRege = ReturneazaPozitieRegeAlbastruInMatrice(matrice);
+                        if (!EsteSahLaAlbastru(matrice, pozRege) || piesaLuata == regeAlb)
+                        {
+                            if (piesaLuata == 0)
+                            {
+                                mutPos.Add(TabelPSTMoveOrdering[piesaCareIa][mut.Linie][mut.Coloana], new(new(poz.Linie, poz.Coloana), mut));
+                            }
+                            else
+                            {
+                                mutPos.Add(TabelCapturiPiese[piesaCareIa][piesaLuata], new(new(poz.Linie, poz.Coloana), mut));
+                            }
+                        }
+
+                        matrice[mut.Linie][mut.Coloana] = piesaLuata;
+                        matrice[poz.Linie][poz.Coloana] = piesaCareIa;
+                    }
+                }
+            }
+            return mutPos;
+        }
 
 
 
