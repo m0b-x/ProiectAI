@@ -19,6 +19,7 @@ namespace ProiectVolovici
         private static Mutare[][] KillerMoves;
         private static int MarimeKillerMoves = 64;
         private static int NoduriEvaluate = 0;
+        private static int NoduriEvaluateQSC = 0;
 
         private static double OffsetMVVLVA = 200;
         private static double OffsetKillerMoves = 400;
@@ -1365,6 +1366,7 @@ namespace ProiectVolovici
 
 
             NoduriEvaluate = 0;
+            NoduriEvaluateQSC = 0;
             //adaugat
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
@@ -1436,10 +1438,10 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
 
                 }//sf loop miscari
-                Debug.WriteLine($"Noduri Evaluate: {NoduriEvaluate} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
+                Debug.WriteLine($"Noduri Totale Evaluate: {NoduriEvaluate}, QSC:{NoduriEvaluateQSC}, Cautare Principala:{NoduriEvaluate-NoduriEvaluateQSC} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
 
             }
             //Debug.WriteLine($"{evaluareMatriceInitiala}\n\n");
@@ -2241,6 +2243,7 @@ namespace ProiectVolovici
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
         {
             NoduriEvaluate++;
+            NoduriEvaluateQSC++;
             //Check priority
             if (piesaCapturata == regeAlbastru)
             {
