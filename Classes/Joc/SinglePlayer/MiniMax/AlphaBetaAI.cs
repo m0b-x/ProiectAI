@@ -2099,11 +2099,14 @@ namespace ProiectVolovici
                             //killer moves
                             if (KillerMoves[adancime][0] != mutPos)
                             {
-                                KillerMoves[adancime][1] = KillerMoves[adancime][0];
                                 KillerMoves[adancime][0] = mutPos;
+                                if (KillerMoves[adancime][0] != KillerMoves[adancime][1])
+                                {
+                                    KillerMoves[adancime][1] = KillerMoves[adancime][0];
+                                }
                             }
-                            //hiistory heuristics
-                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
+                            //history heuristics
+                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime/10;
                         }
                         goto ValoareFinala;
                     }
@@ -2209,11 +2212,14 @@ namespace ProiectVolovici
                             //killer moves
                             if (KillerMoves[adancime][0] != mutPos)
                             {
-                                KillerMoves[adancime][1] = KillerMoves[adancime][0];
                                 KillerMoves[adancime][0] = mutPos;
+                                if (KillerMoves[adancime][0] != KillerMoves[adancime][1])
+                                {
+                                    KillerMoves[adancime][1] = KillerMoves[adancime][0];
+                                }
                             }
                             //history heuristics
-                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
+                            HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime /10;
                         }
                         goto ValoareFinala;
                     }
