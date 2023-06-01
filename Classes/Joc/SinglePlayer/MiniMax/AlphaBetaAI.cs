@@ -2095,8 +2095,11 @@ namespace ProiectVolovici
                         if (piesaLuata == 0)
                         {
                             //killer moves
-                            KillerMoves[adancime][1] = KillerMoves[adancime][0];
-                            KillerMoves[adancime][0] = mutPos;
+                            if (KillerMoves[adancime][0] != mutPos)
+                            {
+                                KillerMoves[adancime][1] = KillerMoves[adancime][0];
+                                KillerMoves[adancime][0] = mutPos;
+                            }
                             //hiistory heuristics
                             HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
                         }
@@ -2202,8 +2205,11 @@ namespace ProiectVolovici
                         if (piesaLuata == 0)
                         {
                             //killer moves
-                            KillerMoves[adancime][1] = KillerMoves[adancime][0];
-                            KillerMoves[adancime][0] = mutPos;
+                            if (KillerMoves[adancime][0] != mutPos)
+                            {
+                                KillerMoves[adancime][1] = KillerMoves[adancime][0];
+                                KillerMoves[adancime][0] = mutPos;
+                            }
                             //history heuristics
                             HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime;
                         }
