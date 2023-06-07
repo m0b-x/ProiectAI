@@ -29,117 +29,117 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMeniu));
-            this.labelTitlu = new System.Windows.Forms.Label();
-            this.butonOptiune3 = new System.Windows.Forms.Button();
-            this.butonOptiune2 = new System.Windows.Forms.Button();
-            this.butonOptiune1 = new System.Windows.Forms.Button();
-            this.butonOptiune4 = new System.Windows.Forms.Button();
-            this.textBoxIP = new System.Windows.Forms.TextBox();
-            this.labelIP = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            labelTitlu = new System.Windows.Forms.Label();
+            butonOptiune3 = new System.Windows.Forms.Button();
+            butonOptiune2 = new System.Windows.Forms.Button();
+            butonOptiune1 = new System.Windows.Forms.Button();
+            butonOptiune4 = new System.Windows.Forms.Button();
+            textBoxIP = new System.Windows.Forms.TextBox();
+            labelIP = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // labelTitlu
             // 
-            this.labelTitlu.AutoSize = true;
-            this.labelTitlu.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelTitlu.Location = new System.Drawing.Point(28, 44);
-            this.labelTitlu.Name = "labelTitlu";
-            this.labelTitlu.Size = new System.Drawing.Size(143, 37);
-            this.labelTitlu.TabIndex = 8;
-            this.labelTitlu.Text = "Xiangqi";
+            labelTitlu.AutoSize = true;
+            labelTitlu.Font = new System.Drawing.Font("Consolas", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            labelTitlu.Location = new System.Drawing.Point(8, 45);
+            labelTitlu.Name = "labelTitlu";
+            labelTitlu.Size = new System.Drawing.Size(197, 37);
+            labelTitlu.TabIndex = 8;
+            labelTitlu.Text = "Chū xuézhě";
             // 
             // butonOptiune3
             // 
-            this.butonOptiune3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonOptiune3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonOptiune3.Location = new System.Drawing.Point(41, 184);
-            this.butonOptiune3.Name = "butonOptiune3";
-            this.butonOptiune3.Size = new System.Drawing.Size(104, 39);
-            this.butonOptiune3.TabIndex = 7;
-            this.butonOptiune3.Text = "Exit";
-            this.butonOptiune3.UseVisualStyleBackColor = true;
-            this.butonOptiune3.Click += new System.EventHandler(this.butonExit_Click);
+            butonOptiune3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            butonOptiune3.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            butonOptiune3.Location = new System.Drawing.Point(41, 184);
+            butonOptiune3.Name = "butonOptiune3";
+            butonOptiune3.Size = new System.Drawing.Size(104, 39);
+            butonOptiune3.TabIndex = 7;
+            butonOptiune3.Text = "Exit";
+            butonOptiune3.UseVisualStyleBackColor = true;
+            butonOptiune3.Click += butonExit_Click;
             // 
             // butonOptiune2
             // 
-            this.butonOptiune2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonOptiune2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonOptiune2.Location = new System.Drawing.Point(41, 139);
-            this.butonOptiune2.Name = "butonOptiune2";
-            this.butonOptiune2.Size = new System.Drawing.Size(105, 39);
-            this.butonOptiune2.TabIndex = 6;
-            this.butonOptiune2.Text = "MultiPlayer";
-            this.butonOptiune2.UseVisualStyleBackColor = true;
-            this.butonOptiune2.Click += new System.EventHandler(this.butonMultiPlayer_Click);
+            butonOptiune2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            butonOptiune2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            butonOptiune2.Location = new System.Drawing.Point(41, 139);
+            butonOptiune2.Name = "butonOptiune2";
+            butonOptiune2.Size = new System.Drawing.Size(105, 39);
+            butonOptiune2.TabIndex = 6;
+            butonOptiune2.Text = "MultiPlayer";
+            butonOptiune2.UseVisualStyleBackColor = true;
+            butonOptiune2.Click += butonMultiPlayer_Click;
             // 
             // butonOptiune1
             // 
-            this.butonOptiune1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonOptiune1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonOptiune1.Location = new System.Drawing.Point(42, 94);
-            this.butonOptiune1.Name = "butonOptiune1";
-            this.butonOptiune1.Size = new System.Drawing.Size(104, 39);
-            this.butonOptiune1.TabIndex = 5;
-            this.butonOptiune1.Text = "SinglePlayer";
-            this.butonOptiune1.UseVisualStyleBackColor = true;
-            this.butonOptiune1.Click += new System.EventHandler(this.butonSinglePlayer_Click);
+            butonOptiune1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            butonOptiune1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            butonOptiune1.Location = new System.Drawing.Point(42, 94);
+            butonOptiune1.Name = "butonOptiune1";
+            butonOptiune1.Size = new System.Drawing.Size(104, 39);
+            butonOptiune1.TabIndex = 5;
+            butonOptiune1.Text = "SinglePlayer";
+            butonOptiune1.UseVisualStyleBackColor = true;
+            butonOptiune1.Click += butonSinglePlayer_Click;
             // 
             // butonOptiune4
             // 
-            this.butonOptiune4.Enabled = false;
-            this.butonOptiune4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.butonOptiune4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.butonOptiune4.Location = new System.Drawing.Point(40, 229);
-            this.butonOptiune4.Name = "butonOptiune4";
-            this.butonOptiune4.Size = new System.Drawing.Size(104, 39);
-            this.butonOptiune4.TabIndex = 9;
-            this.butonOptiune4.Text = "Inapoi";
-            this.butonOptiune4.UseVisualStyleBackColor = true;
-            this.butonOptiune4.Visible = false;
+            butonOptiune4.Enabled = false;
+            butonOptiune4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            butonOptiune4.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            butonOptiune4.Location = new System.Drawing.Point(40, 229);
+            butonOptiune4.Name = "butonOptiune4";
+            butonOptiune4.Size = new System.Drawing.Size(104, 39);
+            butonOptiune4.TabIndex = 9;
+            butonOptiune4.Text = "Inapoi";
+            butonOptiune4.UseVisualStyleBackColor = true;
+            butonOptiune4.Visible = false;
             // 
             // textBoxIP
             // 
-            this.textBoxIP.Enabled = false;
-            this.textBoxIP.Location = new System.Drawing.Point(42, 148);
-            this.textBoxIP.Name = "textBoxIP";
-            this.textBoxIP.Size = new System.Drawing.Size(104, 23);
-            this.textBoxIP.TabIndex = 10;
-            this.textBoxIP.Visible = false;
+            textBoxIP.Enabled = false;
+            textBoxIP.Location = new System.Drawing.Point(42, 148);
+            textBoxIP.Name = "textBoxIP";
+            textBoxIP.Size = new System.Drawing.Size(104, 23);
+            textBoxIP.TabIndex = 10;
+            textBoxIP.Visible = false;
             // 
             // labelIP
             // 
-            this.labelIP.AutoSize = true;
-            this.labelIP.Enabled = false;
-            this.labelIP.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelIP.Location = new System.Drawing.Point(8, 148);
-            this.labelIP.Name = "labelIP";
-            this.labelIP.Size = new System.Drawing.Size(27, 19);
-            this.labelIP.TabIndex = 11;
-            this.labelIP.Text = "IP";
-            this.labelIP.Visible = false;
+            labelIP.AutoSize = true;
+            labelIP.Enabled = false;
+            labelIP.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            labelIP.Location = new System.Drawing.Point(8, 148);
+            labelIP.Name = "labelIP";
+            labelIP.Size = new System.Drawing.Size(27, 19);
+            labelIP.TabIndex = 11;
+            labelIP.Text = "IP";
+            labelIP.Visible = false;
             // 
             // FormMeniu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::ProiectVolovici.Properties.Resources.background;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(442, 442);
-            this.Controls.Add(this.labelIP);
-            this.Controls.Add(this.textBoxIP);
-            this.Controls.Add(this.butonOptiune4);
-            this.Controls.Add(this.labelTitlu);
-            this.Controls.Add(this.butonOptiune3);
-            this.Controls.Add(this.butonOptiune2);
-            this.Controls.Add(this.butonOptiune1);
-            this.DoubleBuffered = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormMeniu";
-            this.ShowIcon = false;
-            this.Load += new System.EventHandler(this.FormMeniu_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.background;
+            BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            ClientSize = new System.Drawing.Size(442, 442);
+            Controls.Add(labelIP);
+            Controls.Add(textBoxIP);
+            Controls.Add(butonOptiune4);
+            Controls.Add(labelTitlu);
+            Controls.Add(butonOptiune3);
+            Controls.Add(butonOptiune2);
+            Controls.Add(butonOptiune1);
+            DoubleBuffered = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Name = "FormMeniu";
+            ShowIcon = false;
+            Text = "Meniu Principal";
+            Load += FormMeniu_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

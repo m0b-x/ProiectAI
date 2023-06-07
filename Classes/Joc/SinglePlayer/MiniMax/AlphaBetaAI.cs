@@ -10,7 +10,6 @@ namespace ProiectVolovici
     public class AlphaBetaAI : AI
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
-        private static Dictionary<ulong, (Pozitie, Pozitie)> CaceDeschideri = new();
         private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
@@ -381,7 +380,6 @@ namespace ProiectVolovici
             _engine = engine;
             _culoare = culoare;
             _adancime = adancime;
-            AdaugaOpeningsInCache();
             InitializeazaTabelCapturiPiese();
             InitializeazaKillerMoves();
             InitializeazaHistoryHerusticis();
@@ -465,475 +463,94 @@ namespace ProiectVolovici
         }
         //200 + valoareLuata/10 - valoarePiesaCareCaptureaza/100 totul aproximat prin adaos(exceptie pion
 
-        public static void AdaugaOpeningsInCache()
+        static int[][] TableDefault = new int[10][]
         {
-            ulong hash;
-
-            int[][] pionAlbMij = new int[10][]
-            {
                 new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 0, 0, 2, 0, 2},
+                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
                 new int[] { 0, 0, 0, 0, 2, 0, 0, 0, 0},
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
                 new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlbMij);
-
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 4)));
-
-            int[][] pionAlbastruMij = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 0, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlbastruMij);
-
-            CaceDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 4)));
-
-            int[][] atacPionAlbastru = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 0, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 2, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru);
-
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
-
-            int[][] atacPionAlbastru1 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 0, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 2, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
-
-            int[][] atacPionAlbastru2 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 0, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 2, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru2);
-
-            CaceDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
-
-            int[][] atacPionAlbastru3 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacPionAlbastru3);
-
-            CaceDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
-
-            int[][] pionAlb1 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 1, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 0, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlb1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 2)));
-
-            int[][] pionAlb12 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 0, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlb12);
-
-            CaceDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 6)));
-
-            int[][] pionAlb3 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlb3);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
-
-            int[][] pionAlb4 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 0},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(pionAlb4);
-
-            CaceDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 8)));
-
-            int[][] tunAlbAtac1 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 5, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbAtac1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
-
-            int[][] tunAlbAtac2 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 5, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbAtac2);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
-
-            int[][] tunAlbastruAtac1 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 6, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbastruAtac1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 2)));
-
-            int[][] tunAlbastruAtac2 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 6, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbastruAtac2);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(7, 6)));
-
-            int[][] tunAlbMijloc1 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 0, 0, 0, 5, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbMijloc1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
-
-            int[][] tunAlbMijloc2 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 5, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbMijloc2);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
-
-            int[][] tunAlbastruMijloc1 = new int[10][]
-{
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 6, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-};
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbastruMijloc1);
-
-            CaceDeschideri.Add(hash, (new Pozitie(9, 7), new Pozitie(7, 6)));
-
-            int[][] tunAlbastruMijloc2 = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 6, 0, 0, 0, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(tunAlbastruMijloc2);
-
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 2)));
-
-            int[][] atacTunAlbLaGardianStanga = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 0, 5, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbLaGardianStanga);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 0)));
-
-            int[][] atacTunAlbLaGardianDreapta = new int[10][]
-                {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 5, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-                };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbLaGardianDreapta);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 8)));
-
-            int[][] atacTunAlbastruLaGardianDreapta = new int[10][]
-                {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 6, 0, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-                };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruLaGardianDreapta);
-            CaceDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(2, 8)));
-
-            int[][] atacTunAlbastruLaGardianDr = new int[10][]
-                {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 6, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-                };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruLaGardianDr);
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 0)));
-
-            int[][] atacTunAlbDr = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 6, 0, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 6, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbDr);
-
-            CaceDeschideri.Add(hash, (new Pozitie(9, 7), new Pozitie(7, 9)));
-            int[][] atacTunAlbDreapta = new int[10][]
-            {
-                new int[] { 4, 12, 10, 8, 14, 8, 10, 12, 4 },
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2 },
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1 },
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 5, 0 },
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 6, 3 }
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbDreapta);
-
-            CaceDeschideri.Add(hash, (new Pozitie(9, 8), new Pozitie(9, 7)));
-
-            int[][] atacTunAlbastruStanga = new int[10][]
-            {
-                new int [] { 4, 12, 10, 8, 14, 8, 10, 5, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 5, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruStanga);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(0, 7)));
-
-            int[][] atacTunAlbastruDreapta = new int[10][]
-            {
-                new int [] { 4, 5, 10, 8, 14, 8, 10, 12, 4},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 6, 0},
-                new int[] { 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 5, 0},
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                new int[] { 3, 11, 9, 7, 13, 7, 9, 11, 3}
-            };
-
-            hash = ZobristHash.HashuiesteTabla(atacTunAlbastruDreapta);
-
-            CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
-        }
+        };
+
+        static ulong HashTablaDefault = ZobristHash.HashuiesteTabla(TableDefault);
+
+
+        public static readonly Dictionary<Mutare, Mutare> DictionarOpeningBooks = new Dictionary<Mutare, Mutare>()
+        {
+            //Default:
+            
+            //Default:
+            /*
+            { new Mutare(new Pozitie(0,0), new Pozitie(0,0)),new Mutare(new Pozitie(0,0), new Pozitie(0,0)) },
+            */
+
+            //Tunuri in Spate 
+            { new Mutare(new Pozitie(7,1), new Pozitie(8,1)),new Mutare(new Pozitie(2,1), new Pozitie(5,1)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(8,7)),new Mutare(new Pozitie(2,7), new Pozitie(5,7)) },
+
+            //Tunuri sus si jos
+            { new Mutare(new Pozitie(7,1), new Pozitie(6,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,1), new Pozitie(5,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,1), new Pozitie(4,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,1), new Pozitie(3,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            { new Mutare(new Pozitie(7,7), new Pozitie(6,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(5,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(4,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(3,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            //Tunuri stanga si dreapta
+            { new Mutare(new Pozitie(7,1), new Pozitie(7,4)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(7,4)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            { new Mutare(new Pozitie(7,1), new Pozitie(7,0)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(7,8)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            { new Mutare(new Pozitie(7,1), new Pozitie(7,6)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(7,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            //Tunul ataca alti pioni
+            { new Mutare(new Pozitie(7,1), new Pozitie(7,2)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,1), new Pozitie(7,3)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(7,6)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(7,7), new Pozitie(7,5)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
+            
+
+            //Tura stanga
+            { new Mutare(new Pozitie(9,0), new Pozitie(8,0)),new Mutare(new Pozitie(0,1), new Pozitie(9,1)) },
+            { new Mutare(new Pozitie(9,0), new Pozitie(7,0)),new Mutare(new Pozitie(0,1), new Pozitie(9,1)) },
+            
+
+            //Tura dreapta
+            { new Mutare(new Pozitie(9,9), new Pozitie(9,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
+            { new Mutare(new Pozitie(9,9), new Pozitie(9,7)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
+
+
+            //Pioni 
+            { new Mutare(new Pozitie(6,0), new Pozitie(5,0)),new Mutare(new Pozitie(3,6), new Pozitie(3,7)) },
+            { new Mutare(new Pozitie(6,2), new Pozitie(5,2)),new Mutare(new Pozitie(0,6), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(6,4), new Pozitie(5,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(6,6), new Pozitie(5,6)),new Mutare(new Pozitie(0,7), new Pozitie(2,0)) },
+            { new Mutare(new Pozitie(6,8), new Pozitie(5,8)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+
+            //Rege si gardieni
+            { new Mutare(new Pozitie(9,4), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(9,3), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(9,5), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            
+            //Elefanti
+            { new Mutare(new Pozitie(9,2), new Pozitie(7,0)),new Mutare(new Pozitie(0,1), new Pozitie(2,2)) },
+            { new Mutare(new Pozitie(9,6), new Pozitie(7,8)),new Mutare(new Pozitie(0,1), new Pozitie(2,2)) },
+            { new Mutare(new Pozitie(9,2), new Pozitie(7,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
+            { new Mutare(new Pozitie(9,6), new Pozitie(7,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
+
+
+        };
 
         public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true, int adancime = 0)
         {
@@ -1305,10 +922,9 @@ namespace ProiectVolovici
 
             if (_engine.NrMutari <= 1)
             {
-                if (CaceDeschideri.ContainsKey(hashInitial))
+                if(DictionarOpeningBooks.ContainsKey(_engine.UltimaMutare))
                 {
-                    (Pozitie, Pozitie) item = CaceDeschideri[hashInitial];
-                    return new(new Mutare(item.Item1, item.Item2), double.MinValue);
+                    return new(DictionarOpeningBooks[_engine.UltimaMutare],double.MaxValue);
                 }
             }
 
@@ -1370,7 +986,7 @@ namespace ProiectVolovici
             NoduriEvaluate = 0;
             NoduriEvaluateQSC = 0;
             //adaugat
-            for (int adancimeIterativa = 0; adancimeIterativa <= _adancime; adancimeIterativa++)
+            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
                 {
@@ -2290,7 +1906,7 @@ namespace ProiectVolovici
 					//delta pruning
 					if (eval + ConstantaPiese.ValoareTura < alpha)
                     {
-                        return eval;
+                        return alpha;
                     }
                 }
 
@@ -2343,7 +1959,7 @@ namespace ProiectVolovici
                     //delta pruning
                     if (eval - ConstantaPiese.ValoareTura  > beta)
                     {
-                        return eval;
+                        return beta;
                     }
                 }
                 
