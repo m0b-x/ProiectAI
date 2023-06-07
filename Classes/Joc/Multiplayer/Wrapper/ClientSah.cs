@@ -69,7 +69,7 @@ namespace ProiectVolovici
             base.NotificaClientDeIesireaServerului();
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "BackColor", Color.DarkRed);
             UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Text", "Server Deconectat");
-            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(200, 40));
+            UtilitatiCrossThread.SeteazaProprietateaDinAltThread(_labelConexiuneSocket, "Size", new System.Drawing.Size(210, 40));
         }
 
         protected void SeteazaFlaguriDeConexiune()

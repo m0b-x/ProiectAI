@@ -403,9 +403,13 @@ namespace ProiectVolovici
         public void AscundePiesaSelectata(Piesa piesa)
         {
             ArrayCadrane[piesa.Pozitie.Linie][piesa.Pozitie.Coloana].BackColor = _tabla.DecideCuloareaCadranului(piesa.Pozitie.Linie, piesa.Pozitie.Coloana);
-        }
+		}
+		public void AscundePiesaSelectata(Pozitie pozPiesa)
+		{
+			ArrayCadrane[pozPiesa.Linie][pozPiesa.Coloana].BackColor = _tabla.DecideCuloareaCadranului(pozPiesa.Linie, pozPiesa.Coloana);
+		}
 
-        public void DecoloreazaMutariPosibile()
+		public void DecoloreazaMutariPosibile()
         {
             if (pozitiiMutariColorate != null)
             {
@@ -563,9 +567,13 @@ namespace ProiectVolovici
                 }
                 _stivaMutari.Pop();
                 _stivaCodPiese.Pop();
-                DecoloreazaMutariPosibile();
-            }
-        }
+
+				AscundePiesaSelectata(mutare.PozitieInitiala);
+				DecoloreazaMutariPosibile();
+				PozitiiMutariPosibile.Clear();
+
+			}
+		}
         private void AdaugaMutareaInListe(Pozitie pozitieInitiala, Pozitie pozitieFinala)
         {
             var mutare = new Mutare(pozitieInitiala, pozitieFinala);

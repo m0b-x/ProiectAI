@@ -171,7 +171,7 @@ namespace ProiectVolovici
         protected virtual void NotificaClientDeIesireaServerului()
         {
             _clientDisposed = true;
-            MessageBox.Show("Server Deconectat (Cod 3)", "Server s-a deconectat");
+            MessageBox.Show("Server Deconectat (Cod 3)", "Hostul s-a deconectat");
             if (!_esteGataMeciul)
             {
                 VerificaSahurile();

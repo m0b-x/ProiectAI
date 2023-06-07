@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ProiectVolovici
 {
@@ -102,9 +103,9 @@ namespace ProiectVolovici
                     _conectat = true;
                 }
                 else
-                {
-                    Debug.WriteLine("Client nu a fost conectat! Motiv:Timeout ");
-                    _conectat = false;
+				{
+					MessageBox.Show("Conexiune esuata (Cod 4)", "Timeout Client");
+					_conectat = false;
                 }
             }
             catch (Exception exceptie)

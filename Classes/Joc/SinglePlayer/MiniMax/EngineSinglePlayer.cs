@@ -155,11 +155,36 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         }
 
         public override void StergeUltimaMutare()
-        {
-            NrMutari--;
-            base.StergeUltimaMutare();
-        }
-        public void InitializeazaInterfataVizuala()
+		{
+			StergeUltimaLinieDinRichTextBox();
+			NrMutari-= 2;
+			base.StergeUltimaMutare();
+		}
+
+		private void StergeUltimaLinieDinRichTextBox()
+		{
+            if (NrMutari > 0)
+            {
+                if (NrMutari % 2 == 0)
+                {
+                    string textInitial = _textBoxMutariAlb.Text;
+                    string[] linii = textInitial.Split('\n');
+                    Array.Resize(ref linii, linii.Length - 1);
+                    string textModificat = string.Join("\n", linii);
+                    _textBoxMutariAlb.Text = textModificat;
+                }
+                else
+                {
+                    string textInitial = _textBoxMutariAlbastru.Text;
+                    string[] linii = textInitial.Split('\n');
+                    Array.Resize(ref linii, linii.Length - 1);
+                    string textModificat = string.Join("\n", linii);
+                    _textBoxMutariAlbastru.Text = textModificat;
+                }
+            }
+		}
+
+		public void InitializeazaInterfataVizuala()
         {
             _textBoxMutariAlbastru = new RichTextBox();
             _textBoxMutariAlbastru.ReadOnly = true;
