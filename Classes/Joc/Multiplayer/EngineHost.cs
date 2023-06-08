@@ -38,7 +38,7 @@ namespace ProiectVolovici
 
             _randulHostului = false;
 
-            _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
+            _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(Pozitie.AcceseazaElementStatic(1, 1), Pozitie.AcceseazaElementStatic(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }
@@ -50,7 +50,7 @@ namespace ProiectVolovici
 
             _randulHostului = false;
 
-            _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
+            _ultimaMutarePrimitaHost = new Tuple<Pozitie, Pozitie>(Pozitie.AcceseazaElementStatic(1, 1), Pozitie.AcceseazaElementStatic(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }

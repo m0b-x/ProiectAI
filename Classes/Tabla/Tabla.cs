@@ -112,7 +112,7 @@ namespace ProiectVolovici
 
         public Color DecideCuloareaCadranului(int linie, int coloana)
         {
-            if (_pozitiiPalat.Contains(_ = new Pozitie(linie, coloana)))
+            if (_pozitiiPalat.Contains(_ = Pozitie.AcceseazaElementStatic(linie, coloana)))
             {
                 if (linie % 2 == 0)
                 {

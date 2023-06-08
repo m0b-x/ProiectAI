@@ -48,7 +48,7 @@ namespace ProiectVolovici
 
             _randulClientului = false;
 
-            _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
+            _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(Pozitie.AcceseazaElementStatic(1, 1), Pozitie.AcceseazaElementStatic(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }
@@ -60,7 +60,7 @@ namespace ProiectVolovici
             _jucatorClient.Culoare = Culoare.AlbMin;
             _randulClientului = false;
 
-            _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(new Pozitie(1, 1), new Pozitie(1, 1));
+            _ultimaMutarePrimitaClient = new Tuple<Pozitie, Pozitie>(Pozitie.AcceseazaElementStatic(1, 1), Pozitie.AcceseazaElementStatic(1, 1));
 
             _parserTabla = new ParserTabla(ConstantaTabla.NrLinii, ConstantaTabla.NrColoane);
         }

@@ -381,7 +381,7 @@ namespace ProiectVolovici
                 {
                     for (int coloana = 0; coloana < 9; coloana++)
                     {
-                        HistoryTable.Add(ReturneazaIndexHH(piesa, new Pozitie(linie, coloana)), 0);
+                        HistoryTable.Add(ReturneazaIndexHH(piesa, Pozitie.AcceseazaElementStatic(linie, coloana)), 0);
                     }
                 }
             }
@@ -461,7 +461,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlbMij);
 
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 4)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(7, 1), Pozitie.AcceseazaElementStatic(7, 4)));
 
             int[][] pionAlbastruMij = new int[10][]
             {
@@ -479,7 +479,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlbastruMij);
 
-            CaceDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 4)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(2, 1), Pozitie.AcceseazaElementStatic(2, 4)));
 
             int[][] atacPionAlbastru = new int[10][]
             {
@@ -497,7 +497,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacPionAlbastru);
 
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(7, 1), Pozitie.AcceseazaElementStatic(7, 2)));
 
             int[][] atacPionAlbastru1 = new int[10][]
             {
@@ -515,7 +515,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacPionAlbastru1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(7, 1), new Pozitie(7, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(7, 1), Pozitie.AcceseazaElementStatic(7, 2)));
 
             int[][] atacPionAlbastru2 = new int[10][]
             {
@@ -533,7 +533,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacPionAlbastru2);
 
-            CaceDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(7, 7), Pozitie.AcceseazaElementStatic(7, 6)));
 
             int[][] atacPionAlbastru3 = new int[10][]
             {
@@ -551,7 +551,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacPionAlbastru3);
 
-            CaceDeschideri.Add(hash, (new Pozitie(7, 7), new Pozitie(7, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(7, 7), Pozitie.AcceseazaElementStatic(7, 6)));
 
             int[][] pionAlb1 = new int[10][]
             {
@@ -569,7 +569,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlb1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(2, 1), new Pozitie(2, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(2, 1), Pozitie.AcceseazaElementStatic(2, 2)));
 
             int[][] pionAlb12 = new int[10][]
             {
@@ -587,7 +587,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlb12);
 
-            CaceDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(2, 7), Pozitie.AcceseazaElementStatic(2, 6)));
 
             int[][] pionAlb3 = new int[10][]
             {
@@ -605,7 +605,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlb3);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 1), Pozitie.AcceseazaElementStatic(2, 2)));
 
             int[][] pionAlb4 = new int[10][]
             {
@@ -623,7 +623,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(pionAlb4);
 
-            CaceDeschideri.Add(hash, (new Pozitie(2, 7), new Pozitie(2, 8)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(2, 7), Pozitie.AcceseazaElementStatic(2, 8)));
 
             int[][] tunAlbAtac1 = new int[10][]
             {
@@ -641,7 +641,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbAtac1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 1), Pozitie.AcceseazaElementStatic(2, 2)));
 
             int[][] tunAlbAtac2 = new int[10][]
             {
@@ -659,7 +659,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbAtac2);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 7), Pozitie.AcceseazaElementStatic(2, 6)));
 
             int[][] tunAlbastruAtac1 = new int[10][]
             {
@@ -677,7 +677,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbastruAtac1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 1), Pozitie.AcceseazaElementStatic(7, 2)));
 
             int[][] tunAlbastruAtac2 = new int[10][]
             {
@@ -695,7 +695,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbastruAtac2);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(7, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 7), Pozitie.AcceseazaElementStatic(7, 6)));
 
             int[][] tunAlbMijloc1 = new int[10][]
             {
@@ -713,7 +713,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbMijloc1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 1), Pozitie.AcceseazaElementStatic(2, 2)));
 
             int[][] tunAlbMijloc2 = new int[10][]
             {
@@ -731,7 +731,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbMijloc2);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 7), Pozitie.AcceseazaElementStatic(2, 6)));
 
             int[][] tunAlbastruMijloc1 = new int[10][]
 {
@@ -749,7 +749,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbastruMijloc1);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 7), new Pozitie(7, 6)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 7), Pozitie.AcceseazaElementStatic(7, 6)));
 
             int[][] tunAlbastruMijloc2 = new int[10][]
             {
@@ -767,7 +767,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(tunAlbastruMijloc2);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 2)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 1), Pozitie.AcceseazaElementStatic(7, 2)));
 
             int[][] atacTunAlbLaGardianStanga = new int[10][]
             {
@@ -785,7 +785,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbLaGardianStanga);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 1), new Pozitie(2, 0)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 1), Pozitie.AcceseazaElementStatic(2, 0)));
 
             int[][] atacTunAlbLaGardianDreapta = new int[10][]
                 {
@@ -803,7 +803,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbLaGardianDreapta);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 7), new Pozitie(2, 8)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 7), Pozitie.AcceseazaElementStatic(2, 8)));
 
             int[][] atacTunAlbastruLaGardianDreapta = new int[10][]
                 {
@@ -820,7 +820,7 @@ namespace ProiectVolovici
                 };
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruLaGardianDreapta);
-            CaceDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(2, 8)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 8), Pozitie.AcceseazaElementStatic(2, 8)));
 
             int[][] atacTunAlbastruLaGardianDr = new int[10][]
                 {
@@ -837,7 +837,7 @@ namespace ProiectVolovici
                 };
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruLaGardianDr);
-            CaceDeschideri.Add(hash, (new Pozitie(9, 1), new Pozitie(7, 0)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 1), Pozitie.AcceseazaElementStatic(7, 0)));
 
             int[][] atacTunAlbDr = new int[10][]
             {
@@ -855,7 +855,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbDr);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 7), new Pozitie(7, 9)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 7), Pozitie.AcceseazaElementStatic(7, 9)));
             int[][] atacTunAlbDreapta = new int[10][]
             {
                 new int[] { 4, 12, 10, 8, 14, 8, 10, 12, 4 },
@@ -872,7 +872,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbDreapta);
 
-            CaceDeschideri.Add(hash, (new Pozitie(9, 8), new Pozitie(9, 7)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(9, 8), Pozitie.AcceseazaElementStatic(9, 7)));
 
             int[][] atacTunAlbastruStanga = new int[10][]
             {
@@ -890,7 +890,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruStanga);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 8), new Pozitie(0, 7)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 8), Pozitie.AcceseazaElementStatic(0, 7)));
 
             int[][] atacTunAlbastruDreapta = new int[10][]
             {
@@ -908,7 +908,7 @@ namespace ProiectVolovici
 
             hash = ZobristHash.HashuiesteTabla(atacTunAlbastruDreapta);
 
-            CaceDeschideri.Add(hash, (new Pozitie(0, 0), new Pozitie(0, 1)));
+            CaceDeschideri.Add(hash, (Pozitie.AcceseazaElementStatic(0, 0), Pozitie.AcceseazaElementStatic(0, 1)));
         }
 
         public static SortedList<double, Mutare> GenereazaMutariPosibile(int[][] matrice, Pozitie[] pozitiiPieseDeEvaluat, bool moveOrdering = true, int adancime = 0)
@@ -970,7 +970,7 @@ namespace ProiectVolovici
                 {
                     if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = Pozitie.AcceseazaElementStatic(poz.Linie, poz.Coloana);
                         List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
@@ -1244,10 +1244,10 @@ namespace ProiectVolovici
                 for (int j = 3; j <= 5; j++)
                 {
                     if (matrice[i][j] == regeAlbastru)
-                        return new Pozitie(i, j);
+                        return Pozitie.AcceseazaElementStatic(i, j);
                 }
             }
-            return new Pozitie(-1, -1);
+            return Pozitie.AcceseazaElementStatic(-1, -1);
         }
         public static Pozitie ReturneazaPozitieRegeAlbInMatrice(int[][] matrice)
         {
@@ -1256,10 +1256,10 @@ namespace ProiectVolovici
                 for (int j = 3; j <= 5; j++)
                 {
                     if (matrice[i][j] == regeAlb)
-                        return new Pozitie(i, j);
+                        return Pozitie.AcceseazaElementStatic(i, j);
                 }
             }
-            return new Pozitie(-1, -1);
+            return Pozitie.AcceseazaElementStatic(-1, -1);
         }
 
 

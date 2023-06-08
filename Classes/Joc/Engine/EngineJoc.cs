@@ -173,7 +173,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie][coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
+                    ArrayCadrane[linie][coloana] = new Cadran(this, Pozitie.AcceseazaElementStatic(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                 }
             }
             _labelLinii = new Label[ConstantaTabla.NrLinii];
@@ -203,11 +203,11 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < ConstantaTabla.NrColoane; coloana++)
                 {
-                    ArrayCadrane[linie][coloana] = new Cadran(this, new Pozitie(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
+                    ArrayCadrane[linie][coloana] = new Cadran(this, Pozitie.AcceseazaElementStatic(linie, coloana), _tabla.DecideCuloareaCadranului(linie, coloana));
                     if (matriceTabla[linie][coloana] != (int)CodPiesa.Gol)
                     {
                         Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie][coloana]));
-                        AdaugaPiesa(piesa, new Pozitie(linie, coloana));
+                        AdaugaPiesa(piesa, Pozitie.AcceseazaElementStatic(linie, coloana));
                     }
                 }
             }
@@ -272,55 +272,55 @@ namespace ProiectVolovici
         {
             //piese albastre
 
-            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 0));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(3, 0));
 
-            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 2));
-            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 4));
-            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 6));
-            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), new Pozitie(3, 8));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(3, 2));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(3, 4));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(3, 6));
+            AdaugaPiesa(new Pion(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(3, 8));
 
-            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 1));
-            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), new Pozitie(2, 7));
+            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(2, 1));
+            AdaugaPiesa(new Tun(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(2, 7));
 
-            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 0));
-            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 8));
+            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 0));
+            AdaugaPiesa(new Tura(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 8));
 
-            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 1));
-            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 7));
+            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 1));
+            AdaugaPiesa(new Cal(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 7));
 
-            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 2));
-            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 6));
+            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 2));
+            AdaugaPiesa(new Elefant(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 6));
 
-            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 3));
-            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 5));
+            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 3));
+            AdaugaPiesa(new Gardian(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 5));
 
-            AdaugaPiesa(new Rege(Culoare.AlbastruMax, _aspectJoc), new Pozitie(0, 4));
+            AdaugaPiesa(new Rege(Culoare.AlbastruMax, _aspectJoc), Pozitie.AcceseazaElementStatic(0, 4));
 
             //piese albe
 
 
-            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 0));
-            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 2));
-            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 4));
-            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 6));
-            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), new Pozitie(6, 8));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(6, 0));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(6, 2));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(6, 4));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(6, 6));
+            AdaugaPiesa(new Pion(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(6, 8));
 
-            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), new Pozitie(7, 1));
-            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), new Pozitie(7, 7));
+            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(7, 1));
+            AdaugaPiesa(new Tun(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(7, 7));
 
-            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 0));
-            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 8));
+            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 0));
+            AdaugaPiesa(new Tura(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 8));
 
-            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 1));
-            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 7));
+            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 1));
+            AdaugaPiesa(new Cal(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 7));
 
-            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 2));
-            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 6));
+            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 2));
+            AdaugaPiesa(new Elefant(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 6));
 
-            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 5));
-            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 3));
+            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 5));
+            AdaugaPiesa(new Gardian(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 3));
 
-            AdaugaPiesa(new Rege(Culoare.AlbMin, _aspectJoc), new Pozitie(9, 4));
+            AdaugaPiesa(new Rege(Culoare.AlbMin, _aspectJoc), Pozitie.AcceseazaElementStatic(9, 4));
 
             _listaPiese = _listaPiese.OrderByDescending(o => ReturneazaScorPiesa((int)o.Cod)).ToList();
             _listaPieseAlbastre = _listaPieseAlbastre.OrderByDescending(o => ReturneazaScorPiesa((int)o.Cod)).ToList();
@@ -337,7 +337,7 @@ namespace ProiectVolovici
                     Piesa piesa = ConvertesteCodPiesaInObiect((CodPiesa)Enum.ToObject(typeof(CodPiesa), matriceTabla[linie][coloana]));
                     if (piesa != ConstantaTabla.PiesaNula)
                     {
-                        AdaugaPiesa(piesa, new Pozitie(linie, coloana));
+                        AdaugaPiesa(piesa, Pozitie.AcceseazaElementStatic(linie, coloana));
                     }
                 }
             }
@@ -434,7 +434,7 @@ namespace ProiectVolovici
                 foreach (Pozitie pozitie in pozitii)
                 {
                     ArrayCadrane[pozitie.Linie][pozitie.Coloana].BackColor = CuloareCadranMutari;
-                    pozitiiMutariColorate.Add(new Pozitie(pozitie.Linie, pozitie.Coloana));
+                    pozitiiMutariColorate.Add(Pozitie.AcceseazaElementStatic(pozitie.Linie, pozitie.Coloana));
                 }
             }
         }
@@ -602,7 +602,7 @@ namespace ProiectVolovici
             {
                 for (int coloana = 0; coloana < _tabla.MarimeVerticala; coloana++)
                 {
-                    PunePiesaPeTabla(new Pozitie(linie, coloana), ConstantaTabla.PiesaNula);
+                    PunePiesaPeTabla(Pozitie.AcceseazaElementStatic(linie, coloana), ConstantaTabla.PiesaNula);
                 }
             }
         }
@@ -769,7 +769,7 @@ namespace ProiectVolovici
                 if (piesa.Cod == CodPiesa.RegeAlb)
                     return piesa.Pozitie;
             }
-            return new Pozitie(-1,-1);
+            return Pozitie.AcceseazaElementStatic(-1,-1);
         }
         public Pozitie ReturneazaPozitieRegeAlbastru()
         {
@@ -778,7 +778,7 @@ namespace ProiectVolovici
                 if (piesa.Cod == CodPiesa.RegeAlbastru)
                     return piesa.Pozitie;
             }
-            return new Pozitie(-1, -1);
+            return Pozitie.AcceseazaElementStatic(-1, -1);
         }
         protected TipSah VerificaSahurile()
         {

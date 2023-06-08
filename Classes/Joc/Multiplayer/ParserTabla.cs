@@ -32,8 +32,8 @@ namespace ProiectVolovici.Classes.Joc.Multiplayer
             mutare = mutare.Replace("}", " ");
             int[] vectorPozitiiInt = mutare.Split(',').Select(int.Parse).ToArray();
 
-            return new Tuple<Pozitie, Pozitie>(new Pozitie(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[0], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[1]),
-                                               new Pozitie(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[2], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[3]));
+            return new Tuple<Pozitie, Pozitie>(Pozitie.AcceseazaElementStatic(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[0], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[1]),
+                                               Pozitie.AcceseazaElementStatic(ConstantaTabla.NrLinii - 1 - vectorPozitiiInt[2], ConstantaTabla.NrColoane - 1 - vectorPozitiiInt[3]));
         }
 
         private static T[,] ConvertesteJaggedIn2D<T>(T[][] source)

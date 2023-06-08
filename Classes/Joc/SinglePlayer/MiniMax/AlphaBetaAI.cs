@@ -403,7 +403,7 @@ namespace ProiectVolovici
                 {
                     for (int coloana = 0; coloana < 9; coloana++)
                     {
-                        HistoryTable.Add(ReturneazaIndexHH(piesa, new Pozitie(linie, coloana)), 0);
+                        HistoryTable.Add(ReturneazaIndexHH(piesa, Pozitie.AcceseazaElementStatic(linie, coloana)), 0);
                     }
                 }
             }
@@ -486,68 +486,68 @@ namespace ProiectVolovici
             
             //Default:
             /*
-            { new Mutare(new Pozitie(0,0), new Pozitie(0,0)),new Mutare(new Pozitie(0,0), new Pozitie(0,0)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(0,0), Pozitie.AcceseazaElementStatic(0,0)),new Mutare(Pozitie.AcceseazaElementStatic(0,0), Pozitie.AcceseazaElementStatic(0,0)) },
             */
 
             //Tunuri in Spate 
-            { new Mutare(new Pozitie(7,1), new Pozitie(8,1)),new Mutare(new Pozitie(2,1), new Pozitie(5,1)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(8,7)),new Mutare(new Pozitie(2,7), new Pozitie(5,7)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(8,1)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(5,1)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(8,7)),new Mutare(Pozitie.AcceseazaElementStatic(2,7), Pozitie.AcceseazaElementStatic(5,7)) },
 
             //Tunuri sus si jos
-            { new Mutare(new Pozitie(7,1), new Pozitie(6,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,1), new Pozitie(5,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,1), new Pozitie(4,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,1), new Pozitie(3,1)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(6,1)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(5,1)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(4,1)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(3,1)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
-            { new Mutare(new Pozitie(7,7), new Pozitie(6,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(5,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(4,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(3,7)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(6,7)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(5,7)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(4,7)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(3,7)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
             //Tunuri stanga si dreapta
-            { new Mutare(new Pozitie(7,1), new Pozitie(7,4)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(7,4)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,4)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,4)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
-            { new Mutare(new Pozitie(7,1), new Pozitie(7,0)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(7,8)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,0)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,8)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
-            { new Mutare(new Pozitie(7,1), new Pozitie(7,6)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(7,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,6)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,2)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
             //Tunul ataca alti pioni
-            { new Mutare(new Pozitie(7,1), new Pozitie(7,2)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,1), new Pozitie(7,3)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(7,6)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(7,7), new Pozitie(7,5)),new Mutare(new Pozitie(0,3), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,2)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,3)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,6)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,5)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
             
 
             //Tura stanga
-            { new Mutare(new Pozitie(9,0), new Pozitie(8,0)),new Mutare(new Pozitie(0,1), new Pozitie(9,1)) },
-            { new Mutare(new Pozitie(9,0), new Pozitie(7,0)),new Mutare(new Pozitie(0,1), new Pozitie(9,1)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,0), Pozitie.AcceseazaElementStatic(8,0)),new Mutare(Pozitie.AcceseazaElementStatic(0,1), Pozitie.AcceseazaElementStatic(9,1)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,0), Pozitie.AcceseazaElementStatic(7,0)),new Mutare(Pozitie.AcceseazaElementStatic(0,1), Pozitie.AcceseazaElementStatic(9,1)) },
             
 
             //Tura dreapta
-            { new Mutare(new Pozitie(9,8), new Pozitie(8,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
-            { new Mutare(new Pozitie(9,8), new Pozitie(7,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,8), Pozitie.AcceseazaElementStatic(8,8)),new Mutare(Pozitie.AcceseazaElementStatic(0,7), Pozitie.AcceseazaElementStatic(9,7)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,8), Pozitie.AcceseazaElementStatic(7,8)),new Mutare(Pozitie.AcceseazaElementStatic(0,7), Pozitie.AcceseazaElementStatic(9,7)) },
 
 
             //Pioni 
-            { new Mutare(new Pozitie(6,0), new Pozitie(5,0)),new Mutare(new Pozitie(3,6), new Pozitie(3,7)) },
-            { new Mutare(new Pozitie(6,2), new Pozitie(5,2)),new Mutare(new Pozitie(0,6), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(6,4), new Pozitie(5,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(6,6), new Pozitie(5,6)),new Mutare(new Pozitie(0,7), new Pozitie(2,0)) },
-            { new Mutare(new Pozitie(6,8), new Pozitie(5,8)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(6,0), Pozitie.AcceseazaElementStatic(5,0)),new Mutare(Pozitie.AcceseazaElementStatic(3,6), Pozitie.AcceseazaElementStatic(3,7)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(6,2), Pozitie.AcceseazaElementStatic(5,2)),new Mutare(Pozitie.AcceseazaElementStatic(0,6), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(6,4), Pozitie.AcceseazaElementStatic(5,4)),new Mutare(Pozitie.AcceseazaElementStatic(2,7), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(6,6), Pozitie.AcceseazaElementStatic(5,6)),new Mutare(Pozitie.AcceseazaElementStatic(0,7), Pozitie.AcceseazaElementStatic(2,0)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(6,8), Pozitie.AcceseazaElementStatic(5,8)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
             //Rege si gardieni
-            { new Mutare(new Pozitie(9,4), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(9,3), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(9,5), new Pozitie(8,2)),new Mutare(new Pozitie(2,1), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,4), Pozitie.AcceseazaElementStatic(8,2)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,3), Pozitie.AcceseazaElementStatic(8,2)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,5), Pozitie.AcceseazaElementStatic(8,2)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
             
             //Elefanti
-            { new Mutare(new Pozitie(9,2), new Pozitie(7,0)),new Mutare(new Pozitie(0,1), new Pozitie(2,2)) },
-            { new Mutare(new Pozitie(9,6), new Pozitie(7,8)),new Mutare(new Pozitie(0,1), new Pozitie(2,2)) },
-            { new Mutare(new Pozitie(9,2), new Pozitie(7,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
-            { new Mutare(new Pozitie(9,6), new Pozitie(7,4)),new Mutare(new Pozitie(2,7), new Pozitie(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,2), Pozitie.AcceseazaElementStatic(7,0)),new Mutare(Pozitie.AcceseazaElementStatic(0,1), Pozitie.AcceseazaElementStatic(2,2)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,6), Pozitie.AcceseazaElementStatic(7,8)),new Mutare(Pozitie.AcceseazaElementStatic(0,1), Pozitie.AcceseazaElementStatic(2,2)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,2), Pozitie.AcceseazaElementStatic(7,4)),new Mutare(Pozitie.AcceseazaElementStatic(2,7), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(9,6), Pozitie.AcceseazaElementStatic(7,4)),new Mutare(Pozitie.AcceseazaElementStatic(2,7), Pozitie.AcceseazaElementStatic(2,4)) },
 
 
         };
@@ -613,7 +613,7 @@ namespace ProiectVolovici
                 {
                     if (poz.Linie != -1)
                     {
-                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = new Pozitie(poz.Linie, poz.Coloana);
+                        _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].Pozitie = Pozitie.AcceseazaElementStatic(poz.Linie, poz.Coloana);
                         List<Pozitie> mutari = _pieseVirtuale[matrice[poz.Linie][poz.Coloana]].ReturneazaPozitiiPosibile(matrice);
                         foreach (Pozitie mut in mutari)
                         {
@@ -887,10 +887,10 @@ namespace ProiectVolovici
                 for (int j = 3; j <= 5; j++)
                 {
                     if (matrice[i][j] == regeAlbastru)
-                        return new Pozitie(i, j);
+                        return Pozitie.AcceseazaElementStatic(i, j);
                 }
             }
-            return new Pozitie(-1, -1);
+            return Pozitie.AcceseazaElementStatic(-1, -1);
         }
         public static Pozitie ReturneazaPozitieRegeAlbInMatrice(int[][] matrice)
         {
@@ -899,10 +899,10 @@ namespace ProiectVolovici
                 for (int j = 3; j <= 5; j++)
                 {
                     if (matrice[i][j] == regeAlb)
-                        return new Pozitie(i, j);
+                        return Pozitie.AcceseazaElementStatic(i, j);
                 }
             }
-            return new Pozitie(-1, -1);
+            return Pozitie.AcceseazaElementStatic(-1, -1);
         }
 
 
