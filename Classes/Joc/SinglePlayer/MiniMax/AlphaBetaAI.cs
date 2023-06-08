@@ -14,6 +14,7 @@ namespace ProiectVolovici
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
         private static Dictionary<int, double> HistoryTable = new(1260);
+        private static Dictionary<int, double> ButterflyTable = new(1260);
         Dictionary<(Mutare, int), double> scoruriIterative = new(50 * 25 * 6);
         private static Mutare[][] KillerMoves;
         private static int MarimeKillerMoves = 64;
@@ -404,6 +405,7 @@ namespace ProiectVolovici
                     for (int coloana = 0; coloana < 9; coloana++)
                     {
                         HistoryTable.Add(ReturneazaIndexHH(piesa, Pozitie.AcceseazaElementStatic(linie, coloana)), 0);
+                        ButterflyTable.Add(ReturneazaIndexHH(piesa, Pozitie.AcceseazaElementStatic(linie, coloana)), 0);
                     }
                 }
             }
@@ -588,7 +590,9 @@ namespace ProiectVolovici
                                     var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
                                     if (HistoryTable[indexHH] > 0)
                                     {
-                                        mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                        mutPos.Add(OffsetHistoryTable
+                                            + HistoryTable[indexHH]
+                                            / ButterflyTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
                                     }
                                     else
                                     {
@@ -667,7 +671,9 @@ namespace ProiectVolovici
                                 var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
                                 if (HistoryTable[indexHH] > 0)
                                 {
-                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetHistoryTable 
+                                        + HistoryTable[indexHH]
+                                        / ButterflyTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 {
@@ -724,7 +730,9 @@ namespace ProiectVolovici
                                 var indexHH = ReturneazaIndexHH(piesaCareIa, mut);
                                 if (HistoryTable[indexHH] > 0)
                                 {
-                                    mutPos.Add(OffsetHistoryTable + HistoryTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
+                                    mutPos.Add(OffsetHistoryTable 
+                                        + HistoryTable[indexHH]
+                                        / ButterflyTable[indexHH], new(new(poz.Linie, poz.Coloana), mut));
                                 }
                                 else
                                 {
@@ -1726,6 +1734,14 @@ namespace ProiectVolovici
                         }
                         goto ValoareFinala;
                     }
+                    else
+                    {
+                        //Butterfly Heuristics
+                        if(piesaLuata == 0)
+                        {
+                            ButterflyTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime / 10;
+                        }
+                    }
                     //principal variation check
                     if (val > origAlpha)
                     {
@@ -1838,6 +1854,14 @@ namespace ProiectVolovici
                             HistoryTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime /10;
                         }
                         goto ValoareFinala;
+                    }
+                    else
+                    {
+                        //Butterfly Heuristics
+                        if (piesaLuata == 0)
+                        {
+                            ButterflyTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime / 10;
+                        }
                     }
                     //principal variation check
                     if (val < origBeta)
