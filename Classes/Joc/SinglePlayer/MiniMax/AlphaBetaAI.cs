@@ -527,8 +527,8 @@ namespace ProiectVolovici
             
 
             //Tura dreapta
-            { new Mutare(new Pozitie(9,9), new Pozitie(9,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
-            { new Mutare(new Pozitie(9,9), new Pozitie(9,7)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
+            { new Mutare(new Pozitie(9,8), new Pozitie(8,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
+            { new Mutare(new Pozitie(9,8), new Pozitie(7,8)),new Mutare(new Pozitie(0,7), new Pozitie(9,7)) },
 
 
             //Pioni 
