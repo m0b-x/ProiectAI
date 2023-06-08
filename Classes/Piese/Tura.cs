@@ -57,13 +57,13 @@
             {
                 if (matrice[linie][this.Pozitie.Coloana] == 0)
                 {
-                    mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                    mutariLegale.Add(Pozitie.AcceseazaElementStatic(linie, this.Pozitie.Coloana));
                 }
                 else
                 {
                     if (matrice[linie][this.Pozitie.Coloana] % 2 != _paritatePiesa)
                     {
-                        mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                        mutariLegale.Add(Pozitie.AcceseazaElementStatic(linie, this.Pozitie.Coloana));
                     }
                     break;
                 }
@@ -73,13 +73,13 @@
             {
                 if (matrice[linie][this.Pozitie.Coloana] == 0)
                 {
-                    mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                    mutariLegale.Add(Pozitie.AcceseazaElementStatic(linie, this.Pozitie.Coloana));
                 }
                 else
                 {
                     if (matrice[linie][this.Pozitie.Coloana] % 2 != _paritatePiesa)
                     {
-                        mutariLegale.Add(new Pozitie(linie, this.Pozitie.Coloana));
+                        mutariLegale.Add(Pozitie.AcceseazaElementStatic(linie, this.Pozitie.Coloana));
                     }
                     break;
                 }
@@ -89,13 +89,13 @@
             {
                 if (matrice[this.Pozitie.Linie][coloana] == 0)
                 {
-                    mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                    mutariLegale.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, coloana));
                 }
                 else
                 {
                     if (matrice[this.Pozitie.Linie][coloana] % 2 != _paritatePiesa)
                     {
-                        mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                        mutariLegale.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, coloana));
                     }
                     break;
                 }
@@ -107,13 +107,13 @@
             {
                 if (matrice[this.Pozitie.Linie][coloana] == 0)
                 {
-                    mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                    mutariLegale.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, coloana));
                 }
                 else
                 {
                     if (matrice[this.Pozitie.Linie][coloana] % 2 != _paritatePiesa)
                     {
-                        mutariLegale.Add(new Pozitie(this.Pozitie.Linie, coloana));
+                        mutariLegale.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, coloana));
                     }
                     break;
                 }

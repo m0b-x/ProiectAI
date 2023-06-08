@@ -55,8 +55,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(0,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(0, 4),
-                    new Pozitie(1, 3),
+                    Pozitie.AcceseazaElementStatic(0, 4),
+                    Pozitie.AcceseazaElementStatic(1, 3),
                 }
             },
 
@@ -64,9 +64,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(0,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(0, 3),
-                    new Pozitie(0, 5),
-                    new Pozitie(1, 4),
+                    Pozitie.AcceseazaElementStatic(0, 3),
+                    Pozitie.AcceseazaElementStatic(0, 5),
+                    Pozitie.AcceseazaElementStatic(1, 4),
                 }
             },
 
@@ -74,8 +74,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(0,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(0, 4),
-                    new Pozitie(1, 5)
+                    Pozitie.AcceseazaElementStatic(0, 4),
+                    Pozitie.AcceseazaElementStatic(1, 5)
                 }
             },
 
@@ -83,9 +83,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(1,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(0, 3),
-                    new Pozitie(2, 3),
-                    new Pozitie(1, 4),
+                    Pozitie.AcceseazaElementStatic(0, 3),
+                    Pozitie.AcceseazaElementStatic(2, 3),
+                    Pozitie.AcceseazaElementStatic(1, 4),
                 }
             },
 
@@ -93,10 +93,10 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(1,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 5),
-                    new Pozitie(1, 3),
-                    new Pozitie(0, 4),
-                    new Pozitie(2, 4)
+                    Pozitie.AcceseazaElementStatic(1, 5),
+                    Pozitie.AcceseazaElementStatic(1, 3),
+                    Pozitie.AcceseazaElementStatic(0, 4),
+                    Pozitie.AcceseazaElementStatic(2, 4)
                 }
             },
 
@@ -104,9 +104,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(1,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 4),
-                    new Pozitie(0, 5),
-                    new Pozitie(2, 5)
+                    Pozitie.AcceseazaElementStatic(1, 4),
+                    Pozitie.AcceseazaElementStatic(0, 5),
+                    Pozitie.AcceseazaElementStatic(2, 5)
                 }
             },
 
@@ -114,8 +114,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(2,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(2, 4),
-                    new Pozitie(1, 3)
+                    Pozitie.AcceseazaElementStatic(2, 4),
+                    Pozitie.AcceseazaElementStatic(1, 3)
                 }
             },
 
@@ -123,9 +123,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(2,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(2, 3),
-                    new Pozitie(2, 5),
-                    new Pozitie(1, 4)
+                    Pozitie.AcceseazaElementStatic(2, 3),
+                    Pozitie.AcceseazaElementStatic(2, 5),
+                    Pozitie.AcceseazaElementStatic(1, 4)
                 }
             },
 
@@ -133,8 +133,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(2,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(2, 4),
-                    new Pozitie(1, 5)
+                    Pozitie.AcceseazaElementStatic(2, 4),
+                    Pozitie.AcceseazaElementStatic(1, 5)
                 }
             }
         };
@@ -148,8 +148,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(9,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(9, 4),
-                    new Pozitie(8, 3),
+                    Pozitie.AcceseazaElementStatic(9, 4),
+                    Pozitie.AcceseazaElementStatic(8, 3),
                 }
             },
 
@@ -157,9 +157,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(9,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(9, 3),
-                    new Pozitie(9, 5),
-                    new Pozitie(8, 4),
+                    Pozitie.AcceseazaElementStatic(9, 3),
+                    Pozitie.AcceseazaElementStatic(9, 5),
+                    Pozitie.AcceseazaElementStatic(8, 4),
                 }
             },
 
@@ -167,8 +167,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(9,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(9, 4),
-                    new Pozitie(8, 5)
+                    Pozitie.AcceseazaElementStatic(9, 4),
+                    Pozitie.AcceseazaElementStatic(8, 5)
                 }
             },
 
@@ -176,9 +176,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(8,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(9, 3),
-                    new Pozitie(7, 3),
-                    new Pozitie(8, 4),
+                    Pozitie.AcceseazaElementStatic(9, 3),
+                    Pozitie.AcceseazaElementStatic(7, 3),
+                    Pozitie.AcceseazaElementStatic(8, 4),
                 }
             },
 
@@ -186,10 +186,10 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(8,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(8, 5),
-                    new Pozitie(8, 3),
-                    new Pozitie(9, 4),
-                    new Pozitie(7, 4)
+                    Pozitie.AcceseazaElementStatic(8, 5),
+                    Pozitie.AcceseazaElementStatic(8, 3),
+                    Pozitie.AcceseazaElementStatic(9, 4),
+                    Pozitie.AcceseazaElementStatic(7, 4)
                 }
             },
 
@@ -197,9 +197,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(8,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(7, 4),
-                    new Pozitie(9, 5),
-                    new Pozitie(8, 5)
+                    Pozitie.AcceseazaElementStatic(7, 4),
+                    Pozitie.AcceseazaElementStatic(9, 5),
+                    Pozitie.AcceseazaElementStatic(8, 5)
                 }
             },
 
@@ -207,8 +207,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(7,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(7, 4),
-                    new Pozitie(8, 3)
+                    Pozitie.AcceseazaElementStatic(7, 4),
+                    Pozitie.AcceseazaElementStatic(8, 3)
                 }
             },
 
@@ -216,9 +216,9 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(7,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(7, 3),
-                    new Pozitie(7, 5),
-                    new Pozitie(8, 4)
+                    Pozitie.AcceseazaElementStatic(7, 3),
+                    Pozitie.AcceseazaElementStatic(7, 5),
+                    Pozitie.AcceseazaElementStatic(8, 4)
                 }
             },
 
@@ -226,8 +226,8 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(7,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(7, 4),
-                    new Pozitie(8, 5)
+                    Pozitie.AcceseazaElementStatic(7, 4),
+                    Pozitie.AcceseazaElementStatic(8, 5)
                 }
             }
         };

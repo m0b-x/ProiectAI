@@ -55,38 +55,38 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(7,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(8, 4)
+                    Pozitie.AcceseazaElementStatic(8, 4)
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(7,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(8, 4)
+                    Pozitie.AcceseazaElementStatic(8, 4)
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(8,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(9, 3),
-                    new Pozitie(9, 5),
-                    new Pozitie(7, 3),
-                    new Pozitie(7, 5),
+                    Pozitie.AcceseazaElementStatic(9, 3),
+                    Pozitie.AcceseazaElementStatic(9, 5),
+                    Pozitie.AcceseazaElementStatic(7, 3),
+                    Pozitie.AcceseazaElementStatic(7, 5),
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(9,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(8, 4),
+                    Pozitie.AcceseazaElementStatic(8, 4),
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(9,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(8, 4),
+                    Pozitie.AcceseazaElementStatic(8, 4),
                 }
             },
         };
@@ -97,38 +97,38 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(2,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 4)
+                    Pozitie.AcceseazaElementStatic(1, 4)
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(2,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 4)
+                    Pozitie.AcceseazaElementStatic(1, 4)
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(1,4),
                 new List<Pozitie>()
                 {
-                    new Pozitie(0, 3),
-                    new Pozitie(0, 5),
-                    new Pozitie(2, 3),
-                    new Pozitie(2, 5),
+                    Pozitie.AcceseazaElementStatic(0, 3),
+                    Pozitie.AcceseazaElementStatic(0, 5),
+                    Pozitie.AcceseazaElementStatic(2, 3),
+                    Pozitie.AcceseazaElementStatic(2, 5),
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(0,3),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 4),
+                    Pozitie.AcceseazaElementStatic(1, 4),
                 }
             },
             {
                 Pozitie.AcceseazaElementStatic(0,5),
                 new List<Pozitie>()
                 {
-                    new Pozitie(1, 4),
+                    Pozitie.AcceseazaElementStatic(1, 4),
                 }
             },
         };

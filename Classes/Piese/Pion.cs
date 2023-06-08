@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ProiectVolovici
 {
@@ -51,36 +52,32 @@ namespace ProiectVolovici
             List<Pozitie> pozitii = new(3);
             if (this.Culoare == Culoare.AlbastruMax)
             {
+                if(this.Pozitie.Linie < 9)
+                    pozitii.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
                 if (this.Pozitie.Linie > 4)
                 {
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                }
-                else
-                {
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie + 1, this.Pozitie.Coloana));
+                    if(this.Pozitie.Coloana < 8)
+                        pozitii.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                    if(this.Pozitie.Coloana > 0)
+                        pozitii.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                 }
             }
             else
             {
+                if(this.Pozitie.Linie > 0)
+                    pozitii.Add(Pozitie.AcceseazaElementStaticSafe(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
                 if (this.Pozitie.Linie < 5)
                 {
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
-                }
-                else
-                {
-                    pozitii.Add(new Pozitie(this.Pozitie.Linie - 1, this.Pozitie.Coloana));
+                    if(this.Pozitie.Coloana < 8)
+                        pozitii.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, this.Pozitie.Coloana + 1));
+                    if(this.Pozitie.Coloana > 0)
+                        pozitii.Add(Pozitie.AcceseazaElementStatic(this.Pozitie.Linie, this.Pozitie.Coloana - 1));
                 }
             }
 
             for (int i = pozitii.Count - 1; i >= 0; i--)
             {
-                if (0 > pozitii[i].Linie || pozitii[i].Linie > 9 ||
-                    0 > pozitii[i].Coloana || pozitii[i].Coloana > 8 ||
-					matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
+                if (matrice[pozitii[i].Linie][pozitii[i].Coloana] != 0 &&
 						matrice[pozitii[i].Linie][pozitii[i].Coloana] % 2 == _paritatePiesa)
                 {
                     pozitii.RemoveAt(i);
