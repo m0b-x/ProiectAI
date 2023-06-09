@@ -33,17 +33,6 @@ namespace ProiectVolovici
             _parentForm.FormClosing += new FormClosingEventHandler(FormClosing_Event);
         }
 
-        public RichTextBox MutariAlb
-        {
-            get { return _textBoxMutariAlb; }
-            set { _textBoxMutariAlb = value; }
-        }
-
-        public RichTextBox MutariAlbastru
-        {
-            get { return _textBoxMutariAlbastru; }
-            set { _textBoxMutariAlbastru = value; }
-        }
 
         ~HostSah() => Dispose();
 
@@ -86,15 +75,16 @@ namespace ProiectVolovici
         }
 
         protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie, bool logMove = true)
-        {
-            base.RealizeazaMutareaLocal(piesa, pozitie);
-            if (RandulTau == true)
-            {
-                ScrieUltimaMutareInTextBox(MutariAlbastru);
+		{
+			base.RealizeazaMutareaLocal(piesa, pozitie);
+            //aspect normal
+			if (piesa.Culoare != Culoare.AlbastruMax)
+			{
+                ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             }
             else
             {
-                ScrieUltimaMutareInTextBox(MutariAlb);
+                ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
             }
         }
 

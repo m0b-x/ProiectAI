@@ -19,17 +19,6 @@ namespace ProiectVolovici
         private Label _labelMutariAlb;
 
 
-        public RichTextBox MutariAlb
-        {
-            get { return _textBoxMutariAlb; }
-            set { _textBoxMutariAlb = value; }
-        }
-
-        public RichTextBox MutariAlbastru
-        {
-            get { return _textBoxMutariAlbastru; }
-            set { _textBoxMutariAlbastru = value; }
-        }
 
         public ClientSah(Form parentForm, Om jucator) : base(parentForm, jucator)
         {
@@ -99,13 +88,14 @@ namespace ProiectVolovici
         protected override void RealizeazaMutareaLocal(Piesa piesa, Pozitie pozitie, bool logMove = true)
         {
             base.RealizeazaMutareaLocal(piesa, pozitie);
-            if (RandulTau == true)
+            //aspect invers client
+            if (piesa.Culoare == Culoare.AlbMin)
             {
-                ScrieUltimaMutareInTextBox(MutariAlb);
+                ScrieUltimaMutareInTextBox(_textBoxMutariAlb);
             }
             else
             {
-                ScrieUltimaMutareInTextBox(MutariAlbastru);
+                ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
             }
         }
 

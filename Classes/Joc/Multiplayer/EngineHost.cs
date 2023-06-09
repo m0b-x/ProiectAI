@@ -127,11 +127,10 @@ namespace ProiectVolovici
                     if (!mesajPrimitHost.Equals(_host.MesajDeconectare))
                     {
                         _ultimaMutarePrimitaHost = _parserTabla.DecodificareMutare(mesajPrimitHost);
-                        VerificaSahul(_ultimaMutarePrimitaHost.Item2);
                         RealizeazaMutareaLocal(GetPiesaCuPozitia(_ultimaMutarePrimitaHost.Item1), _ultimaMutarePrimitaHost.Item2);
+						VerificaSahul(); 
                         EsteRandulTau();
-                        VerificaSahurile();
-                    }
+					}
                     else
                     {
                         NotificaServerulDeIesireaClientului();
@@ -143,11 +142,7 @@ namespace ProiectVolovici
         public virtual void NotificaServerulDeIesireaClientului()
         {
             _hostDisposed = true;
-            MessageBox.Show("Client Deconectat(Cod 3)", "Clientul s-a deconectat");
-            if (_esteGataMeciul == false)
-            {
-                VerificaSahurile();
-            }
+            MessageBox.Show("Client Deconectat (Cod 3)", "Hostul s-a deconectat");
         }
 
         private int VerificaTentativaDeSah()
@@ -172,25 +167,17 @@ namespace ProiectVolovici
             return ConstantaTabla.NuEsteSah;
         }
 
-        private void VerificaSahul(Pozitie pozitie)
-        {
-            Piesa piesa = GetPiesaCuPozitia(pozitie);
-            if (piesa != null)
-            {
-                if (piesa.Cod == CodPiesa.RegeAlbastru)
-                {
-                    MessageBox.Show("Ai castigat");
-                    TerminaMeciul();
-                }
-                else if (piesa.Cod == CodPiesa.RegeAlbastru)
-                {
-                    MessageBox.Show("Ai pierdut");
-                    TerminaMeciul();
-                }
-            }
-        }
+		private void VerificaSahul()
+		{
+			TipSah tipSah = base.VerificaSahurile();
+			if (tipSah != TipSah.NuEsteSah)
+			{
+				TerminaMeciul(tipSah);
+                TrimiteMesajDeconectareSiStergeCadrane();
+			}
+		}
 
-        public void TerminaMeciul()
+		public void TrimiteMesajDeconectareSiStergeCadrane()
         {
             _esteGataMeciul = true;
             StergeEvenimenteleCadranelor();
@@ -247,7 +234,6 @@ namespace ProiectVolovici
                     {
                         if (EsteMutareaPosibila(pozitie))
                         {
-                            VerificaSahul(pozitie);
                             AscundePiesaSelectata(PiesaSelectata);
                             if (MatriceCoduriPiese[pozitie.Linie][pozitie.Coloana] != (int)CodPiesa.Gol)
                             {
@@ -258,7 +244,8 @@ namespace ProiectVolovici
                                 ConstantaSunet.SunetPiesaMutata.Play();
                             }
                             RealizeazaMutareaOnline(PiesaSelectata, pozitie);
-                        }
+							VerificaSahul();
+						}
                     }
                     else
                     {
