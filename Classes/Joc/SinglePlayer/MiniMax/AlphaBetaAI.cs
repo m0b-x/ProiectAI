@@ -1703,7 +1703,7 @@ namespace ProiectVolovici
                             val = origVal;
                             val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                         matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
-                                        Culoare.AlbMin, nullMove, nodPV : true));
+                                        Culoare.AlbMin, nullMove, nodPV : false));
                         }
                     }
                     else
@@ -1824,7 +1824,7 @@ namespace ProiectVolovici
                             val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                                 matrice, alpha, beta, adancime - 1,
                                 piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
-                                nullMove, nodPV: true));
+                                nullMove, nodPV: false));
                         }
                     }
                     else
