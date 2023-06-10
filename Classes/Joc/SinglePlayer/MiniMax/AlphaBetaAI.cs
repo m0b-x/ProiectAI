@@ -1690,7 +1690,7 @@ namespace ProiectVolovici
                     FaMutareaAlbastru(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     //principal variation search
-                    if (gasitNodPV == true && nodPV == false)
+                    if (gasitNodPV == true)
                     {
                         double origVal = val;
                         val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
@@ -1703,7 +1703,7 @@ namespace ProiectVolovici
                             val = origVal;
                             val = Math.Max(val, AlphaBetaCuMemorie(eval + valoareMutare,
                                         matrice, alpha, beta, adancime - 1, piesaLuata, hashUpdatat, pozAlbe, pozAlbastre,
-                                        Culoare.AlbMin, nullMove, nodPV : false));
+                                        Culoare.AlbMin, nullMove, nodPV : true));
                         }
                     }
                     else
@@ -1713,6 +1713,12 @@ namespace ProiectVolovici
                                     Culoare.AlbMin, nullMove, nodPV: true));
                     }
 
+                    //principal variation check
+                    if (val > alpha)
+                    {
+                        gasitNodPV = true;
+                    }
+                    //
                     alpha = Math.Max(val, alpha);
                     RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
@@ -1741,11 +1747,6 @@ namespace ProiectVolovici
                         {
                             ButterflyTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime / 10;
                         }
-                    }
-                    //principal variation check
-                    if (val > origAlpha)
-                    {
-                        gasitNodPV = true;
                     }
                 }
             ValoareFinala:
@@ -1808,7 +1809,7 @@ namespace ProiectVolovici
                     FaMutareaAlb(matrice, hash, pozAlbe, pozAlbastre, out hashUpdatat, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
                     //principal variation search
-                    if (gasitNodPV == true && nodPV == false)
+                    if (gasitNodPV == true)
                     {
                         double origVal = val;
                         val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
@@ -1823,7 +1824,7 @@ namespace ProiectVolovici
                             val = Math.Min(val, AlphaBetaCuMemorie(eval - valoareMutare,
                                 matrice, alpha, beta, adancime - 1,
                                 piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
-                                nullMove, nodPV: false));
+                                nullMove, nodPV: true));
                         }
                     }
                     else
@@ -1832,6 +1833,11 @@ namespace ProiectVolovici
                             matrice, alpha, beta, adancime - 1,
                             piesaLuata, hashUpdatat, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
                             nullMove, nodPV: true));
+                    }
+                    //principal variation check
+                    if (val < beta)
+                    {
+                        gasitNodPV = true;
                     }
                     //
                     beta = Math.Min(val, beta);
@@ -1862,11 +1868,6 @@ namespace ProiectVolovici
                         {
                             ButterflyTable[ReturneazaIndexHH(piesaCareIa, mutPos.PozitieFinala)] += (double)adancime * adancime / 10;
                         }
-                    }
-                    //principal variation check
-                    if (val < origBeta)
-                    {
-                        gasitNodPV = true;
                     }
                 }
             ValoareFinala:
