@@ -1029,19 +1029,10 @@ namespace ProiectVolovici
                     //Aspiration Windows
                     if (FerestreAspiratie && adancimeIterativa >= 3)
                     {
-                        bool conditieResearch = false;
-                        if (scorMutare <= alpha)
+                        if (scorMutare <= alpha || scorMutare >= beta)
                         {
                             alpha = -ValoareMaxima;
-                            conditieResearch = true;
-                        }
-                        if (scorMutare >= beta)
-                        {
-                            beta = ValoareMaxima; ;
-                            conditieResearch = true;
-                        }
-                        if (conditieResearch == true)
-                        {
+                            beta = ValoareMaxima;
                             goto Research;
                         }
                     }
