@@ -1931,7 +1931,7 @@ namespace ProiectVolovici
 					//delta pruning
 					if (eval + ConstantaPiese.ValoareTura < alpha)
                     {
-                        return alpha;
+                        return eval;
                     }
                 }
 
@@ -1984,7 +1984,7 @@ namespace ProiectVolovici
                     //delta pruning
                     if (eval - ConstantaPiese.ValoareTura  > beta)
                     {
-                        return beta;
+                        return eval;
                     }
                 }
                 
