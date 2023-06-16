@@ -27,9 +27,10 @@ namespace ProiectVolovici
         //adaugat
         const int AdancimeNMP = 3;
         const int ReducereNMP = 2;
+		private static int AdancimeChecks = 1;
 
 
-        private static double ProcentajMaterial = 1.0;
+		private static double ProcentajMaterial = 1.0;
         private static double ProcentajPST = 0.25;
         private EngineSinglePlayer _engine;
         private static int _adancime;
@@ -375,19 +376,30 @@ namespace ProiectVolovici
             new Rege(Culoare.AlbastruMax)
         };
 
-        private static int AdancimeChecks = 1;
         public AlphaBetaAI(Culoare culoare, EngineSinglePlayer engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
-        {
-            _engine = engine;
-            _culoare = culoare;
-            _adancime = adancime;
-            InitializeazaTabelCapturiPiese();
-            InitializeazaKillerMoves();
-            InitializeazaHistoryHerusticis();
-        }
+		{
+			_engine = engine;
+			_culoare = culoare;
+			_adancime = adancime;
+			InitializeazaTabelCapturiPiese();
+			InitializeazaKillerMoves();
+			InitializeazaHistoryHerusticis();
+			SeteazaAdancimeChecks(adancime);
+		}
 
+		private static void SeteazaAdancimeChecks(int adancime)
+		{
+			if (adancime >= 4)
+			{
+				AdancimeChecks = -1;
+			}
+			else
+			{
+				AdancimeChecks = 1;
+			}
+		}
 
-        private void InitializeazaKillerMoves()
+		private void InitializeazaKillerMoves()
         {
             KillerMoves = new Mutare[MarimeKillerMoves + 1][];
             for (int i = 0; i <= MarimeKillerMoves; i++)
