@@ -16,8 +16,6 @@ namespace ProiectVolovici
 		private static bool FerestreAspiratie = true;
 		private static Dictionary<int, double> HistoryTable = new(1260);
 		private static Dictionary<int, double> ButterflyTable = new(1260);
-		private static Dictionary<ulong, (Mutare, int)> HashMoveAlb = new(500);
-		private static Dictionary<ulong, (Mutare, int)> HashMoveAlbastru = new(500);
 		Dictionary<(Mutare, int), double> scoruriIterative = new(50 * 25 * 6);
 		private static Mutare[][] KillerMoves;
 		private static int MarimeKillerMoves = 64;
@@ -98,34 +96,6 @@ namespace ProiectVolovici
 		RegeAlbastru = 14
 		*/
 
-		private static void AdaugaHashMoveAlb(ulong hash, Mutare mut, int adancime)
-		{
-			if (HashMoveAlb.ContainsKey(hash))
-			{
-				if (HashMoveAlb[hash].Item2 <= adancime)
-				{
-					HashMoveAlb[hash] = (mut, adancime);
-				}
-			}
-			else
-			{
-				HashMoveAlb.Add(hash, (mut, adancime));
-			}
-		}
-		private static void AdaugaHashMoveAlbastru(ulong hash, Mutare mut, int adancime)
-		{
-			if (HashMoveAlbastru.ContainsKey(hash))
-			{
-				if (HashMoveAlbastru[hash].Item2 <= adancime)
-				{
-					HashMoveAlbastru[hash] = (mut, adancime);
-				}
-			}
-			else
-			{
-				HashMoveAlbastru[hash] = (mut, adancime);
-			}
-		}
 		private static void InitializeazaTabelCapturiPiese()
 		{
 			for (int piesaCareIa = 1; piesaCareIa <= 14; piesaCareIa++)
@@ -1702,16 +1672,8 @@ namespace ProiectVolovici
 
 				if (mutariSortate.Count == 0)
 					return eval;
-				//hash move probing blue
-				if (HashMoveAlbastru.ContainsKey(hash))
-				{
-					mutariSortate.Add(50000, HashMoveAlbastru[hash].Item1);
-				}
 
 				var mutSortateValues = mutariSortate.Values;
-				//hash move
-				Mutare mutOpt = mutSortateValues[0];
-
 				foreach (Mutare mutPos in mutSortateValues)
 				{
 					int indexPiesaLuata, pozitieSchimbata;
@@ -1747,11 +1709,6 @@ namespace ProiectVolovici
 					if (val > alpha)
 					{
 						gasitNodPV = true;
-					}
-					//hash move
-					if (val > alpha)
-					{
-						mutOpt = mutPos;
 					}
 					alpha = Math.Max(val, alpha);
 					RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
@@ -1795,9 +1752,6 @@ namespace ProiectVolovici
 					flag = 1; // Lower bound
 				}
 				TabelTranspozitie.AdaugaIntrare(hash, val, adancime, flag);
-				//hash move
-				AdaugaHashMoveAlbastru(hash, mutOpt, adancime);
-
 
 				return val;
 			}
@@ -1835,15 +1789,8 @@ namespace ProiectVolovici
 
 				if (mutariSortate.Count == 0)
 					return eval;
-
-				//hash move probing white
-				if (HashMoveAlb.ContainsKey(hash))
-				{
-					mutariSortate.Add(50000, HashMoveAlb[hash].Item1);
-				}
+				
 				var mutSortateValues = mutariSortate.Values;
-				//hash move
-				Mutare mutOpt = mutSortateValues[0];
 				foreach (Mutare mutPos in mutSortateValues)
 				{
 					int indexPiesaLuata, pozitieSchimbata;
@@ -1881,11 +1828,6 @@ namespace ProiectVolovici
 					if (val < beta)
 					{
 						gasitNodPV = true;
-					}
-					//hash move 
-					if (val < beta)
-					{
-						mutOpt = mutPos;
 					}
 					beta = Math.Min(val, beta);
 					RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
@@ -1930,8 +1872,6 @@ namespace ProiectVolovici
 					flag = 1; // Lower bound
 				}
 				TabelTranspozitie.AdaugaIntrare(hash, val, adancime, flag);
-				//hash move 
-				AdaugaHashMoveAlb(hash, mutOpt, adancime);
 				return val;
 			}
 		}
