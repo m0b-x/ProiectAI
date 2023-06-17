@@ -1661,17 +1661,6 @@ namespace ProiectVolovici
 					var val = QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
 
 
-					//transposition table
-					int flag = 0; // Exact value
-					if (val <= alpha)
-					{
-						flag = 2; // Upper bound
-					}
-					else if (val >= beta)
-					{
-						flag = 1; // Lower bound
-					}
-					TabelTranspozitie.AdaugaIntrare(hash, val, 0, flag);
 					return val;
 				}
 			}
