@@ -531,10 +531,10 @@ namespace ProiectVolovici
 			{ new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,2)),new Mutare(Pozitie.AcceseazaElementStatic(2,1), Pozitie.AcceseazaElementStatic(2,4)) },
 
             //Tunul ataca alti pioni
-            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,2)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
-			{ new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,3)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
-			{ new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,6)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
-			{ new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,5)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(2,4)) },
+            { new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,2)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(1,4)) },
+			{ new Mutare(Pozitie.AcceseazaElementStatic(7,1), Pozitie.AcceseazaElementStatic(7,3)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(1,4)) },
+			{ new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,6)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(1,4)) },
+			{ new Mutare(Pozitie.AcceseazaElementStatic(7,7), Pozitie.AcceseazaElementStatic(7,5)),new Mutare(Pozitie.AcceseazaElementStatic(0,3), Pozitie.AcceseazaElementStatic(1,4)) },
             
 
             //Tura stanga
