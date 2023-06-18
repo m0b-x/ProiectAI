@@ -199,7 +199,7 @@ namespace ProiectVolovici
                 {
                     Pozitie.AcceseazaElementStatic(7, 4),
                     Pozitie.AcceseazaElementStatic(9, 5),
-                    Pozitie.AcceseazaElementStatic(8, 5)
+                    Pozitie.AcceseazaElementStatic(7, 5)
                 }
             },
 
