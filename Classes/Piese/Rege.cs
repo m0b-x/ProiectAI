@@ -197,7 +197,7 @@ namespace ProiectVolovici
                 Pozitie.AcceseazaElementStatic(8,5),
                 new List<Pozitie>()
                 {
-                    Pozitie.AcceseazaElementStatic(7, 4),
+                    Pozitie.AcceseazaElementStatic(8, 4),
                     Pozitie.AcceseazaElementStatic(9, 5),
                     Pozitie.AcceseazaElementStatic(7, 5)
                 }
