@@ -10,6 +10,7 @@ namespace ProiectVolovici
     public class AlphaBetaAI : AI
     {
         private static TabelTranspozitie TabelTranspozitie = new(300);
+        private static int _timpOprire = 5000;
         private static double MarimeFereastraAspiratie = ConstantaPiese.ValoarePion / 4;
         private static double ValoareMaxima = 50000;
         private static bool FerestreAspiratie = true;
@@ -24,7 +25,10 @@ namespace ProiectVolovici
         private static double OffsetMVVLVA = 200;
         private static double OffsetKillerMoves = 400;
         private static double OffsetHistoryTable = 200;
-        //adaugat
+
+        private static int[] pvLength = new int[64];
+        private static Mutare[,] pvLine =  new Mutare[64,64];
+
         const int AdancimeNMP = 3;
         const int ReducereNMP = 2;
 
@@ -575,6 +579,12 @@ namespace ProiectVolovici
                             int piesaLuata = matrice[mut.Linie][mut.Coloana];
                             int piesaCareIa = matrice[poz.Linie][poz.Coloana];
 
+                            if(adancime > 0 && poz == pvLine[adancime,adancime].PozitieInitiala &&
+                                               mut == pvLine[adancime,adancime].PozitieFinala)
+                            {
+                                mutPos.Add(1000000, new(new(poz.Linie, poz.Coloana), mut));
+                            }
+                            else
                             if (piesaLuata == 0)
                             {
                                 if (KillerMoves[adancime][0].PozitieInitiala == poz && KillerMoves[adancime][0].PozitieFinala == mut)
@@ -993,7 +1003,10 @@ namespace ProiectVolovici
 
             NoduriEvaluate = 0;
             NoduriEvaluateQSC = 0;
-            //adaugat
+
+
+            bool opritDinCautare = false;
+            int adancimeLaCareSaOprit = -1;
             for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
@@ -1047,6 +1060,7 @@ namespace ProiectVolovici
                     }
                     //
 
+
                     RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
 
                     if (scorMutare >= scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
@@ -1056,13 +1070,45 @@ namespace ProiectVolovici
                         adancimeMutareOptima = adancimeIterativa;
                     }
                     //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    if(_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                    {
+                        adancimeLaCareSaOprit = adancimeIterativa;
+                        opritDinCautare = true;
+                        goto SfarsitCautare;
+                    }
 
                 }//sf loop miscari
                 Debug.WriteLine($"Noduri Totale Evaluate: {NoduriEvaluate}, QSC:{NoduriEvaluateQSC}, Cautare Principala:{NoduriEvaluate - NoduriEvaluateQSC} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
 
             }
+        SfarsitCautare:
             //Debug.WriteLine($"{evaluareMatriceInitiala}\n\n");
             Debug.WriteLine($"mut opt: {scorMutareOptima}");
+
+            if (opritDinCautare == true)
+            {
+                adancimeLaCareSaOprit--;
+                scorMutareOptima = -1;
+                foreach (var mutPos in valoriMutariPosibile)
+                {
+                    scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    if (scorMutare >= scorMutareOptima)
+                    {
+                        mutareOptima = mutPos;
+                        scorMutareOptima = scorMutare;
+                        adancimeMutareOptima = adancimeLaCareSaOprit;
+                    }
+                }
+            }
+            // Print the array
+            for (int i = 0; i < Adancime; i++)
+            {
+                for (int j = 0; j < Adancime; j++)
+                {
+                    Debug.Write(pvLine[i, j] + " ");
+                }
+                Debug.WriteLine("");
+            }
             _cronometruAI.Stop();
             _cronometruAI.Reset();
             return new(mutareOptima, scorMutareOptima);
@@ -1557,6 +1603,7 @@ namespace ProiectVolovici
         {
 
             // pv search
+            pvLength[adancime] = adancime;
             bool gasitNodPV = false;
             NoduriEvaluate++;
             //tabel de transpozitie
@@ -1607,8 +1654,19 @@ namespace ProiectVolovici
                     culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice))
                     )
                 {
-                    adancime = 1;
-                    goto InceputCautare;
+                    //Verify SEE
+
+                    var evalInit = eval;
+                    var evalSEE = SEE(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
+                    if (evalInit > evalSEE)
+                    {
+                        return evalSEE;
+                    }
+                    else
+                    {
+                        adancime = 1;
+                        goto InceputCautare;
+                    }
                 }
                 else
                 {
@@ -1694,6 +1752,13 @@ namespace ProiectVolovici
                     if (val > alpha)
                     {
                         gasitNodPV = true;
+
+                        pvLine[adancime,adancime] = mutPos;
+
+                        for (int nextAdancime = adancime + 1; nextAdancime < pvLength[adancime + 1]; nextAdancime++)
+                            pvLine[adancime,nextAdancime] = pvLine[adancime + 1,nextAdancime];
+
+                        pvLength[adancime] = pvLength[adancime + 1];
                     }
                     //
                     alpha = Math.Max(val, alpha);
@@ -1815,6 +1880,13 @@ namespace ProiectVolovici
                     if (val < beta)
                     {
                         gasitNodPV = true;
+
+                        pvLine[adancime, adancime] = mutPos;
+
+                        for (int nextAdancime = adancime + 1; nextAdancime < pvLength[adancime + 1]; nextAdancime++)
+                            pvLine[adancime, nextAdancime] = pvLine[adancime + 1, nextAdancime];
+
+                        pvLength[adancime] = pvLength[adancime + 1];
                     }
                     //
                     beta = Math.Min(val, beta);
@@ -1985,6 +2057,107 @@ namespace ProiectVolovici
                         matrice, alpha, beta,
                         piesaLuata, pozAlbe, pozAlbastre, Culoare.AlbastruMax,
                         adancime + 1));
+
+                    beta = Math.Min(val, beta);
+
+                    RefaMutareaAlb(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val <= alpha)
+                    {
+                        return val;
+                    }
+                }
+                return val;
+            }
+        }
+
+
+
+
+
+
+        public static double SEE(double eval, int[][] matrice, double alpha,
+             double beta, int piesaCapturata,
+             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
+        {
+            NoduriEvaluate++;
+            NoduriEvaluateQSC++;
+            //Check priority
+            if (piesaCapturata == regeAlbastru)
+            {
+                //nod final
+                return -ValoareMaxima + adancime;
+            }
+            if (piesaCapturata == regeAlb)
+            {
+                //nod final
+                return ValoareMaxima - adancime;
+            }
+
+
+            if (culoare == Culoare.AlbastruMax)
+            {
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = -ValoareMaxima;
+
+                bool esteSahLaAlbastru = EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice));
+
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlbastru) ?
+                    GenereazaCheckEvasionsAlbastruQSC(matrice, pozAlbastre) :
+                    (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlbastru(matrice, pozAlbastre) : GenereazaCapturiPosibile(matrice, pozAlbastre);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbastruQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Max(val, eval + valoareMutare);
+                    alpha = Math.Max(val, alpha);
+
+                    RefaMutareaAlbastru(matrice, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (val >= beta)
+                    {
+                        return val;
+                    }
+                }
+                return val;
+            }
+            else// if (culoare == Culoare.AlbMin)
+            {
+                int piesaLuata;
+                int piesaCareIa;
+
+                double val = ValoareMaxima;
+
+                bool esteSahLaAlb = EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice));
+
+
+                SortedList<double, Mutare> mutariSortate = (esteSahLaAlb) ?
+                    GenereazaCheckEvasionsAlbQSC(matrice, pozAlbe) :
+                    (adancime <= AdancimeChecks) ? GenereazaCapturiSiChecksAlb(matrice, pozAlbe) : GenereazaCapturiPosibile(matrice, pozAlbe);
+
+                if (mutariSortate.Count == 0)
+                    return eval;
+
+                var mutSortateValues = mutariSortate.Values;
+                foreach (Mutare mutPos in mutSortateValues)
+                {
+                    int indexPiesaLuata, pozitieSchimbata;
+                    double valoareMutare;
+
+                    FaMutareaAlbQSC(matrice, pozAlbe, pozAlbastre, out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+                    val = Math.Min(val, eval - valoareMutare);
 
                     beta = Math.Min(val, beta);
 
