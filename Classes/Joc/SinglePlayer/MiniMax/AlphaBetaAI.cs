@@ -1650,16 +1650,27 @@ namespace ProiectVolovici
             if (adancime <= 0)
             {
                 //check extension
-                if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice)) ||
-                    culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice))
-                    )
+                if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice)))
                 {
                     //Verify SEE
-
-                    var evalInit = eval;
                     var evalSEE = SEE(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
-                    if (evalInit > evalSEE)
+                    if (evalSEE > eval)
                     {
+                        return evalSEE;
+                    }
+                    else
+                    {
+                        adancime = 1;
+                        goto InceputCautare;
+                    }
+                }
+                else
+                if (culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice)))
+                {
+                    //Verify SEE
+                    var evalSEE = SEE(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
+                    if(evalSEE < eval)
+                    { 
                         return evalSEE;
                     }
                     else
