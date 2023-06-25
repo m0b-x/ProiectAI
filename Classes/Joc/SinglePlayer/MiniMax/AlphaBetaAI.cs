@@ -2667,15 +2667,17 @@ namespace ProiectVolovici
             NoduriEvaluate++;
             NoduriEvaluateQSC++;
             //Check priority
+
+            //Check priority
             if (piesaCapturata == regeAlbastru)
             {
                 //nod final
-                return -ValoareMaxima + adancime;
+                return -ValoareMaxima - _adancime + adancime;
             }
             if (piesaCapturata == regeAlb)
             {
                 //nod final
-                return ValoareMaxima - adancime;
+                return ValoareMaxima + _adancime - adancime;
             }
 
 
