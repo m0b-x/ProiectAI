@@ -2275,7 +2275,7 @@ namespace ProiectVolovici
             {
                 if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                 {
-                    return culoare == Culoare.AlbastruMax ? alpha : beta;
+                    return eval;
                 }
             }
             NoduriEvaluate++;
@@ -2334,7 +2334,7 @@ namespace ProiectVolovici
                     //Time Exception - Check
                     if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
-                        return beta;
+                        return eval;
                     }
                     //Verify SEE
                     double valoareSEE = -EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
@@ -2356,7 +2356,7 @@ namespace ProiectVolovici
                     //Time Exception - Check
                     if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
-                        return alpha;
+                        return eval;
                     }
                     //Verify SEE
                     double valoareSEE = +EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
@@ -2656,7 +2656,7 @@ namespace ProiectVolovici
             {
                 if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                 {
-                    return culoare == Culoare.AlbastruMax ? alpha : beta ;
+                    return eval;
                 }
             }
 
