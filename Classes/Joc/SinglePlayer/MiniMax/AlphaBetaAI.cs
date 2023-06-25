@@ -2340,7 +2340,7 @@ namespace ProiectVolovici
                     }
                     //Verify SEE
                     double valoareSEE = 0;
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax,pozCareDaSah, valoareSEE);
+                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin,pozCareDaSah, valoareSEE);
                     // bad SEE? return curent eval
                     if (valoareSEE > 0)
                     {
@@ -2365,7 +2365,7 @@ namespace ProiectVolovici
                     }
                     //Verify SEE
                     double valoareSEE = 0;
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozCareDaSah, valoareSEE);
+                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax, pozCareDaSah, valoareSEE);
                     // bad SEE? return curent eval
                     if (valoareSEE > 0)
                     { 
