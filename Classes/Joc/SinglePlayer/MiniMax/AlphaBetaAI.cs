@@ -41,7 +41,7 @@ namespace ProiectVolovici
         private Stopwatch _cronometruAI = new Stopwatch();
 
         private Stopwatch _cronometru = new();
-
+        private bool UsingMTDF = false;
 
         public Stopwatch CronometruAI
         {
@@ -381,8 +381,10 @@ namespace ProiectVolovici
         };
 
         private static int AdancimeChecks = 1;
-        public AlphaBetaAI(Culoare culoare, EngineSinglePlayer engine, int adancime = ConstantaTabla.Adancime) : base(culoare)
+        public AlphaBetaAI(Culoare culoare, EngineSinglePlayer engine, int adancime = ConstantaTabla.Adancime,
+            bool MTDF = false) : base(culoare)
         {
+            UsingMTDF = MTDF;
             _engine = engine;
             _culoare = culoare;
             _adancime = adancime;
@@ -929,10 +931,21 @@ namespace ProiectVolovici
 
 
 
-
-
-
         public override Tuple<Mutare, double> ReturneazaMutareaOptima()
+        {
+            if(UsingMTDF == true)
+            {
+                return ReturneazaMutareaOptimaMDTF();
+            }
+            else
+            {
+                return ReturneazaMutareaOptimaAlphaBeta();
+            }
+        }
+
+
+
+        public Tuple<Mutare, double> ReturneazaMutareaOptimaAlphaBeta()
         {
 
 
@@ -1072,6 +1085,169 @@ namespace ProiectVolovici
                     }
                     //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
                     if(_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                    {
+                        adancimeLaCareSaOprit = adancimeIterativa;
+                        opritDinCautare = true;
+                        goto SfarsitCautare;
+                    }
+
+                }//sf loop miscari
+                Debug.WriteLine($"Noduri Totale Evaluate: {NoduriEvaluate}, QSC:{NoduriEvaluateQSC}, Cautare Principala:{NoduriEvaluate - NoduriEvaluateQSC} la adancimea {adancimeIterativa} timp: {_cronometruAI.Elapsed}");
+
+            }
+        SfarsitCautare:
+            //Debug.WriteLine($"{evaluareMatriceInitiala}\n\n");
+            Debug.WriteLine($"mut opt: {scorMutareOptima}");
+
+            if (opritDinCautare == true)
+            {
+                adancimeLaCareSaOprit--;
+                scorMutareOptima = -1;
+                foreach (var mutPos in valoriMutariPosibile)
+                {
+                    scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    if (scorMutare >= scorMutareOptima)
+                    {
+                        mutareOptima = mutPos;
+                        scorMutareOptima = scorMutare;
+                        adancimeMutareOptima = adancimeLaCareSaOprit;
+                    }
+                }
+            }
+            // Print the array
+            for (int i = 0; i < Adancime; i++)
+            {
+                for (int j = 0; j < Adancime; j++)
+                {
+                    Debug.Write(pvLine[i, j] + " ");
+                }
+                Debug.WriteLine("");
+            }
+            _cronometruAI.Stop();
+            _cronometruAI.Reset();
+            return new(mutareOptima, scorMutareOptima);
+        }
+
+
+        public Tuple<Mutare, double> ReturneazaMutareaOptimaMDTF()
+        {
+
+
+            int[][] matriceClonata = CloneazaMatricea(_engine.MatriceCoduriPiese);
+            ulong hashInitial = ZobristHash.HashuiesteTabla(matriceClonata);
+
+            if (_engine.NrMutari <= 1)
+            {
+                if (DictionarOpeningBooks.ContainsKey(_engine.UltimaMutare))
+                {
+                    return new(DictionarOpeningBooks[_engine.UltimaMutare], double.MaxValue);
+                }
+            }
+
+            bool esteSahLaAlb = EsteSahLaAlb(matriceClonata, ReturneazaPozitieRegeAlbInMatrice(matriceClonata));
+            bool esteSahLaAlbastru = EsteSahLaAlbastru(matriceClonata, ReturneazaPozitieRegeAlbastruInMatrice(matriceClonata));
+
+
+            double scorMutare;
+            int indexPiesaLuata,
+                piesaCareIa,
+                piesaLuata;
+            ulong hashUpdatat;
+
+
+            _cronometruAI.Start();
+            Pozitie[] pozAlbastre = _engine.ReturneazaPozitiiAlbastre();
+            Pozitie[] pozAlbe = _engine.ReturneazaPozitiiAlbe();
+
+            double evaluareMatriceInitiala = EvalueazaMatricea(_engine.MatriceCoduriPiese, pozAlbe, pozAlbastre);
+
+            SortedList<double, Mutare> mutariPosibile;
+
+            if (esteSahLaAlbastru)
+            {
+                mutariPosibile = GenereazaCheckEvasionsAlbastru(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
+            }
+            else
+            {
+                mutariPosibile = GenereazaMutariPosibile(matriceClonata, pozAlbastre, moveOrdering: true, adancime: 0);
+            }
+            if (mutariPosibile.Count == 0)
+            {
+                _engine.TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+                return null;
+            }
+
+            var valoriMutariPosibile = mutariPosibile.Values.ToList();
+
+
+            int pozitieSchimbata;
+            double valoareMutare;
+
+            Mutare mutareOptima = valoriMutariPosibile[0];
+            double scorMutareOptima = -ValoareMaxima;
+
+            int adancimeMutareOptima = 0;
+            piesaLuata = matriceClonata[mutareOptima.PozitieFinala.Linie][mutareOptima.PozitieFinala.Coloana];
+
+            if (piesaLuata == (int)CodPiesa.RegeAlb)
+            {
+                return new(mutareOptima, ValoareMaxima);
+            }
+
+
+            double alpha = -ValoareMaxima;
+            double beta = ValoareMaxima;
+
+
+            NoduriEvaluate = 0;
+            NoduriEvaluateQSC = 0;
+
+
+            bool opritDinCautare = false;
+            int adancimeLaCareSaOprit = -1;
+            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+            {
+                foreach (var mutPos in valoriMutariPosibile)
+                {
+
+                    FaMutareaAlbastru(matriceClonata, hashInitial, pozAlbe, pozAlbastre, out hashUpdatat,
+                        out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
+
+
+                    double f = (adancimeIterativa > 2) ? scoruriIterative[(mutPos, adancimeIterativa - 2)] : 0;
+
+                    scorMutare = MTD(
+                            evaluareMatriceInitiala + valoareMutare
+                            , matriceClonata
+                            , f
+                            , adancimeIterativa
+                            , piesaLuata
+                            , hashUpdatat
+                            , pozAlbe
+                            , pozAlbastre
+                    , Culoare.AlbMin);
+
+                    var item = (mutPos, adancimeIterativa);
+                    if (scoruriIterative.ContainsKey(item))
+                    {
+                        scoruriIterative[item] = scorMutare;
+                    }
+                    else
+                    {
+                        scoruriIterative.Add((mutPos, adancimeIterativa), scorMutare);
+                    }
+
+
+                    RefaMutareaAlbastru(matriceClonata, pozAlbe, pozAlbastre, piesaLuata, piesaCareIa, mutPos, indexPiesaLuata, pozitieSchimbata);
+
+                    if (scorMutare >= scorMutareOptima || adancimeIterativa > adancimeMutareOptima)
+                    {
+                        mutareOptima = mutPos;
+                        scorMutareOptima = scorMutare;
+                        adancimeMutareOptima = adancimeIterativa;
+                    }
+                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
                         adancimeLaCareSaOprit = adancimeIterativa;
                         opritDinCautare = true;
@@ -2586,6 +2762,32 @@ namespace ProiectVolovici
         }
 
 
+
+        public static double MTD(double eval, int[][] matrice, double f,
+                                 int adancime, int piesaCapturata, ulong hash,
+                                 Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare)
+        {
+
+            double upperBound = ValoareMaxima;
+            double lowerBound = -ValoareMaxima;
+            double g = f;
+
+            do
+            {
+                double beta = g == lowerBound ? g + 1 : g;
+
+                g = AlphaBetaCuMemorie(eval, matrice, beta - 1, beta, adancime,
+                    piesaCapturata, hash, pozAlbe, pozAlbastre, culoare,
+                    nullMove: false, nodPV: true);
+
+                if (g < beta)
+                    upperBound = g;
+                else
+                    lowerBound = g;
+            }
+            while (lowerBound >= upperBound);
+            return g;
+        }
 
 
 

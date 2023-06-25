@@ -74,15 +74,15 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
         {
             if (tip == TipAI.MiniMax)
             {
-                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
+                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime, MTDF : false);
             }
             else if (tip == TipAI.AlphaBeta)
             {
-                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime);
+                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime, MTDF: false);
             }
             else
             {
-                _jucatorAI = new MtdfAI(Culoare.AlbastruMax, this, adancime);
+                _jucatorAI = new AlphaBetaAI(Culoare.AlbastruMax, this, adancime, MTDF: true);
             }
         }
 
