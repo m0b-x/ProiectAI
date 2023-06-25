@@ -29,6 +29,7 @@ namespace ProiectVolovici
 
         private static int[] pvLength = new int[64];
         private static Mutare[,] pvLine =  new Mutare[64,64];
+        private static Stopwatch _cronometruAI = new Stopwatch();
 
         const int AdancimeNMP = 3;
         const int ReducereNMP = 2;
@@ -36,18 +37,11 @@ namespace ProiectVolovici
 
         private static double ProcentajMaterial = 1.0;
         private static double ProcentajPST = 0.25;
-        private EngineSinglePlayer _engine;
         private static int _adancime;
-        private Stopwatch _cronometruAI = new Stopwatch();
+        private static int NoduriCheckAdancime = 1023;
 
-        private Stopwatch _cronometru = new();
+        private EngineSinglePlayer _engine;
         private bool UsingMTDF = false;
-
-        public Stopwatch CronometruAI
-        {
-            get { return _cronometru; }
-            set { _cronometru = value; }
-        }
 
         const int pionAlb = (int)CodPiesa.PionAlb;
         const int pionAlbastru = (int)CodPiesa.PionAlbastru;
@@ -1084,6 +1078,7 @@ namespace ProiectVolovici
                         adancimeMutareOptima = adancimeIterativa;
                     }
                     //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    //Time Exception - Cautarea Principala
                     if(_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
                         adancimeLaCareSaOprit = adancimeIterativa;
@@ -2275,7 +2270,14 @@ namespace ProiectVolovici
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare,
             bool nullMove, bool nodPV = true)
         {
-
+            //Time Exception - principal search
+            if (NoduriEvaluate % NoduriCheckAdancime == 0)
+            {
+                if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                {
+                    return culoare == Culoare.AlbastruMax ? alpha : beta;
+                }
+            }
             // pv search
             pvLength[adancime] = adancime;
             bool gasitNodPV = false;
@@ -2323,10 +2325,19 @@ namespace ProiectVolovici
 
             if (adancime <= 0)
             {
+
                 //check extension
                 Pozitie pozCareDaSah;
                 if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice),out pozCareDaSah))
                 {
+                    //Time Exception - Check
+                    if (NoduriEvaluate % NoduriCheckAdancime == 0)
+                    {
+                        if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                        {
+                            return beta;
+                        }
+                    }
                     //Verify SEE
                     double valoareSEE = 0;
                     valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax,pozCareDaSah, valoareSEE);
@@ -2344,6 +2355,14 @@ namespace ProiectVolovici
                 else
                 if (culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice),out pozCareDaSah))
                 {
+                    //Time Exception - Check
+                    if (NoduriEvaluate % NoduriCheckAdancime == 0)
+                    {
+                        if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                        {
+                            return alpha;
+                        }
+                    }
                     //Verify SEE
                     double valoareSEE = 0;
                     valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozCareDaSah, valoareSEE);
@@ -2636,6 +2655,15 @@ namespace ProiectVolovici
             double beta, int piesaCapturata,
             Pozitie[] pozAlbe, Pozitie[] pozAlbastre, Culoare culoare, int adancime)
         {
+
+            //Time Exception - Check
+            if (NoduriEvaluate % NoduriCheckAdancime == 0)
+            {
+                if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                {
+                    return culoare == Culoare.AlbastruMax ? alpha : beta ;
+                }
+            }
             NoduriEvaluate++;
             NoduriEvaluateQSC++;
             //Check priority
