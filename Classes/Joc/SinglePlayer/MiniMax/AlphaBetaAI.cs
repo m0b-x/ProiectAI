@@ -2793,7 +2793,7 @@ namespace ProiectVolovici
 
 
         public static double SEE(int[][] matrice, Pozitie[] pozAlbe, Pozitie[] pozAlbastre,
-            Culoare culoare, Pozitie pozitieCareDaSah, double valoare = 0)
+            Culoare culoare, Pozitie pozitieCareDaSah, double valoareSEE = 0)
         {
             NoduriEvaluate++;
 
@@ -2803,7 +2803,7 @@ namespace ProiectVolovici
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbastre);
 
                 if (mutariSortate.Count == 0)
-                    return valoare;
+                    return valoareSEE;
 
                 var mutSortateValues = mutariSortate.Values;
 
@@ -2819,7 +2819,6 @@ namespace ProiectVolovici
                         matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaCareIa;
 
                         double valoareaPiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
-                        valoare += valoareaPiesaLuata;
 
 
                         //albastru ia alb
@@ -2832,7 +2831,8 @@ namespace ProiectVolovici
                         int pozitieSchimbata = SchimbaPozitiaDinVector(mutPos.PozitieInitiala, pozAlbastre, mutPos.PozitieFinala);
 
 
-                        SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozitieCareDaSah, valoare);
+                        valoareSEE = Math.Max(valoareSEE,
+                            SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozitieCareDaSah, valoareSEE + valoareaPiesaLuata));
 
 
                         SchimbaPozitiaDinVector(pozitieSchimbata, pozAlbastre, mutPos.PozitieInitiala);
@@ -2847,14 +2847,14 @@ namespace ProiectVolovici
                         matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
                     }
                 }
-                return valoare;
+                return valoareSEE;
             }
             else// if (culoare == Culoare.AlbMin)
             {
                 SortedList<double, Mutare> mutariSortate = GenereazaCapturiPosibile(matrice, pozAlbe);
 
                 if (mutariSortate.Count == 0)
-                    return valoare;
+                    return valoareSEE;
 
                 int piesaLuata, piesaCareIa;
                 var mutSortateValues = mutariSortate.Values;
@@ -2869,7 +2869,6 @@ namespace ProiectVolovici
                         matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaCareIa;
 
                         double valoareaPiesaLuata = EngineJoc.ReturneazaScorPiesa(piesaLuata);
-                        valoare -= valoareaPiesaLuata;
 
                         //alb ia albastru
                         int indexPiesaLuata = -1;
@@ -2882,7 +2881,8 @@ namespace ProiectVolovici
 
 
 
-                        SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax, pozitieCareDaSah, valoare);
+                        valoareSEE = Math.Min(valoareSEE,
+                            SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax, pozitieCareDaSah, valoareSEE - valoareaPiesaLuata));
 
 
                         if (EstePiesa(piesaLuata))
@@ -2897,7 +2897,7 @@ namespace ProiectVolovici
                         matrice[mutPos.PozitieFinala.Linie][mutPos.PozitieFinala.Coloana] = piesaLuata;
                     }
                 }
-                return valoare;
+                return valoareSEE;
             }
         }
 
