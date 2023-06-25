@@ -1077,7 +1077,7 @@ namespace ProiectVolovici
                         scorMutareOptima = scorMutare;
                         adancimeMutareOptima = adancimeIterativa;
                     }
-                    //Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
+                    Debug.WriteLine($"{mutPos} cu scor:{scorMutare} si adancime:{adancimeIterativa}");
                     //Time Exception - Cautarea Principala
                     if(_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
@@ -2278,10 +2278,11 @@ namespace ProiectVolovici
                     return culoare == Culoare.AlbastruMax ? alpha : beta;
                 }
             }
+            NoduriEvaluate++;
+
             // pv search
             pvLength[adancime] = adancime;
             bool gasitNodPV = false;
-            NoduriEvaluate++;
             //tabel de transpozitie
             if (TabelTranspozitie.Contine(hash))
             {
@@ -2331,20 +2332,17 @@ namespace ProiectVolovici
                 if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice),out pozCareDaSah))
                 {
                     //Time Exception - Check
-                    if (NoduriEvaluate % NoduriCheckAdancime == 0)
+                    if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
-                        if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
-                        {
-                            return beta;
-                        }
+                        return beta;
                     }
                     //Verify SEE
-                    double valoareSEE = 0;
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin,pozCareDaSah, valoareSEE);
+                    double valoareSEE = -EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
+                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax,pozCareDaSah, valoareSEE);
                     // bad SEE? return curent eval
                     if (valoareSEE > 0)
                     {
-                        return eval;
+                        return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
                     }
                     else
                     {
@@ -2356,20 +2354,17 @@ namespace ProiectVolovici
                 if (culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice),out pozCareDaSah))
                 {
                     //Time Exception - Check
-                    if (NoduriEvaluate % NoduriCheckAdancime == 0)
+                    if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
                     {
-                        if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
-                        {
-                            return alpha;
-                        }
+                        return alpha;
                     }
                     //Verify SEE
-                    double valoareSEE = 0;
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax, pozCareDaSah, valoareSEE);
+                    double valoareSEE = +EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
+                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozCareDaSah, valoareSEE);
                     // bad SEE? return curent eval
                     if (valoareSEE > 0)
-                    { 
-                        return eval;
+                    {
+                        return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
                     }
                     else
                     {
@@ -2664,6 +2659,7 @@ namespace ProiectVolovici
                     return culoare == Culoare.AlbastruMax ? alpha : beta ;
                 }
             }
+
             NoduriEvaluate++;
             NoduriEvaluateQSC++;
             //Check priority
