@@ -2329,7 +2329,7 @@ namespace ProiectVolovici
 
                 //check extension
                 Pozitie pozCareDaSah;
-                if (culoare == Culoare.AlbMin && EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice),out pozCareDaSah))
+                if (EsteSahLaAlb(matrice, ReturneazaPozitieRegeAlbInMatrice(matrice),out pozCareDaSah))
                 {
                     //Time Exception - Check
                     if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
@@ -2337,8 +2337,7 @@ namespace ProiectVolovici
                         return eval;
                     }
                     //Verify SEE
-                    double valoareSEE = -EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbastruMax,pozCareDaSah, valoareSEE);
+                    double valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, culoare,pozCareDaSah, 0);
                     // bad SEE? return curent eval
                     if (valoareSEE > 0)
                     {
@@ -2351,7 +2350,7 @@ namespace ProiectVolovici
                     }
                 }
                 else
-                if (culoare == Culoare.AlbastruMax && EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice),out pozCareDaSah))
+                if (EsteSahLaAlbastru(matrice, ReturneazaPozitieRegeAlbastruInMatrice(matrice),out pozCareDaSah))
                 {
                     //Time Exception - Check
                     if (_cronometruAI.ElapsedMilliseconds > _timpOprire)
@@ -2359,10 +2358,9 @@ namespace ProiectVolovici
                         return eval;
                     }
                     //Verify SEE
-                    double valoareSEE = +EngineJoc.ReturneazaScorPiesa(matrice[pozCareDaSah.Linie][pozCareDaSah.Coloana]);
-                    valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, Culoare.AlbMin, pozCareDaSah, valoareSEE);
+                    double valoareSEE = SEE(matrice, pozAlbe, pozAlbastre, culoare, pozCareDaSah, 0);
                     // bad SEE? return curent eval
-                    if (valoareSEE > 0)
+                    if (valoareSEE < 0)
                     {
                         return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
                     }
@@ -2372,12 +2370,9 @@ namespace ProiectVolovici
                         goto InceputCautare;
                     }
                 }
-                else
-                {
-                    NoduriEvaluate--;
-                    //quiescence search
-                    return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
-                }
+                NoduriEvaluate--;
+                //quiescence search
+                return QSC(eval, matrice, alpha, beta, piesaCapturata, pozAlbe, pozAlbastre, culoare, adancime: 0);
             }
         InceputCautare:
 
