@@ -14,7 +14,7 @@
         ElefantAlb = 9,
         ElefantAlbastru = 10,
         CalAlb = 11,
-        CalAbastru = 12,
+        CalAlbastru = 12,
         RegeAlb = 13,
         RegeAlbastru = 14
     }

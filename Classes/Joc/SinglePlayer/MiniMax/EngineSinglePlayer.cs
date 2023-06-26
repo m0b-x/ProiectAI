@@ -283,6 +283,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                                     RealizeazaMutareaAI(moveOrdering: true);
                                 });
                                 VerificaSahul();
+                                VerificaSahFaraMutariAlb();
                             }
                             ScrieUltimaMutareInTextBox(_textBoxMutariAlbastru);
                         }
@@ -329,6 +330,7 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         private void DeschideCuMutareaAI(object source, ElapsedEventArgs e)
         {
+            VerificaSahFaraMutariAlb();
             RealizeazaMutareaAI(moveOrdering: true);
         }
 

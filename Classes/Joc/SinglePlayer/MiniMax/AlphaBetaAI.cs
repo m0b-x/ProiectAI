@@ -46,7 +46,7 @@ namespace ProiectVolovici
         const int pionAlb = (int)CodPiesa.PionAlb;
         const int pionAlbastru = (int)CodPiesa.PionAlbastru;
         const int calAlb = (int)CodPiesa.CalAlb;
-        const int calAlbastru = (int)CodPiesa.CalAbastru;
+        const int calAlbastru = (int)CodPiesa.CalAlbastru;
         const int tunAlb = (int)CodPiesa.TunAlb;
         const int tunAlbastru = (int)CodPiesa.TunAlbastru;
         const int turaAlba = (int)CodPiesa.TuraAlba;
@@ -983,7 +983,7 @@ namespace ProiectVolovici
             }
             if (mutariPosibile.Count == 0)
             {
-                _engine.TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+                _engine.TerminaMeciul(TipSah.FaraMutariAlbastru);
                 return null;
             }
 
@@ -1168,7 +1168,7 @@ namespace ProiectVolovici
             }
             if (mutariPosibile.Count == 0)
             {
-                _engine.TerminaMeciul(TipSah.SahPersistentLaAlbastru);
+                _engine.TerminaMeciul(TipSah.FaraMutariAlbastru);
                 return null;
             }
 

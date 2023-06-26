@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using static ProiectVolovici.AlphaBetaAI;
 
 namespace ProiectVolovici
 {
@@ -29,10 +31,6 @@ namespace ProiectVolovici
         private Piesa _piesaSelectata;
 
         protected bool _esteGataMeciul;
-        protected int _nrSahuriLaAlb = 0;
-        protected int _nrSahuriLaAlbastru = 0;
-        protected bool _sahPersistentLaAlb = false;
-        protected bool _sahPersistentLaAlbastru = false;
 
         public Stack<Mutare> StivaMutari
         {
@@ -358,7 +356,7 @@ namespace ProiectVolovici
                 case CodPiesa.ElefantAlb: return new Elefant(Culoare.AlbMin, _aspectJoc);
                 case CodPiesa.ElefantAlbastru: return new Elefant(Culoare.AlbastruMax, _aspectJoc);
                 case CodPiesa.CalAlb: return new Cal(Culoare.AlbMin, _aspectJoc);
-                case CodPiesa.CalAbastru: return new Cal(Culoare.AlbastruMax, _aspectJoc);
+                case CodPiesa.CalAlbastru: return new Cal(Culoare.AlbastruMax, _aspectJoc);
                 case CodPiesa.RegeAlb: return new Rege(Culoare.AlbMin, _aspectJoc);
                 case CodPiesa.RegeAlbastru: return new Rege(Culoare.AlbastruMax, _aspectJoc);
                 case CodPiesa.Gol: return ConstantaTabla.PiesaNula;
@@ -735,15 +733,9 @@ namespace ProiectVolovici
                         formMesaj.ShowDialog();
                         break;
                     }
-                case TipSah.SahPersistentLaAlb:
+                case TipSah.LipsaMaterial:
                     {
-                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlbastru, "Meci terminat!", "(Albastru castiga!)");
-                        formMesaj.ShowDialog();
-                        break;
-                    }
-                case TipSah.SahPersistentLaAlbastru:
-                    {
-                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlb, "Meci terminat!", "(Alb castiga!)");
+                        FormMesaj formMesaj = new(this.ParentForm, TipCastig.CastigAlbastru, "Meci terminat!", "(Lipsa material!)");
                         formMesaj.ShowDialog();
                         break;
                     }
@@ -780,12 +772,41 @@ namespace ProiectVolovici
             }
             return Pozitie.AcceseazaElementStatic(-1, -1);
         }
+        protected TipSah VerificaSahFaraMutariAlbastru()
+        {
+            List<Pozitie> pozitiiPosibile = new();
+            foreach(var piesa in ListaPieseAlbastre)
+            {
+                pozitiiPosibile.AddRange(piesa.ReturneazaPozitiiPosibile(_matriceCodPiese));
+            }
+            if(pozitiiPosibile.Count == 0)
+            {
+                return TipSah.FaraMutariAlbastru;
+            }
+            else
+            {
+                return TipSah.NuEsteSah;
+            }
+        }
+        protected TipSah VerificaSahFaraMutariAlb()
+        {
+            List<Pozitie> pozitiiPosibile = new();
+            foreach (var piesa in ListaPieseAlbe)
+            {
+                pozitiiPosibile.AddRange(piesa.ReturneazaPozitiiPosibile(_matriceCodPiese));
+            }
+            if (pozitiiPosibile.Count == 0)
+            {
+                return TipSah.FaraMutariAlb;
+            }
+            else
+            {
+                return TipSah.NuEsteSah;
+            }
+        }
+
         protected TipSah VerificaSahurile()
         {
-            int codRegeAlb = (int)CodPiesa.RegeAlb;
-            int codRegeAlbastru = (int)CodPiesa.RegeAlbastru;
-            bool esteSah = false;
-            int contorMutariAlb = 0;
 
             bool regeAlbPrezent = false;
             foreach (Piesa piesa in _listaPieseAlbe)
@@ -793,57 +814,21 @@ namespace ProiectVolovici
                 if (piesa.Cod == CodPiesa.RegeAlb)
                 {
                     regeAlbPrezent = true;
-                }
-                List<Pozitie> mutariPosibile = piesa.ReturneazaPozitiiPosibile(_matriceCodPiese);
-                contorMutariAlb += mutariPosibile.Count;
-                foreach (Pozitie mutare in mutariPosibile)
-                {
-                    if (_matriceCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlbastru)
-                    {
-                        _nrSahuriLaAlbastru++;
-                        if (_nrSahuriLaAlbastru == 3)
-                        {
-                            esteSah = true;
-                            return TipSah.SahPersistentLaAlbastru;
-                        }
-                    }
+                    break;
                 }
             }
-            if (regeAlbPrezent == false)
+            if(regeAlbPrezent == false)
             {
                 return TipSah.RegeAlbLuat;
             }
-            if (esteSah == false)
-            {
-                _nrSahuriLaAlbastru = 0;
-            }
-            if (contorMutariAlb == 0)
-            {
-                return TipSah.FaraMutariAlbastru;
-            }
-            esteSah = false;
-            int contorMutariAlbastru = 0;
-            bool regeAlbastruPrezent = false;
 
+            bool regeAlbastruPrezent = false;
             foreach (Piesa piesa in _listaPieseAlbastre)
             {
                 if (piesa.Cod == CodPiesa.RegeAlbastru)
                 {
                     regeAlbastruPrezent = true;
-                }
-                List<Pozitie> mutariPosibile = piesa.ReturneazaPozitiiPosibile(_matriceCodPiese);
-                contorMutariAlbastru += mutariPosibile.Count;
-                foreach (Pozitie mutare in mutariPosibile)
-                {
-                    if (_matriceCodPiese[mutare.Linie][mutare.Coloana] == codRegeAlb)
-                    {
-                        _nrSahuriLaAlb++;
-                        if (_nrSahuriLaAlb == 3)
-                        {
-                            esteSah = true;
-                            return TipSah.SahPersistentLaAlb;
-                        }
-                    }
+                    break;
                 }
             }
             if (regeAlbastruPrezent == false)
@@ -851,15 +836,36 @@ namespace ProiectVolovici
                 return TipSah.RegeAlbastruLuat;
             }
 
-            if (esteSah == false)
+            foreach (Piesa piesa in _listaPieseAlbastre)
             {
-                _nrSahuriLaAlb = 0;
+                if (piesa.Cod == CodPiesa.RegeAlbastru)
+                {
+                    regeAlbastruPrezent = true;
+                    break;
+                }
             }
-            if (contorMutariAlbastru == 0)
+            foreach(Piesa piesa in _listaPieseAlbe)
             {
-                return TipSah.FaraMutariAlb;
+                if(piesa.Cod == CodPiesa.PionAlb ||
+                    piesa.Cod == CodPiesa.TuraAlba ||
+                    piesa.Cod == CodPiesa.TunAlb ||
+                    piesa.Cod == CodPiesa.CalAlb )
+                {
+                    return TipSah.NuEsteSah;
+                }
             }
-            return TipSah.NuEsteSah;
+            foreach(Piesa piesa in _listaPieseAlbastre)
+            {
+                if (piesa.Cod == CodPiesa.PionAlbastru ||
+                    piesa.Cod == CodPiesa.TuraAlbastra ||
+                    piesa.Cod == CodPiesa.TunAlbastru ||
+                    piesa.Cod == CodPiesa.CalAlbastru)
+                {
+                    return TipSah.NuEsteSah;
+                }
+            }
+
+            return TipSah.LipsaMaterial;
         }
 
         public static void AfiseazaMatriceDebug(int[][] matrice, int adancime, double eval)

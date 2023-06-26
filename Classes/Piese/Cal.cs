@@ -17,7 +17,7 @@ namespace ProiectVolovici
                 if (culoare == Culoare.AlbastruMax)
                 {
                     this.Imagine = Properties.Resources.bhorse;
-                    this.Cod = CodPiesa.CalAbastru;
+                    this.Cod = CodPiesa.CalAlbastru;
                 }
                 else
                 {
@@ -35,7 +35,7 @@ namespace ProiectVolovici
                 else
                 {
                     this.Imagine = Properties.Resources.whorse;
-                    this.Cod = CodPiesa.CalAbastru;
+                    this.Cod = CodPiesa.CalAlbastru;
                 }
             }
             _paritatePiesa = (int)Cod % 2;

@@ -6,11 +6,8 @@
         Nespecificat = 0,
         RegeAlbLuat = 1,
         RegeAlbastruLuat = 2,
-        SahPersistentLaAlb = 3,
-        SahPersistentLaAlbastru = 4,
-        FaraMutariAlb = 5,
-        FaraMutariAlbastru = 6,
-        AbandonAlb = 7,
-        AbandonAlbastru = 8,
+        FaraMutariAlb = 3,
+        FaraMutariAlbastru = 4,
+        LipsaMaterial = 5,
     }
 }
