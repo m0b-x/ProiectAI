@@ -38,7 +38,7 @@ namespace ProiectVolovici
         private static double ProcentajMaterial = 1.0;
         private static double ProcentajPST = 0.25;
         private static int _adancime;
-        private static int NoduriCheckAdancime = 1023;
+        private static int NoduriCheckAdancime = 513;
 
         private EngineSinglePlayer _engine;
         private bool UsingMTDF = false;
@@ -1096,11 +1096,21 @@ namespace ProiectVolovici
 
             if (opritDinCautare == true)
             {
-                adancimeLaCareSaOprit--;
+                if (adancimeLaCareSaOprit > 0)
+                {
+                    adancimeLaCareSaOprit--;
+                }
                 scorMutareOptima = -1;
                 foreach (var mutPos in valoriMutariPosibile)
                 {
-                    scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    if (scoruriIterative.ContainsKey((mutPos, adancimeLaCareSaOprit)))
+                    {
+                        scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    }
+                    else
+                    {
+                        scorMutare = double.MinValue;
+                    }
                     if (scorMutare >= scorMutareOptima)
                     {
                         mutareOptima = mutPos;
@@ -1200,7 +1210,7 @@ namespace ProiectVolovici
 
             bool opritDinCautare = false;
             int adancimeLaCareSaOprit = -1;
-            for (int adancimeIterativa = 1; adancimeIterativa <= _adancime; adancimeIterativa++)
+            for (int adancimeIterativa = 0; adancimeIterativa <= _adancime; adancimeIterativa++)
             {
                 foreach (var mutPos in valoriMutariPosibile)
                 {
@@ -1209,7 +1219,7 @@ namespace ProiectVolovici
                         out piesaLuata, out piesaCareIa, mutPos, out indexPiesaLuata, out pozitieSchimbata, out valoareMutare);
 
 
-                    double f = (adancimeIterativa > 2) ? scoruriIterative[(mutPos, adancimeIterativa - 2)] : 0;
+                    double f = (adancimeIterativa >= 2) ? scoruriIterative[(mutPos, adancimeIterativa - 2)] : 0;
 
                     scorMutare = MTD(
                             evaluareMatriceInitiala + valoareMutare
@@ -1259,11 +1269,21 @@ namespace ProiectVolovici
 
             if (opritDinCautare == true)
             {
-                adancimeLaCareSaOprit--;
+                if (adancimeLaCareSaOprit > 0)
+                {
+                    adancimeLaCareSaOprit--;
+                }
                 scorMutareOptima = -1;
                 foreach (var mutPos in valoriMutariPosibile)
                 {
-                    scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    if (scoruriIterative.ContainsKey((mutPos, adancimeLaCareSaOprit)))
+                    {
+                        scorMutare = scoruriIterative[(mutPos, adancimeLaCareSaOprit)];
+                    }
+                    else
+                    {
+                        scorMutare = double.MinValue;
+                    }
                     if (scorMutare >= scorMutareOptima)
                     {
                         mutareOptima = mutPos;
@@ -2805,6 +2825,10 @@ namespace ProiectVolovici
                     upperBound = g;
                 else
                     lowerBound = g;
+                if(_cronometruAI.ElapsedMilliseconds > _timpOprire)
+                {
+                    return g;
+                }
             }
             while (lowerBound >= upperBound);
             return g;
