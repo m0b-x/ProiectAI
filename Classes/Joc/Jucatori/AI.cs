@@ -9,5 +9,7 @@ namespace ProiectVolovici
         {
         }
         public abstract Tuple<Mutare, double> ReturneazaMutareaOptima();
+
+        public abstract bool IsThinking();
     }
 }

@@ -156,9 +156,12 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         public override void StergeUltimaMutare()
 		{
-			StergeUltimaLinieDinRichTextBox();
-			NrMutari-= 2;
-			base.StergeUltimaMutare();
+            if (_jucatorAI.IsThinking() == false)
+            {
+                StergeUltimaLinieDinRichTextBox();
+                NrMutari -= 2;
+                base.StergeUltimaMutare();
+            }
 		}
 
 		private void StergeUltimaLinieDinRichTextBox()
@@ -336,8 +339,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
 
         public void RealizeazaMutareaAI(bool moveOrdering = true)
         {
-            Stopwatch cronometru = new();
-            cronometru.Start();
 
             //evaluarea minimax primeste mutarile ai-ului ca si primul parametru
             unchecked
@@ -353,8 +354,6 @@ namespace ProiectVolovici.Classes.Joc.SinglePlayer.MiniMax
                 _jucatorAI.UltimaPozitie = pozitie;
                 EsteRandulTau();
             }
-            Debug.WriteLine(cronometru.Elapsed);
-            cronometru.Stop();
         }
 
 

@@ -58,6 +58,12 @@ namespace ProiectVolovici
         const int regeAlb = (int)CodPiesa.RegeAlb;
         const int regeAlbastru = (int)CodPiesa.RegeAlbastru;
 
+
+
+        public override bool IsThinking()
+        {
+            return _cronometruAI.IsRunning;
+        }
         private static double[][] TabelCapturiPiese = new double[][]
         {
             new double[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
