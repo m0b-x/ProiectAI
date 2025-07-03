@@ -1,4 +1,4 @@
-# Chū Xuézhě - Beginner Learning
+# Chū Xuézhě - Beginner Learner
 
 The project aims to recreate an advanced **Chinese Chess engine** that implements **AI algorithms and techniques**, while offering both **singleplayer and multiplayer** experiences. It was created by me (Zamfir Alexandru) and used in my **Bachelor's Degree Project** to analyze the performance of implemented optimizations applied to chinese chess.
 
@@ -54,6 +54,6 @@ The project Currently Implements:
 # Singleplayer Games Example
 
 
-<img src="https://github.com/m0b-x/ProiectAI/assets/72597190/9cd5a399-9c1d-4f12-b77d-6f14a63be67d" alt="Game 1" style="float:left; margin-right:10px; width:450px;">
+<img src="https://github.com/m0b-x/ProiectAI/assets/72597190/9cd5a399-9c1d-4f12-b77d-6f14a63be67d" alt="Game 1" style="float:left; margin-right:10px; width:400px;">
 
-<img src="https://github.com/m0b-x/ProiectAI/assets/72597190/9cd7fd19-818d-4563-8c8e-d690f2172236" alt="Game 2" style="float:right; width:450px;">
+<img src="https://github.com/m0b-x/ProiectAI/assets/72597190/9cd7fd19-818d-4563-8c8e-d690f2172236" alt="Game 2" style="float:right; width:400px;">
